@@ -1,0 +1,35 @@
+[
+    {
+        "caption": "Deviot",
+        "mnemonic": "D",
+        "id": "deviot",
+        "children":
+        [
+            {
+                "caption": "Update Menu",
+                "id": "update_menu",
+                "command": "update_menu"
+            },
+            {"caption": "-"},
+            {
+                "caption": "Initialize - Add new board",
+                "id": "initialize",
+                "children":[]
+            },{
+                "caption": "Build",
+                "id": "buildSketch",
+                "command": "build_sketch",
+                "args": {"setting": "remember_open_files"},
+                "checkbox": true
+            },{
+                "caption": "Upload",
+                "id": "uploadSketch",
+                "command": "upload_sketch"
+            },{
+                "caption": "Clean",
+                "id": "cleanSketch",
+                "command": "clean_sketch"
+            }
+        ]
+    }
+]
