@@ -11,10 +11,12 @@ import re
 import sublime
 import sublime_plugin
 
+from . import DeviotFunctions
+
 class DeviotListener(sublime_plugin.EventListener):
 	def __init__(self):
 		super(DeviotListener, self).__init__()
-		pass
+		DeviotFunctions.Menu().createBoardsMenu()
 		
 	def on_activated(self, view):
-		pass
+		DeviotFunctions.setStatus(view)
