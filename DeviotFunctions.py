@@ -7,11 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
-import threading
-import subprocess
 import sublime
-import re
-import time
 import codecs
 import json
 
