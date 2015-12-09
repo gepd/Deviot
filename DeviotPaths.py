@@ -39,3 +39,8 @@ def getDeviotBoardsPath():
     deviot_user_path = getDeviotUserPath()
     boards_path = os.path.join(deviot_user_path,'Boards.json')
     return boards_path
+
+def getPreferencesFile():
+    deviot_user_path = getDeviotUserPath()
+    preferences_path = os.path.join(deviot_user_path,'Preferences.Deviot-settings')
+    return preferences_path

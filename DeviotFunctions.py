@@ -22,27 +22,44 @@ from . import DeviotPaths
 class JSONFile(object):
 	def __init__(self, path,encoding='utf-8'):		
 		super(JSONFile, self).__init__()		
-		self.setEncoding(encoding)		
+		self.setEncoding(encoding)
+		self.data = {}
 		self.path = path
-		self.loadFile()
+		self.loadData()
 
 	# load the data from a JSON File
-	def loadFile(self):
+	def loadData(self):
+		try:
+			text = self.readFile()
+		except:
+			return
+			
+		try:
+			self.data = json.loads(text)
+		except:
+			pass
+	
+	def setData(self, data):
+		self.data = data
+		self.saveData()
+
+	# Save a JSON File
+	def saveData(self):
+		text = json.dumps(self.data, sort_keys=True, indent=4)
+		self.writeFile(text)
+
+	def readFile(self):
 		text = ''
 
 		try:
 			with codecs.open(self.path, 'r', self.encoding) as file:
 				text = file.read()
-				self.data = text
 		except (IOError, UnicodeError):
 			pass
-		
 
-	# Save a JSON File
-	def saveFile(self, text, append=False):
+		return text
 
-		text = json.dumps(text)
-
+	def writeFile(self, text, append=False):
 		mode = 'w'
 
 		if append:
@@ -62,6 +79,8 @@ class Menu(object):
 	def __init__(self,menu_dict=None):
 		super(Menu, self).__init__()
 		self.Command = DeviotCommands.CommandsPy()
+		preferences_path = DeviotPaths.getPreferencesFile()
+		self.Preferences = Preferences(preferences_path)
 
 	# get a json list of all boards availables from platformio
 	def getWebBoards(self):
@@ -73,7 +92,7 @@ class Menu(object):
 	def saveWebBoards(self):
 		boards = self.getWebBoards()
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
-		file.saveFile(boards)
+		file.saveData(boards)
 
 	def getFileBoards(self):
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
@@ -84,7 +103,7 @@ class Menu(object):
 		vendors = {}
 		boards = []
 		
-		datas = json.loads(self.getFileBoards())
+		datas = self.getFileBoards()
 
 		for datakey,datavalue in datas.items():					
 			for infokey,infovalue in datavalue.items():
@@ -105,12 +124,11 @@ class Menu(object):
 	# Generate the Main menu
 	def createMainMenu(self):
 		boards = json.loads(self.createBoardsMenu())
-
 		preset_path = DeviotPaths.getPresetPath()
 		main_file_name = 'menu_main.json'
 		main_file_path = os.path.join(preset_path,main_file_name)
 		menu_file = JSONFile(main_file_path)
-		menu_data = json.loads(menu_file.data)[0]
+		menu_data = menu_file.data[0]
 
 		for fist_menu in menu_data:
 			for second_menu in menu_data[fist_menu]:
@@ -124,9 +142,21 @@ class Menu(object):
 		if(not os.path.isdir(deviot_user_path)):
 			os.makedirs(deviot_user_path)
 		main_user_file_path = os.path.join(deviot_user_path, 'Main.sublime-menu')
-		main_user_file_path = JSONFile(main_user_file_path)
-		main_user_file_path.saveFile(menu_data)
+		file_menu = JSONFile(main_user_file_path)
+		file_menu.setData(menu_data)
+		file_menu.saveData()
 
+class Preferences(JSONFile):
+	def __init__(self, path):
+		super(Preferences, self).__init__(path)
+
+	def set(self, key, value):
+		self.data[key] = value
+		self.saveData()
+
+	def get(self, key, default_value=False):
+		value = self.data.get(key, default_value)
+		return value
 
 # Set the status in the status bar of ST
 def setStatus(view):
