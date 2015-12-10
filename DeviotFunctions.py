@@ -75,8 +75,6 @@ class Menu(object):
 	def __init__(self,menu_dict=None):
 		super(Menu, self).__init__()
 		self.Command = DeviotCommands.CommandsPy()
-		preferences_path = DeviotPaths.getPreferencesFile()
-		self.Preferences = Preferences(preferences_path)
 
 	# get a json list of all boards availables from platformio
 	def getWebBoards(self):
@@ -101,13 +99,13 @@ class Menu(object):
 		
 		datas = self.getFileBoards()
 
-		for datakey,datavalue in datas.items():					
+		for datakey,datavalue in datas.items():
 			for infokey,infovalue in datavalue.items():
 				vendor = datavalue['vendor']
 				if(infokey == 'name'):
 					name = infovalue.replace(vendor + " ","",1)
 					children = vendors.setdefault(vendor,[])
-					children.append({"caption":name,"id":infovalue.lower()})
+					children.append({"caption":name,'command':'select_board',"id":datakey,"checkbox":True,"args":{"board_id":datakey}})
 
 		for vendor, children in vendors.items():
 			boards.append({"caption":vendor,"children":children})
@@ -119,6 +117,7 @@ class Menu(object):
 
 	# Generate the Main menu
 	def createMainMenu(self):
+
 		boards = json.loads(self.createBoardsMenu())
 		preset_path = DeviotPaths.getPresetPath()
 		main_file_name = 'menu_main.json'
@@ -142,8 +141,13 @@ class Menu(object):
 		file_menu.setData(menu_data)
 		file_menu.saveData()
 
+		def setBoard(self, id_board):
+			self.Preferences.set('id_board',id_board)
+
+
 class Preferences(JSONFile):
-	def __init__(self, path):
+	def __init__(self):
+		path = DeviotPaths.getPreferencesFile()
 		super(Preferences, self).__init__(path)
 
 	def set(self, key, value):
@@ -153,6 +157,30 @@ class Preferences(JSONFile):
 	def get(self, key, default_value=False):
 		value = self.data.get(key, default_value)
 		return value
+
+	def selectBoard(self,board_id):
+		fileData = self.data
+		
+		if(fileData):
+			if board_id in fileData['board_id']:
+				fileData.setdefault('board_id',[]).remove(board_id)
+			else:
+				fileData.setdefault('board_id',[]).append(board_id)
+			
+			self.data = fileData
+			self.saveData()
+		else:
+			self.set('board_id',[board_id])
+
+
+	def checkBoard(self, board_id):
+		check = False
+		if(self.data):
+			check_boards = self.get('board_id',board_id)
+
+			if board_id in check_boards:
+				check = True
+		return check			
 
 # Set the status in the status bar of ST
 def setStatus(view):
@@ -168,4 +196,7 @@ def setStatus(view):
 
 # get the current version of the plugin
 def getVersion():
-	return "0.1"
+	return Preferences().get('plugin_version')
+
+def setVersion(version):
+	Preferences().set('plugin_version',version)
