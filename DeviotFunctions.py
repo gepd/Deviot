@@ -14,17 +14,33 @@ import json
 from . import DeviotCommands
 from . import DeviotPaths
 
-# Handle JSON Files
 class JSONFile(object):
-	def __init__(self, path,encoding='utf-8'):		
+	"""Handle JSON Files
+	
+	This class allow to load and save JSON files
+	"""
+	def __init__(self, path):
+		"""JSONFile Construct
+		
+		This construct load a file when is called and
+		load the information in a global variable
+		
+		Arguments:
+			path {string} -- Full path of the JSON file
+		"""
 		super(JSONFile, self).__init__()		
-		self.setEncoding(encoding)
+		self.setEncoding()
 		self.data = {}
 		self.path = path
 		self.loadData()		
 
-	# load the data from a JSON File
 	def loadData(self):
+		"""Load JSON File
+		
+		Load the content of a JSON file and 
+		deserialize it to set the information 
+		in a global object called data
+		"""
 		try:
 			text = self.readFile()
 		except:
@@ -36,15 +52,40 @@ class JSONFile(object):
 			pass
 	
 	def setData(self, data):
+		"""Set the JSON data
+		
+		Save the data in the file setted on the
+		construct. This method is most used in 
+		the preferences class.
+		
+		Arguments:
+			data {string} -- data to save in the JSON file.
+		"""
 		self.data = data
 		self.saveData()
 
-	# Save a JSON File
 	def saveData(self):
+		"""Save JSON data
+		
+		Serialize the data stored in the global object data
+		and call to Write file. This function is called automatically
+		when any data is set in the method SetData.
+		
+		"""
 		text = json.dumps(self.data, sort_keys=True, indent=4)
 		self.writeFile(text)
 
 	def readFile(self):
+		"""Read File
+		
+		Read the data from the file specified in the global object path.
+		The data readed is encoded with the format specified in the global
+		object encoding, by default this object is UTF-8. Use this method 
+		if you don't want to modify the data received from the file.
+
+		Returns:
+			text {string} -- encoded text readed from file
+		"""
 		text = ''
 
 		try:
@@ -56,6 +97,20 @@ class JSONFile(object):
 		return text
 
 	def writeFile(self, text, append=False):
+		"""Write File
+		
+		Write the data passed in a file specified in the global object path.
+		This method is called automatically by saveData, and encode the text
+		in the format specified in the global object encoding, by default this
+		object is UTF-8. Use this method if you don't want to modify the data
+		to write.
+		
+		Arguments:
+			text {string} -- Text to write in the file
+		
+		Keyword Arguments:
+			append {boolean} -- Set to True if you want to append the data in the file (default: False)
+		"""
 		mode = 'w'
 
 		if append:
@@ -66,34 +121,78 @@ class JSONFile(object):
 		except (IOError, UnicodeError):
 			pass
 
-	# set the encoding for json files
 	def setEncoding(self, encoding='utf-8'):
+		"""Change encoding
+		
+		Call this method to change the format to encode the files when you 
+		load it or save it.
+		
+		Keyword Arguments:
+			encoding {string} -- Format to encoding (default: UTF-8 )
+		"""
 		self.encoding = encoding
 
-# Initialization of the plugin menu
 class Menu(object):
-	def __init__(self,menu_dict=None):
+	"""Plugin Menu
+	
+	Class to handle the differents option in the plugin menu.
+	"""
+	def __init__(self):
+		"""Construct
+		
+		Call the construct of the command library to make the
+		differents call by CLI
+		"""
 		super(Menu, self).__init__()
 		self.Command = DeviotCommands.CommandsPy()
 
-	# get a json list of all boards availables from platformio
 	def getWebBoards(self):
+		"""Get boards list
+		
+		Get the boards list from the platformio API using CLI.
+		to know more about platformio visit:  http://www.platformio.org/
+
+		Returns: 
+		 	{json object} -- list with all boards in a JSON format
+		"""
 		boards = []
 		cmd = "platformio boards --json-output"
 		boards = self.Command.runCommand(cmd,setReturn=True)
 		return boards
 
 	def saveWebBoards(self):
+		"""Save board list
+		
+		Save the JSON object in a specific JSON file
+		"""
 		boards = self.getWebBoards()
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
 		file.saveData(boards)
 
 	def getFileBoards(self):
+		"""Get Board File
+		
+		Load the board list stored in a JSON file and 
+		return the data. This function is used to avoid
+		always download the list from the web.
+
+		Returns:
+		 	{json object} -- list with all boards in a JSON format
+		"""
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
 		boards = file.data
 		return boards
 
 	def createBoardsMenu(self):
+		"""Board menu
+		
+		Load the JSON file with the list of all boards and re order it
+		based on the vendor. after that format the data to operate with
+		the standards required for the ST
+
+		Returns:
+		  	{json array} -- list of all boards to show in the menu
+		"""
 		vendors = {}
 		boards = []
 		
@@ -115,9 +214,13 @@ class Menu(object):
 
 		return boards
 
-	# Generate the Main menu
 	def createMainMenu(self):
-
+		"""Main menu
+		
+		Creates the main menu with the differents options
+		including boards, libraries, COM ports, and user
+		options.
+		"""
 		boards = json.loads(self.createBoardsMenu())
 		main_file_path = DeviotPaths.getMainJSONFile()
 		menu_file = JSONFile(main_file_path)
@@ -139,24 +242,67 @@ class Menu(object):
 		file_menu.setData(menu_data)
 		file_menu.saveData()
 
-		def setBoard(self, id_board):
-			self.Preferences.set('id_board',id_board)
-
 
 class Preferences(JSONFile):
+	"""Preferences
+	
+	Class to handle the preferences of the plugin
+	
+	Extends:
+		JSONFile
+	"""
 	def __init__(self):
+		"""Construct
+		
+		Path loads the file where the preferences are stored,
+		Doing that you avoid to pass the path every time you
+		need to get or set any preference.
+		"""
 		path = DeviotPaths.getPreferencesFile()
 		super(Preferences, self).__init__(path)
 
 	def set(self, key, value):
+		"""Set value
+		
+		Save a value in the preferences file using a list and
+		dictionaries.
+		
+		Arguments:
+			key {string} -- identifier of the preference
+			value {[type]} -- value of the preference
+		"""
 		self.data[key] = value
 		self.saveData()
 
 	def get(self, key, default_value=False):
+		"""Get Value
+		
+		Get a value in the preferences file stored as a list and
+		dictionaries format.
+		
+		Arguments:
+			key {string} -- identifier of the preference
+		
+		Keyword Arguments:
+			default_value {string} -- if there is none value stored
+									  you can set a default value (default: False)
+		
+		Returns:
+		   	{string} -- Value of the preference
+		"""
 		value = self.data.get(key, default_value)
 		return value
 
-	def selectBoard(self,board_id):
+	def boardSelected(self,board_id):
+		"""Choosed board
+		
+		Add or delete the board selected from the preferences
+		files. The boards are formated in a dictionary in the
+		the list 'board id'
+		
+		Arguments:
+			board_id {string} -- identifier if the board selected
+		"""
 		fileData = self.data
 		
 		if(fileData):
@@ -172,6 +318,13 @@ class Preferences(JSONFile):
 
 
 	def checkBoard(self, board_id):
+		"""Is checked
+		
+		Check if is necessary to mark or unmark the board selected 
+		
+		Arguments:
+			board_id {string]} -- identifier of the board selected
+		"""
 		check = False
 		if(self.data):
 			check_boards = self.get('board_id',board_id)
@@ -180,7 +333,16 @@ class Preferences(JSONFile):
 				check = True
 		return check
 
+
 def isIOTFile(view):
+	"""IoT File
+	
+	Check if the file in the current view of ST is an allowed
+	IoT file, the files are specified in the exts variable.
+	
+	Arguments:
+		view {st object} -- stores many info related with ST
+	"""
 	exts = ['ino','pde','cpp','c','.S']
 	file_name = view.file_name()
 
@@ -188,8 +350,15 @@ def isIOTFile(view):
 		return True
 	return False
 
-# Set the status in the status bar of ST
 def setStatus(view):
+	"""Status bar
+	
+	Set the info to show in the status bar of Sublime Text.
+	This info is showing only when the working file is considered IoT
+	
+	Arguments:
+		view {st object} -- stores many info related with ST
+	"""
 	info = []
 
 	if isIOTFile(view):		
@@ -198,9 +367,22 @@ def setStatus(view):
 
 		view.set_status('Deviot', full_info)
 
-# get the current version of the plugin
 def getVersion():
+	"""Plugin Version
+	
+	Get the current version of the plugin stored in the preferences file.
+
+	Returns:
+	  	{String} -- Version of the file (only numbers)
+	"""
 	return Preferences().get('plugin_version')
 
 def setVersion(version):
+	"""Plugin Version
+	
+	Save the current version of the plugin in the preferences file.
+
+	Returns:
+	  	{String} -- Version of the file (only numbers)
+	 """
 	Preferences().set('plugin_version',version)

@@ -13,12 +13,35 @@ from . import DeviotPaths
 from . import DeviotIO
 
 class DeviotListener(sublime_plugin.EventListener):
+	"""Starter class
+	
+	This is the first class to run when the plugin is excecuted
+	
+	Extends:
+		sublime_plugin.EventListener
+	"""
 	def __init__(self):
+		""" Constructor
+		
+		In this constructor is setted the version of the 
+		plugin, and running the creation of the differents
+		menus located in the top of sublime text
+		"""
 		super(DeviotListener, self).__init__()
 		DeviotFunctions.Menu().createMainMenu()
 		DeviotFunctions.setVersion('0.5')	
 		
 	def on_activated(self, view):
+		"""Activated view
+		
+		When any tab is activated, this fuction runs.
+		From here the plugin detects if the current
+		tab is working with any file allowed to working
+		with this plugin
+		
+		Arguments:
+			view {st object} -- stores many info related with ST
+		"""
 		DeviotFunctions.setStatus(view)
 
 class UpdateMenuCommand(sublime_plugin.WindowCommand):
@@ -26,13 +49,52 @@ class UpdateMenuCommand(sublime_plugin.WindowCommand):
 		pass
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
-	def run(self,board_id):		
-		DeviotFunctions.Preferences().selectBoard(board_id)
+	"""Select Board Trigger
+	
+	This class trigger two methods to know what board(s)
+	were chosen and to store it in a preference file.
+	
+	Extends:
+		sublime_plugin.WindowCommand
+	"""
+	def run(self,board_id):
+		"""ST method
+		
+		Get the ID of the board selected and store it in a
+		preference file.
+		
+		Arguments:
+			board_id {string} -- id of the board selected
+		"""
+		DeviotFunctions.Preferences().boardSelected(board_id)
 
 	def is_checked(self,board_id):
+		"""ST method
+		
+		Check if the node in the menu is check or not, this
+		function need to return always a bolean
+		
+		Arguments:
+			board_id {string} -- id of the board selected
+		"""
 		check = DeviotFunctions.Preferences().checkBoard(board_id)
 		return check
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
+	"""Build Sketch Trigger
+	
+	This class trigger one method to build the files in the
+	current working project
+	
+	Extends:
+		sublime_plugin.WindowCommand
+	"""
 	def run(self,edit):
+		"""ST method
+		
+		Call a method to build an accepted IoT File
+		
+		Arguments:
+			edit {object} -- ST object
+		"""
 		DeviotIO.platformioCLI(self.view).buildSketch()
