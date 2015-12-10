@@ -10,8 +10,6 @@ import os
 import subprocess
 import sublime
 
-from . import DeviotFunctions
-
 class CommandsPy(object):
 	def __init__(self):
 		super(CommandsPy, self).__init__()
@@ -23,13 +21,14 @@ class CommandsPy(object):
 
 		stdout = output[0]
 		stderr = output[1]
-		
-		print(stdout)
-		print(stderr)
 
 		return_code = process.returncode
 
-		if(return_code != 0):
+		if(verbose):
+			print(stdout)
+			print(stderr)
+
+		if(return_code != 0):			
 			self.error_running = True
 
 		if(setReturn):
