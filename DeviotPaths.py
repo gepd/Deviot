@@ -33,12 +33,30 @@ def getDeviotUserPath():
     packages_path = getPackagesPath()
     user_path = os.path.join(packages_path, 'User')
     deviot_user_path = os.path.join(user_path, 'Deviot')
+    
+    if(not os.path.isdir(deviot_user_path)):
+            os.makedirs(deviot_user_path)
+
     return deviot_user_path
 
 def getDeviotBoardsPath():
     deviot_user_path = getDeviotUserPath()
     boards_path = os.path.join(deviot_user_path,'Boards.json')
     return boards_path
+
+def getDeviotMenuPath(sub_folder=False):
+    deviot_user_path = getDeviotUserPath()
+
+    if(sub_folder):
+        deviot_user_path = os.path.join(deviot_user_path,sub_folder)
+
+        if(not os.path.isdir(deviot_user_path)):
+            os.makedirs(deviot_user_path)
+
+    menu_path = os.path.join(deviot_user_path, 'Main.sublime-menu')
+
+    return menu_path
+
 
 def getPreferencesFile():
     deviot_user_path = getDeviotUserPath()
