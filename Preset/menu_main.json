@@ -12,15 +12,13 @@
             },
             {"caption": "-"},
             {
-                "caption": "Initialize - Add new board",
+                "caption": "Select board(s)",
                 "id": "initialize",
                 "children":[]
             },{
                 "caption": "Build",
                 "id": "buildSketch",
-                "command": "build_sketch",
-                "args": {"setting": "remember_open_files"},
-                "checkbox": true
+                "command": "build_sketch"
             },{
                 "caption": "Upload",
                 "id": "uploadSketch",
