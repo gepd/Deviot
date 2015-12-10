@@ -13,6 +13,7 @@ import json
 
 from . import DeviotCommands
 from . import DeviotPaths
+from . import DeviotIO
 
 class JSONFile(object):
 	"""Handle JSON Files
@@ -146,26 +147,12 @@ class Menu(object):
 		super(Menu, self).__init__()
 		self.Command = DeviotCommands.CommandsPy()
 
-	def getWebBoards(self):
-		"""Get boards list
-		
-		Get the boards list from the platformio API using CLI.
-		to know more about platformio visit:  http://www.platformio.org/
-
-		Returns: 
-		 	{json object} -- list with all boards in a JSON format
-		"""
-		boards = []
-		cmd = "platformio boards --json-output"
-		boards = self.Command.runCommand(cmd,setReturn=True)
-		return boards
-
 	def saveWebBoards(self):
 		"""Save board list
 		
 		Save the JSON object in a specific JSON file
 		"""
-		boards = self.getWebBoards()
+		boards = DeviotIO.platformioCLI().getAPIBoards()
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
 		file.saveData(boards)
 
@@ -214,6 +201,22 @@ class Menu(object):
 
 		return boards
 
+	def createSerialPortsMenu(self):
+		"""Serial ports
+		
+		Create the list menu "Serial ports" with the list of all the
+		availables serial ports
+		"""
+		port_list = DeviotIO.platformioCLI().getAPICOMPorts()
+		menu_ports = []
+
+
+		for port in port_list:
+			port_name = port["port"]
+			menu_ports.append({"caption":port_name,"id":port_name.lower()})
+
+		return menu_ports
+
 	def createMainMenu(self):
 		"""Main menu
 		
@@ -221,6 +224,8 @@ class Menu(object):
 		including boards, libraries, COM ports, and user
 		options.
 		"""
+		port_list = self.createSerialPortsMenu()
+
 		boards = json.loads(self.createBoardsMenu())
 		main_file_path = DeviotPaths.getMainJSONFile()
 		menu_file = JSONFile(main_file_path)
@@ -229,15 +234,17 @@ class Menu(object):
 		for fist_menu in menu_data:
 			for second_menu in menu_data[fist_menu]:
 				if 'children' in second_menu:
-					second_menu['children'] = boards
+					if(second_menu['id'] == 'initialize'):
+						#second_menu['children'] = boards
+						pass
+					if(second_menu['id'] == 'serial_ports'):
+						#second_menu['children'] = port_list
+						pass
 		
 		# to format purposes
 		menu_data = [menu_data]
-
-		deviot_user_path = DeviotPaths.getDeviotUserPath()
-		if(not os.path.isdir(deviot_user_path)):
-			os.makedirs(deviot_user_path)
-		main_user_file_path = os.path.join(deviot_user_path, 'Main.sublime-menu')
+		
+		main_user_file_path = DeviotPaths.getDeviotMenuPath()
 		file_menu = JSONFile(main_user_file_path)
 		file_menu.setData(menu_data)
 		file_menu.saveData()
