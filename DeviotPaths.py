@@ -44,3 +44,21 @@ def getPreferencesFile():
     deviot_user_path = getDeviotUserPath()
     preferences_path = os.path.join(deviot_user_path,'Preferences.Deviot-settings')
     return preferences_path
+
+def getMainJSONFile():
+    preset_path = getPresetPath()
+    main_file_path = os.path.join(preset_path,'menu_main.json')
+    return main_file_path
+
+def getCurrentFilePath(view):
+    window = view.window()
+    views = window.views()
+
+    if view not in views:
+        view = window.active_view()
+
+    return view.file_name()
+
+def getCWD(file_path):
+    folder_path = os.path.dirname(file_path)
+    return folder_path

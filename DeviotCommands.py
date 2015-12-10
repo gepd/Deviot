@@ -10,13 +10,27 @@ import os
 import subprocess
 import sublime
 
+from . import DeviotFunctions
 
 class CommandsPy(object):
 	def __init__(self):
 		super(CommandsPy, self).__init__()
+		self.error_running = False
 
-	def runCommand(self, command, cwd=None):
+	def runCommand(self, command, cwd=None,setReturn=False,verbose=False):
+		process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,cwd=cwd, universal_newlines=True,shell=True)#
+		output = process.communicate()
+
+		stdout = output[0]
+		stderr = output[1]
 		
-		process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,universal_newlines=True,shell=True)
-		output = process.communicate()[0]
-		return output
+		print(stdout)
+		print(stderr)
+
+		return_code = process.returncode
+
+		if(return_code != 0):
+			self.error_running = True
+
+		if(setReturn):
+			return stdout

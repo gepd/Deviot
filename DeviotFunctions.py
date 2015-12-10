@@ -21,7 +21,7 @@ class JSONFile(object):
 		self.setEncoding(encoding)
 		self.data = {}
 		self.path = path
-		self.loadData()
+		self.loadData()		
 
 	# load the data from a JSON File
 	def loadData(self):
@@ -80,7 +80,7 @@ class Menu(object):
 	def getWebBoards(self):
 		boards = []
 		cmd = "platformio boards --json-output"
-		boards = self.Command.runCommand(cmd)
+		boards = self.Command.runCommand(cmd,setReturn=True)
 		return boards
 
 	def saveWebBoards(self):
@@ -119,9 +119,7 @@ class Menu(object):
 	def createMainMenu(self):
 
 		boards = json.loads(self.createBoardsMenu())
-		preset_path = DeviotPaths.getPresetPath()
-		main_file_name = 'menu_main.json'
-		main_file_path = os.path.join(preset_path,main_file_name)
+		main_file_path = DeviotPaths.getMainJSONFile()
 		menu_file = JSONFile(main_file_path)
 		menu_data = menu_file.data[0]
 
@@ -180,19 +178,25 @@ class Preferences(JSONFile):
 
 			if board_id in check_boards:
 				check = True
-		return check			
+		return check
 
-# Set the status in the status bar of ST
-def setStatus(view):
-	info = []
+def isIOTFile(view):
 	exts = ['ino','pde','cpp','c','.S']
 	file_name = view.file_name()
 
 	if file_name and file_name.split('.')[-1] in exts:
-		info.append('Deviot ' + getVersion())
-		Fullinfo = ', '.join(info)
+		return True
+	return False
 
-		view.set_status('Deviot', Fullinfo)
+# Set the status in the status bar of ST
+def setStatus(view):
+	info = []
+
+	if isIOTFile(view):		
+		info.append('Deviot ' + getVersion())
+		full_info = " | ".join(info)
+
+		view.set_status('Deviot', full_info)
 
 # get the current version of the plugin
 def getVersion():
