@@ -10,7 +10,6 @@ import sublime, sublime_plugin
 
 from . import DeviotFunctions
 from . import DeviotPaths
-from . import DeviotIO
 
 class DeviotListener(sublime_plugin.EventListener):
 	"""Starter class
@@ -29,8 +28,8 @@ class DeviotListener(sublime_plugin.EventListener):
 		"""
 		super(DeviotListener, self).__init__()
 		DeviotFunctions.Menu().createMainMenu()
-		DeviotFunctions.setVersion('0.5')	
-		
+		DeviotFunctions.setVersion('0.5')
+
 	def on_activated(self, view):
 		"""Activated view
 		
@@ -44,9 +43,18 @@ class DeviotListener(sublime_plugin.EventListener):
 		"""
 		DeviotFunctions.setStatus(view)
 
+		
 class UpdateMenuCommand(sublime_plugin.WindowCommand):
-	def run(self,id):
-		pass
+	"""Update/refresh menu
+	
+	This command updates the main menu including the list of boards 
+	vendors/type of board.
+	
+	Extends:
+		sublime_plugin.WindowCommand
+	"""
+	def run(self):
+		DeviotFunctions.Menu().createMainMenu()
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
 	"""Select Board Trigger
@@ -80,7 +88,7 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
 		check = DeviotFunctions.Preferences().checkBoard(board_id)
 		return check
 
-class BuildSketchCommand(sublime_plugin.TextCommand):
+class BuildSketchCommand(sublime_plugin.WindowCommand):
 	"""Build Sketch Trigger
 	
 	This class trigger one method to build the files in the
@@ -97,4 +105,19 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
 		Arguments:
 			edit {object} -- ST object
 		"""
-		DeviotIO.platformioCLI(self.view).buildSketch()
+		DeviotFunctions.PlatformioCLI(self.view).buildSketch()
+
+class SelectPortCommand(sublime_plugin.WindowCommand):
+	"""Select port
+	
+	Save in the preferences file, the port com to upload the sketch
+	when the upload command is use
+	
+	Extends:
+		sublime_plugin.WindowCommand
+	"""
+	def run(self, id_port):
+		DeviotFunctions.Preferences().set('id_port',id_port)
+	def is_checked(self,id_port):
+		saved_id_port = DeviotFunctions.Preferences().get('id_port')
+		return saved_id_port == id_port
