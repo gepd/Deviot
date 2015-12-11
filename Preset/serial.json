@@ -1,0 +1,15 @@
+[
+   {
+        "caption": "Deviot",
+        "mnemonic": "D",
+        "id": "deviot",
+        "children":
+        [
+            {
+                "caption": "Serial Port",
+                "id": "serial_ports",
+                "children":[]
+            }
+        ]
+    }
+]

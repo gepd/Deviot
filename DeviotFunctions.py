@@ -13,7 +13,6 @@ import json
 
 from . import DeviotCommands
 from . import DeviotPaths
-from . import DeviotIO
 
 class JSONFile(object):
 	"""Handle JSON Files
@@ -152,7 +151,7 @@ class Menu(object):
 		
 		Save the JSON object in a specific JSON file
 		"""
-		boards = DeviotIO.platformioCLI().getAPIBoards()
+		boards = PlatformioCLI().getAPIBoards()
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
 		file.saveData(boards)
 
@@ -197,7 +196,7 @@ class Menu(object):
 			boards.append({"caption":vendor,"children":children})
 
 		boards = sorted(boards, key=lambda x:x['caption'])
-		boards = json.dumps(boards)
+		boards = boards
 
 		return boards
 
@@ -207,10 +206,10 @@ class Menu(object):
 		Create the list menu "Serial ports" with the list of all the
 		availables serial ports
 		"""
-		port_list = DeviotIO.platformioCLI().getAPICOMPorts()
+		port_list = PlatformioCLI().getAPICOMPorts()
 		menu_ports = []
 
-
+		
 		for port in port_list:
 			port_name = port["port"]
 			menu_ports.append({"caption":port_name,"id":port_name.lower()})
@@ -226,7 +225,7 @@ class Menu(object):
 		"""
 		port_list = self.createSerialPortsMenu()
 
-		boards = json.loads(self.createBoardsMenu())
+		boards = self.createBoardsMenu()
 		main_file_path = DeviotPaths.getMainJSONFile()
 		menu_file = JSONFile(main_file_path)
 		menu_data = menu_file.data[0]
@@ -249,6 +248,8 @@ class Menu(object):
 		file_menu.setData(menu_data)
 		file_menu.saveData()
 
+		def createSubMenuFile(self, template_name):
+			pass
 
 class Preferences(JSONFile):
 	"""Preferences
@@ -323,22 +324,78 @@ class Preferences(JSONFile):
 		else:
 			self.set('board_id',[board_id])
 
+class PlatformioCLI(DeviotCommands.CommandsPy):
+	def __init__(self, view=False):
+		self.Preferences = self.Preferences()
+		self.Commands = DeviotCommands.CommandsPy()
+		self.view = view
+		if(view):
+			self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
+			self.cwd = DeviotPaths.getCWD(self.currentFilePath)
 
-	def checkBoard(self, board_id):
-		"""Is checked
+	def getSelectedBoards(self):		
+		boards = self.Preferences.data['board_id']
+		type_boards = ""
+
+		for board in boards:
+			type_boards += "--board=%s " % board
+
+		return type_boards
+
+	def initSketch(self):
+		init_boards = self.getSelectedBoards()
+		command = "platformio -f -c sublimetext init %s" % init_boards
 		
-		Check if is necessary to mark or unmark the board selected 
+		if(DeviotPreferences.isIOTFile(self.view)):
+			print("Initializing the project")
+			self.Commands.runCommand(command, self.cwd)
+
+	def buildSketch(self):
+		self.getAPICOMPorts()
+		return
+		self.initSketch()
+		if(not self.Commands.error_running and DeviotPreferences.isIOTFile(self.view)):
+			command = "platformio -f -c sublimetext run"
+			print("Building the project")
+			self.Commands.runCommand(command, self.cwd)
+			print("Finished")
+
+	def getAPICOMPorts(self):
+		command = "platformio serialports list --json-output"
+		port_list = json.loads(self.Commands.runCommand(command,setReturn=True))
+
+		if(not self.Commands.error_running):
+			return port_list
+
+	def getAPIBoards(self):
+		"""Get boards list
 		
-		Arguments:
-			board_id {string]} -- identifier of the board selected
+		Get the boards list from the platformio API using CLI.
+		to know more about platformio visit:  http://www.platformio.org/
+
+		Returns: 
+		 	{json object} -- list with all boards in a JSON format
 		"""
-		check = False
-		if(self.data):
-			check_boards = self.get('board_id',board_id)
+		boards = []
+		cmd = "platformio boards --json-output"
+		boards = self.Command.runCommand(cmd,setReturn=True)
+		return boards
 
-			if board_id in check_boards:
-				check = True
-		return check
+def checkBoard(self, board_id):
+	"""Is checked
+	
+	Check if is necessary to mark or unmark the board selected 
+	
+	Arguments:
+		board_id {string]} -- identifier of the board selected
+	"""
+	check = False
+	if(self.data):
+		check_boards = self.get('board_id',board_id)
+
+		if board_id in check_boards:
+			check = True
+	return check
 
 
 def isIOTFile(view):
