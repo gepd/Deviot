@@ -28,13 +28,7 @@
                 "id": "clean_sketch",
                 "command": "clean_sketch"
             },
-            {"caption": "-"},
-            {
-                "caption": "Serial Ports",
-                "id": "serial_ports",
-                "command": "serial_ports",
-                "children":[]
-            }
+            {"caption": "-"}
 
         ]
     }
