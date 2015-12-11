@@ -17,17 +17,25 @@
                 "children":[]
             },{
                 "caption": "Build",
-                "id": "buildSketch",
+                "id": "build_sketch",
                 "command": "build_sketch"
             },{
                 "caption": "Upload",
-                "id": "uploadSketch",
+                "id": "upload_sketch",
                 "command": "upload_sketch"
             },{
                 "caption": "Clean",
-                "id": "cleanSketch",
+                "id": "clean_sketch",
                 "command": "clean_sketch"
+            },
+            {"caption": "-"},
+            {
+                "caption": "Serial Ports",
+                "id": "serial_ports",
+                "command": "serial_ports",
+                "children":[]
             }
+
         ]
     }
 ]
