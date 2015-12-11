@@ -44,7 +44,13 @@ def getDeviotBoardsPath():
     boards_path = os.path.join(deviot_user_path,'Boards.json')
     return boards_path
 
-def getDeviotMenuPath(sub_folder=False):
+def getDeviotMenuPath(file_name):
+    preset_path = getPresetPath()
+    menu_path = os.path.join(preset_path,file_name + '.json')
+    return menu_path
+
+
+def setDeviotMenuPath(sub_folder=False):
     deviot_user_path = getDeviotUserPath()
 
     if(sub_folder):
