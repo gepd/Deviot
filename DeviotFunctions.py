@@ -50,7 +50,20 @@ class JSONFile(object):
 			self.data = json.loads(text)
 		except:
 			pass
-	
+
+	def getData(self):
+		"""Ouput data
+		
+		It's an alternative way to get the data obtained from
+		the JSON file. The other way is using only the "data"
+		global object.
+
+		Returns:
+			{miltiple} -- mutiple type of data stored in the 
+						  differents files.
+		"""
+		return self.data
+
 	def setData(self, data):
 		"""Set the JSON data
 		
@@ -166,7 +179,7 @@ class Menu(object):
 		 	{json object} -- list with all boards in a JSON format
 		"""
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
-		boards = file.data
+		boards = file.getData()
 		return boards
 
 	def createBoardsMenu(self):
@@ -182,7 +195,7 @@ class Menu(object):
 		vendors = {}
 		boards = []
 		
-		datas = self.getFileBoards()
+		datas = json.loads(self.getFileBoards())
 
 		for datakey,datavalue in datas.items():
 			for infokey,infovalue in datavalue.items():
@@ -197,7 +210,7 @@ class Menu(object):
 
 		boards = sorted(boards, key=lambda x:x['caption'])
 		boards = boards
-
+		
 		return boards
 
 	def createSerialPortsMenu(self):
@@ -206,15 +219,26 @@ class Menu(object):
 		Create the list menu "Serial ports" with the list of all the
 		availables serial ports
 		"""
-		port_list = PlatformioCLI().getAPICOMPorts()
-		menu_ports = []
 
+		menu_path_preset = DeviotPaths.getDeviotMenuPath('serial')
+		menu_preset = JSONFile(menu_path_preset)
+		menu_preset = menu_preset.getData()
+
+		port_list = PlatformioCLI().getAPICOMPorts()
+
+		menu_ports = []
 		
 		for port in port_list:
 			port_name = port["port"]
-			menu_ports.append({"caption":port_name,"id":port_name.lower()})
+			menu_ports.append({"caption":port_name,"command":"select_port","checkbox":True,"args":{"id_port":port_name}})
 
-		return menu_ports
+		menu_preset[0]['children'][0]['children'] = menu_ports
+
+		serial_menu_path = DeviotPaths.setDeviotMenuPath('serial')
+		serial_menu = JSONFile(serial_menu_path)
+		serial_menu.setData(menu_preset)
+		serial_menu.saveData()
+
 
 	def createMainMenu(self):
 		"""Main menu
@@ -223,9 +247,10 @@ class Menu(object):
 		including boards, libraries, COM ports, and user
 		options.
 		"""
-		port_list = self.createSerialPortsMenu()
+		self.createSerialPortsMenu()
 
 		boards = self.createBoardsMenu()
+
 		main_file_path = DeviotPaths.getMainJSONFile()
 		menu_file = JSONFile(main_file_path)
 		menu_data = menu_file.data[0]
@@ -234,22 +259,15 @@ class Menu(object):
 			for second_menu in menu_data[fist_menu]:
 				if 'children' in second_menu:
 					if(second_menu['id'] == 'initialize'):
-						#second_menu['children'] = boards
-						pass
-					if(second_menu['id'] == 'serial_ports'):
-						#second_menu['children'] = port_list
-						pass
+						second_menu['children'] = boards
 		
 		# to format purposes
 		menu_data = [menu_data]
 		
-		main_user_file_path = DeviotPaths.getDeviotMenuPath()
+		main_user_file_path = DeviotPaths.setDeviotMenuPath()
 		file_menu = JSONFile(main_user_file_path)
 		file_menu.setData(menu_data)
 		file_menu.saveData()
-
-		def createSubMenuFile(self, template_name):
-			pass
 
 class Preferences(JSONFile):
 	"""Preferences
@@ -325,15 +343,42 @@ class Preferences(JSONFile):
 			self.set('board_id',[board_id])
 
 class PlatformioCLI(DeviotCommands.CommandsPy):
+	"""Platformio
+	
+	This class handle all the request to the platformio ecosystem.
+	From the list of boards to the build/upload of the sketchs.
+	More info about platformio in: http://platformio.org/
+	
+	Extends:
+		DeviotCommands.CommandsPy
+	"""
 	def __init__(self, view=False):
-		self.Preferences = self.Preferences()
+		"""Construct
+		
+		Initialize the command and preferences classes, to check
+		if the current work file is an IoT type it received the view 
+		parameter (ST parameter). This parameter is necessary only in
+		the options like build or upload.
+		
+		Keyword Arguments:
+			view {st object} -- stores many info related with ST (default: False)
+		"""
+		self.Preferences = Preferences()
 		self.Commands = DeviotCommands.CommandsPy()
 		self.view = view
 		if(view):
-			self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
-			self.cwd = DeviotPaths.getCWD(self.currentFilePath)
+			currentFilePath = DeviotPaths.getCurrentFilePath(view)
+			self.cwd = DeviotPaths.getCWD(currentFilePath)
 
-	def getSelectedBoards(self):		
+	def getSelectedBoards(self):
+		"""Selected Board(s)
+		
+		Get the board(s) list selected, from the preferences file, to
+		be initialized and formated to be used in the platformio CLI
+
+		Returns:
+			{string} boards list in platformio CLI format
+		"""
 		boards = self.Preferences.data['board_id']
 		type_boards = ""
 
@@ -343,6 +388,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		return type_boards
 
 	def initSketch(self):
+		"""CLI
+		
+		command to initialize the board(s) selected by the user. This
+		function can only be use if the workig file is an IoT type
+		(checked by isIOTFile)
+		"""
 		init_boards = self.getSelectedBoards()
 		command = "platformio -f -c sublimetext init %s" % init_boards
 		
@@ -351,8 +402,11 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 			self.Commands.runCommand(command, self.cwd)
 
 	def buildSketch(self):
-		self.getAPICOMPorts()
-		return
+		"""CLI
+		
+		Command to build the current working sketch, it must to be IoT
+		type (checked by isIOTFile)
+		"""
 		self.initSketch()
 		if(not self.Commands.error_running and DeviotPreferences.isIOTFile(self.view)):
 			command = "platformio -f -c sublimetext run"
@@ -361,6 +415,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 			print("Finished")
 
 	def getAPICOMPorts(self):
+		"""CLI
+		
+		Get a JSON list with all the COM ports availables, to do it uses the
+		platformio serialports command. To get more info about this fuction
+		check: http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
+		"""
 		command = "platformio serialports list --json-output"
 		port_list = json.loads(self.Commands.runCommand(command,setReturn=True))
 
