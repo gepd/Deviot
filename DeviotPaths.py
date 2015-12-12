@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -12,41 +12,51 @@ import inspect
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
 # Get the path of deviot plugin
+
+
 def getPluginPath():
-	plugin_path = os.path.dirname(current_file)
-	return plugin_path
+    plugin_path = os.path.dirname(current_file)
+    return plugin_path
 
 # Get Sublime Text package folder
+
+
 def getPackagesPath():
     plugin_path = getPluginPath()
     packages_path = os.path.dirname(plugin_path)
     return packages_path
 
 # Get the path of the Preset folder
+
+
 def getPresetPath():
-	plugin_path = getPluginPath()
-	preset_path = os.path.join(plugin_path, 'Preset')
-	return preset_path
+    plugin_path = getPluginPath()
+    preset_path = os.path.join(plugin_path, 'Preset')
+    return preset_path
 
 # Get deviot path from user folder
+
+
 def getDeviotUserPath():
     packages_path = getPackagesPath()
     user_path = os.path.join(packages_path, 'User')
     deviot_user_path = os.path.join(user_path, 'Deviot')
-    
+
     if(not os.path.isdir(deviot_user_path)):
-            os.makedirs(deviot_user_path)
+        os.makedirs(deviot_user_path)
 
     return deviot_user_path
 
+
 def getDeviotBoardsPath():
     deviot_user_path = getDeviotUserPath()
-    boards_path = os.path.join(deviot_user_path,'Boards.json')
+    boards_path = os.path.join(deviot_user_path, 'Boards.json')
     return boards_path
+
 
 def getDeviotMenuPath(file_name):
     preset_path = getPresetPath()
-    menu_path = os.path.join(preset_path,file_name + '.json')
+    menu_path = os.path.join(preset_path, file_name + '.json')
     return menu_path
 
 
@@ -54,7 +64,7 @@ def setDeviotMenuPath(sub_folder=False):
     deviot_user_path = getDeviotUserPath()
 
     if(sub_folder):
-        deviot_user_path = os.path.join(deviot_user_path,sub_folder)
+        deviot_user_path = os.path.join(deviot_user_path, sub_folder)
 
         if(not os.path.isdir(deviot_user_path)):
             os.makedirs(deviot_user_path)
@@ -66,13 +76,16 @@ def setDeviotMenuPath(sub_folder=False):
 
 def getPreferencesFile():
     deviot_user_path = getDeviotUserPath()
-    preferences_path = os.path.join(deviot_user_path,'Preferences.Deviot-settings')
+    preferences_path = os.path.join(
+        deviot_user_path, 'Preferences.Deviot-settings')
     return preferences_path
+
 
 def getMainJSONFile():
     preset_path = getPresetPath()
-    main_file_path = os.path.join(preset_path,'menu_main.json')
+    main_file_path = os.path.join(preset_path, 'menu_main.json')
     return main_file_path
+
 
 def getCurrentFilePath(view):
     window = view.window()
@@ -82,6 +95,7 @@ def getCurrentFilePath(view):
         view = window.active_view()
 
     return view.file_name()
+
 
 def getCWD(file_path):
     folder_path = os.path.dirname(file_path)
