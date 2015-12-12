@@ -377,6 +377,7 @@ class Preferences(JSONFile):
 
 
 class PlatformioCLI(DeviotCommands.CommandsPy):
+<<<<<<< HEAD
     """Platformio
 
     This class handle all the request to the platformio ecosystem.
@@ -540,6 +541,168 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         command = "platformio boards --json-output"
         boards = self.Commands.runCommand(command, setReturn=True)
         return boards
+=======
+	"""Platformio
+	
+	This class handle all the request to the platformio ecosystem.
+	From the list of boards to the build/upload of the sketchs.
+	More info about platformio in: http://platformio.org/
+	
+	Extends:
+		DeviotCommands.CommandsPy
+	"""
+	def __init__(self, view=False):
+		"""Construct
+		
+		Initialize the command and preferences classes, to check
+		if the current work file is an IoT type it received the view 
+		parameter (ST parameter). This parameter is necessary only in
+		the options like build or upload.
+		
+		Keyword Arguments:
+			view {st object} -- stores many info related with ST (default: False)
+		"""
+		self.Preferences = Preferences()
+		self.Commands = DeviotCommands.CommandsPy()
+		self.view = view
+
+		if(view):
+			self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
+			self.cwd = DeviotPaths.getCWD(self.currentFilePath)
+
+	def getSelectedBoards(self):
+		"""Selected Board(s)
+		
+		Get the board(s) list selected, from the preferences file, to
+		be initialized and formated to be used in the platformio CLI
+
+		Returns:
+			{string} boards list in platformio CLI format
+		"""
+		boards = self.Preferences.get('board_id','')
+		type_boards = ""
+		
+		if(not boards):
+			return False
+
+		for board in boards:
+			type_boards += "--board=%s " % board
+
+		return type_boards
+
+	def initSketchProject(self):
+		"""CLI
+		
+		command to initialize the board(s) selected by the user. This
+		function can only be use if the workig file is an IoT type
+		(checked by isIOTFile)
+		"""
+		init_boards = self.getSelectedBoards()
+
+		if(not init_boards):
+			print("None board Selected")
+			return
+
+		command = "platformio -f -c sublimetext init %s" % init_boards
+		
+		if(not isIOTFile(self.view)):
+			print("This is not a IoT File")
+			return
+
+		print("Initializing the project")
+		self.Commands.runCommand(command, self.cwd)
+
+	def buildSketchProject(self):
+		"""CLI
+		
+		Command to build the current working sketch, it must to be IoT
+		type (checked by isIOTFile)
+		"""
+		# initialize the sketch
+		self.initSketchProject()
+
+		if(not self.Commands.error_running and isIOTFile(self.view)):
+			print("Building the project")
+
+			try:
+				shutil.copy(self.currentFilePath, self.cwd + '\\src')
+			except:
+				print("error copying the file")
+				return
+
+			command = "platformio -f -c sublimetext run"
+			self.Commands.runCommand(command, self.cwd)
+			
+			if(not self.Commands.error_running):
+				print("Success")
+				self.Preferences.set('builded_sketch',True)
+			else:
+				print("Error")
+				self.Preferences.set('builded_sketch',False)
+
+	def uploadSketchProject(self):
+		"""CLI
+		
+		Upload the sketch to the select board to the select COM port
+		it returns an error if any com port is selected
+		"""
+		builded_sketch = self.Preferences.get('builded_sketch','')
+
+		if(builded_sketch):
+			id_port = self.Preferences.get('id_port','')
+			
+			if(not id_port):
+				print("None COM port selected")
+				return
+
+			command = "platformio -f -c sublimetext run -t upload --upload-port %s" % (id_port)
+			self.Commands.runCommand(command, self.cwd)	
+
+	def cleanSketchProject(self):
+		"""CLI
+		
+		Delete compiled object files, libraries and firmware/program binaries
+		if a sketch has been built previously
+		"""
+		
+		builded_sketch = self.Preferences.get('builded_sketch','')
+
+		if(builded_sketch):
+			print("Cleaning")
+			command = "platformio -f -c sublimetext run -t clean"
+			self.Commands.runCommand(command, self.cwd)
+
+			if(not self.Commands.error_running):
+				self.Preferences.set('builded_sketch',False)
+
+
+	def getAPICOMPorts(self):
+		"""CLI
+		
+		Get a JSON list with all the COM ports availables, to do it uses the
+		platformio serialports command. To get more info about this fuction
+		check: http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
+		"""
+		command = "platformio -f -c sublimetext serialports list --json-output"
+		port_list = json.loads(self.Commands.runCommand(command,setReturn=True))
+
+		if(not self.Commands.error_running):
+			return port_list
+
+	def getAPIBoards(self):
+		"""Get boards list
+		
+		Get the boards list from the platformio API using CLI.
+		to know more about platformio visit:  http://www.platformio.org/
+
+		Returns: 
+		 	{json object} -- list with all boards in a JSON format
+		"""
+		boards = []
+		command = "platformio -f -c sublimetext boards --json-output"
+		boards = self.Commands.runCommand(command,setReturn=True)
+		return boards
+>>>>>>> 1b62374039f3ebcf35b0b8066c8b05888a8638c0
 
 
 def isIOTFile(view):
