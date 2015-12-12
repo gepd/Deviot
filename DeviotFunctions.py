@@ -10,6 +10,7 @@ import os
 import sublime
 import codecs
 import json
+import shutil
 
 from . import DeviotCommands
 from . import DeviotPaths
@@ -159,14 +160,16 @@ class Menu(object):
 		super(Menu, self).__init__()
 		self.Command = DeviotCommands.CommandsPy()
 
-	def saveWebBoards(self):
+	def saveAPIBoards(self):
 		"""Save board list
 		
 		Save the JSON object in a specific JSON file
 		"""
 		boards = PlatformioCLI().getAPIBoards()
+
 		file = JSONFile(DeviotPaths.getDeviotBoardsPath())
-		file.saveData(boards)
+		file.setData(boards)
+		file.saveData()
 
 	def getFileBoards(self):
 		"""Get Board File
@@ -329,18 +332,32 @@ class Preferences(JSONFile):
 		Arguments:
 			board_id {string} -- identifier if the board selected
 		"""
-		fileData = self.data
-		
-		if(fileData):
-			if board_id in fileData['board_id']:
-				fileData.setdefault('board_id',[]).remove(board_id)
-			else:
-				fileData.setdefault('board_id',[]).append(board_id)
-			
-			self.data = fileData
+		file_data = self.get('board_id','')
+
+		if(file_data):
+			if board_id in file_data:
+				self.data.setdefault('board_id',[]).remove(board_id)
+			else:			
+				self.data.setdefault('board_id',[]).append(board_id)
 			self.saveData()
 		else:
 			self.set('board_id',[board_id])
+
+	def checkBoard(self, board_id):
+		"""Is checked
+		
+		Check if is necessary to mark or unmark the board selected 
+		
+		Arguments:
+			board_id {string} -- identifier of the board selected
+		"""
+		check = False
+		if(self.data):
+			check_boards = self.get('board_id', '')
+
+			if board_id in check_boards:
+				check = True
+		return check
 
 class PlatformioCLI(DeviotCommands.CommandsPy):
 	"""Platformio
@@ -366,9 +383,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		self.Preferences = Preferences()
 		self.Commands = DeviotCommands.CommandsPy()
 		self.view = view
+
 		if(view):
-			currentFilePath = DeviotPaths.getCurrentFilePath(view)
-			self.cwd = DeviotPaths.getCWD(currentFilePath)
+			self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
+			self.cwd = DeviotPaths.getCWD(self.currentFilePath)
 
 	def getSelectedBoards(self):
 		"""Selected Board(s)
@@ -379,15 +397,18 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		Returns:
 			{string} boards list in platformio CLI format
 		"""
-		boards = self.Preferences.data['board_id']
+		boards = self.Preferences.get('board_id','')
 		type_boards = ""
+		
+		if(not boards):
+			return False
 
 		for board in boards:
 			type_boards += "--board=%s " % board
 
 		return type_boards
 
-	def initSketch(self):
+	def initSketchProject(self):
 		"""CLI
 		
 		command to initialize the board(s) selected by the user. This
@@ -395,24 +416,83 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		(checked by isIOTFile)
 		"""
 		init_boards = self.getSelectedBoards()
+
+		if(not init_boards):
+			print("None board Selected")
+			return
+
 		command = "platformio -f -c sublimetext init %s" % init_boards
 		
-		if(DeviotPreferences.isIOTFile(self.view)):
-			print("Initializing the project")
-			self.Commands.runCommand(command, self.cwd)
+		if(not isIOTFile(self.view)):
+			print("This is not a IoT File")
+			return
 
-	def buildSketch(self):
+		print("Initializing the project")
+		self.Commands.runCommand(command, self.cwd)
+
+	def buildSketchProject(self):
 		"""CLI
 		
 		Command to build the current working sketch, it must to be IoT
 		type (checked by isIOTFile)
 		"""
-		self.initSketch()
-		if(not self.Commands.error_running and DeviotPreferences.isIOTFile(self.view)):
-			command = "platformio -f -c sublimetext run"
+		# initialize the sketch
+		self.initSketchProject()
+
+		if(not self.Commands.error_running and isIOTFile(self.view)):
 			print("Building the project")
+
+			try:
+				shutil.copy(self.currentFilePath, self.cwd + '\\src')
+			except:
+				print("error copying the file")
+				return
+
+			command = "platformio -f -c sublimetext run"
 			self.Commands.runCommand(command, self.cwd)
-			print("Finished")
+			
+			if(not self.Commands.error_running):
+				print("Success")
+				self.Preferences.set('builded_sketch',True)
+			else:
+				print("Error")
+				self.Preferences.set('builded_sketch',False)
+
+	def uploadSketchProject(self):
+		"""CLI
+		
+		Upload the sketch to the select board to the select COM port
+		it returns an error if any com port is selected
+		"""
+		builded_sketch = self.Preferences.get('builded_sketch','')
+
+		if(builded_sketch):
+			id_port = self.Preferences.get('id_port','')
+			
+			if(not id_port):
+				print("None COM port selected")
+				return
+
+			command = "platformio -f -c sublimetext run -t upload --upload-port %s" % (id_port)
+			self.Commands.runCommand(command, self.cwd)	
+
+	def cleanSketchProject(self):
+		"""CLI
+		
+		Delete compiled object files, libraries and firmware/program binaries
+		if a sketch has been built previously
+		"""
+		
+		builded_sketch = self.Preferences.get('builded_sketch','')
+
+		if(builded_sketch):
+			print("Cleaning")
+			command = "platformio -f -c sublimetext run -t clean"
+			self.Commands.runCommand(command, self.cwd)
+
+			if(not self.Commands.error_running):
+				self.Preferences.set('builded_sketch',False)
+
 
 	def getAPICOMPorts(self):
 		"""CLI
@@ -437,25 +517,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		 	{json object} -- list with all boards in a JSON format
 		"""
 		boards = []
-		cmd = "platformio boards --json-output"
-		boards = self.Command.runCommand(cmd,setReturn=True)
+		command = "platformio boards --json-output"
+		boards = self.Commands.runCommand(command,setReturn=True)
 		return boards
-
-def checkBoard(self, board_id):
-	"""Is checked
-	
-	Check if is necessary to mark or unmark the board selected 
-	
-	Arguments:
-		board_id {string]} -- identifier of the board selected
-	"""
-	check = False
-	if(self.data):
-		check_boards = self.get('board_id',board_id)
-
-		if board_id in check_boards:
-			check = True
-	return check
 
 
 def isIOTFile(view):
@@ -490,6 +554,8 @@ def setStatus(view):
 		full_info = " | ".join(info)
 
 		view.set_status('Deviot', full_info)
+
+
 
 def getVersion():
 	"""Plugin Version
