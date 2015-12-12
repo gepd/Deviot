@@ -1,0 +1,6 @@
+[
+    {"keys": ["alt+d", "alt+r"], "command": "update_menu"},
+    {"keys": ["alt+d", "alt+b"], "command": "build_sketch"},
+    {"keys": ["alt+d", "alt+u"], "command": "upload_sketch"},
+    {"keys": ["alt+d", "alt+c"], "command": "clean_sketch"},
+]
