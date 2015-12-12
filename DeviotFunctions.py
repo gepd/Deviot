@@ -501,7 +501,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		platformio serialports command. To get more info about this fuction
 		check: http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
 		"""
-		command = "platformio serialports list --json-output"
+		command = "platformio -f -c sublimetext serialports list --json-output"
 		port_list = json.loads(self.Commands.runCommand(command,setReturn=True))
 
 		if(not self.Commands.error_running):
@@ -517,7 +517,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 		 	{json object} -- list with all boards in a JSON format
 		"""
 		boards = []
-		command = "platformio boards --json-output"
+		command = "platformio -f -c sublimetext boards --json-output"
 		boards = self.Commands.runCommand(command,setReturn=True)
 		return boards
 
