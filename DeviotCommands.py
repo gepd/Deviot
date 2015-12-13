@@ -20,7 +20,20 @@ class CommandsPy(object):
         if(envi_path):
             os.environ['PATH'] += os.pathsep + envi_path
 
-    def runCommand(self, command, cwd=None, setReturn=False, verbose=False):
+    def runCommand(self, commands, cwd=None, setReturn=False, verbose=False):
+
+        if(not commands):
+            return False
+
+        options = commands[0]
+
+        try:
+            args = commands[1]
+        except:
+            args = ''
+
+        command = "platformio -f -c sublimetext %s %s" % (options, args)
+
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, cwd=cwd,
                                    universal_newlines=True, shell=True)

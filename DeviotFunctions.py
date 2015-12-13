@@ -448,7 +448,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             self.Commands.error_running = True
             return
 
-        command = "platformio -f -c sublimetext init %s" % init_boards
+        command = ["init", "%s" % (init_boards)]
 
         if(not isIOTFile(self.view)):
             print("This is not a IoT File")
@@ -475,7 +475,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 print("error copying the file")
                 return
 
-            command = "platformio -f -c sublimetext run"
+            command = ["run"]
+
             self.Commands.runCommand(command, self.cwd)
 
             if(not self.Commands.error_running):
@@ -500,8 +501,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 print("None COM port selected")
                 return
 
-            command = "platformio -f -c sublimetext "
-            command += "run -t upload --upload-port %s" % (id_port)
+            command = ["run", "-t upload --upload-port %s" % (id_port)]
+
             self.Commands.runCommand(command, self.cwd)
 
     def cleanSketchProject(self):
@@ -515,7 +516,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         if(builded_sketch):
             print("Cleaning")
-            command = "platformio -f -c sublimetext run -t clean"
+            command = ["run", "-t clean"]
+
             self.Commands.runCommand(command, self.cwd)
 
             if(not self.Commands.error_running):
@@ -528,7 +530,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         platformio serialports command. To get more info about this fuction
         check:http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
         """
-        command = "platformio serialports list --json-output"
+        command = ["serialports list", "--json-output"]
+
         port_list = json.loads(
             self.Commands.runCommand(command, setReturn=True))
 
@@ -545,7 +548,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 {json object} -- list with all boards in a JSON format
         """
         boards = []
-        command = "platformio boards --json-output"
+        command = ["boards", "--json-output"]
+
         boards = self.Commands.runCommand(command, setReturn=True)
         return boards
 
@@ -583,10 +587,11 @@ def platformioCheck():
 
     """
     CMD_ENV_PATH = False
-    Command = "platformio -f -c sublimetext --help"
+
+    command = ["--version"]
 
     Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
-    Run.runCommand(Command)
+    Run.runCommand(command)
 
     if(Run.error_running):
         if(not checkEnvironPath()):
@@ -594,7 +599,7 @@ def platformioCheck():
 
         CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
         Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
-        Run.runCommand(Command)
+        Run.runCommand(command)
 
         if(Run.error_running):
             return False
