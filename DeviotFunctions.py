@@ -557,19 +557,20 @@ def checkEnvironPath():
     CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
     install_menu_path = DeviotPaths.getRequirenmentMenu()
 
-    if(not os.path.exists(CMD_ENV_PATH)):
+    if(not CMD_ENV_PATH):
 
         # Create prefences file
         Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
         return False
 
     # Remove requirement menu
-    if(os.path.exists(CMD_ENV_PATH)):
+    if(CMD_ENV_PATH != 'YOUR-ENVIRONMENT-PATH-HERE'):
         if(os.path.exists(install_menu_path)):
             os.remove(install_menu_path)
 
         # Creates new menu
         if(not os.path.exists(new_menu_path)):
+            Menu().saveAPIBoards()
             Menu().createMainMenu()
 
 
