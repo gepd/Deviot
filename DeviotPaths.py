@@ -21,6 +21,12 @@ def getPluginPath():
 # Get Sublime Text package folder
 
 
+def getRequirenmentMenu():
+    plugin_path = os.path.dirname(current_file)
+    menu_file = os.path.join(plugin_path, 'Main.sublime-menu')
+    return menu_file
+
+
 def getPackagesPath():
     plugin_path = getPluginPath()
     packages_path = os.path.dirname(plugin_path)

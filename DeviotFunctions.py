@@ -6,10 +6,12 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+import os
 import sublime
 import codecs
 import json
 import shutil
+
 
 if(int(sublime.version()) < 3000):
     import DeviotCommands
@@ -166,7 +168,6 @@ class Menu(object):
         differents call by CLI
         """
         super(Menu, self).__init__()
-        self.Command = DeviotCommands.CommandsPy()
 
     def saveAPIBoards(self):
         """Save board list
@@ -400,7 +401,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                                                         ST (default: False)
         """
         self.Preferences = Preferences()
-        self.Commands = DeviotCommands.CommandsPy()
+        envi_path = self.Preferences.get('CMD_ENV_PATH')
+        self.Commands = DeviotCommands.CommandsPy(envi_path)
         self.view = view
 
         if(view):
@@ -540,6 +542,35 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         command = "platformio boards --json-output"
         boards = self.Commands.runCommand(command, setReturn=True)
         return boards
+
+
+def checkEnvironPath():
+    """Environment Path
+
+    This function is used to check if the enviroment PATH  is configurated
+    when the preferences files is found and seems to be right, it deletes
+    the setup menu
+
+    """
+
+    new_menu_path = DeviotPaths.setDeviotMenuPath()
+    CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH')
+    install_menu_path = DeviotPaths.getRequirenmentMenu()
+
+    if(not CMD_ENV_PATH):
+
+        # Create prefences file
+        Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
+        return False
+
+    # Remove requirement menu
+    if(CMD_ENV_PATH != 'YOUR-ENVIRONMENT-PATH-HERE'):
+        if(os.path.exists(install_menu_path)):
+            os.remove(install_menu_path)
+
+        # Creates new menu
+        if(not os.path.exists(new_menu_path)):
+            Menu().createMainMenu()
 
 
 def isIOTFile(view):

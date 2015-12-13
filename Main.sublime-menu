@@ -1,0 +1,27 @@
+[
+    {
+        "caption": "Deviot",
+        "mnemonic": "D",
+        "id": "deviot",
+        "children":
+        [
+            {
+                "caption": "1 Install PlatformIO",
+                "id":"platformio_install",
+                "command": "platformio_install"
+            },
+            {
+                "caption": "2 Set Environment PATH", 
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/User/Deviot/Preferences.Deviot-settings"
+                }
+            },
+            {"caption": "-"},
+            {
+                "caption": "Check again",
+                "command": "check_requirements"
+            }
+        ]
+    }
+]

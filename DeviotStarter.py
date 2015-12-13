@@ -34,6 +34,12 @@ class DeviotListener(sublime_plugin.EventListener):
         plugin, and running the creation of the differents
         menus located in the top of sublime text
         """
+        self.state_menu = True
+
+        if(not DeviotFunctions.checkEnvironPath()):
+            self.state_menu = False
+            return None
+
         super(DeviotListener, self).__init__()
 
         json_boards_file = DeviotPaths.getDeviotBoardsPath()
@@ -58,6 +64,26 @@ class DeviotListener(sublime_plugin.EventListener):
         DeviotFunctions.setStatus(view)
 
 
+class PlatformioInstallCommand(sublime_plugin.WindowCommand):
+    """Install
+        This command send the user to a website with platformio install
+        instructions
+    """
+
+    def run(self):
+        sublime.run_command('open_url', {'url':
+                                         'http://goo.gl/66BHnk'})
+
+
+class CheckRequirementsCommand(sublime_plugin.WindowCommand):
+    """
+        Check the if minimum requirements has been established
+    """
+
+    def run(self):
+        self.state_menu = DeviotFunctions.checkEnvironPath()
+
+
 class UpdateMenuCommand(sublime_plugin.WindowCommand):
     """Update/refresh menu
 
@@ -70,6 +96,9 @@ class UpdateMenuCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         DeviotFunctions.Menu().createSerialPortsMenu()
+
+    def is_enabled(self):
+        return self.state_menu
 
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
@@ -91,7 +120,6 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         Arguments:
                 board_id {string} -- id of the board selected
         """
-        # print(board_id)
         DeviotFunctions.Preferences().boardSelected(board_id)
 
     def is_checked(self, board_id):
@@ -106,6 +134,9 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         check = DeviotFunctions.Preferences().checkBoard(board_id)
         return check
 
+    def is_enabled(self):
+        return self.state_menu
+
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
     """Build Sketch Trigger
@@ -119,6 +150,9 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         DeviotFunctions.PlatformioCLI(self.view).buildSketchProject()
+
+    def is_enabled(self):
+        return self.state_menu
 
 
 class UploadSketchCommand(sublime_plugin.TextCommand):
@@ -136,6 +170,10 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
 
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
+
+        if(not self.state_menu):
+            is_enabled = False
+
         return is_enabled
 
 
@@ -155,6 +193,10 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
 
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
+
+        if(not self.state_menu):
+            is_enabled = False
+
         return is_enabled
 
 
@@ -174,3 +216,6 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_port):
         saved_id_port = DeviotFunctions.Preferences().get('id_port')
         return saved_id_port == id_port
+
+    def is_enabled(self):
+        return self.state_menu

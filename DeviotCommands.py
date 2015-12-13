@@ -7,13 +7,18 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import subprocess
+import os
 
 
 class CommandsPy(object):
 
-    def __init__(self):
+    def __init__(self, envi_path):
         super(CommandsPy, self).__init__()
         self.error_running = False
+
+        # Set the enviroment Path
+        os.environ['PATH'] += ':'
+        os.environ['PATH'] += envi_path
 
     def runCommand(self, command, cwd=None, setReturn=False, verbose=False):
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
