@@ -17,8 +17,7 @@ class CommandsPy(object):
         self.error_running = False
 
         # Set the enviroment Path
-        os.environ['PATH'] += ':'
-        os.environ['PATH'] += envi_path
+        os.environ['PATH'] += os.pathsep + envi_path
 
     def runCommand(self, command, cwd=None, setReturn=False, verbose=False):
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
