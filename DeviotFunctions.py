@@ -572,6 +572,9 @@ def checkEnvironPath():
         if(not os.path.exists(new_menu_path)):
             Menu().saveAPIBoards()
             Menu().createMainMenu()
+        return True
+
+    return False
 
 
 def isIOTFile(view):
