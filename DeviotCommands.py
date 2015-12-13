@@ -12,12 +12,13 @@ import os
 
 class CommandsPy(object):
 
-    def __init__(self, envi_path):
+    def __init__(self, envi_path=False):
         super(CommandsPy, self).__init__()
         self.error_running = False
 
         # Set the enviroment Path
-        os.environ['PATH'] += os.pathsep + envi_path
+        if(envi_path):
+            os.environ['PATH'] += os.pathsep + envi_path
 
     def runCommand(self, command, cwd=None, setReturn=False, verbose=False):
         process = subprocess.Popen(command, stdin=subprocess.PIPE,

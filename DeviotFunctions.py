@@ -213,7 +213,10 @@ class Menu(object):
             for infokey, infovalue in datavalue.items():
                 vendor = datavalue['vendor']
                 if(infokey == 'name'):
-                    name = infovalue.replace(vendor + " ", "", 1)
+                    replace = vendor + " "
+                    if(vendor == 'Engduino'):
+                        replace = ''
+                    name = infovalue.replace(replace, "", 1)
                     children = vendors.setdefault(vendor, [])
                     children.append({'caption': name,
                                      'command': 'select_board',
@@ -402,6 +405,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         """
         self.Preferences = Preferences()
         envi_path = self.Preferences.get('CMD_ENV_PATH')
+        if(envi_path == '\\.'):
+            envi_path = False
         self.Commands = DeviotCommands.CommandsPy(envi_path)
         self.view = view
 
@@ -440,6 +445,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         if(not init_boards):
             print("None board Selected")
+            self.Commands.error_running = True
             return
 
         command = "platformio -f -c sublimetext init %s" % init_boards
@@ -555,7 +561,6 @@ def checkEnvironPath():
 
     new_menu_path = DeviotPaths.setDeviotMenuPath()
     CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
-    install_menu_path = DeviotPaths.getRequirenmentMenu()
 
     if(not CMD_ENV_PATH):
 
@@ -563,18 +568,45 @@ def checkEnvironPath():
         Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
         return False
 
-    # Remove requirement menu
-    if(CMD_ENV_PATH != 'YOUR-ENVIRONMENT-PATH-HERE'):
-        if(os.path.exists(install_menu_path)):
-            os.remove(install_menu_path)
-
         # Creates new menu
         if(not os.path.exists(new_menu_path)):
             Menu().saveAPIBoards()
             Menu().createMainMenu()
-        return True
 
-    return False
+    return True
+
+
+def platformioCheck():
+    """Platformio
+    Check if is possible to run a platformio command
+    if can't check for the preferences file,
+
+    """
+    CMD_ENV_PATH = False
+    Command = "platformio -f -c sublimetext --help"
+
+    Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
+    Run.runCommand(Command)
+
+    if(Run.error_running):
+        if(not checkEnvironPath()):
+            return False
+
+        CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
+        Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
+        Run.runCommand(Command)
+
+        if(Run.error_running):
+            return False
+
+    # Delete requirement file menu
+    install_menu_path = DeviotPaths.getRequirenmentMenu()
+
+    if(os.path.exists(install_menu_path)):
+        os.remove(install_menu_path)
+        Preferences().set('CMD_ENV_PATH', '\\.')
+
+    return True
 
 
 def isIOTFile(view):

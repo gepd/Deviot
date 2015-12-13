@@ -36,7 +36,7 @@ class DeviotListener(sublime_plugin.EventListener):
         """
         self.state_menu = True
 
-        if(not DeviotFunctions.checkEnvironPath()):
+        if(not DeviotFunctions.platformioCheck()):
             return None
 
         super(DeviotListener, self).__init__()
@@ -80,7 +80,7 @@ class CheckRequirementsCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        self.state_menu = DeviotFunctions.checkEnvironPath()
+        self.state_menu = DeviotFunctions.platformioCheck()
 
 
 class UpdateMenuCommand(sublime_plugin.WindowCommand):
