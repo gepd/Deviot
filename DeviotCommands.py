@@ -18,7 +18,7 @@ class CommandsPy(object):
 
         # Set the enviroment Path
         if(envi_path):
-            os.environ['PATH'] += os.pathsep + envi_path
+            os.environ['PATH'] = os.pathsep + envi_path + os.environ['PATH']
 
     def runCommand(self, commands, cwd=None, setReturn=False, verbose=False):
 
