@@ -245,6 +245,9 @@ class Menu(object):
 
         port_list = PlatformioCLI().getAPICOMPorts()
 
+        if not port_list:
+            return False
+
         menu_ports = []
 
         for port in port_list:
@@ -271,6 +274,9 @@ class Menu(object):
         self.createSerialPortsMenu()
 
         boards = self.createBoardsMenu()
+
+        if(not boards):
+            return False
 
         main_file_path = DeviotPaths.getMainJSONFile()
         menu_file = JSONFile(main_file_path)
