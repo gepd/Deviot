@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import re
 import sublime
 import codecs
 import json
@@ -597,7 +598,12 @@ def platformioCheck():
     command = ["--version"]
 
     Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
-    Run.runCommand(command)
+    version = Run.runCommand(command, setReturn=True)
+
+    version = re.sub(r'\D', "", version)
+
+    # TO DO ###################
+    # Check for minimum version
 
     if(Run.error_running):
         if(not checkEnvironPath()):
