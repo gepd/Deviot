@@ -593,23 +593,32 @@ def platformioCheck():
     if can't check for the preferences file,
 
     """
-    CMD_ENV_PATH = False
-
     command = ["--version"]
 
-    Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
+    Run = DeviotCommands.CommandsPy()
     version = Run.runCommand(command, setReturn=True)
-
     version = re.sub(r'\D', "", version)
 
-    # TO DO ###################
-    # Check for minimum version
+    # Check the minimum version
+    if(not Run.error_running and int(version) < 250):
+        temp_menu_path = DeviotPaths.getRequirenmentMenu()
+        old_temp_menu = JSONFile(temp_menu_path)
+        temp_menu = old_temp_menu.getData()
 
+        temp_menu[0]['children'][0]['caption'] = 'Please upgrade Platformio'
+        temp_menu[0]['children'][1] = 0
+
+        old_temp_menu.setData(temp_menu)
+        old_temp_menu.saveData()
+        return False
+
+    # Check if the enviroment path is set in preferences file
     if(Run.error_running):
         if(not checkEnvironPath()):
             return False
 
         CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
+
         Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
         Run.runCommand(command)
 
