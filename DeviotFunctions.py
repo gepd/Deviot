@@ -477,7 +477,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             print("Building the project")
 
             try:
-                shutil.copy(self.currentFilePath, self.cwd + '\\src')
+                dir_project = os.path.join(self.cwd, 'src')
+                shutil.copy(self.currentFilePath, dir_project)
             except:
                 print("error copying the file")
                 return
@@ -625,12 +626,13 @@ def platformioCheck():
         if(Run.error_running):
             return False
 
+        Preferences().set('CMD_ENV_PATH', False)
+
     # Delete requirement file menu
     install_menu_path = DeviotPaths.getRequirenmentMenu()
 
     if(os.path.exists(install_menu_path)):
         os.remove(install_menu_path)
-        Preferences().set('CMD_ENV_PATH', '\\.')
 
     return True
 
