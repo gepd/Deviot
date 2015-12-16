@@ -600,7 +600,7 @@ def platformioCheck():
     version = re.sub(r'\D', "", version)
 
     # Check the minimum version
-    if(not Run.error_running and int(version) < 250):
+    if(not Run.error_running and int(version) < 260):
         temp_menu_path = DeviotPaths.getRequirenmentMenu()
         old_temp_menu = JSONFile(temp_menu_path)
         temp_menu = old_temp_menu.getData()
