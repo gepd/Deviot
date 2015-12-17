@@ -34,8 +34,6 @@ class DeviotListener(sublime_plugin.EventListener):
         plugin, and running the creation of the differents
         menus located in the top of sublime text
         """
-        self.state_menu = True
-
         if(not DeviotFunctions.platformioCheck()):
             return None
 
@@ -80,7 +78,7 @@ class CheckRequirementsCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        self.state_menu = DeviotFunctions.platformioCheck()
+        DeviotFunctions.platformioCheck()
 
 
 class UpdateMenuCommand(sublime_plugin.WindowCommand):
