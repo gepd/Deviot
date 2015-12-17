@@ -92,7 +92,7 @@ class UpdateMenuCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        DeviotFunctions.Menu().createSerialPortsMenu()
+        DeviotFunctions.Menu().createMainMenu()
 
     def is_enabled(self):
         return DeviotFunctions.checkEnvironPath()

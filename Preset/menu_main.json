@@ -16,6 +16,12 @@
                 "id": "initialize",
                 "children":[]
             },{
+                "caption": "Select Environment(s)",
+                "id": "environment",
+                "children":[]
+            },
+            {"caption": "-"},
+            {
                 "caption": "Build",
                 "id": "build_sketch",
                 "command": "build_sketch"
