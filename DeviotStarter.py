@@ -39,9 +39,10 @@ class DeviotListener(sublime_plugin.EventListener):
 
         super(DeviotListener, self).__init__()
 
-        json_boards_file = DeviotPaths.getDeviotBoardsPath()
+        platformio_data = DeviotPaths.getTemplateMenuPath(
+            'platformio_boards.json', user_path=True)
 
-        if(not os.path.exists(json_boards_file)):
+        if(not os.path.exists(platformio_data)):
             DeviotFunctions.Menu().saveAPIBoards()
 
         DeviotFunctions.Menu().createMainMenu()

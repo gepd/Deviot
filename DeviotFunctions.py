@@ -339,9 +339,9 @@ class Menu(object):
 
         self.saveSublimeMenu(data=menu_data)
 
-        env_menu = DeviotPaths.setSublimeMenuPath('environment')
+        env_path = DeviotPaths.setSublimeMenuPath('environment')
 
-        if(os.path.isfile(env_menu)):
+        if(os.path.isfile(env_path)):
             self.createEnvironmentMenu()
 
     def getTemplateMenu(self, file_name, user_path=False):
