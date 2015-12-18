@@ -23,20 +23,20 @@ else:
 
 
 class JSONFile(object):
-    """Handle JSON Files
+    '''Handle JSON Files
 
     This class allow to load and save JSON files
-    """
+    '''
 
     def __init__(self, path):
-        """JSONFile Construct
+        '''JSONFile Construct
 
         This construct load a file when is called and
         load the information in a global variable
 
         Arguments:
                 path {string} -- Full path of the JSON file
-        """
+        '''
         super(JSONFile, self).__init__()
         self.setEncoding()
         self.data = {}
@@ -44,12 +44,12 @@ class JSONFile(object):
         self.loadData()
 
     def loadData(self):
-        """Load JSON File
+        '''Load JSON File
 
         Load the content of a JSON file and
         deserialize it to set the information
         in a global object called data
-        """
+        '''
         try:
             text = self.readFile()
         except:
@@ -61,20 +61,20 @@ class JSONFile(object):
             pass
 
     def getData(self):
-        """Ouput data
+        '''Ouput data
 
         It's an alternative way to get the data obtained from
-        the JSON file. The other way is using only the "data"
+        the JSON file. The other way is using only the 'data'
         global object.
 
         Returns:
                 {miltiple} -- mutiple type of data stored in the
                                           differents files.
-        """
+        '''
         return self.data
 
     def setData(self, data):
-        """Set the JSON data
+        '''Set the JSON data
 
         Save the data in the file setted on the
         construct. This method is most used in
@@ -82,23 +82,23 @@ class JSONFile(object):
 
         Arguments:
                 data {string} -- data to save in the JSON file.
-        """
+        '''
         self.data = data
         self.saveData()
 
     def saveData(self):
-        """Save JSON data
+        '''Save JSON data
 
         Serialize the data stored in the global object data
         and call to Write file. This function is called automatically
         when any data is set in the method SetData.
 
-        """
+        '''
         text = json.dumps(self.data, sort_keys=True, indent=4)
         self.writeFile(text)
 
     def readFile(self):
-        """Read File
+        '''Read File
 
         Read the data from the file specified in the global object path.
         The data readed is encoded with the format specified in the global
@@ -107,7 +107,7 @@ class JSONFile(object):
 
         Returns:
                 text {string} -- encoded text readed from file
-        """
+        '''
         text = ''
 
         try:
@@ -119,7 +119,7 @@ class JSONFile(object):
         return text
 
     def writeFile(self, text, append=False):
-        """Write File
+        '''Write File
 
         Write the data passed in a file specified in the global object path.
         This method is called automatically by saveData, and encode the text
@@ -133,7 +133,7 @@ class JSONFile(object):
         Keyword Arguments:
                 append {boolean} -- Set to True if you want to append the data
                 in the file (default: False)
-        """
+        '''
         mode = 'w'
 
         if append:
@@ -252,7 +252,7 @@ class Menu(object):
         menu_ports = []
 
         for port in port_list:
-            port_name = port["port"]
+            port_name = port['port']
             menu_ports.append({'caption': port_name,
                                'command': 'select_port',
                                'checkbox': True,
@@ -326,12 +326,12 @@ class Preferences(JSONFile):
         Arguments:
                 key {string} -- identifier of the preference
                 value {[type]} -- value of the preference
-        """
+        '''
         self.data[key] = value
         self.saveData()
 
     def get(self, key, default_value=False):
-        """Get Value
+        '''Get Value
 
         Get a value in the preferences file stored as a list and
         dictionaries format.
@@ -345,12 +345,12 @@ class Preferences(JSONFile):
 
         Returns:
                 {string} -- Value of the preference
-        """
+        '''
         value = self.data.get(key, default_value)
         return value
 
     def boardSelected(self, board_id):
-        """Choosed board
+        '''Choosed board
 
         Add or delete the board selected from the preferences
         files. The boards are formated in a dictionary in the
@@ -358,26 +358,31 @@ class Preferences(JSONFile):
 
         Arguments:
                 board_id {string} -- identifier if the board selected
-        """
+        '''
         file_data = self.get('board_id', '')
 
         if(file_data):
             if board_id in file_data:
                 self.data.setdefault('board_id', []).remove(board_id)
+                try:
+                    self.set('env_selected', '')
+                except:
+                    pass
             else:
                 self.data.setdefault('board_id', []).append(board_id)
             self.saveData()
         else:
             self.set('board_id', [board_id])
+        Menu().createEnvironmentMenu()
 
     def checkBoard(self, board_id):
-        """Is checked
+        '''Is checked
 
         Check if is necessary to mark or unmark the board selected
 
         Arguments:
                 board_id {string} -- identifier of the board selected
-        """
+        '''
         check = False
         if(self.data):
             check_boards = self.get('board_id', '')
@@ -388,7 +393,7 @@ class Preferences(JSONFile):
 
 
 class PlatformioCLI(DeviotCommands.CommandsPy):
-    """Platformio
+    '''Platformio
 
     This class handle all the request to the platformio ecosystem.
     From the list of boards to the build/upload of the sketchs.
@@ -396,10 +401,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
     Extends:
             DeviotCommands.CommandsPy
-    """
+    '''
 
     def __init__(self, view=False):
-        """Construct
+        '''Construct
 
         Initialize the command and preferences classes, to check
         if the current work file is an IoT type it received the view
@@ -409,7 +414,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Keyword Arguments:
                 view {st object} -- stores many info related with
                                                         ST (default: False)
-        """
+        '''
         self.Preferences = Preferences()
         envi_path = self.Preferences.get('CMD_ENV_PATH')
         if(envi_path == '\\.'):
@@ -532,13 +537,13 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 self.Preferences.set('builded_sketch', False)
 
     def getAPICOMPorts(self):
-        """CLI
+        '''CLI
 
         Get a JSON list with all the COM ports availables, to do it uses the
         platformio serialports command. To get more info about this fuction
         check:http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
-        """
-        command = ["serialports list", "--json-output"]
+        '''
+        command = ['serialports list', '--json-output']
 
         port_list = json.loads(
             self.Commands.runCommand(command, setReturn=True))
@@ -547,31 +552,31 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             return port_list
 
     def getAPIBoards(self):
-        """Get boards list
+        '''Get boards list
 
         Get the boards list from the platformio API using CLI.
         to know more about platformio visit:  http://www.platformio.org/
 
         Returns:
                 {json object} -- list with all boards in a JSON format
-        """
+        '''
         boards = []
-        command = ["boards", "--json-output"]
+        command = ['boards', '--json-output']
 
         boards = self.Commands.runCommand(command, setReturn=True)
         return boards
 
 
 def checkEnvironPath():
-    """Environment Path
+    '''Environment Path
 
-    This function is used to check if the enviroment PATH  is configurated
+    This function is used to check if the environment PATH  is configurated
     when the preferences files is found and seems to be right, it deletes
     the setup menu
 
-    """
+    '''
 
-    new_menu_path = DeviotPaths.setDeviotMenuPath()
+    new_menu_path = DeviotPaths.setSublimeMenuPath()
     CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
 
     if(not CMD_ENV_PATH):
@@ -589,16 +594,16 @@ def checkEnvironPath():
 
 
 def platformioCheck():
-    """Platformio
+    '''Platformio
     Check if is possible to run a platformio command
     if can't check for the preferences file,
 
-    """
-    command = ["--version"]
+    '''
+    command = ['--version']
 
     Run = DeviotCommands.CommandsPy()
     version = Run.runCommand(command, setReturn=True)
-    version = re.sub(r'\D', "", version)
+    version = re.sub(r'\D', '', version)
 
     # Check the minimum version
     if(not Run.error_running and int(version) < 260):
@@ -613,7 +618,7 @@ def platformioCheck():
         old_temp_menu.saveData()
         return False
 
-    # Check if the enviroment path is set in preferences file
+    # Check if the environment path is set in preferences file
     if(Run.error_running):
         if(not checkEnvironPath()):
             return False
@@ -638,14 +643,14 @@ def platformioCheck():
 
 
 def isIOTFile(view):
-    """IoT File
+    '''IoT File
 
     Check if the file in the current view of ST is an allowed
     IoT file, the files are specified in the exts variable.
 
     Arguments:
             view {st object} -- stores many info related with ST
-    """
+    '''
     exts = ['ino', 'pde', 'cpp', 'c', '.S']
     file_name = view.file_name()
 
@@ -655,40 +660,40 @@ def isIOTFile(view):
 
 
 def setStatus(view):
-    """Status bar
+    '''Status bar
 
     Set the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
 
     Arguments:
             view {st object} -- stores many info related with ST
-    """
+    '''
     info = []
 
     if isIOTFile(view):
         info.append('Deviot ' + getVersion())
-        full_info = " | ".join(info)
+        full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
 
 
 def getVersion():
-    """Plugin Version
+    '''Plugin Version
 
     Get the current version of the plugin stored in the preferences file.
 
     Returns:
             {String} -- Version of the file (only numbers)
-    """
+    '''
     return Preferences().get('plugin_version')
 
 
 def setVersion(version):
-    """Plugin Version
+    '''Plugin Version
 
     Save the current version of the plugin in the preferences file.
 
     Returns:
             {String} -- Version of the file (only numbers)
-     """
+     '''
     Preferences().set('plugin_version', version)
