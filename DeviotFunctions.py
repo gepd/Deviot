@@ -145,58 +145,44 @@ class JSONFile(object):
             pass
 
     def setEncoding(self, encoding='utf-8'):
-        """Change encoding
+        '''Change encoding
 
         Call this method to change the format to encode the files when you
         load it or save it.
 
         Keyword Arguments:
                 encoding {string} -- Format to encoding (default: UTF-8 )
-        """
+        '''
         self.encoding = encoding
 
 
 class Menu(object):
-    """Plugin Menu
+    '''Plugin Menu
 
     Class to handle the differents option in the plugin menu.
-    """
+    '''
 
     def __init__(self):
-        """Construct
+        '''Construct
 
         Call the construct of the command library to make the
         differents call by CLI
-        """
+        '''
         super(Menu, self).__init__()
 
     def saveAPIBoards(self):
-        """Save board list
+        '''Save board list
 
         Save the JSON object in a specific JSON file
-        """
+        '''
         boards = PlatformioCLI().getAPIBoards()
 
-        file = JSONFile(DeviotPaths.getDeviotBoardsPath())
-        file.setData(boards)
-        file.saveData()
-
-    def getFileBoards(self):
-        """Get Board File
-
-        Load the board list stored in a JSON file and
-        return the data. This function is used to avoid
-        always download the list from the web.
-
-        Returns:
-                {json object} -- list with all boards in a JSON format
-        """
-        file = JSONFile(DeviotPaths.getDeviotBoardsPath())
-        boards = file.getData()
-        return boards
+        self.saveTemplateMenu(
+            data=boards, file_name='platformio_boards.json', user_path=True)
+        self.saveEnvironmentFile()
 
     def createBoardsMenu(self):
-        """Board menu
+        '''Board menu
 
         Load the JSON file with the list of all boards and re order it
         based on the vendor. after that format the data to operate with
@@ -204,28 +190,34 @@ class Menu(object):
 
         Returns:
                 {json array} -- list of all boards to show in the menu
-        """
+        '''
         vendors = {}
         boards = []
 
-        datas = json.loads(self.getFileBoards())
+        platformio_data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
 
-        for datakey, datavalue in datas.items():
+        if(not platformio_data):
+            return
+
+        platformio_data = json.loads(platformio_data)
+
+        # searching data
+        for datakey, datavalue in platformio_data.items():
             for infokey, infovalue in datavalue.items():
                 vendor = datavalue['vendor']
-                if(infokey == 'name'):
-                    replace = vendor + " "
-                    if(vendor == 'Engduino'):
-                        replace = ''
-                    name = infovalue.replace(replace, "", 1)
+                if('name' in infokey):
+                    temp_info = {}
+                    temp_info['caption'] = infovalue
+                    temp_info['command'] = 'select_board'
+                    temp_info['checkbox'] = True
+                    temp_info['args'] = {'board_id': datakey}
                     children = vendors.setdefault(vendor, [])
-                    children.append({'caption': name,
-                                     'command': 'select_board',
-                                     'id': datakey,
-                                     'checkbox': True,
-                                     'args': {'board_id': datakey}})
+                    children.append(temp_info)
 
+        # reorganizing data
         for vendor, children in vendors.items():
+            children = sorted(children, key=lambda x: x['caption'])
             boards.append({'caption': vendor,
                            'children': children})
 
@@ -233,12 +225,72 @@ class Menu(object):
 
         return boards
 
-    def createSerialPortsMenu(self):
-        """Serial ports
+    def saveEnvironmentFile(self):
+        '''Board menu
 
-        Create the list menu "Serial ports" with the list of all the
+        Load the JSON file with the list of all boards and re order it
+        based on the vendor. after that format the data to operate with
+        the standards required for the ST
+
+        Returns:
+                {json array} -- list of all boards to show in the menu
+        '''
+        boards_list = []
+
+        platformio_data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+
+        if(not platformio_data):
+            return
+
+        platformio_data = json.loads(platformio_data)
+
+        for datakey, datavalue in platformio_data.items():
+            # children
+            children = {}
+            children['caption'] = datavalue['name']
+            children['command'] = 'select_env'
+            children['checkbox'] = True
+            children['args'] = {'board_id': datakey}
+
+            # Board List
+            temp_info = {}
+            temp_info[datakey] = {'children': []}
+            temp_info[datakey]['children'].append(children)
+            boards_list.append(temp_info)
+
+        # Save board list
+        self.saveTemplateMenu(boards_list, 'env_boards.json', user_path=True)
+
+    def createEnvironmentMenu(self):
+        # load
+        env_selecs = Preferences().get('board_id', '')
+        env_boards = self.getTemplateMenu('env_boards.json', user_path=True)
+
+        if(not env_boards):
+            return
+
+        environments = []
+
+        # search
+        for board in env_boards:
+            for selected in env_selecs:
+                try:
+                    environments.append(board[selected]['children'][0])
+                except:
+                    pass
+
+        # save
+        env_menu = self.getTemplateMenu(file_name='environment.json')
+        env_menu[0]['children'][0]['children'] = environments
+        self.saveSublimeMenu(data=env_menu, sub_folder='environment')
+
+    def createSerialPortsMenu(self):
+        '''Serial ports
+
+        Create the list menu 'Serial ports' with the list of all the
         availables serial ports
-        """
+        '''
 
         menu_path_preset = DeviotPaths.getDeviotMenuPath('serial')
         menu_preset = JSONFile(menu_path_preset)
@@ -266,59 +318,72 @@ class Menu(object):
         serial_menu.saveData()
 
     def createMainMenu(self):
-        """Main menu
+        '''Main menu
 
         Creates the main menu with the differents options
         including boards, libraries, COM ports, and user
         options.
-        """
-        self.createSerialPortsMenu()
-
+        '''
         boards = self.createBoardsMenu()
 
         if(not boards):
             return False
 
-        main_file_path = DeviotPaths.getMainJSONFile()
-        menu_file = JSONFile(main_file_path)
-        menu_data = menu_file.data[0]
+        menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
-        for fist_menu in menu_data:
-            for second_menu in menu_data[fist_menu]:
+        for first_menu in menu_data[0]:
+            for second_menu in menu_data[0][first_menu]:
                 if 'children' in second_menu:
                     if(second_menu['id'] == 'initialize'):
                         second_menu['children'] = boards
 
-        # to format purposes
-        menu_data = [menu_data]
+        self.saveSublimeMenu(data=menu_data)
 
-        main_user_file_path = DeviotPaths.setDeviotMenuPath()
-        file_menu = JSONFile(main_user_file_path)
-        file_menu.setData(menu_data)
+        env_menu = DeviotPaths.setSublimeMenuPath('environment')
+
+        if(os.path.isfile(env_menu)):
+            self.createEnvironmentMenu()
+
+    def getTemplateMenu(self, file_name, user_path=False):
+        file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
+        preset_file = JSONFile(file_path)
+        preset_data = preset_file.getData()
+        return preset_data
+
+    def saveTemplateMenu(self, data, file_name, user_path=False):
+        file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
+        preset_file = JSONFile(file_path)
+        preset_file.setData(data)
+        preset_file.saveData()
+
+    def saveSublimeMenu(self, data, sub_folder=False):
+        menu_file_path = DeviotPaths.setSublimeMenuPath(sub_folder)
+        file_menu = JSONFile(menu_file_path)
+        file_menu.setData(data)
         file_menu.saveData()
 
 
 class Preferences(JSONFile):
-    """Preferences
+    '''Preferences
 
     Class to handle the preferences of the plugin
 
     Extends:
             JSONFile
-    """
+    '''
 
     def __init__(self):
-        """Construct
+        '''Construct
 
         Path loads the file where the preferences are stored,
         Doing that you avoid to pass the path every time you
         need to get or set any preference.
-        """
+        '''
         path = DeviotPaths.getPreferencesFile()
         super(Preferences, self).__init__(path)
 
     def set(self, key, value):
-        """Set value
+        '''Set value
 
         Save a value in the preferences file using a list and
         dictionaries.
@@ -427,109 +492,111 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             self.cwd = DeviotPaths.getCWD(self.currentFilePath)
 
     def getSelectedBoards(self):
-        """Selected Board(s)
+        '''Selected Board(s)
 
         Get the board(s) list selected, from the preferences file, to
         be initialized and formated to be used in the platformio CLI
 
         Returns:
                 {string} boards list in platformio CLI format
-        """
+        '''
         boards = self.Preferences.get('board_id', '')
-        type_boards = ""
+        type_boards = ''
 
         if(not boards):
             return False
 
         for board in boards:
-            type_boards += "--board=%s " % board
+            type_boards += '--board=%s ' % board
 
         return type_boards
 
     def initSketchProject(self):
-        """CLI
+        '''CLI
 
         command to initialize the board(s) selected by the user. This
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
-        """
+        '''
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
-            print("None board Selected")
+            print('None board Selected')
             self.Commands.error_running = True
             return
 
-        command = ["init", "%s" % (init_boards)]
+        command = ['init', '%s' % (init_boards)]
 
         if(not isIOTFile(self.view)):
-            print("This is not a IoT File")
+            print('This is not a IoT File')
             return
 
-        print("Initializing the project")
+        print('Initializing the project')
         self.Commands.runCommand(command, self.cwd)
 
     def buildSketchProject(self):
-        """CLI
+        '''CLI
 
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
-        """
+        '''
         # initialize the sketch
         self.initSketchProject()
 
         if(not self.Commands.error_running and isIOTFile(self.view)):
-            print("Building the project")
+            print('Building the project')
 
             try:
                 dir_project = os.path.join(self.cwd, 'src')
                 shutil.copy(self.currentFilePath, dir_project)
             except:
-                print("error copying the file")
+                print('error copying the file')
                 return
 
-            command = ["run"]
+            command = ['run']
 
             self.Commands.runCommand(command, self.cwd)
 
             if(not self.Commands.error_running):
-                print("Success")
+                print('Success')
                 self.Preferences.set('builded_sketch', True)
             else:
-                print("Error")
+                print('Error')
                 self.Preferences.set('builded_sketch', False)
 
     def uploadSketchProject(self):
-        """CLI
+        '''CLI
 
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
-        """
+        '''
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
             id_port = self.Preferences.get('id_port', '')
+            env_sel = self.Preferences.get('env_selected', '')
 
-            if(not id_port):
-                print("None COM port selected")
+            if(not id_port or not env_sel):
+                print('Not COM port or environment selected')
                 return
 
-            command = ["run", "-t upload --upload-port %s" % (id_port)]
+            command = ['run', '-t upload --upload-port %s -e %s' %
+                       (id_port, env_sel)]
 
             self.Commands.runCommand(command, self.cwd)
 
     def cleanSketchProject(self):
-        """CLI
+        '''CLI
 
         Delete compiled object files, libraries and firmware/program binaries
         if a sketch has been built previously
-        """
+        '''
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
-            print("Cleaning")
-            command = ["run", "-t clean"]
+            print('Cleaning')
+            command = ['run', '-t clean']
 
             self.Commands.runCommand(command, self.cwd)
 
