@@ -135,6 +135,16 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return DeviotFunctions.checkEnvironPath()
 
 
+class SelectEnvCommand(sublime_plugin.WindowCommand):
+
+    def run(self, board_id):
+        DeviotFunctions.Preferences().set('env_selected', board_id)
+
+    def is_checked(self, board_id):
+        check = DeviotFunctions.Preferences().get('env_selected', '')
+        return board_id == check
+
+
 class BuildSketchCommand(sublime_plugin.TextCommand):
     """Build Sketch Trigger
 
