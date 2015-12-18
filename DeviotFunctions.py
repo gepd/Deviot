@@ -291,11 +291,7 @@ class Menu(object):
         Create the list menu 'Serial ports' with the list of all the
         availables serial ports
         '''
-
-        menu_path_preset = DeviotPaths.getDeviotMenuPath('serial')
-        menu_preset = JSONFile(menu_path_preset)
-        menu_preset = menu_preset.getData()
-
+        menu_preset = self.getTemplateMenu(file_name='serial.json')
         port_list = PlatformioCLI().getAPICOMPorts()
 
         if not port_list:
@@ -312,10 +308,7 @@ class Menu(object):
 
         menu_preset[0]['children'][0]['children'] = menu_ports
 
-        serial_menu_path = DeviotPaths.setDeviotMenuPath('serial')
-        serial_menu = JSONFile(serial_menu_path)
-        serial_menu.setData(menu_preset)
-        serial_menu.saveData()
+        self.saveSublimeMenu(data=menu_preset, sub_folder='serial')
 
     def createMainMenu(self):
         '''Main menu
@@ -580,10 +573,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 print('Not COM port or environment selected')
                 return
 
-            command = ['run', '-t upload --upload-port %s -e %s' %
+            command = ['run', '-t uploadlazy --upload-port %s -e %s' %
                        (id_port, env_sel)]
 
-            self.Commands.runCommand(command, self.cwd)
+            self.Commands.runCommand(command, self.cwd, verbose=True)
 
     def cleanSketchProject(self):
         '''CLI
