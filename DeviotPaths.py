@@ -60,13 +60,21 @@ def getDeviotBoardsPath():
     return boards_path
 
 
-def getDeviotMenuPath(file_name):
-    preset_path = getPresetPath()
-    menu_path = os.path.join(preset_path, file_name + '.json')
+def getTemplateMenuPath(file_name, user_path=False):
+    if(not user_path):
+        preset_path = getPresetPath()
+    else:
+        preset_path = getDeviotUserPath()
+        preset_path = os.path.join(preset_path, 'Preset')
+
+        if(not os.path.isdir(preset_path)):
+            os.makedirs(preset_path)
+    menu_path = os.path.join(preset_path, file_name)
+
     return menu_path
 
 
-def setDeviotMenuPath(sub_folder=False):
+def setSublimeMenuPath(sub_folder=False):
     deviot_user_path = getDeviotUserPath()
 
     if(sub_folder):
@@ -87,9 +95,9 @@ def getPreferencesFile():
     return preferences_path
 
 
-def getMainJSONFile():
+def getJSONFile(file_name):
     preset_path = getPresetPath()
-    main_file_path = os.path.join(preset_path, 'menu_main.json')
+    main_file_path = os.path.join(preset_path, file_name)  # 'menu_main.json'
     return main_file_path
 
 
