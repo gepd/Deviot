@@ -665,6 +665,9 @@ def platformioCheck():
     version = Run.runCommand(command, setReturn=True)
     version = re.sub(r'\D', '', version)
 
+    if(not Run.error_running):
+        Preferences().set('CMD_ENV_PATH', False)
+
     # Check the minimum version
     if(not Run.error_running and int(version) < 260):
         temp_menu_path = DeviotPaths.getRequirenmentMenu()
