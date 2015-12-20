@@ -350,8 +350,14 @@ class Menu(object):
         preset_file.setData(data)
         preset_file.saveData()
 
-    def saveSublimeMenu(self, data, sub_folder=False):
-        menu_file_path = DeviotPaths.setSublimeMenuPath(sub_folder)
+    def getSublimeMenu(self, user_path=False):
+        menu_path = DeviotPaths.getSublimeMenuPath(user_path)
+        menu_file = JSONFile(menu_path)
+        menu_data = menu_file.getData()
+        return menu_data
+
+    def saveSublimeMenu(self, data, sub_folder=False, user_path=False):
+        menu_file_path = DeviotPaths.getSublimeMenuPath(sub_folder, user_path)
         file_menu = JSONFile(menu_file_path)
         file_menu.setData(data)
         file_menu.saveData()
