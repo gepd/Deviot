@@ -629,32 +629,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         return boards
 
 
-def checkEnvironPath():
-    '''Environment Path
-
-    This function is used to check if the environment PATH  is configurated
-    when the preferences files is found and seems to be right, it deletes
-    the setup menu
-
-    '''
-
-    new_menu_path = DeviotPaths.setSublimeMenuPath()
-    CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
-
-    if(not CMD_ENV_PATH):
-
-        # Create prefences file
-        Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
-        return False
-
-        # Creates new menu
-        if(not os.path.exists(new_menu_path)):
-            Menu().saveAPIBoards()
-            Menu().createMainMenu()
-
-    return True
-
-
 def platformioCheck():
     '''Platformio
     Check if is possible to run a platformio command
