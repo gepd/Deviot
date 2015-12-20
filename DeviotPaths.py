@@ -18,13 +18,7 @@ def getPluginPath():
     plugin_path = os.path.dirname(current_file)
     return plugin_path
 
-# Get Sublime Text package folder
-
-
-def getRequirenmentMenu():
-    plugin_path = os.path.dirname(current_file)
-    menu_file = os.path.join(plugin_path, 'Main.sublime-menu')
-    return menu_file
+# Get the package sublime text path
 
 
 def getPackagesPath():
@@ -74,16 +68,18 @@ def getTemplateMenuPath(file_name, user_path=False):
     return menu_path
 
 
-def setSublimeMenuPath(sub_folder=False):
-    deviot_user_path = getDeviotUserPath()
+def getSublimeMenuPath(sub_folder=False, user_path=False):
+    menu_path = getPluginPath()
+    if(user_path):
+        menu_path = getDeviotUserPath()
 
     if(sub_folder):
-        deviot_user_path = os.path.join(deviot_user_path, sub_folder)
+        menu_path = os.path.join(menu_path, sub_folder)
 
-        if(not os.path.isdir(deviot_user_path)):
-            os.makedirs(deviot_user_path)
+        if(not os.path.isdir(menu_path)):
+            os.makedirs(menu_path)
 
-    menu_path = os.path.join(deviot_user_path, 'Main.sublime-menu')
+    menu_path = os.path.join(menu_path, 'Main.sublime-menu')
 
     return menu_path
 
@@ -114,3 +110,9 @@ def getCurrentFilePath(view):
 def getCWD(file_path):
     folder_path = os.path.dirname(file_path)
     return folder_path
+
+
+def getParentCWD(file_path):
+    folder_path = os.path.dirname(file_path)
+    parent = os.path.dirname(folder_path)
+    return parent

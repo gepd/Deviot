@@ -93,10 +93,10 @@ class UpdateMenuCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        DeviotFunctions.Menu().createMainMenu()
+        DeviotFunctions.Menu().createSerialPortsMenu()
 
     def is_enabled(self):
-        return DeviotFunctions.checkEnvironPath()
+        return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
@@ -133,7 +133,7 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return check
 
     def is_enabled(self):
-        return DeviotFunctions.checkEnvironPath()
+        return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
 class SelectEnvCommand(sublime_plugin.WindowCommand):
@@ -144,6 +144,9 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
     def is_checked(self, board_id):
         check = DeviotFunctions.Preferences().get('env_selected', '')
         return board_id == check
+
+    def is_enabled(self):
+        return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
@@ -160,7 +163,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
         DeviotFunctions.PlatformioCLI(self.view).buildSketchProject()
 
     def is_enabled(self):
-        return DeviotFunctions.checkEnvironPath()
+        return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
 class UploadSketchCommand(sublime_plugin.TextCommand):
@@ -179,7 +182,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
 
-        if(not DeviotFunctions.checkEnvironPath()):
+        if(not DeviotFunctions.Preferences().get('enable_menu', False)):
             is_enabled = False
 
         return is_enabled
@@ -202,7 +205,7 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
 
-        if(not DeviotFunctions.checkEnvironPath()):
+        if(not DeviotFunctions.Preferences().get('enable_menu', False)):
             is_enabled = False
 
         return is_enabled
@@ -226,4 +229,4 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         return saved_id_port == id_port
 
     def is_enabled(self):
-        return DeviotFunctions.checkEnvironPath()
+        return DeviotFunctions.Preferences().get('enable_menu', False)

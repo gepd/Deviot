@@ -330,9 +330,10 @@ class Menu(object):
                     if(second_menu['id'] == 'initialize'):
                         second_menu['children'] = boards
 
-        self.saveSublimeMenu(data=menu_data)
+        self.saveSublimeMenu(data=menu_data, user_path=True)
 
-        env_path = DeviotPaths.setSublimeMenuPath('environment')
+        env_path = DeviotPaths.getSublimeMenuPath(
+            'environment', user_path=True)
 
         if(os.path.isfile(env_path)):
             self.createEnvironmentMenu()
@@ -474,15 +475,22 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                                                         ST (default: False)
         '''
         self.Preferences = Preferences()
-        envi_path = self.Preferences.get('CMD_ENV_PATH')
-        if(envi_path == '\\.'):
-            envi_path = False
-        self.Commands = DeviotCommands.CommandsPy(envi_path)
+        env_path = self.Preferences.get('CMD_ENV_PATH', False)
+
+        self.Commands = DeviotCommands.CommandsPy(env_path)
         self.view = view
 
         if(view):
             self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
-            self.cwd = DeviotPaths.getCWD(self.currentFilePath)
+            cwd = DeviotPaths.getCWD(self.currentFilePath)
+            parent = DeviotPaths.getParentCWD(self.currentFilePath)
+            self.work_dir = cwd
+
+            for file in os.listdir(cwd):
+                if(not file.endswith('.ini')):
+                    for file in os.listdir(parent):
+                        if(file.endswith('.ini')):
+                            self.work_dir = parent
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -511,6 +519,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
+
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
@@ -525,7 +534,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             return
 
         print('Initializing the project')
-        self.Commands.runCommand(command, self.cwd)
+        self.Commands.runCommand(command, self.work_dir)
 
     def buildSketchProject(self):
         '''CLI
@@ -539,16 +548,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         if(not self.Commands.error_running and isIOTFile(self.view)):
             print('Building the project')
 
-            try:
-                dir_project = os.path.join(self.cwd, 'src')
-                shutil.copy(self.currentFilePath, dir_project)
-            except:
-                print('error copying the file')
-                return
-
             command = ['run']
 
-            self.Commands.runCommand(command, self.cwd)
+            self.Commands.runCommand(command, self.work_dir)
 
             if(not self.Commands.error_running):
                 print('Success')
@@ -576,7 +578,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             command = ['run', '-t uploadlazy --upload-port %s -e %s' %
                        (id_port, env_sel)]
 
-            self.Commands.runCommand(command, self.cwd, verbose=True)
+            self.Commands.runCommand(command, self.work_dir, verbose=True)
 
     def cleanSketchProject(self):
         '''CLI
@@ -591,7 +593,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             print('Cleaning')
             command = ['run', '-t clean']
 
-            self.Commands.runCommand(command, self.cwd)
+            self.Commands.runCommand(command, self.work_dir)
 
             if(not self.Commands.error_running):
                 self.Preferences.set('builded_sketch', False)
@@ -665,42 +667,39 @@ def platformioCheck():
     version = Run.runCommand(command, setReturn=True)
     version = re.sub(r'\D', '', version)
 
-    if(not Run.error_running):
-        Preferences().set('CMD_ENV_PATH', False)
-
     # Check the minimum version
     if(not Run.error_running and int(version) < 260):
-        temp_menu_path = DeviotPaths.getRequirenmentMenu()
-        old_temp_menu = JSONFile(temp_menu_path)
-        temp_menu = old_temp_menu.getData()
+        Preferences().set('enable_menu', False)
+        temp_menu = Menu().getSublimeMenu()
 
         temp_menu[0]['children'][0]['caption'] = 'Please upgrade Platformio'
         temp_menu[0]['children'][1] = 0
 
-        old_temp_menu.setData(temp_menu)
-        old_temp_menu.saveData()
+        Menu().saveSublimeMenu(temp_menu)
         return False
 
     # Check if the environment path is set in preferences file
     if(Run.error_running):
-        if(not checkEnvironPath()):
+        Preferences().set('enable_menu', False)
+        CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', False)
+
+        if(not CMD_ENV_PATH):
+            # Create prefences file
+            Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
             return False
 
-        CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', '')
+    Preferences().set('enable_menu', True)
 
-        Run = DeviotCommands.CommandsPy(CMD_ENV_PATH)
-        Run.runCommand(command)
+    install_menu_path = DeviotPaths.getSublimeMenuPath()
+    user_menu_path = DeviotPaths.getSublimeMenuPath(user_path=True)
 
-        if(Run.error_running):
-            return False
-
-        Preferences().set('CMD_ENV_PATH', False)
-
-    # Delete requirement file menu
-    install_menu_path = DeviotPaths.getRequirenmentMenu()
-
+    # Delete requirement/install file menu
     if(os.path.exists(install_menu_path)):
         os.remove(install_menu_path)
+
+    # Creates new menu
+    if(not os.path.exists(user_menu_path)):
+        Menu().createMainMenu()
 
     return True
 

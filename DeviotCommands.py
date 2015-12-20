@@ -12,13 +12,13 @@ import os
 
 class CommandsPy(object):
 
-    def __init__(self, envi_path=False):
+    def __init__(self, env_path=False):
         super(CommandsPy, self).__init__()
         self.error_running = False
 
         # Set the enviroment Path
-        if(envi_path):
-            os.environ['PATH'] = os.pathsep + envi_path + os.environ['PATH']
+        if(env_path):
+            os.environ['PATH'] = os.pathsep + env_path + os.environ['PATH']
 
     def runCommand(self, commands, cwd=None, setReturn=False, verbose=False):
 
