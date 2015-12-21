@@ -47,11 +47,17 @@ def getDeviotUserPath():
 
     return deviot_user_path
 
+# get the library user folder
 
-def getDeviotBoardsPath():
-    deviot_user_path = getDeviotUserPath()
-    boards_path = os.path.join(deviot_user_path, 'Boards.json')
-    return boards_path
+
+def getLibraryPath():
+    user_path = getDeviotUserPath()
+    library_path = os.path.join(user_path, 'libraries')
+
+    if(not os.path.isdir(library_path)):
+        os.makedirs(library_path)
+
+    return library_path
 
 
 def getTemplateMenuPath(file_name, user_path=False):
