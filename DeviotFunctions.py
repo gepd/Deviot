@@ -11,8 +11,6 @@ import re
 import sublime
 import codecs
 import json
-import shutil
-
 
 if(int(sublime.version()) < 3000):
     import DeviotCommands
@@ -487,16 +485,23 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         self.view = view
 
         if(view):
-            self.currentFilePath = DeviotPaths.getCurrentFilePath(view)
-            cwd = DeviotPaths.getCWD(self.currentFilePath)
-            parent = DeviotPaths.getParentCWD(self.currentFilePath)
-            self.work_dir = cwd
+            currentFilePath = DeviotPaths.getCurrentFilePath(view)
+            cwd = DeviotPaths.getCWD(currentFilePath)
+            parent = DeviotPaths.getParentCWD(currentFilePath)
+            library = DeviotPaths.getLibraryPath()
+
+            self.working_dir = cwd
 
             for file in os.listdir(cwd):
-                if(not file.endswith('.ini')):
+                if(not file.endswith('platformio.ini')):
                     for file in os.listdir(parent):
-                        if(file.endswith('.ini')):
-                            self.work_dir = parent
+                        if(file.endswith('platformio.ini')):
+                            self.working_dir = parent
+                        else:
+                            # definir variables
+                            self.working_dir = 'C:\\Users\\guill\\Desktop\\TEMP'
+                            os.environ['PLATFORMIO_SRC_DIR'] = cwd
+                            os.environ['PLATFORMIO_LIB_DIR'] = library
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -525,7 +530,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-
+        # return
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
@@ -540,7 +545,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             return
 
         print('Initializing the project')
-        self.Commands.runCommand(command, self.work_dir)
+        self.Commands.runCommand(command, self.working_dir, verbose=True)
 
     def buildSketchProject(self):
         '''CLI
@@ -556,7 +561,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             command = ['run']
 
-            self.Commands.runCommand(command, self.work_dir)
+            self.Commands.runCommand(command, self.working_dir)
 
             if(not self.Commands.error_running):
                 print('Success')
@@ -584,7 +589,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             command = ['run', '-t uploadlazy --upload-port %s -e %s' %
                        (id_port, env_sel)]
 
-            self.Commands.runCommand(command, self.work_dir, verbose=True)
+            self.Commands.runCommand(command, self.working_dir, verbose=True)
 
     def cleanSketchProject(self):
         '''CLI
@@ -599,7 +604,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             print('Cleaning')
             command = ['run', '-t clean']
 
-            self.Commands.runCommand(command, self.work_dir)
+            self.Commands.runCommand(command, self.working_dir)
 
             if(not self.Commands.error_running):
                 self.Preferences.set('builded_sketch', False)
