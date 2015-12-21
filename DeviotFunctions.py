@@ -499,7 +499,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                             self.working_dir = parent
                         else:
                             # definir variables
-                            self.working_dir = 'C:\\Users\\guill\\Desktop\\TEMP'
+                            self.working_dir = 'CHANGE-TO-TEMP-FOLDER'
                             os.environ['PLATFORMIO_SRC_DIR'] = cwd
                             os.environ['PLATFORMIO_LIB_DIR'] = library
 
