@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import sys
 import inspect
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
@@ -122,3 +123,30 @@ def getParentCWD(file_path):
     folder_path = os.path.dirname(file_path)
     parent = os.path.dirname(folder_path)
     return parent
+
+
+def getDeviotTmpPath():
+    tmp_path = '/tmp'
+    os_name = getOsName()
+    if os_name == 'windows':
+        tmp_path = os.environ['tmp']
+
+    tmp_path = os.path.join(tmp_path, 'Deviot')
+
+    if(not os.path.isdir(tmp_path)):
+        os.makedirs(tmp_path)
+    return tmp_path
+
+
+def getOsName():
+    name = sys.platform
+
+    if name == 'win32':
+        os_name = 'windows'
+    elif name == 'darwin':
+        os_name = 'osx'
+    elif 'linux' in name:
+        os_name = 'linux'
+    else:
+        os_name = 'other'
+    return os_name
