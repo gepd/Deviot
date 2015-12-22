@@ -16,7 +16,7 @@
                 "id": "initialize",
                 "children":[]
             },{
-                "caption": "Select Environment(s)",
+                "caption": "Select Environment",
                 "id": "environment",
                 "children":[]
             },

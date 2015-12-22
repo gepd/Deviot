@@ -5,7 +5,7 @@
         "mnemonic": "D",
         "children": [            
             {
-                "caption": "Select Environment(s)", 
+                "caption": "Select Environment", 
                 "children": [], 
                 "id": "environment"
             }
