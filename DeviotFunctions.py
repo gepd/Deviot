@@ -483,11 +483,16 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 view {st object} -- stores many info related with
                                                         ST (default: False)
         '''
+        self.execute = True
+        checkFile = stateFile(view)
+
+        if(not checkFile):
+            print('This is not a IoT File')
+            self.execute = False
+
         self.Preferences = Preferences()
         env_path = self.Preferences.get('CMD_ENV_PATH', False)
-
         self.Commands = DeviotCommands.CommandsPy(env_path)
-        self.view = view
 
         if(view):
             currentFilePath = DeviotPaths.getCurrentFilePath(view)
@@ -495,14 +500,14 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             parent = DeviotPaths.getParentCWD(currentFilePath)
             library = DeviotPaths.getLibraryPath()
             tmp_path = DeviotPaths.getDeviotTmpPath()
-            self.init = False
+            init = False
 
             for file in os.listdir(parent):
                 if(file.endswith('platformio.ini')):
                     self.working_dir = parent
-                    self.init = True
+                    init = True
 
-            if(not self.init):
+            if(not init):
                 self.working_dir = tmp_path
                 os.environ['PLATFORMIO_SRC_DIR'] = cwd
                 os.environ['PLATFORMIO_LIB_DIR'] = library
@@ -534,7 +539,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        # return
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
@@ -553,8 +557,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
         '''
+        if(not self.execute):
+            return
+
         # initialize the sketch
-        return
         self.initSketchProject()
 
         if(not self.Commands.error_running):
@@ -577,6 +583,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
         '''
+        if(not self.execute):
+            return
+
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
@@ -731,8 +740,7 @@ def setStatus(view):
 
 def stateFile(view):
     if(not isIOTFile(view)):
-        print('This is not a IoT File')
-        return
+        return False
 
     ext = '.ino'
 
@@ -762,6 +770,8 @@ def stateFile(view):
 
     if view.is_dirty():
         view.run_command('save')
+
+    return True
 
 
 def getVersion():
