@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 import re
+import time
 import sublime
 import codecs
 import json
@@ -543,10 +544,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         command = ['init', '%s' % (init_boards)]
 
-        if(not isIOTFile(self.view)):
-            print('This is not a IoT File')
-            return
-
         print('Initializing the project')
         self.Commands.runCommand(command, self.working_dir, verbose=True)
 
@@ -557,9 +554,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         type (checked by isIOTFile)
         '''
         # initialize the sketch
+        return
         self.initSketchProject()
 
-        if(not self.Commands.error_running and isIOTFile(self.view)):
+        if(not self.Commands.error_running):
             print('Building the project')
 
             command = ['run']
@@ -729,6 +727,41 @@ def setStatus(view):
         full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
+
+
+def stateFile(view):
+    if(not isIOTFile(view)):
+        print('This is not a IoT File')
+        return
+
+    ext = '.ino'
+
+    window = view.window()
+    views = window.views()
+
+    if view not in views:
+        view = window.active_view()
+    if view.file_name() is None:
+        tmp_path = DeviotPaths.getDeviotTmpPath()
+        file_name = str(time.time()).split('.')[1]
+        file_path = os.path.join(tmp_path, file_name)
+        os.makedirs(file_path)
+
+        full_path = file_name + ext
+        full_path = os.path.join(file_path, full_path)
+
+        region = sublime.Region(0, view.size())
+        text = view.substr(region)
+        file = JSONFile(full_path)
+        file.writeFile(text)
+
+        view.set_scratch(True)
+        window = view.window()
+        window.run_command('close')
+        view = window.open_file(full_path)
+
+    if view.is_dirty():
+        view.run_command('save')
 
 
 def getVersion():
