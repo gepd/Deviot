@@ -493,19 +493,18 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             cwd = DeviotPaths.getCWD(currentFilePath)
             parent = DeviotPaths.getParentCWD(currentFilePath)
             library = DeviotPaths.getLibraryPath()
+            tmp_path = DeviotPaths.getDeviotTmpPath()
+            self.init = False
 
-            self.working_dir = cwd
+            for file in os.listdir(parent):
+                if(file.endswith('platformio.ini')):
+                    self.working_dir = parent
+                    self.init = True
 
-            for file in os.listdir(cwd):
-                if(not file.endswith('platformio.ini')):
-                    for file in os.listdir(parent):
-                        if(file.endswith('platformio.ini')):
-                            self.working_dir = parent
-                        else:
-                            # definir variables
-                            self.working_dir = 'CHANGE-TO-TEMP-FOLDER'
-                            os.environ['PLATFORMIO_SRC_DIR'] = cwd
-                            os.environ['PLATFORMIO_LIB_DIR'] = library
+            if(not self.init):
+                self.working_dir = tmp_path
+                os.environ['PLATFORMIO_SRC_DIR'] = cwd
+                os.environ['PLATFORMIO_LIB_DIR'] = library
 
     def getSelectedBoards(self):
         '''Selected Board(s)
