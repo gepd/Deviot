@@ -281,7 +281,9 @@ class Menu(object):
         # save
         env_menu = self.getTemplateMenu(file_name='environment.json')
         env_menu[0]['children'][0]['children'] = environments
-        self.saveSublimeMenu(data=env_menu, sub_folder='environment')
+        self.saveSublimeMenu(data=env_menu,
+                             sub_folder='environment',
+                             user_path=True)
 
     def createSerialPortsMenu(self):
         '''Serial ports
@@ -306,7 +308,9 @@ class Menu(object):
 
         menu_preset[0]['children'][0]['children'] = menu_ports
 
-        self.saveSublimeMenu(data=menu_preset, sub_folder='serial')
+        self.saveSublimeMenu(data=menu_preset,
+                             sub_folder='serial',
+                             user_path=True)
 
     def createMainMenu(self):
         '''Main menu
