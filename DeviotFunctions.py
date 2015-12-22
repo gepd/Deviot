@@ -16,9 +16,11 @@ import json
 if(int(sublime.version()) < 3000):
     import DeviotCommands
     import DeviotPaths
+    import DeviotSerial
 else:
     from . import DeviotCommands
     from . import DeviotPaths
+    from . import DeviotSerial
 
 
 class JSONFile(object):
@@ -557,6 +559,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
         '''
+        print(DeviotSerial.listSerialPorts())
+        return
+
         if(not self.execute):
             return
 
