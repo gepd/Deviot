@@ -7,7 +7,6 @@ from __future__ import unicode_literals
 
 import time
 import glob
-import deco
 import sublime
 import threading
 
@@ -23,7 +22,7 @@ if DevioTools.getOsName() == 'windows':
         import winreg
 
 
-@deco.singleton
+@DevioTools.singleton
 class SerialListener(object):
 
     def __init__(self, func=None):
