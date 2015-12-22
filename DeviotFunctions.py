@@ -564,7 +564,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             command = ['run']
 
-            self.Commands.runCommand(command, self.working_dir)
+            self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
                 print('Success')
@@ -594,6 +594,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
+            if(not self.Commands.error_running):
+                print("Success")
+
     def cleanSketchProject(self):
         '''CLI
 
@@ -607,10 +610,11 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             print('Cleaning')
             command = ['run', '-t clean']
 
-            self.Commands.runCommand(command, self.working_dir)
+            self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
                 self.Preferences.set('builded_sketch', False)
+                print("Success")
 
     def getAPICOMPorts(self):
         '''CLI
