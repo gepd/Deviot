@@ -294,20 +294,19 @@ class Menu(object):
         Create the list menu 'Serial ports' with the list of all the
         availables serial ports
         '''
-        menu_preset = self.getTemplateMenu(file_name='serial.json')
-        port_list = PlatformioCLI().getAPICOMPorts()
+        port_list = DeviotSerial.listSerialPorts()
 
         if not port_list:
             return False
 
+        menu_preset = self.getTemplateMenu(file_name='serial.json')
         menu_ports = []
 
         for port in port_list:
-            port_name = port['port']
-            menu_ports.append({'caption': port_name,
+            menu_ports.append({'caption': port,
                                'command': 'select_port',
                                'checkbox': True,
-                               'args': {'id_port': port_name}})
+                               'args': {'id_port': port}})
 
         menu_preset[0]['children'][0]['children'] = menu_ports
 
@@ -559,9 +558,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
         '''
-        print(DeviotSerial.listSerialPorts())
-        return
-
         if(not self.execute):
             return
 
@@ -628,21 +624,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 self.Preferences.set('builded_sketch', False)
                 print("Success")
 
-    def getAPICOMPorts(self):
-        '''CLI
-
-        Get a JSON list with all the COM ports availables, to do it uses the
-        platformio serialports command. To get more info about this fuction
-        check:http://docs.platformio.org/en/latest/userguide/cmd_serialports.html
-        '''
-        command = ['serialports list', '--json-output']
-
-        port_list = json.loads(
-            self.Commands.runCommand(command, setReturn=True))
-
-        if(not self.Commands.error_running):
-            return port_list
-
     def getAPIBoards(self):
         '''Get boards list
 
@@ -704,6 +685,10 @@ def platformioCheck():
     # Creates new menu
     if(not os.path.exists(user_menu_path)):
         Menu().createMainMenu()
+
+    # Run serial port listener
+    Serial = DeviotSerial.SerialListener(func=Menu().createSerialPortsMenu)
+    Serial.start()
 
     return True
 
