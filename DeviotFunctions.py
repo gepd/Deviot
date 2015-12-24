@@ -485,17 +485,17 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                                                         ST (default: False)
         '''
         self.execute = True
-        checkFile = stateFile(view)
-
-        if(not checkFile):
-            print('This is not a IoT File')
-            self.execute = False
-
         self.Preferences = Preferences()
         env_path = self.Preferences.get('CMD_ENV_PATH', False)
         self.Commands = DeviotCommands.CommandsPy(env_path)
 
         if(view):
+            checkFile = stateFile(view)
+
+            if(not checkFile):
+                print('This is not a IoT File')
+                self.execute = False
+
             currentFilePath = DeviotPaths.getCurrentFilePath(view)
             cwd = DeviotPaths.getCWD(currentFilePath)
             parent = DeviotPaths.getParentCWD(currentFilePath)
@@ -673,6 +673,12 @@ def platformioCheck():
             Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
             return False
 
+    CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', False)
+
+    # Set env path to False if it wasn't assigned
+    if(CMD_ENV_PATH == 'YOUR-ENVIRONMENT-PATH-HERE'):
+        Preferences().set('CMD_ENV_PATH', False)
+
     Preferences().set('enable_menu', True)
 
     install_menu_path = DeviotPaths.getSublimeMenuPath()
@@ -683,7 +689,8 @@ def platformioCheck():
         os.remove(install_menu_path)
 
     # Creates new menu
-    if(not os.path.exists(user_menu_path)):
+    if(not os.path.exists(user_menu_path)):   
+        Menu().saveAPIBoards()
         Menu().createMainMenu()
 
     # Run serial port listener
