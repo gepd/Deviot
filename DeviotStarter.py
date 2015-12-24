@@ -160,7 +160,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        DeviotFunctions.PlatformioCLI(self.view).buildSketchProject()
+        DeviotFunctions.PlatformioCLI(self.view).openInThread('build')
 
     def is_enabled(self):
         return DeviotFunctions.Preferences().get('enable_menu', False)
@@ -177,7 +177,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        DeviotFunctions.PlatformioCLI(self.view).uploadSketchProject()
+        DeviotFunctions.PlatformioCLI(self.view).openInThread('upload')
 
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
@@ -200,7 +200,7 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        DeviotFunctions.PlatformioCLI(self.view).cleanSketchProject()
+        DeviotFunctions.PlatformioCLI(self.view).openInThread('clean')
 
     def is_enabled(self):
         is_enabled = DeviotFunctions.Preferences().get('builded_sketch')

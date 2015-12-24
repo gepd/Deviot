@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import os
 import re
 import time
+import threading
 import sublime
 import codecs
 import json
@@ -624,6 +625,17 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 self.Preferences.set('builded_sketch', False)
                 print("Success")
 
+    def openInThread(self, type):
+        if(type == 'build'):
+            action_thread = threading.Thread(target=self.buildSketchProject)
+            action_thread.start()
+        elif (type == 'upload'):
+            action_thread = threading.Thread(target=self.uploadSketchProject)
+            action_thread.start()
+        else:
+            action_thread = threading.Thread(target=self.cleanSketchProject)
+            action_thread.start()
+
     def getAPIBoards(self):
         '''Get boards list
 
@@ -689,7 +701,7 @@ def platformioCheck():
         os.remove(install_menu_path)
 
     # Creates new menu
-    if(not os.path.exists(user_menu_path)):   
+    if(not os.path.exists(user_menu_path)):
         Menu().saveAPIBoards()
         Menu().createMainMenu()
 
