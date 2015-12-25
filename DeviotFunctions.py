@@ -497,11 +497,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 print('This is not a IoT File')
                 self.execute = False
 
+            file_name = DeviotPaths.getFileNameFromPath(view.file_name())
             currentFilePath = DeviotPaths.getCurrentFilePath(view)
             cwd = DeviotPaths.getCWD(currentFilePath)
             parent = DeviotPaths.getParentCWD(currentFilePath)
             library = DeviotPaths.getLibraryPath()
-            tmp_path = DeviotPaths.getDeviotTmpPath()
+            tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
             init = False
 
             for file in os.listdir(parent):
