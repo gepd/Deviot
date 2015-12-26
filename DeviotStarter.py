@@ -85,23 +85,6 @@ class CheckRequirementsCommand(sublime_plugin.WindowCommand):
         DeviotFunctions.platformioCheck()
 
 
-class UpdateMenuCommand(sublime_plugin.WindowCommand):
-    """Update/refresh menu
-
-    This command updates the main menu including the list of boards
-    vendors/type of board.
-
-    Extends:
-            sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        DeviotFunctions.Menu().createSerialPortsMenu()
-
-    def is_enabled(self):
-        return DeviotFunctions.Preferences().get('enable_menu', False)
-
-
 class SelectBoardCommand(sublime_plugin.WindowCommand):
     """Select Board Trigger
 

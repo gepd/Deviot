@@ -4,13 +4,7 @@
         "mnemonic": "D",
         "id": "deviot",
         "children":
-        [
-            {
-                "caption": "Update Menu",
-                "id": "update_menu",
-                "command": "update_menu"
-            },
-            {"caption": "-"},
+        [            
             {
                 "caption": "Select board(s)",
                 "id": "initialize",
