@@ -554,29 +554,30 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 print('This is not a IoT File')
                 self.execute = False
 
-            # work directory handle
-            file_name = DeviotPaths.getFileNameFromPath(view.file_name())
-            currentFilePath = DeviotPaths.getCurrentFilePath(view)
-            cwd = DeviotPaths.getCWD(currentFilePath)
-            parent = DeviotPaths.getParentCWD(currentFilePath)
-            library = DeviotPaths.getLibraryPath()
-            tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
+            if(self.execute):
+                # work directory handle
+                file_name = DeviotPaths.getFileNameFromPath(view.file_name())
+                currentFilePath = DeviotPaths.getCurrentFilePath(view)
+                cwd = DeviotPaths.getCWD(currentFilePath)
+                parent = DeviotPaths.getParentCWD(currentFilePath)
+                library = DeviotPaths.getLibraryPath()
+                tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
 
-            # Check initialized project
-            init = False
-            for file in os.listdir(parent):
-                if(file.endswith('platformio.ini')):
-                    self.working_dir = parent
-                    init = True
+                # Check initialized project
+                init = False
+                for file in os.listdir(parent):
+                    if(file.endswith('platformio.ini')):
+                        self.working_dir = parent
+                        init = True
 
-            if(not init):
-                self.working_dir = tmp_path
-                os.environ['PLATFORMIO_SRC_DIR'] = cwd
-                os.environ['PLATFORMIO_LIB_DIR'] = library
+                if(not init):
+                    self.working_dir = tmp_path
+                    os.environ['PLATFORMIO_SRC_DIR'] = cwd
+                    os.environ['PLATFORMIO_LIB_DIR'] = library
 
-            # Initilized commands
-            env_path = self.Preferences.get('CMD_ENV_PATH', False)
-            self.Commands = DeviotCommands.CommandsPy(env_path)
+                # Initilized commands
+                env_path = self.Preferences.get('CMD_ENV_PATH', False)
+                self.Commands = DeviotCommands.CommandsPy(env_path)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
