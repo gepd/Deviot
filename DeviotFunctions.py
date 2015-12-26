@@ -18,10 +18,12 @@ if(int(sublime.version()) < 3000):
     import DeviotCommands
     import DeviotPaths
     import DeviotSerial
+    import DeviotMessages
 else:
     from . import DeviotCommands
     from . import DeviotPaths
     from . import DeviotSerial
+    from . import DeviotMessages
 
 
 class JSONFile(object):
@@ -521,7 +523,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             DeviotCommands.CommandsPy
     '''
 
-    def __init__(self, view=False):
+    def __init__(self, view=False, console=False):
         '''Construct
 
         Initialize the command and preferences classes, to check
@@ -535,24 +537,30 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         '''
         self.execute = True
         self.Preferences = Preferences()
-        env_path = self.Preferences.get('CMD_ENV_PATH', False)
-        self.Commands = DeviotCommands.CommandsPy(env_path)
+
+        # user console
+        if(console):
+            self.message_queue = DeviotMessages.MessageQueue(console)
+            self.message_queue.startPrint()
 
         if(view):
             checkFile = stateFile(view)
 
             if(not checkFile):
+                self.message_queue.put('This is not a IoT File\n')
                 print('This is not a IoT File')
                 self.execute = False
 
+            # work directory handle
             file_name = DeviotPaths.getFileNameFromPath(view.file_name())
             currentFilePath = DeviotPaths.getCurrentFilePath(view)
             cwd = DeviotPaths.getCWD(currentFilePath)
             parent = DeviotPaths.getParentCWD(currentFilePath)
             library = DeviotPaths.getLibraryPath()
             tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
-            init = False
 
+            # Check initialized project
+            init = False
             for file in os.listdir(parent):
                 if(file.endswith('platformio.ini')):
                     self.working_dir = parent
@@ -562,6 +570,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 self.working_dir = tmp_path
                 os.environ['PLATFORMIO_SRC_DIR'] = cwd
                 os.environ['PLATFORMIO_LIB_DIR'] = library
+
+            # Initilized commands
+            env_path = self.Preferences.get('CMD_ENV_PATH', False)
+            self.Commands = DeviotCommands.CommandsPy(env_path)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -593,12 +605,14 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
+            self.message_queue.put('None board Selected\n')
             print('None board Selected')
             self.Commands.error_running = True
             return
 
         command = ['init', '%s' % (init_boards)]
 
+        self.message_queue.put('Initializing the project\n')
         print('Initializing the project')
         self.Commands.runCommand(command, self.working_dir, verbose=True)
 
@@ -615,6 +629,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         self.initSketchProject()
 
         if(not self.Commands.error_running):
+            self.message_queue.put('Building the project\n')
             print('Building the project')
 
             command = ['run']
@@ -622,11 +637,14 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
+                self.message_queue.put('Success\n')
                 print('Success')
                 self.Preferences.set('builded_sketch', True)
             else:
+                self.message_queue.put('Error')
                 print('Error')
                 self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''CLI
