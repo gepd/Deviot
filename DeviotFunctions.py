@@ -572,9 +572,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                     os.environ['PLATFORMIO_SRC_DIR'] = cwd
                     os.environ['PLATFORMIO_LIB_DIR'] = library
 
-                # Initilized commands
-                env_path = self.Preferences.get('CMD_ENV_PATH', False)
-                self.Commands = DeviotCommands.CommandsPy(env_path)
+        # Initilized commands
+        env_path = self.Preferences.get('CMD_ENV_PATH', False)
+        self.Commands = DeviotCommands.CommandsPy(env_path)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
