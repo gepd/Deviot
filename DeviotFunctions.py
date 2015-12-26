@@ -854,14 +854,3 @@ def stateFile(view):
         view.run_command('save')
 
     return True
-
-
-def setVersion(version):
-    '''Plugin Version
-
-    Save the current version of the plugin in the preferences file.
-
-    Returns:
-            {String} -- Version of the file (only numbers)
-     '''
-    deviot_version = version
