@@ -237,3 +237,10 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self):
         return DeviotFunctions.Preferences().get('enable_menu', False)
+
+
+class AboutDeviotCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        sublime.run_command('open_url', {'url':
+                                         'https://goo.gl/c41EXS'})
