@@ -548,7 +548,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             if(not checkFile):
                 self.message_queue.put('This is not a IoT File\n')
-                print('This is not a IoT File')
                 self.execute = False
 
             if(self.execute):
@@ -607,14 +606,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         if(not init_boards):
             self.message_queue.put('None board Selected\n')
-            print('None board Selected')
             self.Commands.error_running = True
             return
 
         command = ['init', '%s' % (init_boards)]
 
         self.message_queue.put('Initializing the project\n')
-        print('Initializing the project')
         self.Commands.runCommand(command, self.working_dir, verbose=True)
 
     def buildSketchProject(self):
@@ -632,7 +629,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         if(not self.Commands.error_running):
             self.message_queue.put('Building the project\n')
-            print('Building the project')
 
             command = ['run']
 
@@ -640,11 +636,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             if(not self.Commands.error_running):
                 self.message_queue.put('Success\n')
-                print('Success')
                 self.Preferences.set('builded_sketch', True)
             else:
                 self.message_queue.put('Error')
-                print('Error')
                 self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -664,8 +658,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             id_port = self.Preferences.get('id_port', '')
             env_sel = self.Preferences.get('env_selected', '')
 
-            if(not id_port or not env_sel):
-                print('Not COM port or environment selected')
+            if(not id_port):
+                self.message_queue.put('None COM port selected\n')
+                return
+
+            if(not env_sel):
+                self.message_queue.put('None environment selected\n')
                 return
 
             command = ['run', '-t uploadlazy --upload-port %s -e %s' %
@@ -674,7 +672,12 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
-                print("Success")
+                self.message_queue.put('Upload success\n')
+                self.Preferences.set('builded_sketch', True)
+            else:
+                self.message_queue.put('Error Uploading\n')
+                self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
         '''CLI
@@ -686,14 +689,16 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
-            print('Cleaning')
+            self.message_queue.put('Cleaning Files\n')
             command = ['run', '-t clean']
 
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
+                self.message_queue.put('Success cleaning files\n')
                 self.Preferences.set('builded_sketch', False)
-                print("Success")
+            else:
+                self.message_queue.put('Error cleaning files\n')
 
     def openInThread(self, type):
         if(type == 'build'):
