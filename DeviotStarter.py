@@ -139,17 +139,29 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
+class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
+
+    def is_enabled(self):
+        check = DeviotFunctions.Preferences().get('enable_menu', False)
+        if(check):
+            check = DeviotFunctions.Preferences().get('env_selected', False)
+            if(len(check) == 0):
+                check = False
+        return check
+
+
 class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     def run(self, board_id):
         DeviotFunctions.Preferences().set('env_selected', board_id)
 
     def is_checked(self, board_id):
-        check = DeviotFunctions.Preferences().get('env_selected', '')
+        check = DeviotFunctions.Preferences().get('env_selected', False)
         return board_id == check
 
     def is_enabled(self):
-        return DeviotFunctions.Preferences().get('enable_menu', False)
+        check = DeviotFunctions.Preferences().get('enable_menu', False)
+        return check
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):

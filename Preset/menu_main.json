@@ -17,6 +17,7 @@
                 "children":[]
             },{
                 "caption": "Select Environment",
+                "command": "parent_environment",
                 "id": "environment",
                 "children":[]
             },
