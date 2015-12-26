@@ -19,6 +19,8 @@ else:
     from . import DeviotPaths
     from . import DeviotMessages
 
+plugin_version = 0.5
+
 
 class DeviotListener(sublime_plugin.EventListener):
     """Starter class
@@ -48,7 +50,6 @@ class DeviotListener(sublime_plugin.EventListener):
             DeviotFunctions.Menu().saveAPIBoards()
 
         DeviotFunctions.Menu().createMainMenu()
-        DeviotFunctions.setVersion('0.5')
 
     def on_activated(self, view):
         """Activated view
@@ -61,7 +62,7 @@ class DeviotListener(sublime_plugin.EventListener):
         Arguments:
                 view {st object} -- stores many info related with ST
         """
-        DeviotFunctions.setStatus(view)
+        DeviotFunctions.setStatus(view, plugin_version)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):

@@ -25,9 +25,6 @@ else:
     from . import DeviotSerial
     from . import DeviotMessages
 
-# Global plugin version
-deviot_version = 0
-
 
 class JSONFile(object):
     '''Handle JSON Files
@@ -802,7 +799,7 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view):
+def setStatus(view, plugin_version=False):
     '''Status bar
 
     Set the info to show in the status bar of Sublime Text.
@@ -814,7 +811,10 @@ def setStatus(view):
     info = []
 
     if isIOTFile(view):
-        info.append('Deviot ' + getVersion())
+        if(not plugin_version):
+            plugin_version = 0
+
+        info.append('Deviot ' + str(plugin_version))
         full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
@@ -854,17 +854,6 @@ def stateFile(view):
         view.run_command('save')
 
     return True
-
-
-def getVersion():
-    '''Plugin Version
-
-    Get the current version of the plugin stored in the preferences file.
-
-    Returns:
-            {String} -- Version of the file (only numbers)
-    '''
-    return deviot_version
 
 
 def setVersion(version):
