@@ -19,7 +19,7 @@ else:
     from . import DeviotPaths
     from . import DeviotMessages
 
-plugin_version = 0.5
+plugin_version = 1.0
 
 
 class DeviotListener(sublime_plugin.EventListener):
