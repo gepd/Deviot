@@ -344,24 +344,72 @@ class Menu(object):
             self.createEnvironmentMenu()
 
     def getTemplateMenu(self, file_name, user_path=False):
+        """Template
+
+        Get the template menu file to be modified by the different methods
+
+        Arguments:
+            file_name {string} -- name of the file including the extension
+
+        Keyword Arguments:
+            user_path {boolean} -- True: get file from Packages/Deviot/Preset
+                             False: get file from Packages/User/Deviot/Preset
+                             (Defaul:False)
+        """
         file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
         preset_data = preset_file.getData()
         return preset_data
 
     def saveTemplateMenu(self, data, file_name, user_path=False):
+        """Template
+
+        Save the menu template in json format
+
+        Arguments:
+            data {json} -- st json object with the data of the menu
+            file_name {string} -- name of  the file including the extension
+
+        Keyword Arguments:
+            user_path {boolean} -- True: save file in Packages/Deviot/Preset
+                             False: save file in Packages/User/Deviot/Preset
+                             (Defaul:False)
+        """
         file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
         preset_file.setData(data)
         preset_file.saveData()
 
     def getSublimeMenu(self, user_path=False):
+        """Main Menu
+
+        Get the data of the different files that make up the main menu
+
+        Keyword Arguments:
+            user_path {boolean} -- True: get file from Packages/Deviot/Preset
+                             False: get file from Packages/User/Deviot/Preset
+                             (Defaul:False)
+        """
         menu_path = DeviotPaths.getSublimeMenuPath(user_path)
         menu_file = JSONFile(menu_path)
         menu_data = menu_file.getData()
         return menu_data
 
     def saveSublimeMenu(self, data, sub_folder=False, user_path=False):
+        """Main Menu
+
+        Save the data in different files to make up the main menu
+
+        Arguments:
+            data {json} -- json st data to create the menu
+
+        Keyword Arguments:
+            sub_folder {string/bool} -- name of the sub folder to save the file
+                                     -- (default: False)
+            user_path {boolean} -- True: Save file in Packages/Deviot/Preset
+                             False: Save file in Packages/User/Deviot/Preset
+                             (Defaul:False)
+        """
         menu_file_path = DeviotPaths.getSublimeMenuPath(sub_folder, user_path)
         file_menu = JSONFile(menu_file_path)
         file_menu.setData(data)

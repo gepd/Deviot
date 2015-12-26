@@ -11,6 +11,12 @@ import os
 
 
 class CommandsPy(object):
+    """Platformio commands
+
+    Class to handle the different functions allowed by
+    the platformio API, to know more information visit
+    the web site: www.platformio.org
+    """
 
     def __init__(self, env_path=False):
         super(CommandsPy, self).__init__()
