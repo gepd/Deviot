@@ -814,7 +814,7 @@ def setStatus(view, plugin_version=False):
         if(not plugin_version):
             plugin_version = 0
 
-        info.append('Deviot ' + str(plugin_version))
+        info.append('Deviot v' + str(plugin_version))
         full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
