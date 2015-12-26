@@ -758,7 +758,7 @@ def platformioCheck():
         if(not CMD_ENV_PATH):
             # Create prefences file
             Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
-            return False
+        return False
 
     CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', False)
 
