@@ -627,6 +627,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         type (checked by isIOTFile)
         '''
         if(not self.execute):
+            self.message_queue.stopPrint()
             return
 
         # initialize the sketch
@@ -657,6 +658,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         it returns an error if any com port is selected
         '''
         if(not self.execute):
+            self.message_queue.stopPrint()
             return
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
