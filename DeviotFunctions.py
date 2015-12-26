@@ -25,6 +25,9 @@ else:
     from . import DeviotSerial
     from . import DeviotMessages
 
+# Global plugin version
+deviot_version = 0
+
 
 class JSONFile(object):
     '''Handle JSON Files
@@ -858,7 +861,7 @@ def getVersion():
     Returns:
             {String} -- Version of the file (only numbers)
     '''
-    return Preferences().get('plugin_version')
+    return deviot_version
 
 
 def setVersion(version):
@@ -869,4 +872,4 @@ def setVersion(version):
     Returns:
             {String} -- Version of the file (only numbers)
      '''
-    Preferences().set('plugin_version', version)
+    deviot_version = version
