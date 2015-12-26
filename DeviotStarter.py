@@ -127,7 +127,7 @@ class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
     def is_enabled(self):
         check = DeviotFunctions.Preferences().get('enable_menu', False)
         if(check):
-            check = DeviotFunctions.Preferences().get('env_selected', False)
+            check = DeviotFunctions.Preferences().get('env_selected', '')
             if(len(check) == 0):
                 check = False
         return check
