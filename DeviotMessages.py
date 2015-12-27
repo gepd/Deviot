@@ -96,5 +96,10 @@ class Console:
             panel_name = 'output.' + self.name
             self.window.run_command("show_panel", {"panel": panel_name})
             self.panel.set_read_only(False)
-            self.panel.run_command("append", {"characters": text})
+            if(python_version < 3):
+                edit = self.panel.begin_edit()
+                self.panel.insert(edit, self.panel.size(), text)
+                self.panel.end_edit(edit)
+            else:
+                self.panel.run_command("append", {"characters": text})
             self.panel.set_read_only(True)
