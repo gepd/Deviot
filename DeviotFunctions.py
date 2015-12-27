@@ -836,7 +836,7 @@ def stateFile(view):
         view = window.active_view()
     if view.file_name() is None:
         tmp_path = DeviotPaths.getDeviotTmpPath()
-        file_name = str(time.time()).split('.')[1]
+        file_name = str(time.time()).split('.')[0]
         file_path = os.path.join(tmp_path, file_name)
         os.makedirs(file_path)
 
