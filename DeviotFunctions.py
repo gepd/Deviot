@@ -540,19 +540,25 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         # user console
         if(console):
+            current_time = time.strftime('%H:%M:%S')
             self.message_queue = DeviotMessages.MessageQueue(console)
             self.message_queue.startPrint()
+            self.message_queue.put('[ Deviot ]\n')
 
         if(view):
             checkFile = stateFile(view)
 
+            if(checkFile[1]):
+                view = checkFile[1]
+            file_name = os.path.basename(view.file_name())
+
             if(not checkFile[0]):
-                self.message_queue.put('This is not a IoT File\n')
+                msg = '%s %s is not a IoT File\n' % (current_time, file_name)
+                self.message_queue.put(msg)
                 self.execute = False
 
             if(self.execute):
                 # work directory handle
-                view = checkFile[1]
                 file_name = DeviotPaths.getFileNameFromPath(view.file_name())
                 currentFilePath = DeviotPaths.getCurrentFilePath(view)
                 cwd = DeviotPaths.getCWD(currentFilePath)
@@ -606,14 +612,28 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         init_boards = self.getSelectedBoards()
 
         if(not init_boards):
-            self.message_queue.put('None board Selected\n')
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s None board Selected\n' % current_time
+
+            self.message_queue.put(msg)
             self.Commands.error_running = True
             return
 
         command = ['init', '%s' % (init_boards)]
 
-        self.message_queue.put('Initializing the project\n')
+        self.start_time = time.time()
+        current_time = time.strftime('%H:%M:%S')
+        msg = '%s Initializing the project | ' % current_time
+
+        self.message_queue.put(msg)
         self.Commands.runCommand(command, self.working_dir, verbose=True)
+
+        if(not self.Commands.error_running):
+            msg = 'Success\n'
+            self.message_queue.put(msg)
+        else:
+            msg = 'Error\n'
+            self.message_queue.put(msg)
 
     def buildSketchProject(self):
         '''CLI
@@ -629,17 +649,27 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         self.initSketchProject()
 
         if(not self.Commands.error_running):
-            self.message_queue.put('Building the project\n')
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s Building the project | ' % current_time
+
+            self.message_queue.put(msg)
 
             command = ['run']
 
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
-                self.message_queue.put('Success\n')
+                current_time = time.strftime('%H:%M:%S')
+                diff_time = time.time() - self.start_time
+                msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
+
+                self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', True)
             else:
-                self.message_queue.put('Error')
+                current_time = time.strftime('%H:%M:%S')
+                msg = 'Error\n%s an error occurred' % current_time
+
+                self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -660,11 +690,17 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             env_sel = self.Preferences.get('env_selected', '')
 
             if(not id_port):
-                self.message_queue.put('None COM port selected\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s None COM port selected\n' % current_time
+
+                self.message_queue.put(msg)
                 return
 
             if(not env_sel):
-                self.message_queue.put('None environment selected\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s None environment selected\n' % current_time
+
+                self.message_queue.put(msg)
                 return
 
             command = ['run', '-t uploadlazy --upload-port %s -e %s' %
@@ -673,10 +709,16 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
-                self.message_queue.put('Upload success\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s Upload success\n' % current_time
+
+                self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', True)
             else:
-                self.message_queue.put('Error Uploading\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s Error Uploading\n' % current_time
+
+                self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -690,16 +732,25 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
-            self.message_queue.put('Cleaning Files\n')
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s Cleaning files...\n' % current_time
+
+            self.message_queue.put(msg)
             command = ['run', '-t clean']
 
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
-                self.message_queue.put('Success cleaning files\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s Success cleaning files\n' % current_time
+
+                self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
             else:
-                self.message_queue.put('Error cleaning files\n')
+                current_time = time.strftime('%H:%M:%S')
+                msg = '%s Error cleaning files\n' % current_time
+
+                self.message_queue.put(msg)
 
     def openInThread(self, type):
         if(type == 'build'):
@@ -828,12 +879,11 @@ def setStatus(view, plugin_version=False):
 
 def stateFile(view):
     ext = '.ino'
+    file_name = view.file_name()
 
     window = view.window()
     views = window.views()
 
-    if view not in views:
-        view = window.active_view()
     if view.file_name() is None:
         tmp_path = DeviotPaths.getDeviotTmpPath()
         file_name = str(time.time()).split('.')[0]
