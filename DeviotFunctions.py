@@ -552,6 +552,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             if(self.execute):
                 # work directory handle
+                view = checkFile
                 file_name = DeviotPaths.getFileNameFromPath(view.file_name())
                 currentFilePath = DeviotPaths.getCurrentFilePath(view)
                 cwd = DeviotPaths.getCWD(currentFilePath)
@@ -826,9 +827,6 @@ def setStatus(view, plugin_version=False):
 
 
 def stateFile(view):
-    if(not isIOTFile(view)):
-        return False
-
     ext = '.ino'
 
     window = view.window()
@@ -858,4 +856,7 @@ def stateFile(view):
     if view.is_dirty():
         view.run_command('save')
 
-    return True
+    if(not isIOTFile(view)):
+        return False
+
+    return view

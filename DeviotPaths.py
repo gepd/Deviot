@@ -130,7 +130,7 @@ def getParentCWD(file_path):
     return parent
 
 
-def getDeviotTmpPath(file_name):
+def getDeviotTmpPath(file_name=False):
     tmp_path = '/tmp'
     os_name = DeviotTools.getOsName()
     if os_name == 'windows':
