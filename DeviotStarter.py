@@ -14,6 +14,7 @@ import sublime_plugin
 if(int(sublime.version()) < 3000):
     import DeviotFunctions
     import DeviotPaths
+    import DeviotMessages
 else:
     from . import DeviotFunctions
     from . import DeviotPaths
