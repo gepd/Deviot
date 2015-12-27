@@ -614,7 +614,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         if(not init_boards):
             current_time = time.strftime('%H:%M:%S')
             msg = '%s None board Selected\n' % current_time
-
             self.message_queue.put(msg)
             self.Commands.error_running = True
             return
@@ -651,7 +650,6 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
             msg = '%s Building the project | ' % current_time
-
             self.message_queue.put(msg)
 
             command = ['run']
@@ -667,7 +665,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 self.Preferences.set('builded_sketch', True)
             else:
                 current_time = time.strftime('%H:%M:%S')
-                msg = 'Error\n%s an error occurred' % current_time
+                msg = 'Error\n%s an error occurred\n' % current_time
 
                 self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
@@ -692,16 +690,19 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             if(not id_port):
                 current_time = time.strftime('%H:%M:%S')
                 msg = '%s None COM port selected\n' % current_time
-
                 self.message_queue.put(msg)
                 return
 
             if(not env_sel):
                 current_time = time.strftime('%H:%M:%S')
                 msg = '%s None environment selected\n' % current_time
-
                 self.message_queue.put(msg)
                 return
+
+            start_time = time.time()
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s Uploading firmware | ' % current_time
+            self.message_queue.put(msg)
 
             command = ['run', '-t uploadlazy --upload-port %s -e %s' %
                        (id_port, env_sel)]
@@ -710,13 +711,14 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             if(not self.Commands.error_running):
                 current_time = time.strftime('%H:%M:%S')
-                msg = '%s Upload success\n' % current_time
+                diff_time = time.time() - start_time
+                msg = 'success\n%s it took %ds\n' % (current_time, diff_time)
 
                 self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', True)
             else:
                 current_time = time.strftime('%H:%M:%S')
-                msg = '%s Error Uploading\n' % current_time
+                msg = 'Error\n%s an error occurred\n' % current_time
 
                 self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
@@ -728,21 +730,26 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         Delete compiled object files, libraries and firmware/program binaries
         if a sketch has been built previously
         '''
+        if(not self.execute):
+            self.message_queue.stopPrint()
+            return
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
         if(builded_sketch):
+            start_time = time.time()
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s Cleaning files...\n' % current_time
-
+            msg = '%s Cleaning built files | ' % current_time
             self.message_queue.put(msg)
+
             command = ['run', '-t clean']
 
             self.Commands.runCommand(command, self.working_dir, verbose=True)
 
             if(not self.Commands.error_running):
                 current_time = time.strftime('%H:%M:%S')
-                msg = '%s Success cleaning files\n' % current_time
+                diff_time = time.time() - start_time
+                msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
 
                 self.message_queue.put(msg)
                 self.Preferences.set('builded_sketch', False)
