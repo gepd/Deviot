@@ -546,13 +546,13 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         if(view):
             checkFile = stateFile(view)
 
-            if(not checkFile):
+            if(not checkFile[0]):
                 self.message_queue.put('This is not a IoT File\n')
                 self.execute = False
 
             if(self.execute):
                 # work directory handle
-                view = checkFile
+                view = checkFile[1]
                 file_name = DeviotPaths.getFileNameFromPath(view.file_name())
                 currentFilePath = DeviotPaths.getCurrentFilePath(view)
                 cwd = DeviotPaths.getCWD(currentFilePath)
@@ -857,6 +857,6 @@ def stateFile(view):
         view.run_command('save')
 
     if(not isIOTFile(view)):
-        return False
+        return (False, None)
 
-    return view
+    return (True, view)
