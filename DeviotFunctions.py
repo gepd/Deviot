@@ -337,7 +337,7 @@ class Menu(object):
                     if(second_menu['id'] == 'initialize'):
                         second_menu['children'] = boards
 
-        self.saveSublimeMenu(data=menu_data, user_path=True)
+        self.saveSublimeMenu(data=menu_data)
 
         env_path = DeviotPaths.getSublimeMenuPath(
             'environment', user_path=True)
@@ -837,17 +837,13 @@ def platformioCheck():
 
     Preferences().set('enable_menu', True)
 
-    install_menu_path = DeviotPaths.getSublimeMenuPath()
-    user_menu_path = DeviotPaths.getSublimeMenuPath(user_path=True)
-
-    # Delete requirement/install file menu
-    if(os.path.exists(install_menu_path)):
-        os.remove(install_menu_path)
-
     # Creates new menu
-    if(not os.path.exists(user_menu_path)):
+    api_boards = DeviotPaths.getTemplateMenuPath('platformio_boards.json',
+                                                 user_path=True)
+
+    if(not os.path.exists(api_boards)):
         Menu().saveAPIBoards()
-        Menu().createMainMenu()
+    Menu().createMainMenu()
 
     # Run serial port listener
     Serial = DeviotSerial.SerialListener(func=Menu().createSerialPortsMenu)
