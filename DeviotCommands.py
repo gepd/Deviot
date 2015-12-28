@@ -62,7 +62,7 @@ class CommandsPy(object):
         if(verbose):
             self.message_queue.put(stdout)
 
-            if(len(stderr) > 0):
+            if(stderr):
                 self.message_queue.put(stderr)
 
         if(return_code != 0):
