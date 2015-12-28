@@ -579,7 +579,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                     os.environ['PLATFORMIO_LIB_DIR'] = library
 
         # Initilized commands
-        env_path = self.Preferences.get('CMD_ENV_PATH', False)
+        env_path = self.Preferences.get('env_path', False)
         self.Commands = DeviotCommands.CommandsPy(env_path, console=console)
 
         # Preferences
@@ -802,9 +802,11 @@ def platformioCheck():
     if can't check for the preferences file,
 
     '''
+    env_path = Preferences().get('env_path', False)
+
     command = ['--version']
 
-    Run = DeviotCommands.CommandsPy()
+    Run = DeviotCommands.CommandsPy(env_path=env_path)
     version = Run.runCommand(command, setReturn=True)
     version = re.sub(r'\D', '', version)
 
@@ -822,18 +824,17 @@ def platformioCheck():
     # Check if the environment path is set in preferences file
     if(Run.error_running):
         Preferences().set('enable_menu', False)
-        CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', False)
 
-        if(not CMD_ENV_PATH):
+        if(not env_path):
             # Create prefences file
-            Preferences().set('CMD_ENV_PATH', 'YOUR-ENVIRONMENT-PATH-HERE')
+            Preferences().set('env_path', 'YOUR-ENVIRONMENT-PATH-HERE')
         return False
 
-    CMD_ENV_PATH = Preferences().get('CMD_ENV_PATH', False)
+    env_path = Preferences().get('env_path', False)
 
     # Set env path to False if it wasn't assigned
-    if(CMD_ENV_PATH == 'YOUR-ENVIRONMENT-PATH-HERE'):
-        Preferences().set('CMD_ENV_PATH', False)
+    if(env_path == 'YOUR-ENVIRONMENT-PATH-HERE'):
+        Preferences().set('env_path', False)
 
     Preferences().set('enable_menu', True)
 
