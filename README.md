@@ -1,5 +1,8 @@
 # Deviot
-Sublime Text plugin for IoT development using [platformio](http://platformio.org/) ecosystem.
+Sublime Text plugin for IoT development using [platformio](http://platformio.org/) ecosystem and supporting more than **180+** boards!
+
+The integration with platformio is not 100% ready, but will be in the near future. 
+If you want to help me, please feel free to do it at any way you can.
 
 ## Setup
 #### Windows
@@ -16,5 +19,12 @@ Sublime Text plugin for IoT development using [platformio](http://platformio.org
 * Install [platformio](http://platformio.org/#!/get-started) `pip install -U platformio`
 * Add a new repository to Sublime Text `https://github.com/gepd/Deviot.git`
 * Install the package `Deviot` from the list
+
+## How to use
+1. Code your firmware
+2. From the **Deviot** menu select one or more boards, an environment to work and a COM port
+3. Build your code
+4. Upload your code
+5. Done!
 
 **This plugin is under development, don't use in a production environment.**
