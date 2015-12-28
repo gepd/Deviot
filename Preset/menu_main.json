@@ -37,6 +37,11 @@
             },
             {"caption": "-"},
             {
+                "caption": "Options",
+                "id":"options",
+                "children": [{"caption":"Show verbose output",
+                              "command":"toggle_verbose"}]
+            },{
                 "caption": "About Deviot",
                 "command": "about_deviot"
             }

@@ -240,6 +240,16 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         return DeviotFunctions.Preferences().get('enable_menu', False)
 
 
+class ToggleVerboseCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        verbose = DeviotFunctions.Preferences().get('verbose_output', False)
+        DeviotFunctions.Preferences().set('verbose_output', not verbose)
+
+    def is_checked(self):
+        return DeviotFunctions.Preferences().get('verbose_output', False)
+
+
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):
