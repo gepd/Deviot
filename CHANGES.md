@@ -1,6 +1,6 @@
 # Deviot Release Notes
 
-### Version 1.0 | 27 Dec 2015
+### Version 1.0 BETA | 27 Dec 2015
 * New instructions when platformio isn't installed
 * New Option to set the environment path
 * New port serial handled with pyserial
