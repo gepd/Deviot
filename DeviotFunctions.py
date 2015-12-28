@@ -580,7 +580,10 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         # Initilized commands
         env_path = self.Preferences.get('CMD_ENV_PATH', False)
-        self.Commands = DeviotCommands.CommandsPy(env_path)
+        self.Commands = DeviotCommands.CommandsPy(env_path, console=console)
+
+        # Preferences
+        self.vbose = self.Preferences.get('verbose_output', False)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -625,7 +628,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         msg = '%s Initializing the project | ' % current_time
 
         self.message_queue.put(msg)
-        self.Commands.runCommand(command, self.working_dir, verbose=True)
+        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             msg = 'Success\n'
@@ -647,28 +650,31 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         # initialize the sketch
         self.initSketchProject()
 
+        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
+            return
+
+        current_time = time.strftime('%H:%M:%S')
+        msg = '%s Building the project | ' % current_time
+        self.message_queue.put(msg)
+
+        command = ['run']
+
+        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s Building the project | ' % current_time
+            diff_time = time.time() - self.start_time
+            msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
+
             self.message_queue.put(msg)
+            self.Preferences.set('builded_sketch', True)
+        else:
+            current_time = time.strftime('%H:%M:%S')
+            msg = 'Error\n%s an error occurred\n' % current_time
 
-            command = ['run']
-
-            self.Commands.runCommand(command, self.working_dir, verbose=True)
-
-            if(not self.Commands.error_running):
-                current_time = time.strftime('%H:%M:%S')
-                diff_time = time.time() - self.start_time
-                msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
-
-                self.message_queue.put(msg)
-                self.Preferences.set('builded_sketch', True)
-            else:
-                current_time = time.strftime('%H:%M:%S')
-                msg = 'Error\n%s an error occurred\n' % current_time
-
-                self.message_queue.put(msg)
-                self.Preferences.set('builded_sketch', False)
+            self.message_queue.put(msg)
+            self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
@@ -683,45 +689,47 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
-        if(builded_sketch):
-            id_port = self.Preferences.get('id_port', '')
-            env_sel = self.Preferences.get('env_selected', '')
+        if(not builded_sketch):
+            return
 
-            if(not id_port):
-                current_time = time.strftime('%H:%M:%S')
-                msg = '%s None COM port selected\n' % current_time
-                self.message_queue.put(msg)
-                return
+        id_port = self.Preferences.get('id_port', '')
+        env_sel = self.Preferences.get('env_selected', '')
 
-            if(not env_sel):
-                current_time = time.strftime('%H:%M:%S')
-                msg = '%s None environment selected\n' % current_time
-                self.message_queue.put(msg)
-                return
-
-            start_time = time.time()
+        if(not id_port):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s Uploading firmware | ' % current_time
+            msg = '%s None COM port selected\n' % current_time
             self.message_queue.put(msg)
+            return
 
-            command = ['run', '-t uploadlazy --upload-port %s -e %s' %
-                       (id_port, env_sel)]
+        if(not env_sel):
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s None environment selected\n' % current_time
+            self.message_queue.put(msg)
+            return
 
-            self.Commands.runCommand(command, self.working_dir, verbose=True)
+        start_time = time.time()
+        current_time = time.strftime('%H:%M:%S')
+        msg = '%s Uploading firmware | ' % current_time
+        self.message_queue.put(msg)
 
-            if(not self.Commands.error_running):
-                current_time = time.strftime('%H:%M:%S')
-                diff_time = time.time() - start_time
-                msg = 'success\n%s it took %ds\n' % (current_time, diff_time)
+        command = ['run', '-t uploadlazy --upload-port %s -e %s' %
+                   (id_port, env_sel)]
 
-                self.message_queue.put(msg)
-                self.Preferences.set('builded_sketch', True)
-            else:
-                current_time = time.strftime('%H:%M:%S')
-                msg = 'Error\n%s an error occurred\n' % current_time
+        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
 
-                self.message_queue.put(msg)
-                self.Preferences.set('builded_sketch', False)
+        if(not self.Commands.error_running):
+            current_time = time.strftime('%H:%M:%S')
+            diff_time = time.time() - start_time
+            msg = 'success\n%s it took %ds\n' % (current_time, diff_time)
+
+            self.message_queue.put(msg)
+            self.Preferences.set('builded_sketch', True)
+        else:
+            current_time = time.strftime('%H:%M:%S')
+            msg = 'Error\n%s an error occurred\n' % current_time
+
+            self.message_queue.put(msg)
+            self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
@@ -736,28 +744,30 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
 
-        if(builded_sketch):
-            start_time = time.time()
+        if(not builded_sketch):
+            return
+
+        start_time = time.time()
+        current_time = time.strftime('%H:%M:%S')
+        msg = '%s Cleaning built files | ' % current_time
+        self.message_queue.put(msg)
+
+        command = ['run', '-t clean']
+
+        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+
+        if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s Cleaning built files | ' % current_time
+            diff_time = time.time() - start_time
+            msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
+
             self.message_queue.put(msg)
+            self.Preferences.set('builded_sketch', False)
+        else:
+            current_time = time.strftime('%H:%M:%S')
+            msg = '%s Error cleaning files\n' % current_time
 
-            command = ['run', '-t clean']
-
-            self.Commands.runCommand(command, self.working_dir, verbose=True)
-
-            if(not self.Commands.error_running):
-                current_time = time.strftime('%H:%M:%S')
-                diff_time = time.time() - start_time
-                msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
-
-                self.message_queue.put(msg)
-                self.Preferences.set('builded_sketch', False)
-            else:
-                current_time = time.strftime('%H:%M:%S')
-                msg = '%s Error cleaning files\n' % current_time
-
-                self.message_queue.put(msg)
+            self.message_queue.put(msg)
 
     def openInThread(self, type):
         if(type == 'build'):
