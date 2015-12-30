@@ -559,28 +559,28 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             if(self.execute):
                 # work directory handle
+                current_file_path = DeviotPaths.getCurrentFilePath(view)
                 file_name = DeviotPaths.getFileNameFromPath(view.file_name())
-                currentFilePath = DeviotPaths.getCurrentFilePath(view)
-                cwd = DeviotPaths.getCWD(currentFilePath)
-                parent = DeviotPaths.getParentCWD(currentFilePath)
-                library = DeviotPaths.getLibraryPath()
+                current_dir = DeviotPaths.getCWD(current_file_path)
+                parent_dir = DeviotPaths.getParentCWD(current_file_path)
                 tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
+                # library = DeviotPaths.getLibraryPath()
+
+                dir = tmp_path
+                self.src = current_dir
 
                 # Check initialized project
-                init = False
-                for file in os.listdir(parent):
+                for file in os.listdir(parent_dir):
                     if(file.endswith('platformio.ini')):
-                        self.working_dir = parent
-                        init = True
-
-                if(not init):
-                    self.working_dir = tmp_path
-                    os.environ['PLATFORMIO_SRC_DIR'] = cwd
-                    os.environ['PLATFORMIO_LIB_DIR'] = library
+                        dir = parent_dir
+                        self.src = False
+                        break
 
         # Initilized commands
         env_path = self.Preferences.get('env_path', False)
-        self.Commands = DeviotCommands.CommandsPy(env_path, console=console)
+        self.Commands = DeviotCommands.CommandsPy(env_path,
+                                                  console=console,
+                                                  cwd=dir)
 
         # Preferences
         self.vbose = self.Preferences.get('verbose_output', False)
@@ -628,7 +628,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         msg = '%s Initializing the project | ' % current_time
 
         self.message_queue.put(msg)
-        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             msg = 'Success\n'
@@ -660,7 +660,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         command = ['run']
 
-        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose, src=self.src)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -715,7 +715,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         command = ['run', '-t uploadlazy --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
-        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -754,7 +754,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         command = ['run', '-t clean']
 
-        self.Commands.runCommand(command, self.working_dir, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')

@@ -24,17 +24,21 @@ class CommandsPy(object):
     the web site: www.platformio.org
     """
 
-    def __init__(self, env_path=False, console=False):
+    def __init__(self, env_path=False, console=False, cwd=None):
         super(CommandsPy, self).__init__()
         self.error_running = False
         self.message_queue = DeviotMessages.MessageQueue(console)
         self.message_queue.startPrint()
+        self.cwd = cwd
 
         # Set the enviroment Path
         if(env_path):
             os.environ['PATH'] = env_path + os.pathsep + os.environ['PATH']
 
-    def runCommand(self, commands, cwd=None, setReturn=False, verbose=False):
+    def runCommand(self, commands, setReturn=False, verbose=False, src=False):
+
+        if(src):
+            os.environ['PLATFORMIO_SRC_DIR'] = src
 
         if(not commands):
             return False
@@ -49,7 +53,7 @@ class CommandsPy(object):
         command = "platformio -f -c sublimetext %s %s" % (options, args)
 
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, cwd=cwd,
+                                   stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
 
         output = process.communicate()
@@ -59,6 +63,7 @@ class CommandsPy(object):
 
         return_code = process.returncode
 
+        print(process.stdout.read())
         if(verbose):
             self.message_queue.put(stdout)
 
