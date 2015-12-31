@@ -144,8 +144,3 @@ def getDeviotTmpPath(file_name=False):
     if(not os.path.isdir(tmp_path)):
         os.makedirs(tmp_path)
     return tmp_path
-
-
-def getFileNameFromPath(path):
-    file_name = os.path.splitext(os.path.basename(path))[0]
-    return file_name
