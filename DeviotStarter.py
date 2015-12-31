@@ -68,11 +68,13 @@ class DeviotListener(sublime_plugin.EventListener):
         DeviotFunctions.setStatus(view, plugin_version)
 
     def on_close(self, view):
+        file_path = view.file_name()
+        if(not file_path):
+            return
+        file_name = DeviotPaths.getFileNameFromPath(file_path)
         tmp_path = DeviotPaths.getDeviotTmpPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
-        file_path = view.file_name()
-        file_name = DeviotPaths.getFileNameFromPath(file_path)
 
         for content in tmp_all:
             if file_name in content:
