@@ -9,6 +9,8 @@ from __future__ import unicode_literals
 import os
 import time
 import sublime
+import shutil
+import glob
 import sublime_plugin
 
 if(int(sublime.version()) < 3000):
@@ -64,6 +66,18 @@ class DeviotListener(sublime_plugin.EventListener):
                 view {st object} -- stores many info related with ST
         """
         DeviotFunctions.setStatus(view, plugin_version)
+
+    def on_close(self, view):
+        tmp_path = DeviotPaths.getDeviotTmpPath()
+        tmp_all = os.path.join(tmp_path, '*')
+        tmp_all = glob.glob(tmp_all)
+        file_path = view.file_name()
+        file_name = DeviotPaths.getFileNameFromPath(file_path)
+
+        for content in tmp_all:
+            if file_name in content:
+                tmp_path = os.path.join(tmp_path, content)
+                shutil.rmtree(tmp_path)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):

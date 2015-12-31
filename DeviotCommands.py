@@ -35,10 +35,7 @@ class CommandsPy(object):
         if(env_path):
             os.environ['PATH'] = env_path + os.pathsep + os.environ['PATH']
 
-    def runCommand(self, commands, setReturn=False, verbose=False, src=False):
-
-        if(src):
-            os.environ['PLATFORMIO_SRC_DIR'] = src
+    def runCommand(self, commands, setReturn=False, verbose=False):
 
         if(not commands):
             return False
@@ -63,7 +60,6 @@ class CommandsPy(object):
 
         return_code = process.returncode
 
-        print(process.stdout.read())
         if(verbose):
             self.message_queue.put(stdout)
 

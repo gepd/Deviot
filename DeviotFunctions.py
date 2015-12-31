@@ -566,13 +566,13 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
                 # library = DeviotPaths.getLibraryPath()
 
-                dir = tmp_path
+                self.dir = tmp_path
                 self.src = current_dir
 
                 # Check initialized project
                 for file in os.listdir(parent_dir):
                     if(file.endswith('platformio.ini')):
-                        dir = parent_dir
+                        self.dir = parent_dir
                         self.src = False
                         break
 
@@ -580,7 +580,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         env_path = self.Preferences.get('env_path', False)
         self.Commands = DeviotCommands.CommandsPy(env_path,
                                                   console=console,
-                                                  cwd=dir)
+                                                  cwd=self.dir)
 
         # Preferences
         self.vbose = self.Preferences.get('verbose_output', False)
@@ -604,6 +604,17 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
             type_boards += '--board=%s ' % board
 
         return type_boards
+
+    def overrideSrc(self, ini_path, src_dir):
+        ini_path = os.path.join(ini_path, 'platformio.ini')
+        header = '[platformio]'
+
+        ini = open(ini_path, 'a+')
+        ini.seek(0)
+        if header not in ini.read():
+            ini.write("\n%s\n" % header)
+            ini.write("src_dir=%s" % src_dir)
+        ini.close()
 
     def initSketchProject(self):
         '''CLI
@@ -633,6 +644,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         if(not self.Commands.error_running):
             msg = 'Success\n'
             self.message_queue.put(msg)
+            if(self.src):
+                self.overrideSrc(self.dir, self.src)
         else:
             msg = 'Error\n'
             self.message_queue.put(msg)
@@ -660,7 +673,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         command = ['run']
 
-        self.Commands.runCommand(command, verbose=self.vbose, src=self.src)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
