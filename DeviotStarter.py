@@ -14,11 +14,9 @@ import glob
 import sublime_plugin
 
 if(int(sublime.version()) < 3000):
-    import DeviotFunctions
     import DeviotPaths
     import DeviotMessages
 else:
-    from . import DeviotFunctions
     from . import DeviotPaths
     from . import DeviotMessages
     from . import DeviotTools
@@ -103,7 +101,7 @@ class CheckRequirementsCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        DeviotFunctions.platformioCheck()
+        PlatformioCLI().platformioCheck()
 
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
@@ -136,19 +134,19 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         Arguments:
                 board_id {string} -- id of the board selected
         """
-        check = DeviotFunctions.Preferences().checkBoard(board_id)
+        check = Preferences().checkBoard(board_id)
         return check
 
     def is_enabled(self):
-        return DeviotFunctions.Preferences().get('enable_menu', False)
+        return Preferences().get('enable_menu', False)
 
 
 class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self):
-        check = DeviotFunctions.Preferences().get('enable_menu', False)
+        check = Preferences().get('enable_menu', False)
         if(check):
-            check = DeviotFunctions.Preferences().get('env_selected', '')
+            check = Preferences().get('env_selected', '')
             if(len(check) == 0):
                 check = False
         return check
@@ -157,14 +155,14 @@ class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
 class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     def run(self, board_id):
-        DeviotFunctions.Preferences().set('env_selected', board_id)
+        Preferences().set('env_selected', board_id)
 
     def is_checked(self, board_id):
-        check = DeviotFunctions.Preferences().get('env_selected', False)
+        check = Preferences().get('env_selected', False)
         return board_id == check
 
     def is_enabled(self):
-        check = DeviotFunctions.Preferences().get('enable_menu', False)
+        check = Preferences().get('enable_menu', False)
         return check
 
 
@@ -202,12 +200,12 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
         view = self.view
         console_name = 'Deviot|Upload' + str(time.time())
         console = DeviotMessages.Console(view.window(), name=console_name)
-        DeviotFunctions.PlatformioCLI(view, console).openInThread('upload')
+        PlatformioCLI(view, console).openInThread('upload')
 
     def is_enabled(self):
-        is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
+        is_enabled = Preferences().get('builded_sketch')
 
-        if(not DeviotFunctions.Preferences().get('enable_menu', False)):
+        if(not Preferences().get('enable_menu', False)):
             is_enabled = False
 
         return is_enabled
@@ -228,12 +226,12 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
         view = self.view
         console_name = 'Deviot|Clean' + str(time.time())
         console = DeviotMessages.Console(view.window(), name=console_name)
-        DeviotFunctions.PlatformioCLI(view, console).openInThread('clean')
+        PlatformioCLI(view, console).openInThread('clean')
 
     def is_enabled(self):
-        is_enabled = DeviotFunctions.Preferences().get('builded_sketch')
+        is_enabled = Preferences().get('builded_sketch')
 
-        if(not DeviotFunctions.Preferences().get('enable_menu', False)):
+        if(not Preferences().get('enable_menu', False)):
             is_enabled = False
 
         return is_enabled
@@ -250,24 +248,24 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self, id_port):
-        DeviotFunctions.Preferences().set('id_port', id_port)
+        Preferences().set('id_port', id_port)
 
     def is_checked(self, id_port):
-        saved_id_port = DeviotFunctions.Preferences().get('id_port')
+        saved_id_port = Preferences().get('id_port')
         return saved_id_port == id_port
 
     def is_enabled(self):
-        return DeviotFunctions.Preferences().get('enable_menu', False)
+        return Preferences().get('enable_menu', False)
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        verbose = DeviotFunctions.Preferences().get('verbose_output', False)
-        DeviotFunctions.Preferences().set('verbose_output', not verbose)
+        verbose = Preferences().get('verbose_output', False)
+        Preferences().set('verbose_output', not verbose)
 
     def is_checked(self):
-        return DeviotFunctions.Preferences().get('verbose_output', False)
+        return Preferences().get('verbose_output', False)
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
