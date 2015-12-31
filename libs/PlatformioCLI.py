@@ -79,6 +79,8 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
                 current_file_path = DeviotPaths.getCurrentFilePath(view)
                 current_dir = DeviotPaths.getCWD(current_file_path)
                 parent_dir = DeviotPaths.getParentCWD(current_file_path)
+                file_name = DeviotTools.getFileNameFromPath(
+                    file_path, ext=False)
                 tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
                 # library = DeviotPaths.getLibraryPath()
 
