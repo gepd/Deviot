@@ -725,7 +725,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         msg = '%s Uploading firmware | ' % current_time
         self.message_queue.put(msg)
 
-        command = ['run', '-t uploadlazy --upload-port %s -e %s' %
+        command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
