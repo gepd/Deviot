@@ -123,7 +123,7 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         Arguments:
                 board_id {string} -- id of the board selected
         """
-        DeviotFunctions.Preferences().boardSelected(board_id)
+        Preferences().boardSelected(board_id, Menu().createEnvironmentMenu)
 
     def is_checked(self, board_id):
         """ST method

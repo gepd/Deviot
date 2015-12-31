@@ -61,7 +61,7 @@ class Preferences(JSONFile):
         value = self.data.get(key, default_value)
         return value
 
-    def boardSelected(self, board_id):
+    def boardSelected(self, board_id, Method):
         '''Choosed board
 
         Add or delete the board selected from the preferences
@@ -85,7 +85,7 @@ class Preferences(JSONFile):
             self.saveData()
         else:
             self.set('board_id', [board_id])
-        # Menu().createEnvironmentMenu()
+        Method()
 
     def checkBoard(self, board_id):
         '''Is checked
