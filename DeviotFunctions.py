@@ -824,7 +824,7 @@ def platformioCheck():
     version = re.sub(r'\D', '', version)
 
     # Check the minimum version
-    if(not Run.error_running and int(version) < 260):
+    if(not Run.error_running and int(version) < 270):
         Preferences().set('enable_menu', False)
         temp_menu = Menu().getSublimeMenu()
 
@@ -909,7 +909,6 @@ def stateFile(view):
     file_name = view.file_name()
 
     window = view.window()
-    views = window.views()
 
     if view.file_name() is None:
         tmp_path = DeviotPaths.getDeviotTmpPath()
