@@ -10,16 +10,18 @@ import sys
 
 
 def getPathFromView(view):
-    if(not view):
-        return None
-
-    window = view.window()
-    views = window.views()
-
-    if view not in views:
-        view = window.active_view()
+    try:
+        window = view.window()
+        views = window.views()
+        if view not in views:
+            view = window.active_view()
+    except:
+        pass
 
     file_view = view.file_name()
+
+    if(not file_view):
+        return None
 
     return file_view
 
