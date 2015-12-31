@@ -266,16 +266,6 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
         return DeviotFunctions.Preferences().get('verbose_output', False)
 
 
-class BuildAlwaysCommand(sublime_plugin.WindowCommand):
-
-    def run(self):
-        build_always = DeviotFunctions.Preferences().get('build_always', False)
-        DeviotFunctions.Preferences().set('build_always', not build_always)
-
-    def is_checked(self):
-        return DeviotFunctions.Preferences().get('build_always', False)
-
-
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):

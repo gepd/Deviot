@@ -39,12 +39,8 @@
             {
                 "caption": "Options",
                 "id":"options",
-                "children": [
-                                {"caption":"Show verbose output",
-                                 "command":"toggle_verbose"},
-                                {"caption":"Always build before upload",
-                                 "command":"build_always"}
-                            ]
+                "children": [{"caption":"Show verbose output",
+                              "command":"toggle_verbose"}]
             },{
                 "caption": "About Deviot",
                 "command": "about_deviot"
