@@ -21,6 +21,10 @@ else:
     from . import DeviotFunctions
     from . import DeviotPaths
     from . import DeviotMessages
+    from . import DeviotTools
+    from .libs.Menu import Menu
+    from .libs.PlatformioCLI import PlatformioCLI
+    from .libs.Preferences import Preferences
 
 plugin_version = 1.0
 
@@ -41,7 +45,7 @@ class DeviotListener(sublime_plugin.EventListener):
         plugin, and running the creation of the differents
         menus located in the top of sublime text
         """
-        if(not DeviotFunctions.platformioCheck()):
+        if(not PlatformioCLI().platformioCheck()):
             return None
 
         super(DeviotListener, self).__init__()
@@ -50,9 +54,9 @@ class DeviotListener(sublime_plugin.EventListener):
             'platformio_boards.json', user_path=True)
 
         if(not os.path.exists(platformio_data)):
-            DeviotFunctions.Menu().saveAPIBoards()
+            Menu().saveAPIBoards(PlatformioCLI().getAPIBoards())
 
-        DeviotFunctions.Menu().createMainMenu()
+        Menu().createMainMenu()
 
     def on_activated(self, view):
         """Activated view
@@ -65,7 +69,7 @@ class DeviotListener(sublime_plugin.EventListener):
         Arguments:
                 view {st object} -- stores many info related with ST
         """
-        DeviotFunctions.setStatus(view, plugin_version)
+        DeviotTools.setStatus(view, plugin_version)
 
     def on_close(self, view):
         file_path = view.file_name()
@@ -178,10 +182,10 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
         view = self.view
         console_name = 'Deviot|Build' + str(time.time())
         console = DeviotMessages.Console(view.window(), name=console_name)
-        DeviotFunctions.PlatformioCLI(view, console).openInThread('build')
+        PlatformioCLI(view, console).openInThread('build')
 
     def is_enabled(self):
-        return DeviotFunctions.Preferences().get('enable_menu', False)
+        return Preferences().get('enable_menu', False)
 
 
 class UploadSketchCommand(sublime_plugin.TextCommand):

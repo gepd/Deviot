@@ -5,7 +5,76 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+import os
 import sys
+
+
+def getPathFromView(view):
+    if(not view):
+        return None
+
+    window = view.window()
+    views = window.views()
+
+    if view not in views:
+        view = window.active_view()
+
+    file_view = view.file_name()
+
+    return file_view
+
+
+def getFileNameFromPath(path, ext=True):
+    if(not path):
+        return None
+
+    # file name with ext
+    file_name = os.path.basename(path)
+
+    # file name without ext
+    if(not ext):
+        file_name = os.path.splitext(file_name)[0]
+
+    return file_name
+
+
+def isIOTFile(view):
+    '''IoT File
+
+    Check if the file in the current view of ST is an allowed
+    IoT file, the files are specified in the exts variable.
+
+    Arguments:
+            view {st object} -- stores many info related with ST
+    '''
+    exts = ['ino', 'pde', 'cpp', 'c', '.S']
+
+    file_path = getPathFromView(view)
+
+    if file_path and file_path.split('.')[-1] in exts:
+        return True
+    return False
+
+
+def setStatus(view, plugin_version=False):
+    '''Status bar
+
+    Set the info to show in the status bar of Sublime Text.
+    This info is showing only when the working file is considered IoT
+
+    Arguments:
+            view {st object} -- stores many info related with ST
+    '''
+    info = []
+
+    if isIOTFile(view):
+        if(not plugin_version):
+            plugin_version = 0
+
+        info.append('Deviot v' + str(plugin_version))
+        full_info = ' | '.join(info)
+
+        view.set_status('Deviot', full_info)
 
 
 def singleton(cls):
