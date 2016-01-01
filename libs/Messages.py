@@ -13,7 +13,7 @@ import time
 try:
     from . import Tools
 except:
-    import libs.Tools
+    from libs import Tools
 
 python_version = Tools.getPythonVersion()
 

@@ -16,8 +16,7 @@ try:
 except:
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
-    import libs.Serial
-    import libs.Paths
+    from libs import Serial, Paths
 
 
 class Menu(object):

@@ -7,13 +7,12 @@ from __future__ import unicode_literals
 
 import time
 import glob
-import sublime
 import threading
 
 try:
     from . import Tools
 except:
-    import libs.Tools
+    from libs import Tools
 
 if Tools.getOsName() == 'windows':
     if Tools.getPythonVersion() < 3:

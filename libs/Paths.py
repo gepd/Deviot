@@ -8,12 +8,11 @@ from __future__ import unicode_literals
 
 import os
 import inspect
-import sublime
 
 try:
     from . import Tools
 except:
-    import libs.Tools
+    from libs import Tools
 
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))

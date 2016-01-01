@@ -31,7 +31,6 @@ class Preferences(JSONFile):
         need to get or set any preference.
         '''
         path = Paths.getPreferencesFile()
-        print(path)
         super(Preferences, self).__init__(path)
 
     def set(self, key, value):

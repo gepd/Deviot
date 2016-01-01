@@ -12,7 +12,7 @@ import os
 try:
     from . import Messages
 except:
-    import Libs.Messages
+    from Libs import Messages
 
 
 class CommandsPy(object):
