@@ -15,7 +15,7 @@ import sublime
 from . import Commands
 from .Messages import MessageQueue
 from . import Paths
-from .. import DeviotSerial
+from .Serial import SerialListener
 from . import Tools
 from .Preferences import Preferences
 from .JSONFile import JSONFile
@@ -402,7 +402,7 @@ class PlatformioCLI(Commands.CommandsPy):
         Menu().createMainMenu()
 
         # Run serial port listener
-        Serial = DeviotSerial.SerialListener(func=Menu().createSerialPortsMenu)
+        Serial = SerialListener(func=Menu().createSerialPortsMenu)
         Serial.start()
 
         return True

@@ -13,7 +13,7 @@ import threading
 if(int(sublime.version()) < 3000):
     import Tools
 else:
-    from .libs import Tools
+    from . import Tools
 
 if Tools.getOsName() == 'windows':
     if Tools.getPythonVersion() < 3:

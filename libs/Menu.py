@@ -10,7 +10,7 @@ import os
 import json
 
 from .Preferences import Preferences
-from .. import DeviotSerial
+from . import Serial
 from . import Paths
 from .JSONFile import JSONFile
 
@@ -152,7 +152,7 @@ class Menu(object):
         Create the list menu 'Serial ports' with the list of all the
         availables serial ports
         '''
-        port_list = DeviotSerial.listSerialPorts()
+        port_list = Serial.listSerialPorts()
 
         if not port_list:
             return False
