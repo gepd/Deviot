@@ -6,14 +6,13 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-import sublime
 import subprocess
 import os
 
-if(int(sublime.version()) < 3000):
-    import Messages
-else:
+try:
     from . import Messages
+except:
+    import Libs.Messages
 
 
 class CommandsPy(object):

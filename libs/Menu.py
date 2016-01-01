@@ -9,10 +9,15 @@ from __future__ import unicode_literals
 import os
 import json
 
-from .Preferences import Preferences
-from . import Serial
-from . import Paths
-from .JSONFile import JSONFile
+try:
+    from . import Serial, Paths
+    from .Preferences import Preferences
+    from .JSONFile import JSONFile
+except:
+    from libs.Preferences import Preferences
+    from libs.JSONFile import JSONFile
+    import libs.Serial
+    import libs.Paths
 
 
 class Menu(object):

@@ -13,15 +13,18 @@ import shutil
 import glob
 import sublime_plugin
 
-if(int(sublime.version()) < 3000):
-    import Paths
-else:
-    from .libs import Paths
-    from .libs.Messages import Console
-    from .libs import Tools
+try:
+    from .libs import Paths, Tools
     from .libs.Menu import Menu
+    from .libs.Messages import Console
     from .libs.PlatformioCLI import PlatformioCLI
     from .libs.Preferences import Preferences
+except:
+    from libs import Paths, Tools
+    from libs.Menu import Menu
+    from libs.Messages import Console
+    from libs.PlatformioCLI import PlatformioCLI
+    from libs.Preferences import Preferences
 
 plugin_version = 101
 

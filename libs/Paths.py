@@ -10,10 +10,11 @@ import os
 import inspect
 import sublime
 
-if(int(sublime.version()) < 3000):
-    import Tools
-else:
+try:
     from . import Tools
+except:
+    import libs.Tools
+
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 

@@ -10,10 +10,10 @@ import glob
 import sublime
 import threading
 
-if(int(sublime.version()) < 3000):
-    import Tools
-else:
+try:
     from . import Tools
+except:
+    import libs.Tools
 
 if Tools.getOsName() == 'windows':
     if Tools.getPythonVersion() < 3:

@@ -10,10 +10,10 @@ import threading
 import sublime
 import time
 
-if(int(sublime.version()) < 3000):
-    import Tools
-else:
+try:
     from . import Tools
+except:
+    import libs.Tools
 
 python_version = Tools.getPythonVersion()
 

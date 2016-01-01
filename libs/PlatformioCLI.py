@@ -12,14 +12,24 @@ import time
 import threading
 import sublime
 
-from .Commands import CommandsPy
-from . import Paths
-from . import Tools
-from .Messages import MessageQueue
-from .Serial import SerialListener
-from .Preferences import Preferences
-from .JSONFile import JSONFile
-from .Menu import Menu
+try:
+    from .Commands import CommandsPy
+    from . import Paths
+    from . import Tools
+    from .Messages import MessageQueue
+    from .Serial import SerialListener
+    from .Preferences import Preferences
+    from .JSONFile import JSONFile
+    from .Menu import Menu
+except:
+    import Paths
+    import Tools
+    from libs.Commands import CommandsPy
+    from libs.Messages import MessageQueue
+    from libs.Serial import SerialListener
+    from libs.Preferences import Preferences
+    from libs.JSONFile import JSONFile
+    from libs.Menu import Menu
 
 
 class PlatformioCLI(CommandsPy):
@@ -147,7 +157,7 @@ class PlatformioCLI(CommandsPy):
             current_time = time.strftime('%H:%M:%S')
             msg = '%s None board Selected\n' % current_time
             self.message_queue.put(msg)
-            self.error_running = True
+            self.Commands.error_running = True
             return
 
         command = ['init', '%s' % (init_boards)]
@@ -157,9 +167,9 @@ class PlatformioCLI(CommandsPy):
         msg = '%s Initializing the project | ' % current_time
 
         self.message_queue.put(msg)
-        self.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
-        if(not self.error_running):
+        if(not self.Commands.error_running):
             msg = 'Success\n'
             self.message_queue.put(msg)
             if(self.src):
@@ -181,7 +191,7 @@ class PlatformioCLI(CommandsPy):
         # initialize the sketch
         self.initSketchProject()
 
-        if(self.error_running):
+        if(self.Commands.error_running):
             self.message_queue.stopPrint()
             return
 
@@ -191,9 +201,9 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run']
 
-        self.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
-        if(not self.error_running):
+        if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
             diff_time = time.time() - self.start_time
             msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
@@ -246,9 +256,9 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
-        self.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
-        if(not self.error_running):
+        if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
             diff_time = time.time() - start_time
             msg = 'success\n%s it took %ds\n' % (current_time, diff_time)
@@ -285,9 +295,9 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run', '-t clean']
 
-        self.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
-        if(not self.error_running):
+        if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
             diff_time = time.time() - start_time
             msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
@@ -323,7 +333,7 @@ class PlatformioCLI(CommandsPy):
         boards = []
         command = ['boards', '--json-output']
 
-        boards = self.runCommand(command, setReturn=True)
+        boards = self.Commands.runCommand(command, setReturn=True)
         return boards
 
     def saveFile(self, view):
