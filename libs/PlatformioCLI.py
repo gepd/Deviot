@@ -110,8 +110,8 @@ class PlatformioCLI(CommandsPy):
                                        console=console,
                                        cwd=self.dir)
 
-            # Preferences
-            self.vbose = self.Preferences.get('verbose_output', False)
+        # Preferences
+        self.vbose = self.Preferences.get('verbose_output', False)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -138,7 +138,7 @@ class PlatformioCLI(CommandsPy):
         header = '[platformio]'
 
         ini = open(ini_path, 'a+')
-        ini.seek(0)
+        ini.seek(0, 2)
         if header not in ini.read():
             ini.write("\n%s\n" % header)
             ini.write("src_dir=%s" % src_dir)
