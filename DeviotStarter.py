@@ -24,7 +24,7 @@ else:
     from .libs.PlatformioCLI import PlatformioCLI
     from .libs.Preferences import Preferences
 
-plugin_version = 1.0
+plugin_version = 101
 
 
 class DeviotListener(sublime_plugin.EventListener):
