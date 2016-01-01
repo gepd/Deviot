@@ -71,9 +71,9 @@ class PlatformioCLI(CommandsPy):
 
             # unsaved file
             if(not file_path):
-                saved_file = self.saveFile(view)
-                if(saved_file[1]):
-                    view = saved_file[1]
+                saved_file = self.saveCodeInFile(view)
+                view = saved_file[1]
+                file_path = Tools.getPathFromView(view)
 
             # check IoT type file
             if(not Tools.isIOTFile(view)):
@@ -87,9 +87,9 @@ class PlatformioCLI(CommandsPy):
                 view.run_command('save')
 
             if(self.execute):
-                current_file_path = Paths.getCurrentFilePath(view)
-                current_dir = Paths.getCWD(current_file_path)
-                parent_dir = Paths.getParentCWD(current_file_path)
+                current_path = Paths.getCurrentFilePath(view)
+                current_dir = Paths.getCWD(current_path)
+                parent_dir = Paths.getParentCWD(current_path)
                 file_name = Tools.getFileNameFromPath(file_path, ext=False)
                 tmp_path = Paths.getDeviotTmpPath(file_name)
                 # library = Paths.getLibraryPath()
@@ -104,14 +104,13 @@ class PlatformioCLI(CommandsPy):
                         self.src = False
                         break
 
-            # Initilized commands
-            env_path = self.Preferences.get('env_path', False)
-            self.Commands = CommandsPy(env_path,
-                                       console=console,
-                                       cwd=self.dir)
+                # Initilized commands
+                env_path = self.Preferences.get('env_path', False)
+                self.Commands = CommandsPy(
+                    env_path, console=console, cwd=self.dir)
 
-        # Preferences
-        self.vbose = self.Preferences.get('verbose_output', False)
+                # user preferences to verbose output
+                self.vbose = self.Preferences.get('verbose_output', False)
 
     def getSelectedBoards(self):
         '''Selected Board(s)
@@ -336,7 +335,7 @@ class PlatformioCLI(CommandsPy):
         boards = self.Commands.runCommand(command, setReturn=True)
         return boards
 
-    def saveFile(self, view):
+    def saveCodeInFile(self, view):
         ext = '.ino'
 
         tmp_path = Paths.getDeviotTmpPath()
