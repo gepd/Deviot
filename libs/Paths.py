@@ -13,7 +13,7 @@ import sublime
 if(int(sublime.version()) < 3000):
     import Tools
 else:
-    from .libs import Tools
+    from . import Tools
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
@@ -21,7 +21,7 @@ current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
 
 def getPluginPath():
-    plugin_path = os.path.dirname(current_file)
+    plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
 # Get the package sublime text path

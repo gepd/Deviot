@@ -14,9 +14,9 @@ import glob
 import sublime_plugin
 
 if(int(sublime.version()) < 3000):
-    import DeviotPaths
+    import Paths
 else:
-    from . import DeviotPaths
+    from .libs import Paths
     from .libs.Messages import Console
     from .libs import Tools
     from .libs.Menu import Menu
@@ -47,11 +47,11 @@ class DeviotListener(sublime_plugin.EventListener):
 
         super(DeviotListener, self).__init__()
 
-        platformio_data = DeviotPaths.getTemplateMenuPath(
+        platformio_data = Paths.getTemplateMenuPath(
             'platformio_boards.json', user_path=True)
 
         if(not os.path.exists(platformio_data)):
-            Menu().saveAPIBoards(PlatformioCLI().getAPIBoards())
+            Menu().saveAPIBoards(PlatformioCLI().getAPIBoards)
 
         Menu().createMainMenu()
 
@@ -73,7 +73,7 @@ class DeviotListener(sublime_plugin.EventListener):
         if(not file_path):
             return
         file_name = Tools.getFileNameFromPath(file_path, ext=False)
-        tmp_path = DeviotPaths.getDeviotTmpPath()
+        tmp_path = Paths.getDeviotTmpPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
 

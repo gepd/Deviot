@@ -11,7 +11,7 @@ import json
 
 from .Preferences import Preferences
 from .. import DeviotSerial
-from .. import DeviotPaths
+from . import Paths
 from .JSONFile import JSONFile
 
 
@@ -194,7 +194,7 @@ class Menu(object):
 
         self.saveSublimeMenu(data=menu_data)
 
-        env_path = DeviotPaths.getSublimeMenuPath(
+        env_path = Paths.getSublimeMenuPath(
             'environment', user_path=True)
 
         if(os.path.isfile(env_path)):
@@ -213,7 +213,7 @@ class Menu(object):
                              False: get file from Packages/User/Deviot/Preset
                              (Defaul:False)
         """
-        file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
+        file_path = Paths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
         preset_data = preset_file.getData()
         return preset_data
@@ -232,7 +232,7 @@ class Menu(object):
                              False: save file in Packages/User/Deviot/Preset
                              (Defaul:False)
         """
-        file_path = DeviotPaths.getTemplateMenuPath(file_name, user_path)
+        file_path = Paths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
         preset_file.setData(data)
         preset_file.saveData()
@@ -247,7 +247,7 @@ class Menu(object):
                              False: get file from Packages/User/Deviot/Preset
                              (Defaul:False)
         """
-        menu_path = DeviotPaths.getSublimeMenuPath(user_path)
+        menu_path = Paths.getSublimeMenuPath(user_path)
         menu_file = JSONFile(menu_path)
         menu_data = menu_file.getData()
         return menu_data
@@ -267,7 +267,7 @@ class Menu(object):
                              False: Save file in Packages/User/Deviot/Preset
                              (Defaul:False)
         """
-        menu_file_path = DeviotPaths.getSublimeMenuPath(sub_folder, user_path)
+        menu_file_path = Paths.getSublimeMenuPath(sub_folder, user_path)
         file_menu = JSONFile(menu_file_path)
         file_menu.setData(data)
         file_menu.saveData()

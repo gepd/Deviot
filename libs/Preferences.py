@@ -7,7 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from .JSONFile import JSONFile
-from .. import DeviotPaths
+from . import Paths
 
 
 class Preferences(JSONFile):
@@ -26,7 +26,8 @@ class Preferences(JSONFile):
         Doing that you avoid to pass the path every time you
         need to get or set any preference.
         '''
-        path = DeviotPaths.getPreferencesFile()
+        path = Paths.getPreferencesFile()
+        print(path)
         super(Preferences, self).__init__(path)
 
     def set(self, key, value):

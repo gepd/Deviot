@@ -14,7 +14,7 @@ import sublime
 
 from . import Commands
 from .Messages import MessageQueue
-from .. import DeviotPaths
+from . import Paths
 from .. import DeviotSerial
 from . import Tools
 from .Preferences import Preferences
@@ -77,12 +77,12 @@ class PlatformioCLI(Commands.CommandsPy):
                 view.run_command('save')
 
             if(self.execute):
-                current_file_path = DeviotPaths.getCurrentFilePath(view)
-                current_dir = DeviotPaths.getCWD(current_file_path)
-                parent_dir = DeviotPaths.getParentCWD(current_file_path)
+                current_file_path = Paths.getCurrentFilePath(view)
+                current_dir = Paths.getCWD(current_file_path)
+                parent_dir = Paths.getParentCWD(current_file_path)
                 file_name = Tools.getFileNameFromPath(file_path, ext=False)
-                tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
-                # library = DeviotPaths.getLibraryPath()
+                tmp_path = Paths.getDeviotTmpPath(file_name)
+                # library = Paths.getLibraryPath()
 
                 self.dir = tmp_path
                 self.src = current_dir
@@ -329,7 +329,7 @@ class PlatformioCLI(Commands.CommandsPy):
     def saveFile(self, view):
         ext = '.ino'
 
-        tmp_path = DeviotPaths.getDeviotTmpPath()
+        tmp_path = Paths.getDeviotTmpPath()
         file_name = str(time.time()).split('.')[0]
         file_path = os.path.join(tmp_path, file_name)
         file_path = os.path.join(file_path, 'src')
@@ -394,11 +394,11 @@ class PlatformioCLI(Commands.CommandsPy):
         self.Preferences.set('enable_menu', True)
 
         # Creates new menu
-        api_boards = DeviotPaths.getTemplateMenuPath('platformio_boards.json',
-                                                     user_path=True)
+        api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
+                                               user_path=True)
 
         if(not os.path.exists(api_boards)):
-            Menu().saveAPIBoards()
+            Menu().saveAPIBoards(self.getAPIBoards)
         Menu().createMainMenu()
 
         # Run serial port listener
