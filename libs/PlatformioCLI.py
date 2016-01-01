@@ -13,7 +13,7 @@ import threading
 import sublime
 
 from . import Commands
-from ..DeviotMessages import MessageQueue
+from .Messages import MessageQueue
 from .. import DeviotPaths
 from .. import DeviotSerial
 from . import Tools

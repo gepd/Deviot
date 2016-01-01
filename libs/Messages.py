@@ -13,7 +13,7 @@ import time
 if(int(sublime.version()) < 3000):
     import Tools
 else:
-    from .libs import Tools
+    from . import Tools
 
 python_version = Tools.getPythonVersion()
 

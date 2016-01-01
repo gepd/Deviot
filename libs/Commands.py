@@ -11,9 +11,9 @@ import subprocess
 import os
 
 if(int(sublime.version()) < 3000):
-    import DeviotMessages
+    import Messages
 else:
-    from .. import DeviotMessages
+    from . import Messages
 
 
 class CommandsPy(object):
@@ -27,7 +27,7 @@ class CommandsPy(object):
     def __init__(self, env_path=False, console=False, cwd=None):
         super(CommandsPy, self).__init__()
         self.error_running = False
-        self.message_queue = DeviotMessages.MessageQueue(console)
+        self.message_queue = Messages.MessageQueue(console)
         self.message_queue.startPrint()
         self.cwd = cwd
 
