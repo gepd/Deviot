@@ -13,7 +13,7 @@ import os
 if(int(sublime.version()) < 3000):
     import DeviotMessages
 else:
-    from . import DeviotMessages
+    from .. import DeviotMessages
 
 
 class CommandsPy(object):

@@ -12,7 +12,7 @@ import time
 import threading
 import sublime
 
-from .. import DeviotCommands
+from . import Commands
 from ..DeviotMessages import MessageQueue
 from .. import DeviotPaths
 from .. import DeviotSerial
@@ -22,7 +22,7 @@ from .JSONFile import JSONFile
 from .Menu import Menu
 
 
-class PlatformioCLI(DeviotCommands.CommandsPy):
+class PlatformioCLI(Commands.CommandsPy):
     '''Platformio
 
     This class handle all the request to the platformio ecosystem.
@@ -30,7 +30,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
     More info about platformio in: http://platformio.org/
 
     Extends:
-            DeviotCommands.CommandsPy
+            Commands.CommandsPy
     '''
 
     def __init__(self, view=False, console=False):
@@ -96,9 +96,9 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
             # Initilized commands
             env_path = self.Preferences.get('env_path', False)
-            self.Commands = DeviotCommands.CommandsPy(env_path,
-                                                      console=console,
-                                                      cwd=self.dir)
+            self.Commands = Commands.CommandsPy(env_path,
+                                                console=console,
+                                                cwd=self.dir)
 
             # Preferences
             self.vbose = self.Preferences.get('verbose_output', False)
@@ -360,7 +360,7 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
 
         command = ['--version']
 
-        Run = DeviotCommands.CommandsPy(env_path=env_path)
+        Run = Commands.CommandsPy(env_path=env_path)
         version = Run.runCommand(command, setReturn=True)
         version = re.sub(r'\D', '', version)
 
