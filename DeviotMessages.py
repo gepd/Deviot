@@ -11,11 +11,11 @@ import sublime
 import time
 
 if(int(sublime.version()) < 3000):
-    import DeviotTools
+    import Tools
 else:
-    from . import DeviotTools
+    from .libs import Tools
 
-python_version = DeviotTools.getPythonVersion()
+python_version = Tools.getPythonVersion()
 
 if python_version < 3:
     import Queue as queue

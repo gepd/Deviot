@@ -11,9 +11,9 @@ import inspect
 import sublime
 
 if(int(sublime.version()) < 3000):
-    import DeviotTools
+    import Tools
 else:
-    from . import DeviotTools
+    from .libs import Tools
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
@@ -132,7 +132,7 @@ def getParentCWD(file_path):
 
 def getDeviotTmpPath(file_name=False):
     tmp_path = '/tmp'
-    os_name = DeviotTools.getOsName()
+    os_name = Tools.getOsName()
     if os_name == 'windows':
         tmp_path = os.environ['tmp']
 

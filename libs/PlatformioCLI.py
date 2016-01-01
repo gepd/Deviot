@@ -13,10 +13,10 @@ import threading
 import sublime
 
 from .. import DeviotCommands
-from .. import DeviotMessages
+from ..DeviotMessages import MessageQueue
 from .. import DeviotPaths
-from .. import DeviotTools
 from .. import DeviotSerial
+from . import Tools
 from .Preferences import Preferences
 from .JSONFile import JSONFile
 from .Menu import Menu
@@ -51,36 +51,36 @@ class PlatformioCLI(DeviotCommands.CommandsPy):
         # user console
         if(console):
             current_time = time.strftime('%H:%M:%S')
-            self.message_queue = DeviotMessages.MessageQueue(console)
+            self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\n')
 
         if(view):
+            file_path = Tools.getPathFromView(view)
+            file_name = Tools.getFileNameFromPath(file_path)
 
-            file_path = DeviotTools.getPathFromView(view)
-            file_name = DeviotTools.getFileNameFromPath(file_path)
-
+            # unsaved file
             if(not file_path):
                 saved_file = self.saveFile(view)
                 if(saved_file[1]):
                     view = saved_file[1]
 
-            if(not DeviotTools.isIOTFile(view)):
+            # check IoT type file
+            if(not Tools.isIOTFile(view)):
                 msg = '%s %s is not a IoT File\n' % (current_time, file_name)
                 self.message_queue.put(msg)
                 self.execute = False
                 return
 
+            # unsaved changes
             if view.is_dirty():
                 view.run_command('save')
 
             if(self.execute):
-                # work directory handle
                 current_file_path = DeviotPaths.getCurrentFilePath(view)
                 current_dir = DeviotPaths.getCWD(current_file_path)
                 parent_dir = DeviotPaths.getParentCWD(current_file_path)
-                file_name = DeviotTools.getFileNameFromPath(
-                    file_path, ext=False)
+                file_name = Tools.getFileNameFromPath(file_path, ext=False)
                 tmp_path = DeviotPaths.getDeviotTmpPath(file_name)
                 # library = DeviotPaths.getLibraryPath()
 

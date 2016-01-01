@@ -11,18 +11,18 @@ import sublime
 import threading
 
 if(int(sublime.version()) < 3000):
-    import DeviotTools
+    import Tools
 else:
-    from . import DeviotTools
+    from .libs import Tools
 
-if DeviotTools.getOsName() == 'windows':
-    if DeviotTools.getPythonVersion() < 3:
+if Tools.getOsName() == 'windows':
+    if Tools.getPythonVersion() < 3:
         import _winreg as winreg
     else:
         import winreg
 
 
-@DeviotTools.singleton
+@Tools.singleton
 class SerialListener(object):
 
     def __init__(self, func=None):
@@ -50,7 +50,7 @@ class SerialListener(object):
 
 
 def listSerialPorts():
-    os_name = DeviotTools.getOsName()
+    os_name = Tools.getOsName()
     if os_name == "windows":
         serial_ports = listWinSerialPorts()
     elif os_name == 'osx':

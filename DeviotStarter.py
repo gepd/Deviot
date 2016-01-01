@@ -19,7 +19,7 @@ if(int(sublime.version()) < 3000):
 else:
     from . import DeviotPaths
     from . import DeviotMessages
-    from . import DeviotTools
+    from .libs import Tools
     from .libs.Menu import Menu
     from .libs.PlatformioCLI import PlatformioCLI
     from .libs.Preferences import Preferences
@@ -67,13 +67,13 @@ class DeviotListener(sublime_plugin.EventListener):
         Arguments:
                 view {st object} -- stores many info related with ST
         """
-        DeviotTools.setStatus(view, plugin_version)
+        Tools.setStatus(view, plugin_version)
 
     def on_close(self, view):
-        file_path = DeviotTools.getPathFromView(view)
+        file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
-        file_name = DeviotTools.getFileNameFromPath(file_path, ext=False)
+        file_name = Tools.getFileNameFromPath(file_path, ext=False)
         tmp_path = DeviotPaths.getDeviotTmpPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
