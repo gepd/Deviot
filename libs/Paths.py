@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import errno
 import inspect
 
 try:
@@ -48,8 +49,12 @@ def getDeviotUserPath():
     user_path = os.path.join(packages_path, 'User')
     deviot_user_path = os.path.join(user_path, 'Deviot')
 
-    if(not os.path.isdir(deviot_user_path)):
-        os.makedirs(deviot_user_path)
+    try:
+        os.mkdir(deviot_user_path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
 
     return deviot_user_path
 
@@ -60,8 +65,12 @@ def getLibraryPath():
     user_path = getDeviotUserPath()
     library_path = os.path.join(user_path, 'libraries')
 
-    if(not os.path.isdir(library_path)):
-        os.makedirs(library_path)
+    try:
+        os.mkdir(library_path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
 
     return library_path
 
@@ -73,8 +82,13 @@ def getTemplateMenuPath(file_name, user_path=False):
         preset_path = getDeviotUserPath()
         preset_path = os.path.join(preset_path, 'Preset')
 
-        if(not os.path.isdir(preset_path)):
-            os.makedirs(preset_path)
+        try:
+            os.mkdir(preset_path)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise exc
+            pass
+
     menu_path = os.path.join(preset_path, file_name)
 
     return menu_path
@@ -88,8 +102,12 @@ def getSublimeMenuPath(sub_folder=False, user_path=False):
     if(sub_folder):
         menu_path = os.path.join(menu_path, sub_folder)
 
-        if(not os.path.isdir(menu_path)):
-            os.makedirs(menu_path)
+        try:
+            os.mkdir(menu_path)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise exc
+            pass
 
     menu_path = os.path.join(menu_path, 'Main.sublime-menu')
 
@@ -141,6 +159,11 @@ def getDeviotTmpPath(file_name=False):
     if(file_name):
         tmp_path = os.path.join(tmp_path, file_name)
 
-    if(not os.path.isdir(tmp_path)):
-        os.makedirs(tmp_path)
+    try:
+        os.mkdir(tmp_path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
     return tmp_path
