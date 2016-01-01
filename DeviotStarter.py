@@ -15,10 +15,9 @@ import sublime_plugin
 
 if(int(sublime.version()) < 3000):
     import DeviotPaths
-    import DeviotMessages
 else:
     from . import DeviotPaths
-    from . import DeviotMessages
+    from .libs.Messages import Console
     from .libs import Tools
     from .libs.Menu import Menu
     from .libs.PlatformioCLI import PlatformioCLI
@@ -179,7 +178,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         console_name = 'Deviot|Build' + str(time.time())
-        console = DeviotMessages.Console(view.window(), name=console_name)
+        console = Console(view.window(), name=console_name)
         PlatformioCLI(view, console).openInThread('build')
 
     def is_enabled(self):
@@ -199,7 +198,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         console_name = 'Deviot|Upload' + str(time.time())
-        console = DeviotMessages.Console(view.window(), name=console_name)
+        console = Console(view.window(), name=console_name)
         PlatformioCLI(view, console).openInThread('upload')
 
     def is_enabled(self):
@@ -225,7 +224,7 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         console_name = 'Deviot|Clean' + str(time.time())
-        console = DeviotMessages.Console(view.window(), name=console_name)
+        console = Console(view.window(), name=console_name)
         PlatformioCLI(view, console).openInThread('clean')
 
     def is_enabled(self):
