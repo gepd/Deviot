@@ -15,17 +15,14 @@ except:
 
 
 class Preferences(JSONFile):
-    '''Preferences
-
+    '''
     Class to handle the preferences of the plugin
 
-    Extends:
-            JSONFile
+    Extends: JSONFile
     '''
 
     def __init__(self):
-        '''Construct
-
+        '''
         Path loads the file where the preferences are stored,
         Doing that you avoid to pass the path every time you
         need to get or set any preference.
@@ -34,46 +31,38 @@ class Preferences(JSONFile):
         super(Preferences, self).__init__(path)
 
     def set(self, key, value):
-        '''Set value
-
+        '''
         Save a value in the preferences file using a list and
         dictionaries.
 
-        Arguments:
-                key {string} -- identifier of the preference
-                value {[type]} -- value of the preference
+        Arguments: key {string} -- identifier of the preference
+                   value {[type]} -- value of the preference
         '''
         self.data[key] = value
         self.saveData()
 
     def get(self, key, default_value=False):
-        '''Get Value
-
+        '''
         Get a value in the preferences file stored as a list and
         dictionaries format.
 
         Arguments:
-                key {string} -- identifier of the preference
+        key {string} -- identifier of the preference
+        default_value {string} -- if there is none value stored
+                    you can set a default value (default: False)
 
-        Keyword Arguments:
-                default_value {string} -- if there is none value stored
-                you can set a default value (default: False)
-
-        Returns:
-                {string} -- Value of the preference
+        Returns: {string} -- Value of the preference
         '''
         value = self.data.get(key, default_value)
         return value
 
     def boardSelected(self, board_id, Method):
-        '''Choosed board
-
+        '''
         Add or delete the board selected from the preferences
         files. The boards are formated in a dictionary in the
         the list 'board id'
 
-        Arguments:
-                board_id {string} -- identifier if the board selected
+        Arguments: board_id {string} -- identifier if the board selected
         '''
         file_data = self.get('board_id', '')
 
@@ -92,12 +81,10 @@ class Preferences(JSONFile):
         Method()
 
     def checkBoard(self, board_id):
-        '''Is checked
-
+        '''
         Check if is necessary to mark or unmark the board selected
 
-        Arguments:
-                board_id {string} -- identifier of the board selected
+        Arguments: board_id {string} -- identifier of the board selected
         '''
         check = False
         if(self.data):

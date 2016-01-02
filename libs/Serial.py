@@ -23,6 +23,9 @@ if Tools.getOsName() == 'windows':
 
 @Tools.singleton
 class SerialListener(object):
+    """
+    Constantly checks if a port has been connected or disconnected
+    """
 
     def __init__(self, func=None):
         self.func = func
@@ -49,6 +52,9 @@ class SerialListener(object):
 
 
 def listSerialPorts():
+    """
+    List all the serial ports availables in the diffents O.S
+    """
     os_name = Tools.getOsName()
     if os_name == "windows":
         serial_ports = listWinSerialPorts()
@@ -61,6 +67,9 @@ def listSerialPorts():
 
 
 def listWinSerialPorts():
+    """
+    List all the serial ports availables in Windows
+    """
     serial_ports = []
     has_ports = False
     path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
@@ -81,6 +90,9 @@ def listWinSerialPorts():
 
 
 def listOsxSerialPorts():
+    """
+    List all the serial ports availables in OS X
+    """
     serial_ports = []
     dev_path = '/dev/'
     dev_names = ['tty.*', 'cu.*']
@@ -91,6 +103,9 @@ def listOsxSerialPorts():
 
 
 def listLinuxSerialPorts():
+    """
+    List all the serial ports availables in Linux
+    """
     serial_ports = []
     dev_path = '/dev/'
     dev_names = ['ttyACM*', 'ttyUSB*']

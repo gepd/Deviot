@@ -24,8 +24,7 @@ else:
 
 
 class MessageQueue(object):
-    """Message Queue
-
+    """
     Print messages in the user console,
     placed in the message queue
     """
@@ -72,8 +71,7 @@ class MessageQueue(object):
 
 
 class Console:
-    """User Console
-
+    """
     Creates the user console to show different messages.
     """
 

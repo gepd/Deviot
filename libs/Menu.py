@@ -20,22 +20,19 @@ except:
 
 
 class Menu(object):
-    '''Plugin Menu
-
+    '''
     Class to handle the differents option in the plugin menu.
     '''
 
     def __init__(self):
-        '''Construct
-
+        '''
         Call the construct of the command library to make the
         differents call by CLI
         '''
         super(Menu, self).__init__()
 
     def saveAPIBoards(self, Method):
-        '''Save board list
-
+        '''
         Save the JSON object in a specific JSON file
         '''
         boards = Method()
@@ -45,14 +42,12 @@ class Menu(object):
         self.saveEnvironmentFile()
 
     def createBoardsMenu(self):
-        '''Board menu
-
+        '''
         Load the JSON file with the list of all boards and re order it
         based on the vendor. after that format the data to operate with
         the standards required for the ST
 
-        Returns:
-                {json array} -- list of all boards to show in the menu
+        Returns: {json array} -- list of all boards to show in the menu
         '''
         vendors = {}
         boards = []
@@ -89,14 +84,12 @@ class Menu(object):
         return boards
 
     def saveEnvironmentFile(self):
-        '''Board menu
-
+        '''
         Load the JSON file with the list of all boards and re order it
         based on the vendor. after that format the data to operate with
         the standards required for the ST
 
-        Returns:
-                {json array} -- list of all boards to show in the menu
+        Returns: {json array} -- list of all boards to show in the menu
         '''
         boards_list = []
 
@@ -126,7 +119,13 @@ class Menu(object):
         self.saveTemplateMenu(boards_list, 'env_boards.json', user_path=True)
 
     def createEnvironmentMenu(self):
-        # load
+        '''
+        Get all the boards selected by the user and creates a JSON
+        file with the list of all environment selected by the user.
+        The file is stored in:
+        Packages/User/Deviot/environment/environment.json
+        '''
+
         env_selecs = Preferences().get('board_id', '')
         env_boards = self.getTemplateMenu('env_boards.json', user_path=True)
 
@@ -151,10 +150,8 @@ class Menu(object):
                              user_path=True)
 
     def createSerialPortsMenu(self):
-        '''Serial ports
-
-        Create the list menu 'Serial ports' with the list of all the
-        availables serial ports
+        '''
+        Creates a menu list with all serial ports available
         '''
         port_list = Serial.listSerialPorts()
 
@@ -177,11 +174,9 @@ class Menu(object):
                              user_path=True)
 
     def createMainMenu(self):
-        '''Main menu
-
+        '''
         Creates the main menu with the differents options
-        including boards, libraries, COM ports, and user
-        options.
+        including boards, libraries, and user options.
         '''
         boards = self.createBoardsMenu()
 
@@ -205,17 +200,14 @@ class Menu(object):
             self.createEnvironmentMenu()
 
     def getTemplateMenu(self, file_name, user_path=False):
-        """Template
-
+        """
         Get the template menu file to be modified by the different methods
 
-        Arguments:
-            file_name {string} -- name of the file including the extension
-
-        Keyword Arguments:
-            user_path {boolean} -- True: get file from Packages/Deviot/Preset
-                             False: get file from Packages/User/Deviot/Preset
-                             (Defaul:False)
+        Arguments
+        file_name {string} -name of the file including the extension
+        user_path {boolean} -- True: get file from Packages/Deviot/Preset
+                            --False: get file from Packages/User/Deviot/Preset
+                              (Defaul:False)
         """
         file_path = Paths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
@@ -223,18 +215,15 @@ class Menu(object):
         return preset_data
 
     def saveTemplateMenu(self, data, file_name, user_path=False):
-        """Template
-
+        """
         Save the menu template in json format
 
         Arguments:
-            data {json} -- st json object with the data of the menu
-            file_name {string} -- name of  the file including the extension
-
-        Keyword Arguments:
-            user_path {boolean} -- True: save file in Packages/Deviot/Preset
-                             False: save file in Packages/User/Deviot/Preset
-                             (Defaul:False)
+        data {json} -- st json object with the data of the menu
+        file_name {string} -- name of  the file including the extension
+        user_path {boolean} -- True: save file in Packages/Deviot/Preset
+                            --False: save file in Packages/User/Deviot/Preset
+                              (Defaul:False)
         """
         file_path = Paths.getTemplateMenuPath(file_name, user_path)
         preset_file = JSONFile(file_path)
@@ -242,14 +231,13 @@ class Menu(object):
         preset_file.saveData()
 
     def getSublimeMenu(self, user_path=False):
-        """Main Menu
-
+        """
         Get the data of the different files that make up the main menu
 
         Keyword Arguments:
-            user_path {boolean} -- True: get file from Packages/Deviot/Preset
-                             False: get file from Packages/User/Deviot/Preset
-                             (Defaul:False)
+        user_path {boolean} -- True: get file from Packages/Deviot/Preset
+                            --False: get file from Packages/User/Deviot/Preset
+                              (Defaul:False)
         """
         menu_path = Paths.getSublimeMenuPath(user_path)
         menu_file = JSONFile(menu_path)
@@ -257,19 +245,18 @@ class Menu(object):
         return menu_data
 
     def saveSublimeMenu(self, data, sub_folder=False, user_path=False):
-        """Main Menu
-
+        """
         Save the data in different files to make up the main menu
 
         Arguments:
-            data {json} -- json st data to create the menu
+        data {json} -- json st data to create the menu
 
         Keyword Arguments:
-            sub_folder {string/bool} -- name of the sub folder to save the file
-                                     -- (default: False)
-            user_path {boolean} -- True: Save file in Packages/Deviot/Preset
-                             False: Save file in Packages/User/Deviot/Preset
-                             (Defaul:False)
+        sub_folder {string/bool} -- name of the sub folder to save the file
+                                 -- (default: False)
+        user_path {boolean} -- True: Save file in Packages/Deviot/Preset
+                            -- False: Save file in Packages/User/Deviot/Preset
+                               (Defaul:False)
         """
         menu_file_path = Paths.getSublimeMenuPath(sub_folder, user_path)
         file_menu = JSONFile(menu_file_path)

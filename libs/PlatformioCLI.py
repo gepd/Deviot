@@ -33,27 +33,23 @@ except:
 
 
 class PlatformioCLI(CommandsPy):
-    '''Platformio
-
+    '''
     This class handle all the request to the platformio ecosystem.
     From the list of boards to the build/upload of the sketchs.
     More info about platformio in: http://platformio.org/
 
-    Extends:
-            CommandsPy
+    Extends: CommandsPy
     '''
 
     def __init__(self, view=False, console=False):
-        '''Construct
-
+        '''
         Initialize the command and preferences classes, to check
         if the current work file is an IoT type it received the view
         parameter (ST parameter). This parameter is necessary only in
         the options like build or upload.
 
         Keyword Arguments:
-                view {st object} -- stores many info related with
-                                                        ST (default: False)
+        view {st object} -- stores many info related with ST (default: False)
         '''
         self.execute = True
         self.Preferences = Preferences()
@@ -113,13 +109,11 @@ class PlatformioCLI(CommandsPy):
                 self.vbose = self.Preferences.get('verbose_output', False)
 
     def getSelectedBoards(self):
-        '''Selected Board(s)
-
+        '''
         Get the board(s) list selected, from the preferences file, to
         be initialized and formated to be used in the platformio CLI
 
-        Returns:
-                {string} boards list in platformio CLI format
+        Returns: {string} boards list in platformio CLI format
         '''
         boards = self.Preferences.get('board_id', '')
         type_boards = ''
@@ -144,8 +138,7 @@ class PlatformioCLI(CommandsPy):
         ini.close()
 
     def initSketchProject(self):
-        '''CLI
-
+        '''
         command to initialize the board(s) selected by the user. This
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
@@ -178,8 +171,7 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg)
 
     def buildSketchProject(self):
-        '''CLI
-
+        '''
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
         '''
@@ -218,8 +210,7 @@ class PlatformioCLI(CommandsPy):
         self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
-        '''CLI
-
+        '''
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
         '''
@@ -273,8 +264,7 @@ class PlatformioCLI(CommandsPy):
         self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
-        '''CLI
-
+        '''
         Delete compiled object files, libraries and firmware/program binaries
         if a sketch has been built previously
         '''
@@ -310,6 +300,12 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg)
 
     def openInThread(self, type):
+        """
+        Opens each action; build/upload/clean in a new thread
+
+        Arguments: type {string} -- type of action.
+                   Valid values: build/upload/clean
+        """
         if(type == 'build'):
             action_thread = threading.Thread(target=self.buildSketchProject)
             action_thread.start()
@@ -321,13 +317,11 @@ class PlatformioCLI(CommandsPy):
             action_thread.start()
 
     def getAPIBoards(self):
-        '''Get boards list
+        '''
+        Get the list of boards from platformIO API using CLI.
+        To know more info about platformIO visit:  http://www.platformio.org/
 
-        Get the boards list from the platformio API using CLI.
-        to know more about platformio visit:  http://www.platformio.org/
-
-        Returns:
-                {json object} -- list with all boards in a JSON format
+        Returns: {json object} -- list with all boards in a JSON format
         '''
         boards = []
         command = ['boards', '--json-output']
@@ -336,6 +330,12 @@ class PlatformioCLI(CommandsPy):
         return boards
 
     def saveCodeInFile(self, view):
+        """
+        If the sketch in the current view has been not saved, it generate
+        a random name and stores in a temp folder.
+
+        Arguments: view {ST Object} -- Object with multiples options of ST
+        """
         ext = '.ino'
 
         tmp_path = Paths.getDeviotTmpPath()
@@ -360,10 +360,10 @@ class PlatformioCLI(CommandsPy):
         return (True, view)
 
     def platformioCheck(self):
-        '''Platformio
-        Check if is possible to run a platformio command
-        if can't check for the preferences file,
-
+        '''
+        Check if is possible to run a platformIO command
+        if isn't, get the env_path value set by the user,
+        from the preferences file and tries to run it again
         '''
         env_path = self.Preferences.get('env_path', False)
 

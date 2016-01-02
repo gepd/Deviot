@@ -123,7 +123,7 @@ def getPreferencesFile():
 
 def getJSONFile(file_name):
     preset_path = getPresetPath()
-    main_file_path = os.path.join(preset_path, file_name)  # 'menu_main.json'
+    main_file_path = os.path.join(preset_path, file_name)
     return main_file_path
 
 

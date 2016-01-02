@@ -10,6 +10,11 @@ import sys
 
 
 def getPathFromView(view):
+    """
+    Gets the path of the file open in the current ST view
+
+    Arguments: view {ST Object} -- Sublime Text Object
+    """
     try:
         window = view.window()
         views = window.views()
@@ -27,6 +32,13 @@ def getPathFromView(view):
 
 
 def getFileNameFromPath(path, ext=True):
+    """
+    Gets the name of the file from a path
+
+    Arguments:
+    path {string} -- path to extract the name
+    ext {boolean} -- define if the extension is included or not (default: True)
+    """
     if(not path):
         return None
 
@@ -41,13 +53,11 @@ def getFileNameFromPath(path, ext=True):
 
 
 def isIOTFile(view):
-    '''IoT File
-
+    '''
     Check if the file in the current view of ST is an allowed
     IoT file, the files are specified in the exts variable.
 
-    Arguments:
-            view {st object} -- stores many info related with ST
+    Arguments:  view {st object} -- stores many info related with ST
     '''
     exts = ['ino', 'pde', 'cpp', 'c', '.S']
 
@@ -59,13 +69,11 @@ def isIOTFile(view):
 
 
 def setStatus(view, plugin_version=False):
-    '''Status bar
-
-    Set the info to show in the status bar of Sublime Text.
+    '''
+    Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
 
-    Arguments:
-            view {st object} -- stores many info related with ST
+    Arguments: view {st object} -- stores many info related with ST
     '''
     info = []
 
@@ -90,6 +98,9 @@ def singleton(cls):
 
 
 def getOsName():
+    """
+    Gets the name of the S.O running in the system
+    """
     name = sys.platform
 
     if name == 'win32':
@@ -104,5 +115,8 @@ def getOsName():
 
 
 def getPythonVersion():
+    """
+    Gets the version of the python running in the system
+    """
     python_version = sys.version_info[0]
     return python_version

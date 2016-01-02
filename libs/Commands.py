@@ -16,8 +16,7 @@ except:
 
 
 class CommandsPy(object):
-    """Platformio commands
-
+    """
     Class to handle the different functions allowed by
     the platformio API, to know more information visit
     the web site: www.platformio.org
@@ -35,6 +34,9 @@ class CommandsPy(object):
             os.environ['PATH'] = env_path + os.pathsep + os.environ['PATH']
 
     def runCommand(self, commands, setReturn=False, verbose=False):
+        """
+        Runs a CLI command to  do/get the differents options from platformIO
+        """
 
         if(not commands):
             return False

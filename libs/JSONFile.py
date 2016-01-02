@@ -11,19 +11,16 @@ import codecs
 
 
 class JSONFile(object):
-    '''Handle JSON Files
-
-    This class allow to load and save JSON files
+    '''
+    This class allows to load and save JSON files
     '''
 
     def __init__(self, path):
-        '''JSONFile Construct
+        '''
+        This construct loads a file when is called and
+        load the information in a global object
 
-        This construct load a file when is called and
-        load the information in a global variable
-
-        Arguments:
-                path {string} -- Full path of the JSON file
+        Arguments: path {string} -- Full path of the JSON file
         '''
         super(JSONFile, self).__init__()
         self.setEncoding()
@@ -32,8 +29,7 @@ class JSONFile(object):
         self.loadData()
 
     def loadData(self):
-        '''Load JSON File
-
+        '''
         Load the content of a JSON file and
         deserialize it to set the information
         in a global object called data
@@ -49,34 +45,29 @@ class JSONFile(object):
             pass
 
     def getData(self):
-        '''Ouput data
-
+        '''
         It's an alternative way to get the data obtained from
         the JSON file. The other way is using only the 'data'
         global object.
 
-        Returns:
-                {miltiple} -- mutiple type of data stored in the
-                                          differents files.
+        Returns: {miltiple} -- mutiple type of data stored in the
+                                                differents files.
         '''
         return self.data
 
     def setData(self, data):
-        '''Set the JSON data
-
+        '''
         Save the data in the file setted on the
         construct. This method is most used in
         the preferences class.
 
-        Arguments:
-                data {string} -- data to save in the JSON file.
+        Arguments: data {string} -- data to save in the JSON file.
         '''
         self.data = data
         self.saveData()
 
     def saveData(self):
-        '''Save JSON data
-
+        '''
         Serialize the data stored in the global object data
         and call to Write file. This function is called automatically
         when any data is set in the method SetData.
@@ -86,15 +77,13 @@ class JSONFile(object):
         self.writeFile(text)
 
     def readFile(self):
-        '''Read File
-
+        '''
         Read the data from the file specified in the global object path.
         The data readed is encoded with the format specified in the global
         object encoding, by default this object is UTF-8. Use this method
         if you don't want to modify the data received from the file.
 
-        Returns:
-                text {string} -- encoded text readed from file
+        Returns: text {string} -- encoded text readed from file
         '''
         text = ''
 
@@ -115,12 +104,9 @@ class JSONFile(object):
         object is UTF-8. Use this method if you don't want to modify the data
         to write.
 
-        Arguments:
-                text {string} -- Text to write in the file
-
-        Keyword Arguments:
-                append {boolean} -- Set to True if you want to append the data
-                in the file (default: False)
+        Arguments: text {string} -- Text to write in the file
+                   append {boolean} -- Set to True if you want to append the
+                   data in the file (default: False)
         '''
         mode = 'w'
 
@@ -133,12 +119,11 @@ class JSONFile(object):
             pass
 
     def setEncoding(self, encoding='utf-8'):
-        '''Change encoding
-
+        '''
         Call this method to change the format to encode the files when you
         load it or save it.
 
-        Keyword Arguments:
-                encoding {string} -- Format to encoding (default: UTF-8 )
+        Keyword Arguments: encoding {string} -- Format to encoding
+                                                    default: UTF-8
         '''
         self.encoding = encoding
