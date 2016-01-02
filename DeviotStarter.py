@@ -20,13 +20,12 @@ try:
     from .libs.PlatformioCLI import PlatformioCLI
     from .libs.Preferences import Preferences
 except:
-    from libs import Paths, Tools
+    from libs import Paths
+    from libs import Tools
     from libs.Menu import Menu
     from libs.Messages import Console
     from libs.PlatformioCLI import PlatformioCLI
     from libs.Preferences import Preferences
-
-plugin_version = 101
 
 
 class DeviotListener(sublime_plugin.EventListener):
@@ -59,7 +58,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        Tools.setStatus(view, plugin_version)
+        Tools.setStatus(view)
 
     def on_close(self, view):
         """

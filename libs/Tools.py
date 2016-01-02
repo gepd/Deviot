@@ -8,6 +8,12 @@ from __future__ import unicode_literals
 import os
 import sys
 
+try:
+    from . import __version__, __title__
+except:
+    import __version__
+    import __title__
+
 
 def getPathFromView(view):
     """
@@ -68,7 +74,7 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view, plugin_version=False):
+def setStatus(view):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
@@ -78,10 +84,8 @@ def setStatus(view, plugin_version=False):
     info = []
 
     if isIOTFile(view):
-        if(not plugin_version):
-            plugin_version = 0
 
-        info.append('Deviot v' + str(plugin_version))
+        info.append(__title__ + ' v' + str(__version__))
         full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
