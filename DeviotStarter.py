@@ -9,9 +9,9 @@ from __future__ import unicode_literals
 import os
 import time
 import sublime
-import shutil
 import glob
 import sublime_plugin
+from shutil import rmtree
 
 try:
     from .libs import Paths, Tools
@@ -30,20 +30,15 @@ plugin_version = 101
 
 
 class DeviotListener(sublime_plugin.EventListener):
-    """Starter class
-
+    """
     This is the first class to run when the plugin is excecuted
-
-    Extends:
-            sublime_plugin.EventListener
+    Extends: sublime_plugin.EventListener
     """
 
     def __init__(self):
-        """ Constructor
-
-        In this constructor is setted the version of the
-        plugin, and running the creation of the differents
-        menus located in the top of sublime text
+        """
+        Checks if platformIO is installed and normally running,
+        creates a json file with all boards availables
         """
         if(not PlatformioCLI().platformioCheck()):
             return None
@@ -59,19 +54,19 @@ class DeviotListener(sublime_plugin.EventListener):
         Menu().createMainMenu()
 
     def on_activated(self, view):
-        """Activated view
+        """
+        Set the current version of Deviot
 
-        When any tab is activated, this fuction runs.
-        From here the plugin detects if the current
-        tab is working with any file allowed to working
-        with this plugin
-
-        Arguments:
-                view {st object} -- stores many info related with ST
+        Arguments: view {ST object} -- Sublime Text Object
         """
         Tools.setStatus(view, plugin_version)
 
     def on_close(self, view):
+        """
+        When a sketch is closed, temp files are deleted
+
+        Arguments: view {ST object} -- Sublime Text Object
+        """
         file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
@@ -83,11 +78,11 @@ class DeviotListener(sublime_plugin.EventListener):
         for content in tmp_all:
             if file_name in content:
                 tmp_path = os.path.join(tmp_path, content)
-                shutil.rmtree(tmp_path)
+                rmtree(tmp_path, ignore_errors=False)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
-    """Install
+    """
         This command send the user to a website with platformio install
         instructions
     """
@@ -100,6 +95,7 @@ class PlatformioInstallCommand(sublime_plugin.WindowCommand):
 class CheckRequirementsCommand(sublime_plugin.WindowCommand):
     """
         Check the if minimum requirements has been established
+        detailed information in libs/PlatformioCLI.py
     """
 
     def run(self):
@@ -107,34 +103,28 @@ class CheckRequirementsCommand(sublime_plugin.WindowCommand):
 
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
-    """Select Board Trigger
-
+    """
     This class trigger two methods to know what board(s)
     were chosen and to store it in a preference file.
 
-    Extends:
-            sublime_plugin.WindowCommand
+    Extends: sublime_plugin.WindowCommand
     """
 
     def run(self, board_id):
-        """ST method
-
+        """
         Get the ID of the board selected and store it in a
         preference file.
 
-        Arguments:
-                board_id {string} -- id of the board selected
+        Arguments: board_id {string} -- id of the board selected
         """
         Preferences().boardSelected(board_id, Menu().createEnvironmentMenu)
 
     def is_checked(self, board_id):
-        """ST method
-
+        """
         Check if the node in the menu is check or not, this
         function need to return always a bolean
 
-        Arguments:
-                board_id {string} -- id of the board selected
+        Arguments: board_id {string} -- id of the board selected
         """
         check = Preferences().checkBoard(board_id)
         return check
@@ -143,7 +133,13 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return Preferences().get('enable_menu', False)
 
 
-class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
+class MainEnvironmentCommand(sublime_plugin.WindowCommand):
+    """
+    Enable or disable the "Select environment" menu if none board
+    is selected from the list.
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def is_enabled(self):
         check = Preferences().get('enable_menu', False)
@@ -155,6 +151,12 @@ class ParentEnvironmentCommand(sublime_plugin.WindowCommand):
 
 
 class SelectEnvCommand(sublime_plugin.WindowCommand):
+    """
+    Stores the environment option selected by the user in
+    the preferences files
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self, board_id):
         Preferences().set('env_selected', board_id)
@@ -169,13 +171,12 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
-    """Build Sketch Trigger
+    """
+    Trigger a method to build the files in the current
+    view, initializes the console to show the state of
+    the process
 
-    This class trigger one method to build the files in the
-    current working project
-
-    Extends:
-            sublime_plugin.WindowCommand
+    Extends: sublime_plugin.TextCommand
     """
 
     def run(self, edit):
@@ -189,13 +190,12 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
 
 
 class UploadSketchCommand(sublime_plugin.TextCommand):
-    """ST Method
+    """
+    Trigger a method to upload the files in the current
+    view, initializes the console to show the state of
+    the process
 
-    This class trigger one method to upload the files in the
-    current working project
-
-    Extends:
-            sublime_plugin.TextCommand
+    Extends: sublime_plugin.TextCommand
     """
 
     def run(self, edit):
@@ -214,14 +214,11 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
 
 
 class CleanSketchCommand(sublime_plugin.TextCommand):
-    """ST Method
+    """
+    Trigger a method to delete firmware/program binaries compiled
+    if a sketch has been built previously
 
-    This class trigger one method to delete compiled object files,
-    libraries and firmware/program binaries if a sketch has been
-    built previously
-
-    Extends:
-            sublime_plugin.TextCommand
+    Extends: sublime_plugin.TextCommand
     """
 
     def run(self, edit):
@@ -240,13 +237,11 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
 
 
 class SelectPortCommand(sublime_plugin.WindowCommand):
-    """Select port
+    """
+    Saves the port COM selected by the user in the
+    preferences file.
 
-    Save in the preferences file, the port com to upload the sketch
-    when the upload command is use
-
-    Extends:
-            sublime_plugin.WindowCommand
+    Extends: sublime_plugin.WindowCommand
     """
 
     def run(self, id_port):
@@ -261,6 +256,12 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the verbose output option selected by the user in the
+    preferences file.
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         verbose = Preferences().get('verbose_output', False)
@@ -271,6 +272,11 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
+    """
+    Show the Deviot github site.
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         sublime.run_command('open_url', {'url':

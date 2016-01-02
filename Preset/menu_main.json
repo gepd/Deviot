@@ -7,11 +7,11 @@
         [            
             {
                 "caption": "Select board(s)",
-                "id": "initialize",
+                "id": "select_board",
                 "children":[]
             },{
                 "caption": "Select Environment",
-                "command": "parent_environment",
+                "command": "main_environment",
                 "id": "environment",
                 "children":[]
             },

@@ -193,7 +193,7 @@ class Menu(object):
         for first_menu in menu_data[0]:
             for second_menu in menu_data[0][first_menu]:
                 if 'children' in second_menu:
-                    if(second_menu['id'] == 'initialize'):
+                    if(second_menu['id'] == 'select_board'):
                         second_menu['children'] = boards
 
         self.saveSublimeMenu(data=menu_data)
