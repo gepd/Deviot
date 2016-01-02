@@ -1,5 +1,7 @@
 [
     {"keys": ["alt+d", "alt+b"], "command": "build_sketch"},
     {"keys": ["alt+d", "alt+u"], "command": "upload_sketch"},
-    {"keys": ["alt+d", "alt+c"], "command": "clean_sketch"}
+    {"keys": ["alt+d", "alt+c"], "command": "clean_sketch"},
+    {"keys": ["alt+b", "alt+o"], "command": "toggle_verbose"},
+    {"keys": ["alt+u", "alt+b"], "command": "update_board_list"}
 ]
