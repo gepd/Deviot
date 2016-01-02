@@ -53,6 +53,7 @@ class PlatformioCLI(CommandsPy):
         '''
         self.execute = True
         self.Preferences = Preferences()
+        self.env_path = Preferences().get('env_path', False)
 
         # user console
         if(console):
@@ -101,9 +102,8 @@ class PlatformioCLI(CommandsPy):
                         break
 
                 # Initilized commands
-                env_path = self.Preferences.get('env_path', False)
                 self.Commands = CommandsPy(
-                    env_path, console=console, cwd=self.dir)
+                    self.env_path, console=console, cwd=self.dir)
 
                 # user preferences to verbose output
                 self.vbose = self.Preferences.get('verbose_output', False)
@@ -324,9 +324,10 @@ class PlatformioCLI(CommandsPy):
         Returns: {json object} -- list with all boards in a JSON format
         '''
         boards = []
-        command = ['boards', '--json-output']
+        Run = CommandsPy(env_path=self.env_path)
 
-        boards = self.Commands.runCommand(command, setReturn=True)
+        command = ['boards', '--json-output']
+        boards = Run.runCommand(command, setReturn=True)
         return boards
 
     def saveCodeInFile(self, view):
@@ -365,11 +366,9 @@ class PlatformioCLI(CommandsPy):
         if isn't, get the env_path value set by the user,
         from the preferences file and tries to run it again
         '''
-        env_path = self.Preferences.get('env_path', False)
-
         command = ['--version']
 
-        Run = CommandsPy(env_path=env_path)
+        Run = CommandsPy(env_path=self.env_path)
         version = Run.runCommand(command, setReturn=True)
         version = re.sub(r'\D', '', version)
 
@@ -389,15 +388,13 @@ class PlatformioCLI(CommandsPy):
         if(Run.error_running):
             self.Preferences.set('enable_menu', False)
 
-            if(not env_path):
+            if(not self.env_path):
                 # Create prefences file
                 self.Preferences.set('env_path', 'YOUR-ENVIRONMENT-PATH-HERE')
             return False
 
-        env_path = self.Preferences.get('env_path', False)
-
         # Set env path to False if it wasn't assigned
-        if(env_path == 'YOUR-ENVIRONMENT-PATH-HERE'):
+        if(self.env_path == 'YOUR-ENVIRONMENT-PATH-HERE'):
             self.Preferences.set('env_path', False)
 
         self.Preferences.set('enable_menu', True)
@@ -407,7 +404,7 @@ class PlatformioCLI(CommandsPy):
                                                user_path=True)
 
         if(not os.path.exists(api_boards)):
-            Menu().saveAPIBoards(self.getAPIBoards)
+            Menu().saveAPIBoards(boards=self.getAPIBoards())
         Menu().createMainMenu()
 
         # Run serial port listener

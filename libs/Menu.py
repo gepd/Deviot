@@ -31,11 +31,10 @@ class Menu(object):
         '''
         super(Menu, self).__init__()
 
-    def saveAPIBoards(self, Method):
+    def saveAPIBoards(self, boards):
         '''
         Save the JSON object in a specific JSON file
         '''
-        boards = Method()
 
         self.saveTemplateMenu(
             data=boards, file_name='platformio_boards.json', user_path=True)
