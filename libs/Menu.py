@@ -31,15 +31,6 @@ class Menu(object):
         '''
         super(Menu, self).__init__()
 
-    def saveAPIBoards(self, boards):
-        '''
-        Save the JSON object in a specific JSON file
-        '''
-
-        self.saveTemplateMenu(
-            data=boards, file_name='platformio_boards.json', user_path=True)
-        self.saveEnvironmentFile()
-
     def createBoardsMenu(self):
         '''
         Load the JSON file with the list of all boards and re order it
@@ -81,41 +72,6 @@ class Menu(object):
         boards = sorted(boards, key=lambda x: x['caption'])
 
         return boards
-
-    def saveEnvironmentFile(self):
-        '''
-        Load the JSON file with the list of all boards and re order it
-        based on the vendor. after that format the data to operate with
-        the standards required for the ST
-
-        Returns: {json array} -- list of all boards to show in the menu
-        '''
-        boards_list = []
-
-        platformio_data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
-
-        if(not platformio_data):
-            return
-
-        platformio_data = json.loads(platformio_data)
-
-        for datakey, datavalue in platformio_data.items():
-            # children
-            children = {}
-            children['caption'] = datavalue['name']
-            children['command'] = 'select_env'
-            children['checkbox'] = True
-            children['args'] = {'board_id': datakey}
-
-            # Board List
-            temp_info = {}
-            temp_info[datakey] = {'children': []}
-            temp_info[datakey]['children'].append(children)
-            boards_list.append(temp_info)
-
-        # Save board list
-        self.saveTemplateMenu(boards_list, 'env_boards.json', user_path=True)
 
     def createEnvironmentMenu(self):
         '''

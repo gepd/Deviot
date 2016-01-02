@@ -48,7 +48,7 @@ class DeviotListener(sublime_plugin.EventListener):
             'platformio_boards.json', user_path=True)
 
         if(not os.path.exists(platformio_data)):
-            Menu().saveAPIBoards(PlatformioCLI().getAPIBoards)
+            PlatformioCLI().saveAPIBoards()
 
         Menu().createMainMenu()
 
@@ -268,6 +268,18 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
 
     def is_checked(self):
         return Preferences().get('verbose_output', False)
+
+
+class UpdateBoardListCommand(sublime_plugin.WindowCommand):
+    """
+    Update the board list, extracting the info from platformIO
+    ecosystem
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):

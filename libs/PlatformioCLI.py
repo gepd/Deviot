@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import os
 import re
 import time
+import json
 import threading
 import sublime
 
@@ -53,6 +54,7 @@ class PlatformioCLI(CommandsPy):
         '''
         self.execute = True
         self.Preferences = Preferences()
+        self.Menu = Menu()
         self.env_path = Preferences().get('env_path', False)
 
         # user console
@@ -316,20 +318,6 @@ class PlatformioCLI(CommandsPy):
             action_thread = threading.Thread(target=self.cleanSketchProject)
             action_thread.start()
 
-    def getAPIBoards(self):
-        '''
-        Get the list of boards from platformIO API using CLI.
-        To know more info about platformIO visit:  http://www.platformio.org/
-
-        Returns: {json object} -- list with all boards in a JSON format
-        '''
-        boards = []
-        Run = CommandsPy(env_path=self.env_path)
-
-        command = ['boards', '--json-output']
-        boards = Run.runCommand(command, setReturn=True)
-        return boards
-
     def saveCodeInFile(self, view):
         """
         If the sketch in the current view has been not saved, it generate
@@ -375,13 +363,13 @@ class PlatformioCLI(CommandsPy):
         # Check the minimum version
         if(not Run.error_running and int(version) < 270):
             self.Preferences.set('enable_menu', False)
-            temp_menu = Menu().getSublimeMenu()
+            temp_menu = self.Menu.getSublimeMenu()
 
             temp_menu[0]['children'][0][
                 'caption'] = 'Please upgrade Platformio'
             temp_menu[0]['children'][1] = 0
 
-            Menu().saveSublimeMenu(temp_menu)
+            self.Menu.saveSublimeMenu(temp_menu)
             return False
 
         # Check if the environment path is set in preferences file
@@ -404,11 +392,75 @@ class PlatformioCLI(CommandsPy):
                                                user_path=True)
 
         if(not os.path.exists(api_boards)):
-            Menu().saveAPIBoards(boards=self.getAPIBoards())
-        Menu().createMainMenu()
+            self.Menu.saveAPIBoards(boards=self.getAPIBoards())
+        self.Menu.createMainMenu()
 
         # Run serial port listener
-        Serial = SerialListener(func=Menu().createSerialPortsMenu)
+        Serial = SerialListener(func=self.Menu.createSerialPortsMenu)
         Serial.start()
 
         return True
+
+    def getAPIBoards(self):
+        '''
+        Get the list of boards from platformIO API using CLI.
+        To know more info about platformIO visit:  http://www.platformio.org/
+
+        Returns: {json object} -- list with all boards in a JSON format
+        '''
+        boards = []
+        Run = CommandsPy(env_path=self.env_path)
+
+        command = ['boards', '--json-output']
+        boards = Run.runCommand(command, setReturn=True)
+        return boards
+
+    def saveAPIBoards(self, update_method=False):
+        '''
+        Save the JSON object in a specific JSON file
+        '''
+
+        boards = self.getAPIBoards()
+
+        self.Menu.saveTemplateMenu(
+            data=boards, file_name='platformio_boards.json', user_path=True)
+        self.saveEnvironmentFile()
+
+        if(update_method):
+            update_method()
+
+    def saveEnvironmentFile(self):
+        '''
+        Load the JSON file with the list of all boards and re order it
+        based on the vendor. after that format the data to operate with
+        the standards required for the ST
+
+        Returns: {json array} -- list of all boards to show in the menu
+        '''
+        boards_list = []
+
+        platformio_data = self.Menu.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+
+        if(not platformio_data):
+            return
+
+        platformio_data = json.loads(platformio_data)
+
+        for datakey, datavalue in platformio_data.items():
+            # children
+            children = {}
+            children['caption'] = datavalue['name']
+            children['command'] = 'select_env'
+            children['checkbox'] = True
+            children['args'] = {'board_id': datakey}
+
+            # Board List
+            temp_info = {}
+            temp_info[datakey] = {'children': []}
+            temp_info[datakey]['children'].append(children)
+            boards_list.append(temp_info)
+
+        # Save board list
+        self.Menu.saveTemplateMenu(
+            boards_list, 'env_boards.json', user_path=True)

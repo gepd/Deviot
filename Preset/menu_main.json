@@ -39,8 +39,12 @@
             {
                 "caption": "Options",
                 "id":"options",
-                "children": [{"caption":"Show verbose output",
-                              "command":"toggle_verbose"}]
+                "children": [
+                                {"caption":"Show verbose output",
+                                 "command":"toggle_verbose"},
+                                {"caption":"Update board list",
+                                 "command":"update_board_list"}
+                            ]
             },{
                 "caption": "About Deviot",
                 "command": "about_deviot"
