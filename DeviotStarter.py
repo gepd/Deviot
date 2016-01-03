@@ -282,6 +282,19 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
         PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
 
 
+class SelectLanguageCommand(sublime_plugin.WindowCommand):
+
+    def run(self, id_lang):
+        Preferences().set('id_lang', id_lang)
+
+    def is_checked(self, id_lang):
+        saved_id_lang = Preferences().get('id_lang')
+        return saved_id_lang == id_lang
+
+    def is_enabled(self):
+        return Preferences().get('enable_menu', False)
+
+
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
     """
     Show the Deviot github site.
