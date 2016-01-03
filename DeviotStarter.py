@@ -36,21 +36,12 @@ class DeviotListener(sublime_plugin.EventListener):
 
     def __init__(self):
         """
-        Checks if platformIO is installed and normally running,
-        creates a json file with all boards availables
+        Checks if platformIO is installed
         """
         if(not PlatformioCLI().platformioCheck()):
             return None
 
         super(DeviotListener, self).__init__()
-
-        platformio_data = Paths.getTemplateMenuPath(
-            'platformio_boards.json', user_path=True)
-
-        if(not os.path.exists(platformio_data)):
-            PlatformioCLI().saveAPIBoards()
-
-        Menu().createMainMenu()
 
     def on_activated(self, view):
         """
