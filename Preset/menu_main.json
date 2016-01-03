@@ -31,7 +31,7 @@
             },
             {"caption": "-"},
             {
-                "caption": "Serial Port",
+                "caption": "Serial Port(s)",
                 "id": "serial_ports",
                 "children":[]
             },
