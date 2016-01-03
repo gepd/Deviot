@@ -12,8 +12,10 @@ import time
 
 try:
     from . import Tools
+    from .I18n import I18n
 except:
     from libs import Tools
+    from libs.I18n import I18n
 
 python_version = Tools.getPythonVersion()
 
@@ -21,6 +23,8 @@ if python_version < 3:
     import Queue as queue
 else:
     import queue
+
+_ = I18n().translate
 
 
 class MessageQueue(object):
@@ -35,8 +39,9 @@ class MessageQueue(object):
         self.console = console
 
     def put(self, text, *args):
-        if text.endswith('\\n'):
-            text = text[:-2] + '\n'
+        text = _(text, *args)
+        if '\\n' in text:
+            text = text.replace('\\n', '\n')  # [:-2] + '\n'
         self.queue.put(text)
 
     def startPrint(self, one_time=False):
