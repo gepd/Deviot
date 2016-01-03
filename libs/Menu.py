@@ -13,10 +13,12 @@ try:
     from . import Serial, Paths
     from .Preferences import Preferences
     from .JSONFile import JSONFile
+    from .I18n import I18n
 except:
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
     from libs import Serial, Paths
+    from libs.I18n import I18n
 
 
 class Menu(object):
@@ -133,6 +135,9 @@ class Menu(object):
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
+        LI18n = I18n()
+        _ = LI18n.translate
+
         boards = self.createBoardsMenu()
 
         if(not boards):
@@ -140,11 +145,25 @@ class Menu(object):
 
         menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
+        # Main Menu
         for first_menu in menu_data[0]:
             for second_menu in menu_data[0][first_menu]:
+                if 'caption' in second_menu:
+                    second_menu['caption'] = _(second_menu['caption'])
                 if 'children' in second_menu:
                     if(second_menu['id'] == 'select_board'):
                         second_menu['children'] = boards
+
+        # sub menu translation (avoiding the boards menu)
+        for third_menu in menu_data[0]['children']:
+            try:
+                for caption in third_menu['children']:
+                    try:
+                        caption['children']
+                    except:
+                        caption['caption'] = _(caption['caption'])
+            except:
+                pass
 
         self.saveSublimeMenu(data=menu_data)
 
@@ -153,6 +172,30 @@ class Menu(object):
 
         if(os.path.isfile(env_path)):
             self.createEnvironmentMenu()
+
+        self.createLanguageMenu()
+
+    def createLanguageMenu(self):
+        LI18n, menu_language = I18n(), []
+        lang_ids = LI18n.getLangIds()
+        for id_lang in lang_ids:
+            lang_names = LI18n.getLangNames(id_lang)
+            caption = '%s (%s)' % (lang_names[0], lang_names[1])
+            options = {}
+            options['caption'] = caption
+            options['command'] = 'select_language'
+            options['args'] = {'id_lang': id_lang}
+            options['checkbox'] = True
+            menu_language.append(options)
+
+        # get language menu preset
+        menu_preset = self.getTemplateMenu(file_name='language.json')
+        # load languages
+        menu_preset[0]['children'][0]['children'] = menu_language
+        # save data as ST menu
+        self.saveSublimeMenu(data=menu_preset,
+                             sub_folder='language',
+                             user_path=True)
 
     def getTemplateMenu(self, file_name, user_path=False):
         """

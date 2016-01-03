@@ -46,6 +46,10 @@
                                  "command":"update_board_list"}
                             ]
             },{
+                "caption": "Language",
+                "id":"language",
+                "children": []
+            },{
                 "caption": "About Deviot",
                 "command": "about_deviot"
             }
