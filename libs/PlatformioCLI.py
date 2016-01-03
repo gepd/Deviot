@@ -129,6 +129,14 @@ class PlatformioCLI(CommandsPy):
         return type_boards
 
     def overrideSrc(self, ini_path, src_dir):
+        """
+        Append in the platformio.ini file, the src_dir option
+        to override the source folder where the sketch is stored
+
+        Arguments:
+            ini_path {string} -- path of the platformio.ini file
+            src_dir {string} -- path where source folder the is located
+        """
         ini_path = os.path.join(ini_path, 'platformio.ini')
         header = '[platformio]'
 
