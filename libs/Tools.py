@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import locale
 
 try:
     from . import __version__, __title__
@@ -124,3 +125,15 @@ def getPythonVersion():
     """
     python_version = sys.version_info[0]
     return python_version
+
+
+def getSystemLang():
+    """
+    Get the default language in the current system
+    """
+    sys_language = locale.getdefaultlocale()[0]
+    if not sys_language:
+        sys_language = 'en'
+    else:
+        sys_language = sys_language.lower()
+    return sys_language
