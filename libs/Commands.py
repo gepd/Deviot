@@ -67,8 +67,10 @@ class CommandsPy(object):
             if(stderr):
                 self.message_queue.put(stderr)
 
-        if(return_code != 0):
+        if(return_code > 0):
             self.error_running = True
+            if(not setReturn):
+                return stdout
 
         if(setReturn):
             return stdout

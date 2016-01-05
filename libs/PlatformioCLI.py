@@ -169,7 +169,7 @@ class PlatformioCLI(CommandsPy):
         msg = '{0} Initializing the project | '
 
         self.message_queue.put(msg, current_time)
-        self.Commands.runCommand(command, verbose=self.vbose)
+        out = self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             msg = 'Success\\n'
@@ -177,7 +177,9 @@ class PlatformioCLI(CommandsPy):
             if(self.src):
                 self.overrideSrc(self.dir, self.src)
         else:
-            msg = 'Error\\n'
+            msg = 'Error\\n{0} Details:\\n'
+            msg += out
+
             self.message_queue.put(msg)
 
     def buildSketchProject(self):
@@ -202,7 +204,7 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run']
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        out = self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -214,7 +216,8 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', True)
         else:
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} an error occurred\\n'
+            msg = 'Error\\n{0} Details:\\n'
+            msg += out
 
             self.message_queue.put(msg, current_time)
             self.Preferences.set('builded_sketch', False)
@@ -257,7 +260,7 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        out = self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -269,7 +272,8 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', True)
         else:
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} an error occurred\\n'
+            msg = 'Error\\n{0} Details:\\n'
+            msg += out
 
             self.message_queue.put(msg, current_time)
             self.Preferences.set('builded_sketch', False)
@@ -296,7 +300,7 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run', '-t clean']
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        out = self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -308,7 +312,8 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', False)
         else:
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} Error cleaning files\\n'
+            msg = 'Error\\n{0} Details:\\n'
+            msg += out
 
             self.message_queue.put(msg, current_time)
 

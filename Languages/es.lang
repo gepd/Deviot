@@ -65,11 +65,8 @@ msgstr "{0} Limpiando archivos compilados | "
 msgid "Success\n{0} it took {1}s\n"
 msgstr "Completado \n{0} Demoró {1}s\n"
 
-msgid "Error\n{0} an error occurred\n"
-msgstr "Error\n{0} Ha ocurrido un error\n"
+msgid "Error\n{0} Details:\n"
+msgstr "Error\n{0} Detalles:\n"
 
 msgid "Success\n"
 msgstr "Completado\n"
-
-msgid "Error\n"
-msgstr "Error\n"
