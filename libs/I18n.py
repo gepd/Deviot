@@ -26,13 +26,13 @@ class I18n(object):
 
     def __init__(self):
         self.lang_params = {}
-        self.lang_ids = []
+        self.ids_lang = []
         self.id_path_dict = {}
         self.trans_dict = {}
         self.listIds()
         self.Preferences = Preferences()
-        self.lang_id = self.Preferences.get('id_lang', Tools.getSystemLang())
-        self.changeLang(self.lang_id)
+        self.id_lang = self.Preferences.get('id_lang', Tools.getSystemLang())
+        self.changeLang(self.id_lang)
 
     def listIds(self):
         language_list_path = Paths.getLanguageList()
@@ -41,20 +41,20 @@ class I18n(object):
 
         lang_file_paths = glob.glob(language_path + '/*.lang')
         lang_file_names = [os.path.basename(p) for p in lang_file_paths]
-        self.lang_ids += [os.path.splitext(nam)[0] for nam in lang_file_names]
-        self.id_path_dict.update(dict(zip(self.lang_ids, lang_file_paths)))
-        self.lang_ids.sort(key=lambda _id: self.lang_params.get(_id)[1])
+        self.ids_lang += [os.path.splitext(nam)[0] for nam in lang_file_names]
+        self.id_path_dict.update(dict(zip(self.ids_lang, lang_file_paths)))
+        self.ids_lang.sort(key=lambda _id: self.lang_params.get(_id)[1])
 
     def changeLang(self, lang_id):
         if lang_id in self.id_path_dict:
-            self.lang_id = lang_id
+            self.id_lang = lang_id
             lang_file_path = self.id_path_dict[lang_id]
             lang_file = LanguageFile(lang_file_path)
             self.trans_dict = lang_file.getTransDict()
         else:
-            self.lang_id = 'en'
+            self.id_lang = 'en'
             self.trans_dict = {}
-        self.Preferences.set('id_lang', self.lang_id)
+        self.Preferences.set('id_lang', self.id_lang)
 
     def translate(self, text, *params):
         trans_text = self.trans_dict.get(text, text)
@@ -64,10 +64,10 @@ class I18n(object):
         return trans_text
 
     def getLangId(self):
-        return self.lang_id
+        return self.id_lang
 
     def getLangIds(self):
-        return self.lang_ids
+        return self.ids_lang
 
     def getLangNames(self, lang_id):
         return self.lang_params.get(lang_id, ['Unknown', 'Unknown'])

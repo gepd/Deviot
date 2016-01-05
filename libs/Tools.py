@@ -136,4 +136,4 @@ def getSystemLang():
         sys_language = 'en'
     else:
         sys_language = sys_language.lower()
-    return sys_language
+    return sys_language[:2]

@@ -20,6 +20,8 @@ except:
     from libs import Serial, Paths
     from libs.I18n import I18n
 
+_ = I18n().translate
+
 
 class Menu(object):
     '''
@@ -135,9 +137,6 @@ class Menu(object):
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
-        LI18n = I18n()
-        _ = LI18n.translate
-
         boards = self.createBoardsMenu()
 
         if(not boards):
@@ -176,10 +175,14 @@ class Menu(object):
         self.createLanguageMenu()
 
     def createLanguageMenu(self):
-        LI18n, menu_language = I18n(), []
-        lang_ids = LI18n.getLangIds()
+        """
+        Creates the language menu options based in the
+        translations located in Packages/Deviot/Languages
+        """
+        menu_language = []
+        lang_ids = I18n().getLangIds()
         for id_lang in lang_ids:
-            lang_names = LI18n.getLangNames(id_lang)
+            lang_names = I18n().getLangNames(id_lang)
             caption = '%s (%s)' % (lang_names[0], lang_names[1])
             options = {}
             options['caption'] = caption
