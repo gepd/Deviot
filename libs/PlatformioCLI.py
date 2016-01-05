@@ -400,7 +400,7 @@ class PlatformioCLI(CommandsPy):
                                                user_path=True)
 
         if(not os.path.exists(api_boards)):
-            self.Menu.saveAPIBoards(boards=self.getAPIBoards())
+            self.saveAPIBoards()
         self.Menu.createMainMenu()
 
         # Run serial port listener
