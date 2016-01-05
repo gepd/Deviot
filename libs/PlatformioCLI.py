@@ -362,11 +362,31 @@ class PlatformioCLI(CommandsPy):
         if isn't, get the env_path value set by the user,
         from the preferences file and tries to run it again
         '''
+        # default paths
+        if(Tools.getOsName() == 'windows'):
+            default_path = ["C:\Python27", "C:\Python27\Scripts"]
+        else:
+            default_path = ["/usr/bin", "/usr/local/bin"]
+
+        # paths from user preferences file
+        user_env_path = self.Preferences.get('env_path', '')
+        if(user_env_path):
+            default_path += [path for path in user_env_path.split(
+                os.path.pathsep)]
+
+        # join all paths
+        default_path = set(default_path)
+        env_path = os.path.pathsep.join(list(default_path | set(
+            os.environ.get("PATH", "").split(os.path.pathsep))))
+
         command = ['--version']
 
-        Run = CommandsPy(env_path=self.env_path)
+        Run = CommandsPy(env_path=env_path)
         version = Run.runCommand(command, setReturn=True)
         version = re.sub(r'\D', '', version)
+
+        if(Run.error_running):
+            return False
 
         # Check the minimum version
         if(not Run.error_running and int(version) < 270):
@@ -380,19 +400,8 @@ class PlatformioCLI(CommandsPy):
             self.Menu.saveSublimeMenu(temp_menu)
             return False
 
-        # Check if the environment path is set in preferences file
-        if(Run.error_running):
-            self.Preferences.set('enable_menu', False)
-
-            if(not self.env_path):
-                # Create prefences file
-                self.Preferences.set('env_path', 'YOUR-ENVIRONMENT-PATH-HERE')
-            return False
-
-        # Set env path to False if it wasn't assigned
-        if(self.env_path == 'YOUR-ENVIRONMENT-PATH-HERE'):
-            self.Preferences.set('env_path', False)
-
+        # save user preferences
+        self.Preferences.set('env_path', env_path)
         self.Preferences.set('enable_menu', True)
 
         # Creates new menu
