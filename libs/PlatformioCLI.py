@@ -206,7 +206,8 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
-            diff_time = int(time.time() - self.start_time)
+            diff_time = time.time() - self.start_time
+            diff_time = '{0:.2f}'.format(diff_time)
             msg = 'Success\\n{0} it took {1}s\\n'
 
             self.message_queue.put(msg, current_time, diff_time)
@@ -260,7 +261,8 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
-            diff_time = int(time.time() - start_time)
+            diff_time = time.time() - start_time
+            diff_time = '{0:.2f}'.format(diff_time)
             msg = 'Success\\n{0} it took {1}s\n'
 
             self.message_queue.put(msg, current_time, diff_time)
@@ -298,7 +300,8 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
-            diff_time = int(time.time() - start_time)
+            diff_time = time.time() - start_time
+            diff_time = '{0:.2f}'.format(diff_time)
             msg = 'Success\\n{0} it took {1}s\\n'
 
             self.message_queue.put(msg, current_time, diff_time)
