@@ -48,7 +48,8 @@ class CommandsPy(object):
         except:
             args = ''
 
-        command = "platformio -f -c sublimetext %s %s" % (options, args)
+        command = "platformio -f -c sublimetext %s %s 2>&1" % (
+            options, args)
 
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, cwd=self.cwd,
