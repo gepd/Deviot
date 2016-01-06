@@ -171,7 +171,6 @@ class PlatformioCLI(CommandsPy):
 
         self.message_queue.put(msg, current_time)
         out = self.Commands.runCommand(command, verbose=self.vbose)
-        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             msg = 'Success\\n'
@@ -179,8 +178,9 @@ class PlatformioCLI(CommandsPy):
             if(self.src):
                 self.overrideSrc(self.dir, self.src)
         else:
+            out = Tools.getPlatformioError(out)
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n'
+            msg = 'Error\\n{0} Details:\\n\\n'
 
             self.message_queue.put(msg, current_time)
             self.message_queue.put(out)
@@ -208,7 +208,6 @@ class PlatformioCLI(CommandsPy):
         command = ['run']
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
-        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -219,8 +218,9 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', True)
         else:
+            out = Tools.getPlatformioError(out)
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n'
+            msg = 'Error\\n{0} Details:\\n\\n'
 
             self.message_queue.put(msg, current_time)
             self.message_queue.put(out)
@@ -265,7 +265,6 @@ class PlatformioCLI(CommandsPy):
                    (id_port, env_sel)]
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
-        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -276,8 +275,9 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', True)
         else:
+            out = Tools.getPlatformioError(out)
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n'
+            msg = 'Error\\n{0} Details:\\n\\n'
 
             self.message_queue.put(msg, current_time)
             self.message_queue.put(out)
@@ -306,7 +306,6 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t clean']
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
-        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -317,8 +316,9 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', False)
         else:
+            out = Tools.getPlatformioError(out)
             current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n'
+            msg = 'Error\\n{0} Details:\\n\\n'
 
             self.message_queue.put(msg, current_time)
             self.message_queue.put(out)
