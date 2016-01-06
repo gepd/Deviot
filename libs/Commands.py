@@ -55,6 +55,16 @@ class CommandsPy(object):
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
 
+        """ REALTIME OUTPUT TEST """
+        if('run' in command):
+            while True:
+                output = process.stdout.readline()
+                if output == '' and process.poll() is not None:
+                    break
+                if output:
+                    self.message_queue.put(output.strip() + '\n')
+        """ REALTIME OUTPUT TEST END """
+
         output = process.communicate()
 
         stdout = output[0]
