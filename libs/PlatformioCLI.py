@@ -86,6 +86,7 @@ class PlatformioCLI(CommandsPy):
                 view.run_command('save')
 
             if(self.execute):
+                self.flne = Tools.getFileNameFromPath(file_path)
                 current_path = Paths.getCurrentFilePath(view)
                 current_dir = Paths.getCWD(current_path)
                 parent_dir = Paths.getParentCWD(current_path)
@@ -170,6 +171,7 @@ class PlatformioCLI(CommandsPy):
 
         self.message_queue.put(msg, current_time)
         out = self.Commands.runCommand(command, verbose=self.vbose)
+        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             msg = 'Success\\n'
@@ -206,6 +208,7 @@ class PlatformioCLI(CommandsPy):
         command = ['run']
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
+        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -262,6 +265,7 @@ class PlatformioCLI(CommandsPy):
                    (id_port, env_sel)]
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
+        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')
@@ -302,6 +306,7 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t clean']
 
         out = self.Commands.runCommand(command, verbose=self.vbose)
+        out = Tools.getPlatformioError(out)
 
         if(not self.Commands.error_running):
             current_time = time.strftime('%H:%M:%S')

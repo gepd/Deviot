@@ -137,3 +137,23 @@ def getSystemLang():
     else:
         sys_language = sys_language.lower()
     return sys_language[:2]
+
+
+def getPlatformioError(error):
+    """
+    Extracts descriptive error lines and removes all the
+    unnecessary information
+
+    Arguments:
+        error {string} -- Full error log gets from platformIO
+                          ecosystem
+    """
+    start_print = False
+    str_error = ""
+    for line in error.split('\n'):
+        if(line and "processing" not in line.lower()
+                and "pioenvs" not in line.lower()):
+            start_print = True
+        if(start_print):
+            str_error += line + '\n'
+    return str_error
