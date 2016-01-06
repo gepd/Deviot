@@ -177,10 +177,11 @@ class PlatformioCLI(CommandsPy):
             if(self.src):
                 self.overrideSrc(self.dir, self.src)
         else:
+            current_time = time.strftime('%H:%M:%S')
             msg = 'Error\\n{0} Details:\\n'
-            msg += out
 
-            self.message_queue.put(msg)
+            self.message_queue.put(msg, current_time)
+            self.message_queue.put(out)
 
     def buildSketchProject(self):
         '''
@@ -217,9 +218,9 @@ class PlatformioCLI(CommandsPy):
         else:
             current_time = time.strftime('%H:%M:%S')
             msg = 'Error\\n{0} Details:\\n'
-            msg += out
 
             self.message_queue.put(msg, current_time)
+            self.message_queue.put(out)
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -273,9 +274,9 @@ class PlatformioCLI(CommandsPy):
         else:
             current_time = time.strftime('%H:%M:%S')
             msg = 'Error\\n{0} Details:\\n'
-            msg += out
 
             self.message_queue.put(msg, current_time)
+            self.message_queue.put(out)
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -313,9 +314,10 @@ class PlatformioCLI(CommandsPy):
         else:
             current_time = time.strftime('%H:%M:%S')
             msg = 'Error\\n{0} Details:\\n'
-            msg += out
 
             self.message_queue.put(msg, current_time)
+            self.message_queue.put(out)
+        self.message_queue.stopPrint()
 
     def openInThread(self, type):
         """
