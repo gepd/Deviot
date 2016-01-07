@@ -74,7 +74,7 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view):
+def setStatus(view, text=False):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
@@ -86,12 +86,17 @@ def setStatus(view):
     if isIOTFile(view):
 
         info.append(__title__ + ' v' + str(__version__))
+        if(text):
+            info.append(text)
         full_info = ' | '.join(info)
 
         view.set_status('Deviot', full_info)
 
 
 def singleton(cls):
+    """
+    restricts the instantiation of a class to one object
+    """
     instances = {}
 
     def _singleton(*args, **kw):
