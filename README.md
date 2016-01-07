@@ -9,6 +9,7 @@ If you want to help me, please feel free to do it at any way you can.
 * [Install PlatformIO](http://platformio.org/#!/get-started)
 * Add a new repository to Sublime Text `https://github.com/gepd/Deviot.git`
 * Install the package `Deviot` from the list
+* If you see `Install platformIO` in the main menu, go to `Set environment PATH` and paste the path where python/platformIO was installed
 
 ## How to use
 1. Code your firmware
@@ -16,5 +17,11 @@ If you want to help me, please feel free to do it at any way you can.
 3. Build your code
 4. Upload your code
 5. Done!
+
+## To Do
+- [ ] Add Serial Monitor
+- [ ] Languages
+- [ ] PlatformIO API Libraries integration
+- [ ] OTA Serial ports
 
 **This plugin is under development, don't use in a production environment.**
