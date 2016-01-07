@@ -9,6 +9,7 @@ If you want to help me, please feel free to do it at any way you can.
 * [Install PlatformIO](http://platformio.org/#!/get-started)
 * Add a new repository to Sublime Text `https://github.com/gepd/Deviot.git`
 * Install the package `Deviot` from the list
+* Set the `Sublime Text Menu: Deviot > Set Environment PATH > env_path` setting with the result of `echo $PATH` (Unix) / `echo %PATH%` (Windows).
 
 ## How to use
 1. Code your firmware
