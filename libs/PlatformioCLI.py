@@ -165,25 +165,11 @@ class PlatformioCLI(CommandsPy):
 
         command = ['init', '%s' % (init_boards)]
 
-        self.start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '{0} Initializing the project | '
-
-        self.message_queue.put(msg, current_time)
-        out = self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            msg = 'Success\\n'
-            self.message_queue.put(msg)
             if(self.src):
                 self.overrideSrc(self.dir, self.src)
-        else:
-            out = Tools.getPlatformioError(out)
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n\\n'
-
-            self.message_queue.put(msg, current_time)
-            self.message_queue.put(out)
 
     def buildSketchProject(self):
         '''
@@ -201,29 +187,13 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        current_time = time.strftime('%H:%M:%S')
-        msg = '{0} Building the project | '
-        self.message_queue.put(msg, current_time)
-
         command = ['run']
 
-        out = self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - self.start_time
-            diff_time = '{0:.2f}'.format(diff_time)
-            msg = 'Success\\n{0} it took {1}s\\n'
-
-            self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', True)
         else:
-            out = Tools.getPlatformioError(out)
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n\\n'
-
-            self.message_queue.put(msg, current_time)
-            self.message_queue.put(out)
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -256,31 +226,14 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time)
             return
 
-        start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '{0} Uploading firmware | '
-        self.message_queue.put(msg, current_time)
-
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
-        out = self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - start_time
-            diff_time = '{0:.2f}'.format(diff_time)
-            msg = 'Success\\n{0} it took {1}s\n'
-
-            self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', True)
         else:
-            out = Tools.getPlatformioError(out)
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n\\n'
-
-            self.message_queue.put(msg, current_time)
-            self.message_queue.put(out)
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
@@ -298,30 +251,12 @@ class PlatformioCLI(CommandsPy):
         if(not builded_sketch):
             return
 
-        start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '{0} Cleaning built files | '
-        self.message_queue.put(msg, current_time)
-
         command = ['run', '-t clean']
 
-        out = self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - start_time
-            diff_time = '{0:.2f}'.format(diff_time)
-            msg = 'Success\\n{0} it took {1}s\\n'
-
-            self.message_queue.put(msg, current_time, diff_time)
             self.Preferences.set('builded_sketch', False)
-        else:
-            out = Tools.getPlatformioError(out)
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\\n{0} Details:\\n\\n'
-
-            self.message_queue.put(msg, current_time)
-            self.message_queue.put(out)
         self.message_queue.stopPrint()
 
     def openInThread(self, type):
@@ -487,3 +422,6 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
+
+    def __del__(self):
+        self.message_queue.stopPrint()
