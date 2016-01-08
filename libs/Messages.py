@@ -62,11 +62,8 @@ class MessageQueue(object):
     def printOnce(self):
         while not self.queue.empty():
             text = self.queue.get()
-            print(text)
             if self.console:
                 self.console.printScreen(text)
-            else:
-                print(text)
             time.sleep(0.01)
 
     def stopPrint(self):
