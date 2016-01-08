@@ -31,7 +31,7 @@
             },
             {"caption": "-"},
             {
-                "caption": "Serial Port",
+                "caption": "Serial Port(s)",
                 "id": "serial_ports",
                 "children":[]
             },
@@ -45,6 +45,10 @@
                                 {"caption":"Update board list",
                                  "command":"update_board_list"}
                             ]
+            },{
+                "caption": "Language",
+                "id":"language",
+                "children": []
             },{
                 "caption": "About Deviot",
                 "command": "about_deviot"

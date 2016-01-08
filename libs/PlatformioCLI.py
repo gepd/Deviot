@@ -62,7 +62,7 @@ class PlatformioCLI(CommandsPy):
             current_time = time.strftime('%H:%M:%S')
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
-            self.message_queue.put('[ Deviot ]\n')
+            self.message_queue.put('[ Deviot ]\\n')
 
         if(view):
             file_path = Tools.getPathFromView(view)
@@ -76,8 +76,8 @@ class PlatformioCLI(CommandsPy):
 
             # check IoT type file
             if(not Tools.isIOTFile(view)):
-                msg = '%s %s is not a IoT File\n' % (current_time, file_name)
-                self.message_queue.put(msg)
+                msg = '{0} {1} is not a IoT File\\n'
+                self.message_queue.put(msg, current_time, file_name)
                 self.execute = False
                 return
 
@@ -86,6 +86,7 @@ class PlatformioCLI(CommandsPy):
                 view.run_command('save')
 
             if(self.execute):
+                self.flne = Tools.getFileNameFromPath(file_path)
                 current_path = Paths.getCurrentFilePath(view)
                 current_dir = Paths.getCWD(current_path)
                 parent_dir = Paths.getParentCWD(current_path)
@@ -157,28 +158,18 @@ class PlatformioCLI(CommandsPy):
 
         if(not init_boards):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s None board Selected\n' % current_time
-            self.message_queue.put(msg)
+            msg = '{0} None board Selected\\n'
+            self.message_queue.put(msg, current_time)
             self.Commands.error_running = True
             return
 
         command = ['init', '%s' % (init_boards)]
 
-        self.start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '%s Initializing the project | ' % current_time
-
-        self.message_queue.put(msg)
         self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            msg = 'Success\n'
-            self.message_queue.put(msg)
             if(self.src):
                 self.overrideSrc(self.dir, self.src)
-        else:
-            msg = 'Error\n'
-            self.message_queue.put(msg)
 
     def buildSketchProject(self):
         '''
@@ -186,38 +177,23 @@ class PlatformioCLI(CommandsPy):
         type (checked by isIOTFile)
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
         # initialize the sketch
         self.initSketchProject()
 
         if(self.Commands.error_running):
-            self.message_queue.stopPrint()
             return
-
-        current_time = time.strftime('%H:%M:%S')
-        msg = '%s Building the project | ' % current_time
-        self.message_queue.put(msg)
 
         command = ['run']
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
+        # set
         if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - self.start_time
-            msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
-
-            self.message_queue.put(msg)
             self.Preferences.set('builded_sketch', True)
         else:
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\n%s an error occurred\n' % current_time
-
-            self.message_queue.put(msg)
             self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -225,53 +201,34 @@ class PlatformioCLI(CommandsPy):
         it returns an error if any com port is selected
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
-        builded_sketch = self.Preferences.get('builded_sketch', '')
-
-        if(not builded_sketch):
+        # Compiling code
+        self.buildSketchProject()
+        if(self.Commands.error_running):
             return
 
         id_port = self.Preferences.get('id_port', '')
         env_sel = self.Preferences.get('env_selected', '')
 
+        # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s None COM port selected\n' % current_time
-            self.message_queue.put(msg)
+            msg = '{0} None serial port selected\\n'
+            self.message_queue.put(msg, current_time)
             return
 
+        # check environment selected
         if(not env_sel):
             current_time = time.strftime('%H:%M:%S')
-            msg = '%s None environment selected\n' % current_time
-            self.message_queue.put(msg)
+            msg = '{0} None environment selected\\n'
+            self.message_queue.put(msg, current_time)
             return
-
-        start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '%s Uploading firmware | ' % current_time
-        self.message_queue.put(msg)
 
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
-
-        if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - start_time
-            msg = 'success\n%s it took %ds\n' % (current_time, diff_time)
-
-            self.message_queue.put(msg)
-            self.Preferences.set('builded_sketch', True)
-        else:
-            current_time = time.strftime('%H:%M:%S')
-            msg = 'Error\n%s an error occurred\n' % current_time
-
-            self.message_queue.put(msg)
-            self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
         '''
@@ -279,7 +236,6 @@ class PlatformioCLI(CommandsPy):
         if a sketch has been built previously
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
@@ -287,27 +243,12 @@ class PlatformioCLI(CommandsPy):
         if(not builded_sketch):
             return
 
-        start_time = time.time()
-        current_time = time.strftime('%H:%M:%S')
-        msg = '%s Cleaning built files | ' % current_time
-        self.message_queue.put(msg)
-
         command = ['run', '-t clean']
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            current_time = time.strftime('%H:%M:%S')
-            diff_time = time.time() - start_time
-            msg = 'Success\n%s it took %ds\n' % (current_time, diff_time)
-
-            self.message_queue.put(msg)
             self.Preferences.set('builded_sketch', False)
-        else:
-            current_time = time.strftime('%H:%M:%S')
-            msg = '%s Error cleaning files\n' % current_time
-
-            self.message_queue.put(msg)
 
     def openInThread(self, type):
         """
@@ -481,3 +422,12 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
+
+    def __del__(self):
+        """
+        Destroy message queue
+        """
+        try:
+            self.message_queue.stopPrint()
+        except:
+            pass

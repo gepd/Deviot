@@ -1,0 +1,75 @@
+# LANGUAGE: Español (Spanish)
+# Spanish translations for Deviot Plugin.
+# Copyright (C) 2015-2016 GEPD
+# This file is distributed under the same license as the Deviot Plugin.
+# Translator: GEPD
+#
+
+msgid "Select board(s)"
+msgstr "Selecciona Una/Multiples Placa(s)"
+
+msgid "Select Environment"
+msgstr "Selecciona Un Entorno de Desarrollo"
+
+msgid "Build"
+msgstr "Compilar"
+
+msgid "Upload"
+msgstr "Cargar"
+
+msgid "Clean"
+msgstr "Limpiar"
+
+msgid "Serial Port(s)"
+msgstr "Puerto(s) Serial"
+
+msgid "Option"
+msgstr "Opciones"
+
+msgid "Show verbose output"
+msgstr "Mostrar Detalles de Salida"
+
+msgid "Update board list"
+msgstr "Actualizar Lista de Placas"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "About Deviot"
+msgstr "Acerca de Deviot"
+
+msgid "{0} {1} is not a IoT File\n"
+msgstr "{0} {1} No es un archivo IoT\n"
+
+msgid "{0} None board Selected\n"
+msgstr "{0} Ninguna placa ha sido seleccionada"
+
+msgid "{0} Initializing the project | "
+msgstr "{0} Inicializando el proyecto | "
+
+msgid "{0} Building the project | "
+msgstr "{0} Compilando el proyecto | "
+
+msgid "{0} None serial port selected\n"
+msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
+
+msgid "{0} None environment selected\n"
+msgstr "{0} Ningún entorno de desarrollo ha sido seleccionado\n"
+
+msgid "{0} Uploading firmware | "
+msgstr "{0} Cargando firmware | "
+
+msgid "{0} Cleaning built files | "
+msgstr "{0} Limpiando archivos compilados | "
+
+msgid "Success\n{0} it took {1}s\n"
+msgstr "Completado \n{0} Demoró {1}s\n"
+
+msgid "\n{0} it took {1}s\n"
+msgstr "\n{0} Demoró {1}s\n"
+
+msgid "Error\n{0} Details:\n\n"
+msgstr "Error\n{0} Detalles:\n\n"
+
+msgid "Success\n"
+msgstr "Completado\n"

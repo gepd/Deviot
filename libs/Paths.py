@@ -41,6 +41,22 @@ def getPresetPath():
     preset_path = os.path.join(plugin_path, 'Preset')
     return preset_path
 
+# Get the path of the language list
+
+
+def getLanguagePath():
+    plugin_path = getPluginPath()
+    language_path = os.path.join(plugin_path, 'Languages')
+    return language_path
+
+# Get the path of the language list
+
+
+def getLanguageList():
+    preset_path = getPresetPath()
+    language_list = os.path.join(preset_path, 'languages.list')
+    return language_list
+
 # Get deviot path from user folder
 
 

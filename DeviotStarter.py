@@ -36,21 +36,12 @@ class DeviotListener(sublime_plugin.EventListener):
 
     def __init__(self):
         """
-        Checks if platformIO is installed and normally running,
-        creates a json file with all boards availables
+        Checks if platformIO is installed
         """
         if(not PlatformioCLI().platformioCheck()):
             return None
 
         super(DeviotListener, self).__init__()
-
-        platformio_data = Paths.getTemplateMenuPath(
-            'platformio_boards.json', user_path=True)
-
-        if(not os.path.exists(platformio_data)):
-            PlatformioCLI().saveAPIBoards()
-
-        Menu().createMainMenu()
 
     def on_activated(self, view):
         """
@@ -78,6 +69,8 @@ class DeviotListener(sublime_plugin.EventListener):
             if file_name in content:
                 tmp_path = os.path.join(tmp_path, content)
                 rmtree(tmp_path, ignore_errors=False)
+
+        Preferences().set('builded_sketch', False)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
@@ -204,12 +197,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
         PlatformioCLI(view, console).openInThread('upload')
 
     def is_enabled(self):
-        is_enabled = Preferences().get('builded_sketch')
-
-        if(not Preferences().get('enable_menu', False)):
-            is_enabled = False
-
-        return is_enabled
+        return Preferences().get('enable_menu')
 
 
 class CleanSketchCommand(sublime_plugin.TextCommand):
@@ -280,6 +268,19 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
+
+
+class SelectLanguageCommand(sublime_plugin.WindowCommand):
+
+    def run(self, id_lang):
+        Preferences().set('id_lang', id_lang)
+
+    def is_checked(self, id_lang):
+        saved_id_lang = Preferences().get('id_lang')
+        return saved_id_lang == id_lang
+
+    def is_enabled(self):
+        return Preferences().get('enable_menu', False)
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
