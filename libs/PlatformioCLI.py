@@ -177,25 +177,23 @@ class PlatformioCLI(CommandsPy):
         type (checked by isIOTFile)
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
         # initialize the sketch
         self.initSketchProject()
 
         if(self.Commands.error_running):
-            self.message_queue.stopPrint()
             return
 
         command = ['run']
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
+        # set
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', True)
         else:
             self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -203,23 +201,24 @@ class PlatformioCLI(CommandsPy):
         it returns an error if any com port is selected
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
-        builded_sketch = self.Preferences.get('builded_sketch', '')
-
-        if(not builded_sketch):
+        # Compiling code
+        self.buildSketchProject()
+        if(self.Commands.error_running):
             return
 
         id_port = self.Preferences.get('id_port', '')
         env_sel = self.Preferences.get('env_selected', '')
 
+        # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None COM port selected\\n'
             self.message_queue.put(msg, current_time)
             return
 
+        # check environment selected
         if(not env_sel):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None environment selected\\n'
@@ -231,19 +230,12 @@ class PlatformioCLI(CommandsPy):
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
-        if(not self.Commands.error_running):
-            self.Preferences.set('builded_sketch', True)
-        else:
-            self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
-
     def cleanSketchProject(self):
         '''
         Delete compiled object files, libraries and firmware/program binaries
         if a sketch has been built previously
         '''
         if(not self.execute):
-            self.message_queue.stopPrint()
             return
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
@@ -257,7 +249,6 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def openInThread(self, type):
         """

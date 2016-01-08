@@ -70,6 +70,8 @@ class DeviotListener(sublime_plugin.EventListener):
                 tmp_path = os.path.join(tmp_path, content)
                 rmtree(tmp_path, ignore_errors=False)
 
+        Preferences().set('builded_sketch', False)
+
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
     """
@@ -195,12 +197,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
         PlatformioCLI(view, console).openInThread('upload')
 
     def is_enabled(self):
-        is_enabled = Preferences().get('builded_sketch')
-
-        if(not Preferences().get('enable_menu', False)):
-            is_enabled = False
-
-        return is_enabled
+        return Preferences().get('enable_menu')
 
 
 class CleanSketchCommand(sublime_plugin.TextCommand):
