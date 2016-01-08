@@ -214,7 +214,7 @@ class PlatformioCLI(CommandsPy):
         # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None COM port selected\\n'
+            msg = '{0} None serial port selected\\n'
             self.message_queue.put(msg, current_time)
             return
 

@@ -50,8 +50,8 @@ msgstr "{0} Inicializando el proyecto | "
 msgid "{0} Building the project | "
 msgstr "{0} Compilando el proyecto | "
 
-msgid "{0} None COM port selected\n"
-msgstr "{0} Ningún puerto COM ha sido seleccionado\n"
+msgid "{0} None serial port selected\n"
+msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
 
 msgid "{0} None environment selected\n"
 msgstr "{0} Ningún entorno de desarrollo ha sido seleccionado\n"
