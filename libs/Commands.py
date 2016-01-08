@@ -50,7 +50,7 @@ class CommandsPy(object):
             args = ''
 
         # output errors only
-        if('run' == options and not verbose):
+        if('run' == options and not args and not verbose):
             args += '-v --verbose'
 
         cmd_type = self.getTypeAction(commands)
@@ -132,6 +132,7 @@ class CommandsPy(object):
         Arguments:
             command {string} -- CLI command
         """
+        command = ''.join(command)
         if 'init' in command:
             return '{0} Initializing the project | '
         elif '-t upload' in command:
