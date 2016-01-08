@@ -42,28 +42,16 @@ class CommandsPy(object):
         if(not commands):
             return False
 
-        options = commands[0]
-
-        try:
-            args = commands[1]
-        except:
-            args = ''
-
-        # output errors only
-        if('run' == options and not args and not verbose):
-            args += '-v --verbose'
-
-        cmd_type = self.getTypeAction(commands)
+        # get command
+        command = self.createCommand(commands, verbose)
 
         # Console message
+        cmd_type = self.getTypeAction(command)
         current_time = time.strftime('%H:%M:%S')
         start_time = time.time()
         self.message_queue.put(cmd_type, current_time)
 
         # run command
-        command = "platformio -f -c sublimetext %s %s 2>&1" % (
-            options, args)
-
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
@@ -100,6 +88,7 @@ class CommandsPy(object):
                         'exit status' not in output.lower()):
                     self.message_queue.put(output)
 
+        # output
         output = process.communicate()
         stdout = output[0]
         stderr = output[1]
@@ -113,10 +102,9 @@ class CommandsPy(object):
             msg = 'Success\\n{0} it took {1}s\\n'
             self.message_queue.put(msg, current_time, diff_time)
 
-        # print full verbose output
+        # print full verbose output (when is active)
         if(verbose):
             self.message_queue.put(stdout)
-
             if(stderr):
                 self.message_queue.put(stderr)
 
@@ -132,7 +120,6 @@ class CommandsPy(object):
         Arguments:
             command {string} -- CLI command
         """
-        command = ''.join(command)
         if 'init' in command:
             return '{0} Initializing the project | '
         elif '-t upload' in command:
@@ -142,5 +129,35 @@ class CommandsPy(object):
         else:
             return '{0} Building the project | '
 
+    def createCommand(self, commands, verbose):
+        """
+        Create the full CLI command based in the verbose mode
+
+        Arguments:
+            command {list} -- actions command to run in platformIO
+            verbose {bool} -- verbose mode user preference
+        """
+        options = commands[0]
+
+        try:
+            args = commands[1]
+        except:
+            args = ''
+
+        # output errors only
+        if('run' == options and not args and not verbose):
+            args += '-v --verbose'
+
+        command = "platformio -f -c sublimetext %s %s 2>&1" % (
+            options, args)
+
+        return command
+
     def __del__(self):
-        self.message_queue.stopPrint()
+        """
+        Destroy message queue
+        """
+        try:
+            self.message_queue.stopPrint()
+        except:
+            pass

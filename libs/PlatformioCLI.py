@@ -415,4 +415,10 @@ class PlatformioCLI(CommandsPy):
             boards_list, 'env_boards.json', user_path=True)
 
     def __del__(self):
-        self.message_queue.stopPrint()
+        """
+        Destroy message queue
+        """
+        try:
+            self.message_queue.stopPrint()
+        except:
+            pass
