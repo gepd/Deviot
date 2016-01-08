@@ -20,7 +20,7 @@ If you want to help me, please feel free to do it at any way you can.
 
 ## To Do
 - [ ] Add Serial Monitor
-- [ ] Languages
+- [x] <del>Languages</del>
 - [ ] PlatformIO API Libraries integration
 - [ ] OTA Serial ports
 
