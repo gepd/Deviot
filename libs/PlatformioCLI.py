@@ -22,6 +22,7 @@ try:
     from .Preferences import Preferences
     from .JSONFile import JSONFile
     from .Menu import Menu
+    from .I18n import I18n
 except:
     import Paths
     import Tools
@@ -31,6 +32,9 @@ except:
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
     from libs.Menu import Menu
+    from libs.I18n import I18n
+
+_ = I18n().translate
 
 
 class PlatformioCLI(CommandsPy):
@@ -42,7 +46,7 @@ class PlatformioCLI(CommandsPy):
     Extends: CommandsPy
     '''
 
-    def __init__(self, view=False, console=False):
+    def __init__(self, view=False, console=False, install=False):
         '''
         Initialize the command and preferences classes, to check
         if the current work file is an IoT type it received the view
@@ -64,12 +68,17 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\\n')
 
+        # For installing purposes
+        if(install):
+            return
+
         if(view):
+            sketch_size = view.size()
             file_path = Tools.getPathFromView(view)
             file_name = Tools.getFileNameFromPath(file_path)
 
             # unsaved file
-            if(not file_path):
+            if(not file_path and sketch_size > 0):
                 saved_file = self.saveCodeInFile(view)
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
@@ -77,6 +86,8 @@ class PlatformioCLI(CommandsPy):
             # check IoT type file
             if(not Tools.isIOTFile(view)):
                 msg = '{0} {1} is not a IoT File\\n'
+                if(not file_name):
+                    msg = '{0} Isn\'t possible to upload an empty sketch\\n'
                 self.message_queue.put(msg, current_time, file_name)
                 self.execute = False
                 return
@@ -111,23 +122,20 @@ class PlatformioCLI(CommandsPy):
                 # user preferences to verbose output
                 self.vbose = self.Preferences.get('verbose_output', False)
 
-    def getSelectedBoards(self):
+    def getSelectedBoard(self):
         '''
         Get the board(s) list selected, from the preferences file, to
         be initialized and formated to be used in the platformio CLI
 
         Returns: {string} boards list in platformio CLI format
         '''
-        boards = self.Preferences.get('board_id', '')
-        type_boards = ''
+        board = self.Preferences.get('env_selected', False)
 
-        if(not boards):
+        if(not board):
             return False
 
-        for board in boards:
-            type_boards += '--board=%s ' % board
-
-        return type_boards
+        board = '--board=%s ' % board
+        return board
 
     def overrideSrc(self, ini_path, src_dir):
         """
@@ -154,16 +162,16 @@ class PlatformioCLI(CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        init_boards = self.getSelectedBoards()
+        init_board = self.getSelectedBoard()
 
-        if(not init_boards):
+        if(not init_board):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None board Selected\\n'
             self.message_queue.put(msg, current_time)
             self.Commands.error_running = True
             return
 
-        command = ['init', '%s' % (init_boards)]
+        command = ['init', '%s' % (init_board)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
@@ -177,12 +185,14 @@ class PlatformioCLI(CommandsPy):
         type (checked by isIOTFile)
         '''
         if(not self.execute):
+            self.message_queue.stopPrint()
             return
 
         # initialize the sketch
         self.initSketchProject()
 
         if(self.Commands.error_running):
+            self.message_queue.stopPrint()
             return
 
         command = ['run']
@@ -194,6 +204,7 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', True)
         else:
             self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -201,22 +212,11 @@ class PlatformioCLI(CommandsPy):
         it returns an error if any com port is selected
         '''
         if(not self.execute):
-            return
-
-        # Compiling code
-        self.buildSketchProject()
-        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
             return
 
         id_port = self.Preferences.get('id_port', '')
         env_sel = self.Preferences.get('env_selected', '')
-
-        # check port selected
-        if(not id_port):
-            current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None serial port selected\\n'
-            self.message_queue.put(msg, current_time)
-            return
 
         # check environment selected
         if(not env_sel):
@@ -225,10 +225,24 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time)
             return
 
+        # check port selected
+        if(not id_port):
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} None serial port selected\\n'
+            self.message_queue.put(msg, current_time)
+            return
+
+        # Compiling code
+        self.buildSketchProject()
+        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
+            return
+
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, env_sel)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
+        self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
         '''
@@ -249,6 +263,7 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def openInThread(self, type):
         """
@@ -303,6 +318,14 @@ class PlatformioCLI(CommandsPy):
         if isn't, get the env_path value set by the user,
         from the preferences file and tries to run it again
         '''
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put(
+                "{0} Checking requirements...\\n", current_time)
+        except:
+            pass
+
         # default paths
         if(Tools.getOsName() == 'windows'):
             default_path = ["C:\Python27", "C:\Python27\Scripts"]
@@ -312,8 +335,9 @@ class PlatformioCLI(CommandsPy):
         # paths from user preferences file
         user_env_path = self.Preferences.get('env_path', '')
         if(user_env_path):
-            default_path += [path for path in user_env_path.split(
-                os.path.pathsep)]
+            for path in user_env_path.split(os.path.pathsep):
+                if(os.path.isabs(path)):
+                    default_path += path
 
         # join all paths
         default_path = set(default_path)
@@ -325,25 +349,69 @@ class PlatformioCLI(CommandsPy):
         Run = CommandsPy(env_path=env_path)
         version = Run.runCommand(command, setReturn=True)
         version = re.sub(r'\D', '', version)
+        version = version if version != '' else 0
 
-        if(Run.error_running):
+        if(Run.error_running or version == 0):
+            # translate menu
+            temp_menu = self.Menu.getTemplateMenu('Install-menu-preset')
+            for item in temp_menu[0]['children']:
+                item['caption'] = _(item['caption'])
+            self.Menu.saveSublimeMenu(temp_menu)
+
+            # console feedback
+            try:
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} Platformio is not installed '
+                msg += 'or it\'s installed in a custom path.\\n'
+                msg += 'Please set your path in the preferences file from '
+                msg += 'ST Menu > Deviot > Set Environment PATH'
+                self.message_queue.put(msg, current_time)
+                time.sleep(0.01)
+                self.message_queue.stopPrint()
+            except:
+                pass
+
+            # Preferences instructions
+            self.Preferences.set('env_path', _('SET-YOUR-ENVIRONMENT-PATH'))
             return False
 
         # Check the minimum version
-        if(not Run.error_running and int(version) < 270):
-            self.Preferences.set('enable_menu', False)
+        if(not Run.error_running and int(version) <= 270):
+            # Update menu
             temp_menu = self.Menu.getSublimeMenu()
-
-            temp_menu[0]['children'][0][
-                'caption'] = 'Please upgrade Platformio'
+            status = _('Upgrade PlatformIO')
+            temp_menu[0]['children'][0]['caption'] = status
             temp_menu[0]['children'][1] = 0
-
+            temp_menu[0]['children'][3]['caption'] = _("Check again")
             self.Menu.saveSublimeMenu(temp_menu)
+
+            # console feedback
+            try:
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} You need to update platformIO'
+                self.message_queue.put(msg, current_time)
+                time.sleep(0.01)
+                self.message_queue.stopPrint()
+            except:
+                pass
+
             return False
 
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} PlatformIO has been detected, please wait...\\n'
+            self.message_queue.put(msg, current_time)
+        except:
+            pass
+
         # save user preferences
-        self.Preferences.set('env_path', env_path)
-        self.Preferences.set('enable_menu', True)
+        protected = self.Preferences.get('protected', False)
+        if(not protected):
+            self.Preferences.set('env_path', env_path)
+            self.Preferences.set('protected', True)
+            self.Preferences.set('enable_menu', True)
+            self.env_path = Preferences().get('env_path', False)
 
         # Creates new menu
         api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
@@ -356,6 +424,14 @@ class PlatformioCLI(CommandsPy):
         # Run serial port listener
         Serial = SerialListener(func=self.Menu.createSerialPortsMenu)
         Serial.start()
+
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} All done, you can code now!'
+            self.message_queue.put(msg, current_time)
+        except:
+            pass
 
         return True
 
@@ -422,12 +498,3 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
-
-    def __del__(self):
-        """
-        Destroy message queue
-        """
-        try:
-            self.message_queue.stopPrint()
-        except:
-            pass

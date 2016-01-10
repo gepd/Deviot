@@ -5,6 +5,40 @@
 # Translator: GEPD
 #
 
+# Proceso de Instalación
+
+msgid "1 Install PlatformIO"
+msgstr "1 Instalar PlatformIO"
+
+msgid "2 Set Environment PATH"
+msgstr "2 Ingresar Ruta de Entorno"
+
+msgid "Check again"
+msgstr "Verificar Nuevamente"
+
+msgid "SET-YOUR-ENVIRONMENT-PATH"
+msgstr "INGRESA-TU-RUTA-DE-ENTORNO"
+
+msgid "Upgrade PlatformIO"
+msgstr "Actualizar PlatformIO"
+
+msgid "{0} Checking requirements...\n"
+msgstr "{0} Verificando requisitos...\n"
+
+msgid "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgstr "{0} Platformio no está instalado o se ha instalado en una ruta personalizada.\nPor favor ingresa tu ruta de entorno desde el Menu ST > Deviot > Ingresar Ruta de Entorno"
+
+msgid "{0} You need to update platformIO"
+msgstr "{0} Necesitas actualizar platformIO"
+
+msgid "{0} PlatformIO has been detected, please wait...\n"
+msgstr "{0} Se ha Detectado PlatformIO, por favor espera...\n"
+
+msgid "{0} All done, you can code now!"
+msgstr "{0} ¡Todo listo, ya puedes comenzar a escribir tu código!"
+
+# Menu
+
 msgid "Select board(s)"
 msgstr "Selecciona Una/Multiples Placa(s)"
 
@@ -38,6 +72,11 @@ msgstr "Idioma"
 msgid "About Deviot"
 msgstr "Acerca de Deviot"
 
+# Mensajes y errores
+
+msgid "{0} Isn't possible to upload an empty sketch\n"
+msgstr "{0} No es posible cargar un sketch vacío\n"
+
 msgid "{0} {1} is not a IoT File\n"
 msgstr "{0} {1} No es un archivo IoT\n"
 
@@ -62,8 +101,8 @@ msgstr "{0} Cargando firmware | "
 msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
-msgid "Success\n{0} it took {1}s\n"
-msgstr "Completado \n{0} Demoró {1}s\n"
+msgid "Success | it took {0}s\n"
+msgstr "Completado | Demoró {0}s\n"
 
 msgid "\n{0} it took {1}s\n"
 msgstr "\n{0} Demoró {1}s\n"
