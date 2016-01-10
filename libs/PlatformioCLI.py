@@ -335,8 +335,9 @@ class PlatformioCLI(CommandsPy):
         # paths from user preferences file
         user_env_path = self.Preferences.get('env_path', '')
         if(user_env_path):
-            default_path += [path for path in user_env_path.split(
-                os.path.pathsep)]
+            for path in user_env_path.split(os.path.pathsep):
+                if(os.path.isabs(path)):
+                    default_path += path
 
         # join all paths
         default_path = set(default_path)
