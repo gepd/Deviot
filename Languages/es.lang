@@ -74,6 +74,9 @@ msgstr "Acerca de Deviot"
 
 # Mensajes y errores
 
+msgid "{0} Isn't possible to upload an empty sketch\n"
+msgstr "{0} No es posible cargar un sketch vacío\n"
+
 msgid "{0} {1} is not a IoT File\n"
 msgstr "{0} {1} No es un archivo IoT\n"
 
@@ -98,8 +101,8 @@ msgstr "{0} Cargando firmware | "
 msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
-msgid "Success | it took {1}s\n"
-msgstr "Completado | Demoró {1}s\n"
+msgid "Success | it took {0}s\n"
+msgstr "Completado | Demoró {0}s\n"
 
 msgid "\n{0} it took {1}s\n"
 msgstr "\n{0} Demoró {1}s\n"
