@@ -119,23 +119,20 @@ class PlatformioCLI(CommandsPy):
                 # user preferences to verbose output
                 self.vbose = self.Preferences.get('verbose_output', False)
 
-    def getSelectedBoards(self):
+    def getSelectedBoard(self):
         '''
         Get the board(s) list selected, from the preferences file, to
         be initialized and formated to be used in the platformio CLI
 
         Returns: {string} boards list in platformio CLI format
         '''
-        boards = self.Preferences.get('board_id', '')
-        type_boards = ''
+        board = self.Preferences.get('env_selected', False)
 
-        if(not boards):
+        if(not board):
             return False
 
-        for board in boards:
-            type_boards += '--board=%s ' % board
-
-        return type_boards
+        board = '--board=%s ' % board
+        return board
 
     def overrideSrc(self, ini_path, src_dir):
         """
@@ -162,16 +159,16 @@ class PlatformioCLI(CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        init_boards = self.getSelectedBoards()
+        init_board = self.getSelectedBoard()
 
-        if(not init_boards):
+        if(not init_board):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None board Selected\\n'
             self.message_queue.put(msg, current_time)
             self.Commands.error_running = True
             return
 
-        command = ['init', '%s' % (init_boards)]
+        command = ['init', '%s' % (init_board)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
@@ -215,14 +212,15 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        # Compiling code
-        self.buildSketchProject()
-        if(self.Commands.error_running):
-            self.message_queue.stopPrint()
-            return
-
         id_port = self.Preferences.get('id_port', '')
         env_sel = self.Preferences.get('env_selected', '')
+
+        # check environment selected
+        if(not env_sel):
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} None environment selected\\n'
+            self.message_queue.put(msg, current_time)
+            return
 
         # check port selected
         if(not id_port):
@@ -231,11 +229,10 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put(msg, current_time)
             return
 
-        # check environment selected
-        if(not env_sel):
-            current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None environment selected\\n'
-            self.message_queue.put(msg, current_time)
+        # Compiling code
+        self.buildSketchProject()
+        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
