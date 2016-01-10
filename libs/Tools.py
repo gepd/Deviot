@@ -82,8 +82,10 @@ def setStatus(view, text=False):
 
     Arguments: view {st object} -- stores many info related with ST
     '''
-    info = []
+    if(not view):
+        return
 
+    info = []
     if isIOTFile(view):
 
         info.append(__title__ + ' v' + str(__version__))
