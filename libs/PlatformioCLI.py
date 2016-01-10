@@ -22,6 +22,7 @@ try:
     from .Preferences import Preferences
     from .JSONFile import JSONFile
     from .Menu import Menu
+    from .I18n import I18n
 except:
     import Paths
     import Tools
@@ -31,6 +32,9 @@ except:
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
     from libs.Menu import Menu
+    from libs.I18n import I18n
+
+_ = I18n().translate
 
 
 class PlatformioCLI(CommandsPy):
@@ -42,7 +46,7 @@ class PlatformioCLI(CommandsPy):
     Extends: CommandsPy
     '''
 
-    def __init__(self, view=False, console=False):
+    def __init__(self, view=False, console=False, install=False):
         '''
         Initialize the command and preferences classes, to check
         if the current work file is an IoT type it received the view
@@ -63,6 +67,10 @@ class PlatformioCLI(CommandsPy):
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\\n')
+
+        # For installing purposes
+        if(install):
+            return
 
         if(view):
             file_path = Tools.getPathFromView(view)
@@ -310,6 +318,14 @@ class PlatformioCLI(CommandsPy):
         if isn't, get the env_path value set by the user,
         from the preferences file and tries to run it again
         '''
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put(
+                "{0} Checking requirements...\\n", current_time)
+        except:
+            pass
+
         # default paths
         if(Tools.getOsName() == 'windows'):
             default_path = ["C:\Python27", "C:\Python27\Scripts"]
@@ -332,25 +348,69 @@ class PlatformioCLI(CommandsPy):
         Run = CommandsPy(env_path=env_path)
         version = Run.runCommand(command, setReturn=True)
         version = re.sub(r'\D', '', version)
+        version = version if version != '' else 0
 
-        if(Run.error_running):
+        if(Run.error_running or version == 0):
+            # translate menu
+            temp_menu = self.Menu.getTemplateMenu('Install-menu-preset')
+            for item in temp_menu[0]['children']:
+                item['caption'] = _(item['caption'])
+            self.Menu.saveSublimeMenu(temp_menu)
+
+            # console feedback
+            try:
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} Platformio is not installed '
+                msg += 'or it\'s installed in a custom path.\\n'
+                msg += 'Please set your path in the preferences file from '
+                msg += 'ST Menu > Deviot > Set Environment PATH'
+                self.message_queue.put(msg, current_time)
+                time.sleep(0.01)
+                self.message_queue.stopPrint()
+            except:
+                pass
+
+            # Preferences instructions
+            self.Preferences.set('env_path', _('SET-YOUR-ENVIRONMENT-PATH'))
             return False
 
         # Check the minimum version
         if(not Run.error_running and int(version) < 270):
-            self.Preferences.set('enable_menu', False)
+            # Update menu
             temp_menu = self.Menu.getSublimeMenu()
-
-            temp_menu[0]['children'][0][
-                'caption'] = 'Please upgrade Platformio'
+            status = _('Upgrade PlatformIO')
+            temp_menu[0]['children'][0]['caption'] = status
             temp_menu[0]['children'][1] = 0
-
+            temp_menu[0]['children'][3]['caption'] = _("Check again")
             self.Menu.saveSublimeMenu(temp_menu)
+
+            # console feedback
+            try:
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} You need to update platformIO'
+                self.message_queue.put(msg, current_time)
+                time.sleep(0.01)
+                self.message_queue.stopPrint()
+            except:
+                pass
+
             return False
 
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} PlatformIO has been detected, please wait...\\n'
+            self.message_queue.put(msg, current_time)
+        except:
+            pass
+
         # save user preferences
-        self.Preferences.set('env_path', env_path)
-        self.Preferences.set('enable_menu', True)
+        protected = self.Preferences.get('protected', False)
+        if(not protected):
+            self.Preferences.set('env_path', env_path)
+            self.Preferences.set('protected', True)
+            self.Preferences.set('enable_menu', True)
+            self.env_path = Preferences().get('env_path', False)
 
         # Creates new menu
         api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
@@ -363,6 +423,14 @@ class PlatformioCLI(CommandsPy):
         # Run serial port listener
         Serial = SerialListener(func=self.Menu.createSerialPortsMenu)
         Serial.start()
+
+        # console feedback
+        try:
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} All done, you can code now!'
+            self.message_queue.put(msg, current_time)
+        except:
+            pass
 
         return True
 

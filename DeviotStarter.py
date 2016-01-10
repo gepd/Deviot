@@ -69,8 +69,7 @@ class DeviotListener(sublime_plugin.EventListener):
             if file_name in content:
                 tmp_path = os.path.join(tmp_path, content)
                 rmtree(tmp_path, ignore_errors=False)
-
-        Preferences().set('builded_sketch', False)
+                Preferences().set('builded_sketch', False)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
@@ -80,18 +79,20 @@ class PlatformioInstallCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        sublime.run_command('open_url', {'url':
-                                         'http://goo.gl/66BHnk'})
+        sublime.run_command('open_url', {'url': 'http://goo.gl/66BHnk'})
 
 
-class CheckRequirementsCommand(sublime_plugin.WindowCommand):
+class CheckRequirementsCommand(sublime_plugin.TextCommand):
     """
         Check the if minimum requirements has been established
         detailed information in libs/PlatformioCLI.py
     """
 
-    def run(self):
-        PlatformioCLI().platformioCheck()
+    def run(self, edit):
+        view = self.view
+        console_name = 'Deviot|Check' + str(time.time())
+        console = Console(view.window(), name=console_name)
+        PlatformioCLI(view, console, True).platformioCheck()
 
 
 class SelectBoardCommand(sublime_plugin.WindowCommand):
