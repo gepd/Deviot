@@ -375,7 +375,7 @@ class PlatformioCLI(CommandsPy):
             return False
 
         # Check the minimum version
-        if(not Run.error_running and int(version) < 270):
+        if(not Run.error_running and int(version) <= 270):
             # Update menu
             temp_menu = self.Menu.getSublimeMenu()
             status = _('Upgrade PlatformIO')
