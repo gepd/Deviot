@@ -292,5 +292,4 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        sublime.run_command('open_url', {'url':
-                                         'https://goo.gl/c41EXS'})
+        sublime.run_command('open_url', {'url': 'https://goo.gl/c41EXS'})

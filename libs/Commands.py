@@ -63,6 +63,7 @@ class CommandsPy(object):
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
                     if(err):
+                        self.error_running = True
                         current_time = time.strftime('%H:%M:%S')
                         diff_time = time.time() - start_time
                         diff_time = '{0:.2f}'.format(diff_time)
@@ -96,11 +97,10 @@ class CommandsPy(object):
 
         # Print success status
         if(not verbose and return_code == 0):
-            current_time = time.strftime('%H:%M:%S')
             diff_time = time.time() - start_time
             diff_time = '{0:.2f}'.format(diff_time)
-            msg = 'Success\\n{0} it took {1}s\\n'
-            self.message_queue.put(msg, current_time, diff_time)
+            msg = 'Success | it took {0}s\\n'
+            self.message_queue.put(msg, diff_time)
 
         # print full verbose output (when is active)
         if(verbose):

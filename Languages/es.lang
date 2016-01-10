@@ -98,8 +98,8 @@ msgstr "{0} Cargando firmware | "
 msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
-msgid "Success\n{0} it took {1}s\n"
-msgstr "Completado \n{0} Demoró {1}s\n"
+msgid "Success | it took {1}s\n"
+msgstr "Completado | Demoró {1}s\n"
 
 msgid "\n{0} it took {1}s\n"
 msgstr "\n{0} Demoró {1}s\n"
