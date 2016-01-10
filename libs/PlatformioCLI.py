@@ -73,11 +73,12 @@ class PlatformioCLI(CommandsPy):
             return
 
         if(view):
+            sketch_size = view.size()
             file_path = Tools.getPathFromView(view)
             file_name = Tools.getFileNameFromPath(file_path)
 
             # unsaved file
-            if(not file_path):
+            if(not file_path and sketch_size > 0):
                 saved_file = self.saveCodeInFile(view)
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
@@ -85,6 +86,8 @@ class PlatformioCLI(CommandsPy):
             # check IoT type file
             if(not Tools.isIOTFile(view)):
                 msg = '{0} {1} is not a IoT File\\n'
+                if(not file_name):
+                    msg = '{0} Isn\'t possible to upload an empty sketch\\n'
                 self.message_queue.put(msg, current_time, file_name)
                 self.execute = False
                 return
