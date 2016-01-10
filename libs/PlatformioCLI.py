@@ -177,12 +177,14 @@ class PlatformioCLI(CommandsPy):
         type (checked by isIOTFile)
         '''
         if(not self.execute):
+            self.message_queue.stopPrint()
             return
 
         # initialize the sketch
         self.initSketchProject()
 
         if(self.Commands.error_running):
+            self.message_queue.stopPrint()
             return
 
         command = ['run']
@@ -194,6 +196,7 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', True)
         else:
             self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -201,11 +204,13 @@ class PlatformioCLI(CommandsPy):
         it returns an error if any com port is selected
         '''
         if(not self.execute):
+            self.message_queue.stopPrint()
             return
 
         # Compiling code
         self.buildSketchProject()
         if(self.Commands.error_running):
+            self.message_queue.stopPrint()
             return
 
         id_port = self.Preferences.get('id_port', '')
@@ -229,6 +234,7 @@ class PlatformioCLI(CommandsPy):
                    (id_port, env_sel)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
+        self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
         '''
@@ -249,6 +255,7 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', False)
+        self.message_queue.stopPrint()
 
     def openInThread(self, type):
         """
@@ -422,12 +429,3 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
-
-    def __del__(self):
-        """
-        Destroy message queue
-        """
-        try:
-            self.message_queue.stopPrint()
-        except:
-            pass

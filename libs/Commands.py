@@ -152,12 +152,3 @@ class CommandsPy(object):
             options, args)
 
         return command
-
-    def __del__(self):
-        """
-        Destroy message queue
-        """
-        try:
-            self.message_queue.stopPrint()
-        except:
-            pass
