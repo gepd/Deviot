@@ -6,7 +6,7 @@ Para instalar **Deviot** correctamente en Sublime Text, debes seguir los siguien
 
 * [Windows](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#windows)
 * [Unix](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#unix)
-* [OS X](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#os-x)
+* [OS X](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#osx)
 
 ### Windows
 #### 1. Install python / Instalar Python
