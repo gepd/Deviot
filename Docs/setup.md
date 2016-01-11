@@ -6,7 +6,7 @@ Para instalar **Deviot** correctamente en Sublime Text, debes seguir los siguien
 
 * [Windows](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#windows)
 * [Unix](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#unix)
-* OS X
+* [OS X](https://github.com/gepd/Deviot/tree/master/Docs/setup.md#os-x)
 
 ### Windows
 #### 1. Install python / Instalar Python
@@ -51,3 +51,6 @@ To install platformio write `pip install -U platformio`
 
 ---
 Para instalar platformIO escribe `pip install -U platformio`
+
+### OSX
+...
