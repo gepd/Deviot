@@ -1,0 +1,27 @@
+{
+    // If you installed python in a custom folder, you must add that folder in
+    // this option, the default paths are "C:\Python27" and "C:\Python27\Scripts"
+    // for Windows and "/usr/bin", "/usr/local/bin" for unix systems
+    "env_path": "", 
+    // Option used to disable the menu when there is an error with the plugin the
+    // possibles options are true or false, but you should not modify it.
+    "enable_menu": "",
+    // Establishes the language of the plugin. The languages availables are listed
+    // in the ST Menu > Deviot > Language, or in the folder Package > Deviot > Languages
+    "id_lang": "es",
+    // After set the environment path, this option avoid to overwrite the env_path
+    // each time the plugin starts, the possibles options are true or false.
+    // If you have any problem with the plugin and want to configurate the custom
+    // path again, you should set this option to false, and add the new path in 
+    // the env_path option in this file.
+    "protected": "",
+    // Stores the boards selected in the Deviot > Select a board(s) menu
+    "board_id" : [],
+    // This is the board selected to work with platformIO (build/upload/clean)
+    "env_selected" : "",
+    // After build an sketch, this option is set to true to enable the clean option
+    "builded_sketch": "",
+    // When this option is true, the user console output shows output errors, warnings
+     // and additional information
+    "verbose_output": ""
+}

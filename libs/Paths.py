@@ -133,7 +133,7 @@ def getSublimeMenuPath(sub_folder=False, user_path=False):
 def getPreferencesFile():
     deviot_user_path = getDeviotUserPath()
     preferences_path = os.path.join(
-        deviot_user_path, 'Preferences.Deviot-settings')
+        deviot_user_path, 'Deviot Preferences.sublime-settings')
     return preferences_path
 
 
