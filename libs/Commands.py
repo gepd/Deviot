@@ -95,6 +95,10 @@ class CommandsPy(object):
         stderr = output[1]
         return_code = process.returncode
 
+        # set error
+        if(return_code > 0):
+            self.error_running = True
+
         # Print success status
         if(not verbose and return_code == 0):
             diff_time = time.time() - start_time

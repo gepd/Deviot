@@ -333,11 +333,11 @@ class PlatformioCLI(CommandsPy):
             default_path = ["/usr/bin", "/usr/local/bin"]
 
         # paths from user preferences file
-        user_env_path = self.Preferences.get('env_path', '')
+        user_env_path = self.Preferences.get('env_path', False)
         if(user_env_path):
             for path in user_env_path.split(os.path.pathsep):
                 if(os.path.isabs(path)):
-                    default_path += path
+                    default_path.append(path)
 
         # join all paths
         default_path = set(default_path)
@@ -367,12 +367,13 @@ class PlatformioCLI(CommandsPy):
                 msg += 'ST Menu > Deviot > Set Environment PATH'
                 self.message_queue.put(msg, current_time)
                 time.sleep(0.01)
-                self.message_queue.stopPrint()
             except:
                 pass
 
             # Preferences instructions
-            self.Preferences.set('env_path', _('SET-YOUR-ENVIRONMENT-PATH'))
+            if(not user_env_path):
+                self.Preferences.set('env_path', _(
+                    'SET-YOUR-ENVIRONMENT-PATH'))
             return False
 
         # Check the minimum version
@@ -391,7 +392,6 @@ class PlatformioCLI(CommandsPy):
                 msg = '{0} You need to update platformIO'
                 self.message_queue.put(msg, current_time)
                 time.sleep(0.01)
-                self.message_queue.stopPrint()
             except:
                 pass
 
