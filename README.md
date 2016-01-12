@@ -1,12 +1,13 @@
 # Deviot
 ![Deviot preview](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot.gif?raw=true)
-Sublime Text plugin for IoT development using [PlatformIO](http://platformio.org/) ecosystem and supporting **~200** boards!
+
+Sublime Text plugin (v2&3) for IoT development using [PlatformIO](http://platformio.org/) ecosystem and supporting **~200** boards!
 
 The integration with platformIO is not 100% ready, but will be in the near future. 
 If you want to help me, please feel free to do it at any way you can.
 
 ---
-Plugin de Sublime Text para el desarrollo de aplicaciones IoT usando el ecosistema [platformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
+Plugin para Sublime text 2&3 que ayuda al desarrollo de aplicaciones IoT usando el ecosistema [platformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
 
 La integración con platformIO no está 100% lista, pero lo estará en un futuro cercano.
 Si quieres ayudarme, siéntete libre para hacerlo en la forma que más te acomode.
