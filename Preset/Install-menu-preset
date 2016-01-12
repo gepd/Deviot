@@ -14,7 +14,7 @@
                 "caption": "2 Set Environment PATH", 
                 "command": "open_file",
                 "args": {
-                    "file": "${packages}/User/Deviot/Preferences.Deviot-settings"
+                    "file": "${packages}/User/Deviot/Deviot Preferences.sublime-settings"
                 }
             },
             {"caption": "-"},
