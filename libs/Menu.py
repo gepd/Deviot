@@ -84,8 +84,12 @@ class Menu(object):
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
+        type = 'board_id'
+        native = Preferences().get('native', False)
+        if(native):
+            type = 'found_ini'
 
-        env_selecs = Preferences().get('board_id', '')
+        env_selecs = Preferences().get(type, '')
         env_boards = self.getTemplateMenu('env_boards.json', user_path=True)
 
         if(not env_boards):

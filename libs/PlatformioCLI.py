@@ -57,10 +57,14 @@ class PlatformioCLI(CommandsPy):
         Keyword Arguments:
         view {st object} -- stores many info related with ST (default: False)
         '''
+        self.view = view
         self.execute = True
-        self.Preferences = Preferences()
+        self.is_temp = True
         self.Menu = Menu()
-        self.env_path = Preferences().get('env_path', False)
+        self.Preferences = Preferences()
+        self.env_path = self.Preferences.get('env_path', False)
+        self.dir = self.Preferences.get('ini_path', False)
+        self.vbose = self.Preferences.get('verbose_output', False)
 
         # user console
         if(console):
@@ -85,7 +89,7 @@ class PlatformioCLI(CommandsPy):
                 file_path = Tools.getPathFromView(view)
 
             # check IoT type file
-            if(not Tools.isIOTFile(view)):
+            if(console and not Tools.isIOTFile(view)):
                 msg = '{0} {1} is not a IoT File\\n'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
@@ -94,17 +98,15 @@ class PlatformioCLI(CommandsPy):
                 return
 
             # unsaved changes
-            if view.is_dirty():
+            if (console and view.is_dirty()):
                 view.run_command('save')
 
             if(self.execute):
-                self.flne = Tools.getFileNameFromPath(file_path)
                 current_path = Paths.getCurrentFilePath(view)
                 current_dir = Paths.getCWD(current_path)
                 parent_dir = Paths.getParentCWD(current_path)
                 file_name = Tools.getFileNameFromPath(file_path, ext=False)
                 tmp_path = Paths.getDeviotTmpPath(file_name)
-                # library = Paths.getLibraryPath()
 
                 self.dir = tmp_path
                 self.src = current_dir
@@ -114,29 +116,72 @@ class PlatformioCLI(CommandsPy):
                     if(file.endswith('platformio.ini')):
                         self.dir = parent_dir
                         self.src = False
+                        self.is_temp = False
                         break
 
-                # Initilized commands
-                self.Commands = CommandsPy(
-                    self.env_path, console=console, cwd=self.dir)
+        # Initilized commands
+        self.Commands = CommandsPy(
+            self.env_path, console=console, cwd=self.dir)
 
-                # user preferences to verbose output
-                self.vbose = self.Preferences.get('verbose_output', False)
+    def checkInitFile(self):
+        cdir = self.Preferences.get('ini_path', '')
+        if(cdir == self.dir):
+            return
+        # check only if it's a IoT File
+        if (not Tools.isIOTFile(self.view)):
+            return
 
-    def getSelectedBoard(self):
-        '''
-        Get the board(s) list selected, from the preferences file, to
-        be initialized and formated to be used in the platformio CLI
+        # show non native data
+        if(self.is_temp):
+            self.Menu.createEnvironmentMenu()
+            self.Preferences.set('native', False)
+            self.Preferences.set('ini_path', self.dir)
+            return
 
-        Returns: {string} boards list in platformio CLI format
-        '''
-        board = self.Preferences.get('env_selected', False)
+        # get data from platformio.ini file
+        ini_list = []
+        ini_path = Paths.getFullIniPath(self.dir)
+        with open(ini_path, 'r') as file:
+            pattern = re.compile(r'\[(\w+):(\w+)\]')
+            for line in file:
+                if pattern.findall(line):
+                    line = re.match(r"\[\w+:(\w+)\]", line).group(1)
+                    ini_list.append(line)
 
-        if(not board):
-            return False
+        # save preferences, update menu data
+        self.Preferences.set('native', True)
+        self.Preferences.set('ini_path', self.dir)
+        self.Preferences.set('found_ini', ini_list)
+        self.Menu.createEnvironmentMenu()
 
-        board = '--board=%s ' % board
-        return board
+    def removeEnvFromFile(self, env):
+        ini_path = self.Preferences.get('ini_path', False)
+        if(not ini_path):
+            return
+
+        found = False
+        write = False
+        buffer = ""
+
+        # exclude environment selected
+        ini_path = Paths.getFullIniPath(ini_path)
+        if(not os.path.isfile(ini_path)):
+            return
+
+        with open(ini_path) as file:
+            for line in file:
+                if(env in line and not found):
+                    found = True
+                    write = True
+                if(not found):
+                    buffer += line
+                if(found and line == '\n'):
+                    found = False
+
+        # save new platformio.ini
+        if(write):
+            with open(ini_path, 'w') as file:
+                file.write(buffer)
 
     def overrideSrc(self, ini_path, src_dir):
         """
@@ -147,23 +192,33 @@ class PlatformioCLI(CommandsPy):
             ini_path {string} -- path of the platformio.ini file
             src_dir {string} -- path where source folder the is located
         """
-        ini_path = os.path.join(ini_path, 'platformio.ini')
         header = '[platformio]'
+        ini_path = Paths.getFullIniPath(self.dir)
+        with open(ini_path) as file:
+            if header not in file.read():
+                with open(ini_path, 'a+') as new_file:
+                    new_file.write("\n%s\n" % header)
+                    new_file.write("src_dir=%s" % src_dir)
 
-        ini = open(ini_path, 'a+')
-        ini.seek(0, 2)
-        if header not in ini.read():
-            ini.write("\n%s\n" % header)
-            ini.write("src_dir=%s" % src_dir)
-        ini.close()
-
-    def initSketchProject(self):
+    def initSketchProject(self, choosen=None):
         '''
         command to initialize the board(s) selected by the user. This
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        init_board = self.getSelectedBoard()
+        native = Preferences().get('native', False)
+        if(native):
+            choosen = self.Preferences.get('init_queue', False)
+            self.dir = self.Preferences.get('ini_path', False)
+
+        # check if it was already initialized
+        ini_path = Paths.getFullIniPath(self.dir)
+        if(os.path.isfile(ini_path)):
+            with open(ini_path) as file:
+                if(choosen in file.read()):
+                    return
+
+        init_board = '--board=%s ' % choosen
 
         if(not init_board):
             current_time = time.strftime('%H:%M:%S')
@@ -177,7 +232,9 @@ class PlatformioCLI(CommandsPy):
         self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            if(self.src):
+            if(native):
+                self.Preferences.set('init_queue', '')
+            if(not native and self.src):
                 self.overrideSrc(self.dir, self.src)
 
     def buildSketchProject(self):
@@ -189,18 +246,20 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
+        choosen_env = self.Preferences.get('env_selected', False)
+
         # initialize the sketch
-        self.initSketchProject()
+        self.initSketchProject(choosen_env)
 
         if(self.Commands.error_running):
             self.message_queue.stopPrint()
             return
 
-        command = ['run']
+        command = ['run', '-e %s' % choosen_env]
 
         self.Commands.runCommand(command, verbose=self.vbose)
 
-        # set
+        # set build sketch
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', True)
         else:
@@ -266,14 +325,17 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
-    def openInThread(self, type):
+    def openInThread(self, type, chosen=False):
         """
         Opens each action; build/upload/clean in a new thread
 
         Arguments: type {string} -- type of action.
                    Valid values: build/upload/clean
         """
-        if(type == 'build'):
+        if(type == 'init'):
+            action_thread = threading.Thread(target=self.initSketchProject)
+            action_thread.start()
+        elif(type == 'build'):
             action_thread = threading.Thread(target=self.buildSketchProject)
             action_thread.start()
         elif (type == 'upload'):

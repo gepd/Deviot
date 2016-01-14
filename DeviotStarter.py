@@ -49,6 +49,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        PlatformioCLI(view).checkInitFile()
         Tools.setStatus(view)
 
     def on_close(self, view):
@@ -110,7 +111,14 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
 
         Arguments: board_id {string} -- id of the board selected
         """
-        Preferences().boardSelected(board_id, Menu().createEnvironmentMenu)
+        native = Preferences().get('native', False)
+        remove = Preferences().boardSelected(board_id)
+        if(remove):
+            PlatformioCLI().removeEnvFromFile(board_id)
+        if(native and not remove):
+            Preferences().set('init_queue', board_id)
+            PlatformioCLI().openInThread('init')
+        Menu().createEnvironmentMenu()
 
     def is_checked(self, board_id):
         """
