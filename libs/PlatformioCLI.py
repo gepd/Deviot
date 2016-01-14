@@ -12,6 +12,7 @@ import time
 import json
 import threading
 import sublime
+from collections import OrderedDict
 
 try:
     from .Commands import CommandsPy
@@ -335,14 +336,16 @@ class PlatformioCLI(CommandsPy):
         # paths from user preferences file
         user_env_path = self.Preferences.get('env_path', False)
         if(user_env_path):
-            for path in user_env_path.split(os.path.pathsep):
+            for path in reversed(user_env_path.split(os.path.pathsep)):
                 if(os.path.isabs(path)):
-                    default_path.append(path)
+                    default_path.insert(0, path)
 
-        # join all paths
-        default_path = set(default_path)
-        env_path = os.path.pathsep.join(list(default_path | set(
-            os.environ.get("PATH", "").split(os.path.pathsep))))
+        # Joining system environment paths and default paths
+        system_paths = os.environ.get("PATH", "").split(os.path.pathsep)
+        for path in system_paths:
+            default_path.append(path)
+        default_path = list(OrderedDict.fromkeys(default_path))
+        env_path = os.path.pathsep.join(default_path)
 
         command = ['--version']
 
