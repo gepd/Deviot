@@ -49,7 +49,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(view).checkInitFile()
+        PlatformioCLI(view, command=False).checkInitFile()
         Tools.setStatus(view)
 
     def on_close(self, view):

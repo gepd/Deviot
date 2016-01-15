@@ -47,7 +47,7 @@ class PlatformioCLI(CommandsPy):
     Extends: CommandsPy
     '''
 
-    def __init__(self, view=False, console=False, install=False):
+    def __init__(self, view=False, console=False, install=False, command=True):
         '''
         Initialize the command and preferences classes, to check
         if the current work file is an IoT type it received the view
@@ -64,7 +64,9 @@ class PlatformioCLI(CommandsPy):
         self.Preferences = Preferences()
         self.env_path = self.Preferences.get('env_path', False)
         self.dir = self.Preferences.get('ini_path', False)
+        self.dir = self.Preferences.get('ini_path', False)
         self.vbose = self.Preferences.get('verbose_output', False)
+        self.native = self.Preferences.get('native', False)
 
         # user console
         if(console):
@@ -83,13 +85,13 @@ class PlatformioCLI(CommandsPy):
             file_name = Tools.getFileNameFromPath(file_path)
 
             # unsaved file
-            if(not file_path and sketch_size > 0):
+            if(command and not file_path and sketch_size > 0):
                 saved_file = self.saveCodeInFile(view)
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
 
             # check IoT type file
-            if(console and not Tools.isIOTFile(view)):
+            if(command and console and not Tools.isIOTFile(view)):
                 msg = '{0} {1} is not a IoT File\\n'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
@@ -98,17 +100,14 @@ class PlatformioCLI(CommandsPy):
                 return
 
             # unsaved changes
-            if (console and view.is_dirty()):
+            if (command and view.is_dirty()):
                 view.run_command('save')
 
-            if(self.execute):
+            if(command and self.execute):
                 current_path = Paths.getCurrentFilePath(view)
                 current_dir = Paths.getCWD(current_path)
                 parent_dir = Paths.getParentCWD(current_path)
                 file_name = Tools.getFileNameFromPath(file_path, ext=False)
-                tmp_path = Paths.getDeviotTmpPath(file_name)
-
-                self.dir = tmp_path
                 self.src = current_dir
 
                 # Check initialized project
@@ -206,8 +205,7 @@ class PlatformioCLI(CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        native = Preferences().get('native', False)
-        if(native):
+        if(self.native):
             choosen = self.Preferences.get('init_queue', False)
             self.dir = self.Preferences.get('ini_path', False)
 
@@ -232,9 +230,9 @@ class PlatformioCLI(CommandsPy):
         self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            if(native):
+            if(self.native):
                 self.Preferences.set('init_queue', '')
-            if(not native and self.src):
+            if(not self.native and self.src):
                 self.overrideSrc(self.dir, self.src)
 
     def buildSketchProject(self):
