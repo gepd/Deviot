@@ -74,11 +74,12 @@ class CommandsPy(object):
                 # detect error
                 if('in function' in output.lower() or
                         'in file' in output.lower() or
-                        'error:' in output.lower() and not err):
-                    err = True
-                    current_time = time.strftime('%H:%M:%S')
-                    msg = 'Error\\n{0} Details:\\n\\n'
-                    self.message_queue.put(msg, current_time)
+                        'error:' in output.lower()):
+                    if(not err):
+                        current_time = time.strftime('%H:%M:%S')
+                        msg = 'Error\\n{0} Details:\\n\\n'
+                        self.message_queue.put(msg, current_time)
+                        err = True
 
                 # output messages
                 if (output.strip() and err and 'scons' not in output and
