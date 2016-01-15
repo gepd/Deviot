@@ -198,7 +198,7 @@ class PlatformioCLI(CommandsPy):
             if header not in file.read():
                 with open(ini_path, 'a+') as new_file:
                     new_file.write("\n%s\n" % header)
-                    new_file.write("src_dir=%s" % src_dir)
+                    new_file.write("src_dir=%s\n" % src_dir)
 
     def initSketchProject(self, choosen=None):
         '''
