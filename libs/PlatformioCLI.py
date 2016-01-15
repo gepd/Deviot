@@ -24,6 +24,7 @@ try:
     from .JSONFile import JSONFile
     from .Menu import Menu
     from .I18n import I18n
+    from .Progress import ThreadProgress
 except:
     import Paths
     import Tools
@@ -34,6 +35,7 @@ except:
     from libs.JSONFile import JSONFile
     from libs.Menu import Menu
     from libs.I18n import I18n
+    from libs.Progress import ThreadProgress
 
 _ = I18n().translate
 
@@ -361,6 +363,7 @@ class PlatformioCLI(CommandsPy):
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
             action_thread.start()
+        ThreadProgress(action_thread, _('Processing'), _('Done'))
 
     def saveCodeInFile(self, view):
         """
