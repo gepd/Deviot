@@ -128,12 +128,16 @@ class PlatformioCLI(CommandsPy):
             self.env_path, console=console, cwd=self.dir)
 
     def checkInitFile(self):
+        status = self.Preferences.get('enable_menu', False)
         # check only if it's a IoT File
         if (not Tools.isIOTFile(self.view)):
-            self.Preferences.set('enable_menu', False)
+            if(status != False):
+                self.Preferences.set('enable_menu', False)
             return
 
-        self.Preferences.set('enable_menu', True)
+        if(status != True):
+            self.Preferences.set('enable_menu', True)
+
         cdir = self.Preferences.get('ini_path', '')
         if(cdir == self.dir):
             return
