@@ -124,3 +124,9 @@ msgstr "Descargando paquete\n\nPor favor sea paciente, esto podría demorar un p
 
 msgid "Unpacking...\n"
 msgstr "Descomprimiendo...\n"
+
+msgid "Processing"
+msgstr "Procesando"
+
+msgid "Done"
+msgstr "Listo"
