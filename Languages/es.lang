@@ -112,3 +112,15 @@ msgstr "Error\n{0} Detalles:\n\n"
 
 msgid "Success\n"
 msgstr "Completado\n"
+
+msgid "\nInstalling {0} package: "
+msgstr "\nInstalando paquete {0}: "
+
+msgid "Already installed\n"
+msgstr "Ya instalado\n"
+
+msgid "Downloading package\n\nIt may take a while, please be patient.\n"
+msgstr "Descargando paquete\n\nPor favor sea paciente, esto podría demorar un poco.\n"
+
+msgid "Unpacking...\n"
+msgstr "Descomprimiendo...\n"
