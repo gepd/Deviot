@@ -118,16 +118,24 @@ class PlatformioCLI(CommandsPy):
                         self.is_temp = False
                         break
 
+                # set temp path
+                if(self.is_temp):
+                    tmp_path = Paths.getDeviotTmpPath(file_name)
+                    self.dir = tmp_path
+
         # Initilized commands
         self.Commands = CommandsPy(
             self.env_path, console=console, cwd=self.dir)
 
     def checkInitFile(self):
-        cdir = self.Preferences.get('ini_path', '')
-        if(cdir == self.dir):
-            return
         # check only if it's a IoT File
         if (not Tools.isIOTFile(self.view)):
+            self.Preferences.set('enable_menu', False)
+            return
+
+        self.Preferences.set('enable_menu', True)
+        cdir = self.Preferences.get('ini_path', '')
+        if(cdir == self.dir):
             return
 
         # show non native data

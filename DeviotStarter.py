@@ -247,9 +247,6 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         saved_id_port = Preferences().get('id_port')
         return saved_id_port == id_port
 
-    def is_enabled(self):
-        return Preferences().get('enable_menu', False)
-
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
     """
@@ -287,9 +284,6 @@ class SelectLanguageCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_lang):
         saved_id_lang = Preferences().get('id_lang')
         return saved_id_lang == id_lang
-
-    def is_enabled(self):
-        return Preferences().get('enable_menu', False)
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
