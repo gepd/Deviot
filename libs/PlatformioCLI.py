@@ -254,6 +254,13 @@ class PlatformioCLI(CommandsPy):
 
         choosen_env = self.Preferences.get('env_selected', False)
 
+        # check environment selected
+        if(not choosen_env):
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} None environment selected\\n'
+            self.message_queue.put(msg, current_time)
+            return
+
         # initialize the sketch
         self.initSketchProject(choosen_env)
 
@@ -282,10 +289,10 @@ class PlatformioCLI(CommandsPy):
             return
 
         id_port = self.Preferences.get('id_port', '')
-        env_sel = self.Preferences.get('env_selected', '')
+        choosen_env = self.Preferences.get('env_selected', '')
 
         # check environment selected
-        if(not env_sel):
+        if(not choosen_env):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None environment selected\\n'
             self.message_queue.put(msg, current_time)
@@ -305,7 +312,7 @@ class PlatformioCLI(CommandsPy):
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
-                   (id_port, env_sel)]
+                   (id_port, choosen_env)]
 
         self.Commands.runCommand(command, verbose=self.vbose)
         self.message_queue.stopPrint()
