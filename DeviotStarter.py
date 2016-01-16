@@ -134,23 +134,6 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return Preferences().get('enable_menu', False)
 
 
-class MainEnvironmentCommand(sublime_plugin.WindowCommand):
-    """
-    Enable or disable the "Select environment" menu if none board
-    is selected from the list.
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def is_enabled(self):
-        check = Preferences().get('enable_menu', False)
-        if(check):
-            check = Preferences().get('env_selected', '')
-            if(len(check) == 0):
-                check = False
-        return check
-
-
 class SelectEnvCommand(sublime_plugin.WindowCommand):
     """
     Stores the environment option selected by the user in
