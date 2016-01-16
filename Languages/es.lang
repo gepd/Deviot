@@ -60,11 +60,14 @@ msgstr "Puerto(s) Serial"
 msgid "Option"
 msgstr "Opciones"
 
-msgid "Show verbose output"
+msgid "Show Verbose Output"
 msgstr "Mostrar Detalles de Salida"
 
-msgid "Update board list"
+msgid "Update Board List"
 msgstr "Actualizar Lista de Placas"
+
+msgid "Keep Temp Files"
+msgstr "Mantener Archivos Temporales"
 
 msgid "Language"
 msgstr "Idioma"
