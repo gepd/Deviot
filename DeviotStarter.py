@@ -76,6 +76,9 @@ class DeviotListener(sublime_plugin.EventListener):
                 rmtree(tmp_path, ignore_errors=False)
                 Preferences().set('builded_sketch', False)
 
+        # Empty enviroment menu
+        Menu().createEnvironmentMenu(empty=True)
+
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
     """

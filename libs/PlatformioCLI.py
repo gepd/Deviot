@@ -12,9 +12,9 @@ import time
 import json
 import threading
 import sublime
-from collections import OrderedDict
 
 try:
+    from collections import OrderedDict
     from .Commands import CommandsPy
     from . import Paths
     from . import Tools
@@ -26,8 +26,9 @@ try:
     from .I18n import I18n
     from .Progress import ThreadProgress
 except:
-    import Paths
-    import Tools
+    import libs.Paths as Paths
+    import libs.Tools as Tools
+    from libs.OrderedDict import OrderedDict
     from libs.Commands import CommandsPy
     from libs.Messages import MessageQueue
     from libs.Serial import SerialListener
