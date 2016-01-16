@@ -58,6 +58,10 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        keep_cache = Preferences().get('keep_cache', False)
+        if(keep_cache):
+            return
+
         file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
@@ -268,6 +272,21 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
+
+
+class KeepTempFilesCommand(sublime_plugin.WindowCommand):
+    """
+    When is select avoid to remove the cache from the temporal folder.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        keep = Preferences().get('keep_cache', False)
+        Preferences().set('keep_cache', not keep)
+
+    def is_checked(self):
+        return Preferences().get('keep_cache', False)
 
 
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
