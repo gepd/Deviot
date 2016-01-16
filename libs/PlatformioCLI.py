@@ -137,6 +137,9 @@ class PlatformioCLI(CommandsPy):
 
     def checkInitFile(self):
 
+        protected = self.Preferences.get('protected', False)
+        if(not protected):
+            return
         # Empy menu if it's not a IoT file
         if(not self.is_iot):
             self.Menu.createEnvironmentMenu(empty=True)
