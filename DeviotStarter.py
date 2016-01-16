@@ -143,15 +143,26 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self, board_id):
-        Preferences().set('env_selected', board_id)
+        native = Preferences().get('native', False)
+
+        key = 'env_selected'
+        if(native):
+            key = 'native_env_selected'
+
+        Preferences().set(key, board_id)
 
     def is_checked(self, board_id):
-        check = Preferences().get('env_selected', False)
+        native = Preferences().get('native', False)
+
+        key = 'env_selected'
+        if(native):
+            key = 'native_env_selected'
+
+        check = Preferences().get(key, False)
         return board_id == check
 
     def is_enabled(self):
-        check = Preferences().get('enable_menu', False)
-        return check
+        return Preferences().get('enable_menu', False)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):

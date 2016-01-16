@@ -77,33 +77,31 @@ class Menu(object):
 
         return boards
 
-    def createEnvironmentMenu(self):
+    def createEnvironmentMenu(self, empty=False):
         '''
         Get all the boards selected by the user and creates a JSON
         file with the list of all environment selected by the user.
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
-        type = 'board_id'
-        native = Preferences().get('native', False)
-        if(native):
-            type = 'found_ini'
-
-        env_selecs = Preferences().get(type, '')
-        env_boards = self.getTemplateMenu('env_boards.json', user_path=True)
-
-        if(not env_boards):
-            return
-
         environments = []
+        if(not empty):
+            native = Preferences().get('native', False)
+            type = 'board_id' if not native else 'found_ini'
+            env_selecs = Preferences().get(type, '')
+            env_boards = self.getTemplateMenu(
+                'env_boards.json', user_path=True)
 
-        # search
-        for board in env_boards:
-            for selected in env_selecs:
-                try:
-                    environments.append(board[selected]['children'][0])
-                except:
-                    pass
+            if(not env_boards):
+                return
+
+            # search
+            for board in env_boards:
+                for selected in env_selecs:
+                    try:
+                        environments.append(board[selected]['children'][0])
+                    except:
+                        pass
 
         # save
         env_menu = self.getTemplateMenu(file_name='environment.json')

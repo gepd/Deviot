@@ -59,16 +59,17 @@ class PlatformioCLI(CommandsPy):
         Keyword Arguments:
         view {st object} -- stores many info related with ST (default: False)
         '''
+        # For installing purposes
+        if(install):
+            return
+
         self.view = view
         self.execute = True
-        self.is_temp = True
         self.Menu = Menu()
         self.Preferences = Preferences()
         self.env_path = self.Preferences.get('env_path', False)
-        self.dir = self.Preferences.get('ini_path', False)
-        self.dir = self.Preferences.get('ini_path', False)
         self.vbose = self.Preferences.get('verbose_output', False)
-        self.native = self.Preferences.get('native', False)
+        self.is_native = False
 
         # user console
         if(console):
@@ -77,14 +78,15 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\\n')
 
-        # For installing purposes
-        if(install):
-            return
-
         if(view):
+            self.is_iot = Tools.isIOTFile(view)
+            current_path = Paths.getCurrentFilePath(view)
+            current_dir = Paths.getCWD(current_path)
+            parent_dir = Paths.getParentCWD(current_path)
             sketch_size = view.size()
             file_path = Tools.getPathFromView(view)
             file_name = Tools.getFileNameFromPath(file_path)
+            temp_name = Tools.getFileNameFromPath(current_path, ext=False)
 
             # unsaved file
             if(command and not file_path and sketch_size > 0):
@@ -92,79 +94,75 @@ class PlatformioCLI(CommandsPy):
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
 
+            if(not self.is_iot):
+                self.execute = False
+
             # check IoT type file
-            if(command and console and not Tools.isIOTFile(view)):
+            if(console and not self.is_iot and not self.execute):
                 msg = '{0} {1} is not a IoT File\\n'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
                 self.message_queue.put(msg, current_time, file_name)
-                self.execute = False
                 return
+
+            if(not command and not self.is_iot):
+                return
+
+            # Check native project
+            for file in os.listdir(parent_dir):
+                if(file.endswith('platformio.ini')):
+                    self.dir = parent_dir
+                    self.src = False
+                    self.is_native = True
+                    break
+
+            # set native paths
+            if(not self.is_native):
+                tmp_path = Paths.getDeviotTmpPath(temp_name)
+                self.src = current_dir
+                self.dir = tmp_path
 
             # unsaved changes
             if (command and view.is_dirty()):
                 view.run_command('save')
 
-            if(command and self.execute):
-                current_path = Paths.getCurrentFilePath(view)
-                current_dir = Paths.getCWD(current_path)
-                parent_dir = Paths.getParentCWD(current_path)
-                file_name = Tools.getFileNameFromPath(file_path, ext=False)
-                self.src = current_dir
-
-                # Check initialized project
-                for file in os.listdir(parent_dir):
-                    if(file.endswith('platformio.ini')):
-                        self.dir = parent_dir
-                        self.src = False
-                        self.is_temp = False
-                        break
-
-                # set temp path
-                if(self.is_temp):
-                    tmp_path = Paths.getDeviotTmpPath(file_name)
-                    self.dir = tmp_path
-
-        # Initilized commands
-        self.Commands = CommandsPy(
-            self.env_path, console=console, cwd=self.dir)
+            # Initilized commands
+            self.Commands = CommandsPy(
+                self.env_path, console=console, cwd=self.dir)
 
     def checkInitFile(self):
-        status = self.Preferences.get('enable_menu', False)
-        # check only if it's a IoT File
-        if (not Tools.isIOTFile(self.view)):
-            if(status != False):
-                self.Preferences.set('enable_menu', False)
+
+        # Empy menu if it's not a IoT file
+        if(not self.is_iot):
+            self.Menu.createEnvironmentMenu(empty=True)
             return
 
-        if(status != True):
-            self.Preferences.set('enable_menu', True)
-
-        cdir = self.Preferences.get('ini_path', '')
-        if(cdir == self.dir):
-            return
+        ini_path = Paths.getFullIniPath(self.dir)
 
         # show non native data
-        if(self.is_temp):
-            self.Menu.createEnvironmentMenu()
+        if(not self.is_native):
             self.Preferences.set('native', False)
             self.Preferences.set('ini_path', self.dir)
-            return
+            if(not os.path.isfile(ini_path)):
+                self.Menu.createEnvironmentMenu()
+                return
+        else:
+            self.Preferences.set('native', True)
+            self.Preferences.set('ini_path', self.dir)
 
         # get data from platformio.ini file
         ini_list = []
-        ini_path = Paths.getFullIniPath(self.dir)
         with open(ini_path, 'r') as file:
-            pattern = re.compile(r'\[(\w+):(\w+)\]')
+            pattern = re.compile(r'\[(\w+)\W(\w+)\]')
             for line in file:
                 if pattern.findall(line):
-                    line = re.match(r"\[\w+:(\w+)\]", line).group(1)
-                    ini_list.append(line)
+                    if('#' not in line):
+                        line = re.match(r"\[\w+:(\w+)\]", line).group(1)
+                        ini_list.append(line)
 
         # save preferences, update menu data
-        self.Preferences.set('native', True)
-        self.Preferences.set('ini_path', self.dir)
-        self.Preferences.set('found_ini', ini_list)
+        type = 'board_id' if not self.is_native else 'found_ini'
+        self.Preferences.set(type, ini_list)
         self.Menu.createEnvironmentMenu()
 
     def removeEnvFromFile(self, env):
@@ -219,7 +217,7 @@ class PlatformioCLI(CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        if(self.native):
+        if(self.is_native):
             choosen = self.Preferences.get('init_queue', False)
             self.dir = self.Preferences.get('ini_path', False)
 
@@ -244,9 +242,9 @@ class PlatformioCLI(CommandsPy):
         self.Commands.runCommand(command, verbose=self.vbose)
 
         if(not self.Commands.error_running):
-            if(self.native):
+            if(self.is_native):
                 self.Preferences.set('init_queue', '')
-            if(not self.native and self.src):
+            if(not self.is_native and self.src):
                 self.overrideSrc(self.dir, self.src)
 
     def buildSketchProject(self):
