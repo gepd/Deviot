@@ -164,6 +164,11 @@ def getParentCWD(file_path):
     return parent
 
 
+def getFullIniPath(path):
+    ini_path = os.path.join(path, 'platformio.ini')
+    return ini_path
+
+
 def getDeviotTmpPath(file_name=False):
     tmp_path = '/tmp'
     os_name = Tools.getOsName()

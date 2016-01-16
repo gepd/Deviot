@@ -40,10 +40,12 @@
                 "caption": "Options",
                 "id":"options",
                 "children": [
-                                {"caption":"Show verbose output",
+                                {"caption":"Show Verbose Output",
                                  "command":"toggle_verbose"},
-                                {"caption":"Update board list",
-                                 "command":"update_board_list"}
+                                {"caption":"Update Board List",
+                                 "command":"update_board_list"},
+                                 {"caption":"Keep Temp Files",
+                                 "command":"keep_temp_files"}
                             ]
             },{
                 "caption": "Language",

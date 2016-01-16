@@ -56,7 +56,7 @@ class Preferences(JSONFile):
         value = self.data.get(key, default_value)
         return value
 
-    def boardSelected(self, board_id, Method):
+    def boardSelected(self, board_id):
         '''
         Add or delete the board selected from the preferences
         files. The boards are formated in a dictionary in the
@@ -64,21 +64,27 @@ class Preferences(JSONFile):
 
         Arguments: board_id {string} -- identifier if the board selected
         '''
-        file_data = self.get('board_id', '')
+        remove = False
+        type = 'board_id'
+        native = self.get('native', False)
+        if(native):
+            type = 'found_ini'
 
+        file_data = self.get(type, '')
         if(file_data):
             if board_id in file_data:
-                self.data.setdefault('board_id', []).remove(board_id)
+                remove = True
+                self.data.setdefault(type, []).remove(board_id)
                 try:
                     self.set('env_selected', '')
                 except:
                     pass
             else:
-                self.data.setdefault('board_id', []).append(board_id)
+                self.data.setdefault(type, []).append(board_id)
             self.saveData()
         else:
-            self.set('board_id', [board_id])
-        Method()
+            self.set(type, [board_id])
+        return remove
 
     def checkBoard(self, board_id):
         '''
@@ -86,9 +92,15 @@ class Preferences(JSONFile):
 
         Arguments: board_id {string} -- identifier of the board selected
         '''
+        native = self.get('native', False)
         check = False
+        key = 'board_id'
+
+        if(native):
+            key = 'found_ini'
+
         if(self.data):
-            check_boards = self.get('board_id', '')
+            check_boards = self.get(key, '')
 
             if board_id in check_boards:
                 check = True

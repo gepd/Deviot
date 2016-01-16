@@ -49,6 +49,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        PlatformioCLI(view, command=False).checkInitFile()
         Tools.setStatus(view)
 
     def on_close(self, view):
@@ -57,6 +58,10 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        keep_cache = Preferences().get('keep_cache', False)
+        if(keep_cache):
+            return
+
         file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
@@ -70,6 +75,9 @@ class DeviotListener(sublime_plugin.EventListener):
                 tmp_path = os.path.join(tmp_path, content)
                 rmtree(tmp_path, ignore_errors=False)
                 Preferences().set('builded_sketch', False)
+
+        # Empty enviroment menu
+        Menu().createEnvironmentMenu(empty=True)
 
 
 class PlatformioInstallCommand(sublime_plugin.WindowCommand):
@@ -110,7 +118,14 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
 
         Arguments: board_id {string} -- id of the board selected
         """
-        Preferences().boardSelected(board_id, Menu().createEnvironmentMenu)
+        native = Preferences().get('native', False)
+        remove = Preferences().boardSelected(board_id)
+        if(remove):
+            PlatformioCLI().removeEnvFromFile(board_id)
+        if(native and not remove):
+            Preferences().set('init_queue', board_id)
+            PlatformioCLI().openInThread('init')
+        Menu().createEnvironmentMenu()
 
     def is_checked(self, board_id):
         """
@@ -126,23 +141,6 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
         return Preferences().get('enable_menu', False)
 
 
-class MainEnvironmentCommand(sublime_plugin.WindowCommand):
-    """
-    Enable or disable the "Select environment" menu if none board
-    is selected from the list.
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def is_enabled(self):
-        check = Preferences().get('enable_menu', False)
-        if(check):
-            check = Preferences().get('env_selected', '')
-            if(len(check) == 0):
-                check = False
-        return check
-
-
 class SelectEnvCommand(sublime_plugin.WindowCommand):
     """
     Stores the environment option selected by the user in
@@ -152,15 +150,26 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self, board_id):
-        Preferences().set('env_selected', board_id)
+        native = Preferences().get('native', False)
+
+        key = 'env_selected'
+        if(native):
+            key = 'native_env_selected'
+
+        Preferences().set(key, board_id)
 
     def is_checked(self, board_id):
-        check = Preferences().get('env_selected', False)
+        native = Preferences().get('native', False)
+
+        key = 'env_selected'
+        if(native):
+            key = 'native_env_selected'
+
+        check = Preferences().get(key, False)
         return board_id == check
 
     def is_enabled(self):
-        check = Preferences().get('enable_menu', False)
-        return check
+        return Preferences().get('enable_menu', False)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
@@ -239,9 +248,6 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         saved_id_port = Preferences().get('id_port')
         return saved_id_port == id_port
 
-    def is_enabled(self):
-        return Preferences().get('enable_menu', False)
-
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
     """
@@ -271,6 +277,21 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
         PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
 
 
+class KeepTempFilesCommand(sublime_plugin.WindowCommand):
+    """
+    When is select avoid to remove the cache from the temporal folder.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        keep = Preferences().get('keep_cache', False)
+        Preferences().set('keep_cache', not keep)
+
+    def is_checked(self):
+        return Preferences().get('keep_cache', False)
+
+
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
     def run(self, id_lang):
@@ -279,9 +300,6 @@ class SelectLanguageCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_lang):
         saved_id_lang = Preferences().get('id_lang')
         return saved_id_lang == id_lang
-
-    def is_enabled(self):
-        return Preferences().get('enable_menu', False)
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):

@@ -15,5 +15,9 @@
     {
         "keys": ["alt+u", "alt+b"],
         "command": "update_board_list"
+    },
+    {
+        "keys": ["alt+k", "alt+t"],
+        "command": "keep_temp_files"
     }
 ]

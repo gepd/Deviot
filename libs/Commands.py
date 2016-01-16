@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import subprocess
 import os
+import re
 import time
 
 try:
@@ -59,6 +60,8 @@ class CommandsPy(object):
         # real time error build output
         if('-v --verbose' in command and not verbose):
             err = False
+            down = False
+            previous = ''
             while True:
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
@@ -67,18 +70,37 @@ class CommandsPy(object):
                         current_time = time.strftime('%H:%M:%S')
                         diff_time = time.time() - start_time
                         diff_time = '{0:.2f}'.format(diff_time)
-                        msg = '\\n{0} it took {1}s\\n'
+                        message = '\\n{0} it took {1}s\\n'
                         self.message_queue.put(msg, current_time, diff_time)
                     break
 
                 # detect error
                 if('in function' in output.lower() or
                         'in file' in output.lower() or
-                        'error:' in output.lower() and not err):
-                    err = True
-                    current_time = time.strftime('%H:%M:%S')
-                    msg = 'Error\\n{0} Details:\\n\\n'
-                    self.message_queue.put(msg, current_time)
+                        'error:' in output.lower()):
+                    if(not err):
+                        current_time = time.strftime('%H:%M:%S')
+                        msg = 'Error\\n{0} Details:\\n\\n'
+                        self.message_queue.put(msg, current_time)
+                        err = True
+
+                if('installing' in output.lower()):
+                    package = re.match(
+                        r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
+                    message = '\\nInstalling {0} package: '
+                    self.message_queue.put(message, package)
+
+                if('already' in output.lower()):
+                    message = 'Already installed\\n'
+                    self.message_queue.put(message)
+
+                if('downloading' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
+                    message = 'Downloading package\\n\\nIt may take a while, please be patient.\\n'
+                    self.message_queue.put(message)
+
+                if('unpacking' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
+                    message = 'Unpacking...\\n'
+                    self.message_queue.put(message)
 
                 # output messages
                 if (output.strip() and err and 'scons' not in output and
@@ -88,6 +110,9 @@ class CommandsPy(object):
                         '.' == output.strip() and
                         'exit status' not in output.lower()):
                     self.message_queue.put(output)
+
+                if(output.replace(" ", "")):
+                    previous = output
 
         # output
         output = process.communicate()
@@ -149,8 +174,8 @@ class CommandsPy(object):
             args = ''
 
         # output errors only
-        if('run' == options and not args and not verbose):
-            args += '-v --verbose'
+        if('run' == options and '-e' in args and not verbose):
+            args += ' -v --verbose'
 
         command = "platformio -f -c sublimetext %s %s 2>&1" % (
             options, args)
