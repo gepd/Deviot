@@ -60,18 +60,8 @@ class PlatformioCLI(CommandsPy):
         Keyword Arguments:
         view {st object} -- stores many info related with ST (default: False)
         '''
-        # For installing purposes
-        if(install):
-            return
-
-        self.view = view
-        self.execute = True
-        self.Menu = Menu()
         self.Preferences = Preferences()
-        self.env_path = self.Preferences.get('env_path', False)
-        self.vbose = self.Preferences.get('verbose_output', False)
-        self.is_native = False
-        self.is_iot = False
+        self.Menu = Menu()
 
         # user console
         if(console):
@@ -79,6 +69,17 @@ class PlatformioCLI(CommandsPy):
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\\n')
+
+        # For installing purposes
+        if(install):
+            return
+
+        self.view = view
+        self.execute = True
+        self.env_path = self.Preferences.get('env_path', False)
+        self.vbose = self.Preferences.get('verbose_output', False)
+        self.is_native = False
+        self.is_iot = False
 
         if(view):
             # current file / view
