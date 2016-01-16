@@ -86,8 +86,8 @@ class Menu(object):
         '''
         environments = []
         if(not empty):
-            native = Preferences().get('native', False)
-            type = 'board_id' if not native else 'found_ini'
+            is_native = Preferences().get('native', False)
+            type = 'board_id' if not is_native else 'found_ini'
             env_selecs = Preferences().get(type, '')
             env_boards = self.getTemplateMenu(
                 'env_boards.json', user_path=True)

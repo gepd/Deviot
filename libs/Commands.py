@@ -85,7 +85,8 @@ class CommandsPy(object):
                         err = True
 
                 if('installing' in output.lower()):
-                    package = re.match(r'\w+\s(\w+-\w+)\s\w+', output).group(1)
+                    package = re.match(
+                        r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
                     message = '\\nInstalling {0} package: '
                     self.message_queue.put(message, package)
 
