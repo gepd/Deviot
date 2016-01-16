@@ -70,6 +70,7 @@ class PlatformioCLI(CommandsPy):
         self.env_path = self.Preferences.get('env_path', False)
         self.vbose = self.Preferences.get('verbose_output', False)
         self.is_native = False
+        self.is_iot = False
 
         # user console
         if(console):
@@ -79,8 +80,11 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put('[ Deviot ]\\n')
 
         if(view):
-            self.is_iot = Tools.isIOTFile(view)
+            # current file / view
             current_path = Paths.getCurrentFilePath(view)
+            if(not current_path):
+                return
+            self.is_iot = Tools.isIOTFile(view)
             current_dir = Paths.getCWD(current_path)
             parent_dir = Paths.getParentCWD(current_path)
             sketch_size = view.size()
