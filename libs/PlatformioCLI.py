@@ -216,16 +216,12 @@ class PlatformioCLI(CommandsPy):
                     new_file.write("\n%s\n" % header)
                     new_file.write("src_dir=%s\n" % src_dir)
 
-    def initSketchProject(self, choosen=None):
+    def initSketchProject(self, choosen):
         '''
         command to initialize the board(s) selected by the user. This
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
-        if(self.is_native):
-            choosen = self.Preferences.get('init_queue', False)
-            self.dir = self.Preferences.get('ini_path', False)
-
         # check if it was already initialized
         ini_path = Paths.getFullIniPath(self.dir)
         if(os.path.isfile(ini_path)):
@@ -261,7 +257,11 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        choosen_env = self.Preferences.get('env_selected', False)
+        # get environment based on the current project
+        type = 'env_selected' if not self.is_native else 'native_env_selected'
+        choosen_env = self.Preferences.get(type, '')
+        if(type == 'native_env_selected' and not choosen_env):
+            choosen_env = self.Preferences.get('init_queue', '')
 
         # check environment selected
         if(not choosen_env):
