@@ -19,5 +19,17 @@
     {
         "keys": ["alt+k", "alt+t"],
         "command": "keep_temp_files"
+    },
+    {
+        "keys": ["alt+l", "alt+s"],
+        "command": "search_library"
+    },
+    {
+        "keys": ["alt+l", "alt+i"],
+        "command": "installed_libraries"
+    },
+    {
+        "keys": ["alt+l", "alt+r"],
+        "command": "remove_library"
     }
 ]

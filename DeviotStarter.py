@@ -172,6 +172,18 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
         return Preferences().get('enable_menu', False)
 
 
+class SearchLibraryCommand(sublime_plugin.WindowCommand):
+    pass
+
+
+class InstalledLibrariesCommand(sublime_plugin.WindowCommand):
+    pass
+
+
+class RemoveLibraryCommand(sublime_plugin.WindowCommand):
+    pass
+
+
 class BuildSketchCommand(sublime_plugin.TextCommand):
     """
     Trigger a method to build the files in the current

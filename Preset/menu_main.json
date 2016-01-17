@@ -15,6 +15,21 @@
                 "id": "environment",
                 "children":[]
             },
+           {"caption": "-"},
+            {
+                "caption": "Search Library",
+                "id": "search_library",
+                "command": "search_library"
+            },{
+                "caption": "Installed Libraries",
+                "id": "installed_libraries",
+                "command": "installed_libraries"
+    
+            },{
+                "caption": "Remove Library",
+                "id": "remove_library",
+                "command": "remove_library"
+            },
             {"caption": "-"},
             {
                 "caption": "Build",
