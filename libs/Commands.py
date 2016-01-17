@@ -13,8 +13,10 @@ import time
 
 try:
     from . import Messages
+    from .Preferences import Preferences
 except:
     from Libs import Messages
+    from Libs.Preferences import Preferences
 
 
 class CommandsPy(object):
@@ -26,22 +28,30 @@ class CommandsPy(object):
 
     def __init__(self, env_path=False, console=False, cwd=None):
         super(CommandsPy, self).__init__()
-        self.error_running = False
+        self.Preferences = Preferences()
         self.message_queue = Messages.MessageQueue(console)
         self.message_queue.startPrint()
+        self.error_running = False
         self.cwd = cwd
+
+        # env_path from preferences
+        if(not env_path):
+            env_path = self.Preferences.get('env_path', False)
 
         # Set the enviroment Path
         if(env_path):
             os.environ['PATH'] = env_path
 
-    def runCommand(self, commands, setReturn=False, verbose=False):
+    def runCommand(self, commands, setReturn=False):
         """
         Runs a CLI command to  do/get the differents options from platformIO
         """
 
         if(not commands):
             return False
+
+        # get verbose from preferences
+        verbose = self.Preferences.get('verbose_output', False)
 
         # get command
         command = self.createCommand(commands, verbose)
