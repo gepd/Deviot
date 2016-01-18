@@ -197,15 +197,28 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
         quickPanel(self.window, choose, self.on_done)
 
     def on_done(self, result):
-        Libraries.openInThread('install', self.window, result)
+        if(result != -1):
+            Libraries.openInThread('install', self.window, result)
 
 
 class InstalledLibrariesCommand(sublime_plugin.WindowCommand):
-    pass
+
+    def run(self):
+        pass
+
+    def on_done(self):
+        pass
 
 
 class RemoveLibraryCommand(sublime_plugin.WindowCommand):
-    pass
+
+    def run(self):
+        choose = Libraries.Libraries().removeList()
+        quickPanel(self.window, choose, self.on_done)
+
+    def on_done(self, result):
+        if(result != -1):
+            Libraries.openInThread('remove', self.window, result)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):

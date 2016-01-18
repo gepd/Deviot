@@ -168,6 +168,8 @@ class CommandsPy(object):
             return '{0} Cleaning built files | '
         elif 'lib install' in command:
             return'{0} Installing Library {1} | '
+        elif 'lib uninstall' in command:
+            return'{0} Uninstalling Library {1} | '
         else:
             return '{0} Building the project | '
 

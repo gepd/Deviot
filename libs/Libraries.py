@@ -25,6 +25,7 @@ from .Progress import ThreadProgress
 from .Commands import CommandsPy
 from . import Messages
 from .Messages import MessageQueue
+from multiprocessing.pool import ThreadPool
 
 
 class Libraries():
@@ -101,7 +102,6 @@ class Libraries():
 
         # save data in file
         self.saveLibrary(list, 'default_list.json')
-
         # show result in the quick panel
         self.window.run_command('show_results')
 
@@ -117,15 +117,15 @@ class Libraries():
         list = self.getLibrary('default_list.json')
         list_ins = self.Preferences.get('user_libraries', '')
 
-        # arrange list in the quickpanel order
+        # arrange list to the quickpanel
         quick_list = []
         for item in list['items']:
-            # if(item['id'] not in list_ins):
-            item_list = []
-            item_list.append(item['name'])
-            item_list.append(item['description'])
-            item_list.append(str(item['id']))
-            quick_list.append(item_list)
+            if(str(item['id']) + ' ' not in ",".join(list_ins)):
+                item_list = []
+                item_list.append(item['name'])
+                item_list.append(item['description'])
+                item_list.append(str(item['id']))
+                quick_list.append(item_list)
 
         self.saveLibrary(quick_list, 'quick_list.json')
         return quick_list
@@ -163,8 +163,52 @@ class Libraries():
     def writeLibrary(self, name):
         self.toggleLibrary(name)
 
-    def removeLibrary(self, name):
-        self.toggleLibrary(name)
+    def removeList(self):
+        Tools.setStatus(self.view, 'Preparing List', True)
+        pool = ThreadPool(processes=1)
+        async_result = pool.apply_async(self.removeListCli)
+        output = async_result.get()
+        Tools.setStatus(self.view, 'List Ready', True, 2000)
+
+        # arrange list to the quickpanel
+        quick_list = []
+        if(output):
+            for item in output:
+                item_list = []
+                item_list.append(item['name'])
+                item_list.append(item['description'])
+                item_list.append(str(item['id']))
+                quick_list.append(item_list)
+        else:
+            quick_list = ['None Library Installed']
+
+        self.saveLibrary(quick_list, 'quick_list.json')
+        return quick_list
+
+    def removeListCli(self):
+        command = ['lib', 'list --json-output']
+        Commands = CommandsPy()
+        output = Commands.runCommand(command, setReturn=True)
+        output = json.loads(output)
+        return output
+
+    def removeLibrary(self, selected):
+        list = self.getLibrary('quick_list.json')
+        lib_id = list[selected][2]
+        lib_name = list[selected][0]
+
+        # uninstall Library with CLI
+        command = ['lib', 'uninstall %s' % lib_id]
+        self.Commands.runCommand(command, extra_message=lib_name)
+
+        # remove from preferences
+        if (not self.Commands.error_running):
+            installed = self.Preferences.get('user_libraries', '')
+            if(installed):
+                if(lib_id in installed):
+                    self.Preferences.data.setdefault(
+                        'user_libraries', []).remove(lib_id)
+                    self.Preferences.saveData()
 
     def toggleLibrary(self, name):
         installed = self.Preferences.get('user_libraries', False)
@@ -196,9 +240,9 @@ class Libraries():
 
         return installed_list
 
-    def saveLibrary(self, data, name_file):
+    def saveLibrary(self, data, file_name):
         libraries_path = Paths.getLibraryPath()
-        library_path = os.path.join(libraries_path, name_file)
+        library_path = os.path.join(libraries_path, file_name)
         libraries = JSONFile(library_path)
         libraries.setData(data)
         libraries.saveData()
@@ -222,3 +266,8 @@ def openInThread(type, window, keyword):
             target=Libraries(window).installLibrary, args=(keyword,))
         thread.start()
         ThreadProgress(thread, 'Installing', 'Done')
+    elif(type == 'remove'):
+        thread = threading.Thread(
+            target=Libraries(window).removeLibrary, args=(keyword,))
+        thread.start()
+        ThreadProgress(thread, 'Removing', 'Done')

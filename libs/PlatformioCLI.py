@@ -532,7 +532,7 @@ class PlatformioCLI(CommandsPy):
         Returns: {json object} -- list with all boards in a JSON format
         '''
         boards = []
-        Run = CommandsPy(env_path=self.env_path)
+        Run = CommandsPy()
 
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
