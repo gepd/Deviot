@@ -42,7 +42,7 @@ class CommandsPy(object):
         if(env_path):
             os.environ['PATH'] = env_path
 
-    def runCommand(self, commands, setReturn=False):
+    def runCommand(self, commands, setReturn=False, extra_message=None):
         """
         Runs a CLI command to  do/get the differents options from platformIO
         """
@@ -60,7 +60,7 @@ class CommandsPy(object):
         cmd_type = self.getTypeAction(command)
         current_time = time.strftime('%H:%M:%S')
         start_time = time.time()
-        self.message_queue.put(cmd_type, current_time)
+        self.message_queue.put(cmd_type, current_time, extra_message)
 
         # run command
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
@@ -69,30 +69,31 @@ class CommandsPy(object):
 
         # real time error build output
         if('-v --verbose' in command and not verbose):
-            err = False
+            error = False
             down = False
             previous = ''
             while True:
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
-                    if(err):
+                    if(error):
                         self.error_running = True
                         current_time = time.strftime('%H:%M:%S')
                         diff_time = time.time() - start_time
                         diff_time = '{0:.2f}'.format(diff_time)
                         message = '\\n{0} it took {1}s\\n'
-                        self.message_queue.put(msg, current_time, diff_time)
+                        self.message_queue.put(
+                            message, current_time, diff_time)
                     break
 
                 # detect error
                 if('in function' in output.lower() or
                         'in file' in output.lower() or
                         'error:' in output.lower()):
-                    if(not err):
+                    if(not error):
                         current_time = time.strftime('%H:%M:%S')
-                        msg = 'Error\\n{0} Details:\\n\\n'
-                        self.message_queue.put(msg, current_time)
-                        err = True
+                        message = 'Error\\n{0} Details:\\n\\n'
+                        self.message_queue.put(message, current_time)
+                        error = True
 
                 if('installing' in output.lower()):
                     package = re.match(
@@ -113,7 +114,7 @@ class CommandsPy(object):
                     self.message_queue.put(message)
 
                 # output messages
-                if (output.strip() and err and 'scons' not in output and
+                if (output.strip() and error and 'scons' not in output and
                         'platform' not in output.lower() and
                         'took' not in output.lower() and
                         '....' not in output and not
@@ -165,6 +166,8 @@ class CommandsPy(object):
             return '{0} Uploading firmware | '
         elif '-t clean' in command:
             return '{0} Cleaning built files | '
+        elif 'lib install' in command:
+            return'{0} Installing Library {1} | '
         else:
             return '{0} Building the project | '
 
