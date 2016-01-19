@@ -183,7 +183,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 class SearchLibraryCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        caption = _('Library Name:')
+        caption = _('Keyword:')
         self.window.show_input_panel(caption, '', self.on_done, None, None)
 
     def on_done(self, result):

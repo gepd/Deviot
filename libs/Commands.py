@@ -32,6 +32,7 @@ class CommandsPy(object):
         self.message_queue = Messages.MessageQueue(console)
         self.message_queue.startPrint()
         self.error_running = False
+        self.console = console
         self.cwd = cwd
 
         # env_path from preferences
@@ -60,7 +61,8 @@ class CommandsPy(object):
         cmd_type = self.getTypeAction(command)
         current_time = time.strftime('%H:%M:%S')
         start_time = time.time()
-        self.message_queue.put(cmd_type, current_time, extra_message)
+        if(cmd_type):
+            self.message_queue.put(cmd_type, current_time, extra_message)
 
         # run command
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
@@ -68,13 +70,13 @@ class CommandsPy(object):
                                    universal_newlines=True, shell=True)
 
         # real time error build output
-        if('-v --verbose' in command and not verbose):
-            error = False
-            down = False
-            previous = ''
+        # ('-v --verbose' in command and not verbose)
+        if(not verbose and 'version' not in command and 'json' not in command):
+            error, down, previous = False, False, ''
             while True:
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
+                    # print took time and break the loop
                     if(error):
                         self.error_running = True
                         current_time = time.strftime('%H:%M:%S')
@@ -95,12 +97,24 @@ class CommandsPy(object):
                         self.message_queue.put(message, current_time)
                         error = True
 
-                if('installing' in output.lower()):
-                    package = re.match(
-                        r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
-                    message = '\\nInstalling {0} package: '
-                    self.message_queue.put(message, package)
+                # realtime output for build command
+                if('run' in command and '-e' in command and not 'upload'):
+                    if('installing' in output.lower()):
+                        package = re.match(
+                            r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
+                        message = '\\nInstalling {0} package: '
+                        self.message_queue.put(message, package)
 
+                    # output messages
+                    if (output.strip() and error and 'scons' not in output and
+                            'platform' not in output.lower() and
+                            'took' not in output.lower() and
+                            '..' not in output and not
+                            '.' == output.strip() and
+                            'exit status' not in output.lower()):
+                        self.message_queue.put(output)
+
+                # strings used in more than one command
                 if('already' in output.lower()):
                     message = 'Already installed\\n'
                     self.message_queue.put(message)
@@ -112,15 +126,6 @@ class CommandsPy(object):
                 if('unpacking' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
                     message = 'Unpacking...\\n'
                     self.message_queue.put(message)
-
-                # output messages
-                if (output.strip() and error and 'scons' not in output and
-                        'platform' not in output.lower() and
-                        'took' not in output.lower() and
-                        '....' not in output and not
-                        '.' == output.strip() and
-                        'exit status' not in output.lower()):
-                    self.message_queue.put(output)
 
                 if(output.replace(" ", "")):
                     previous = output
@@ -136,11 +141,11 @@ class CommandsPy(object):
             self.error_running = True
 
         # Print success status
-        if(not verbose and return_code == 0):
+        if(self.console and not verbose and return_code == 0):
             diff_time = time.time() - start_time
             diff_time = '{0:.2f}'.format(diff_time)
-            msg = 'Success | it took {0}s\\n'
-            self.message_queue.put(msg, diff_time)
+            message = 'Success | it took {0}s\\n'
+            self.message_queue.put(message, diff_time)
 
         # print full verbose output (when is active)
         if(verbose):
@@ -162,7 +167,9 @@ class CommandsPy(object):
         """
         if 'init' in command:
             return '{0} Initializing the project | '
-        elif '-t upload' in command:
+        elif '-e' in command and not 'upload' in command:
+            return '{0} Building the project | '
+        elif '--upload-port' in command:
             return '{0} Uploading firmware | '
         elif '-t clean' in command:
             return '{0} Cleaning built files | '
@@ -171,7 +178,7 @@ class CommandsPy(object):
         elif 'lib uninstall' in command:
             return'{0} Uninstalling Library {1} | '
         else:
-            return '{0} Building the project | '
+            return None
 
     def createCommand(self, commands, verbose):
         """
@@ -189,7 +196,7 @@ class CommandsPy(object):
             args = ''
 
         # output errors only
-        if('run' == options and '-e' in args and not verbose):
+        if(not verbose and 'run' == options and '-e' in args and not 'upload'):
             args += ' -v --verbose'
 
         command = "platformio -f -c sublimetext %s %s 2>&1" % (
