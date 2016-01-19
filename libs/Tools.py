@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 import os
 import sys
 import locale
+import sublime
 
 try:
     from . import __version__, __title__
@@ -75,7 +76,7 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view, text=False):
+def setStatus(view, text=False, display=False, erase_time=0):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
@@ -86,14 +87,18 @@ def setStatus(view, text=False):
         return
 
     info = []
-    if isIOTFile(view):
-
+    if isIOTFile(view) or display:
         info.append(__title__ + ' v' + str(__version__))
         if(text):
             info.append(text)
         full_info = ' | '.join(info)
 
-        view.set_status('Deviot', full_info)
+        view.set_status('_deviot_status', full_info)
+
+    if(erase_time > 0):
+        def cleanStatus():
+            view.erase_status('_deviot_status')
+        sublime.set_timeout(cleanStatus, erase_time)
 
 
 def singleton(cls):

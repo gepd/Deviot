@@ -19,6 +19,9 @@ try:
     from .libs.Messages import Console
     from .libs.PlatformioCLI import PlatformioCLI
     from .libs.Preferences import Preferences
+    from .libs.QuickPanel import quickPanel
+    from .libs import Libraries
+    from .libs.I18n import I18n
 except:
     from libs import Paths
     from libs import Tools
@@ -26,6 +29,11 @@ except:
     from libs.Messages import Console
     from libs.PlatformioCLI import PlatformioCLI
     from libs.Preferences import Preferences
+    from libs.QuickPanel import quickPanel
+    from libs import Libraries
+    from libs.I18n import I18n
+
+_ = I18n().translate
 
 
 class DeviotListener(sublime_plugin.EventListener):
@@ -170,6 +178,44 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
+
+
+class SearchLibraryCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        caption = _('Keyword:')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
+
+    def on_done(self, result):
+        Libraries.openInThread('download', self.window, result)
+
+
+class ShowResultsCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        choose = Libraries.Libraries().getList()
+        quickPanel(self.window, choose, self.on_done)
+
+    def on_done(self, result):
+        if(result != -1):
+            Libraries.openInThread('install', self.window, result)
+
+
+class RemoveLibraryCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        Libraries.openInThread('list', self.window)
+
+
+class ShowRemoveListCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        choose = Libraries.Libraries(self.window).installedList()
+        quickPanel(self.window, choose, self.on_done)
+
+    def on_done(self, result):
+        if(result != -1):
+            Libraries.openInThread('remove', self.window, result)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):

@@ -64,6 +64,8 @@ class MessageQueue(object):
             text = self.queue.get()
             if self.console:
                 self.console.printScreen(text)
+            else:
+                print(text)
             time.sleep(0.01)
 
     def stopPrint(self):
