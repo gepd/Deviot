@@ -62,7 +62,7 @@ class Libraries():
 
         Arguments:
             keyword {string}:
-            Keyword to search the library in the platformio API
+                Keyword to search the library in the platformio API
         """
         # show result in the quick panel
         self.window.run_command('show_results')
@@ -101,7 +101,7 @@ class Libraries():
                         list['items'].append(item_next)
 
         # save data in file
-        self.saveLibrary(list, 'default_list.json')
+        self.saveLibraryData(list, 'default_list.json')
         # show result in the quick panel
         self.window.run_command('show_results')
 
@@ -127,7 +127,8 @@ class Libraries():
                 item_list.append(str(item['id']))
                 quick_list.append(item_list)
 
-        self.saveLibrary(quick_list, 'quick_list.json')
+        # save and return data
+        self.saveLibraryData(quick_list, 'quick_list.json')
         return quick_list
 
     def installLibrary(self, selected):
@@ -163,12 +164,26 @@ class Libraries():
     def writeLibrary(self, name):
         self.toggleLibrary(name)
 
-    def removeList(self):
-        Tools.setStatus(self.view, 'Preparing List', True)
-        pool = ThreadPool(processes=1)
-        async_result = pool.apply_async(self.removeListCli)
-        output = async_result.get()
-        Tools.setStatus(self.view, 'List Ready', True, 2000)
+    def installedList(self):
+        """
+        Show the installed libraries.
+
+        Returns:
+            [dict] -- dictionary with the data to show in the quick panel
+        """
+        list = self.getLibrary('quick_list.json')
+        return list
+
+    def getInstalledList(self):
+        """
+        Run the CLI command to get the list of library(ies) installed,
+        stores the data in a json file and run a command to show the
+        quick panel with all the data founded
+        """
+        command = ['lib', 'list --json-output']
+        Commands = CommandsPy()
+        output = Commands.runCommand(command, setReturn=True)
+        output = json.loads(output)
 
         # arrange list to the quickpanel
         quick_list = []
@@ -182,17 +197,19 @@ class Libraries():
         else:
             quick_list = ['None Library Installed']
 
-        self.saveLibrary(quick_list, 'quick_list.json')
-        return quick_list
-
-    def removeListCli(self):
-        command = ['lib', 'list --json-output']
-        Commands = CommandsPy()
-        output = Commands.runCommand(command, setReturn=True)
-        output = json.loads(output)
-        return output
+        # save the data and run the quick panel
+        self.saveLibraryData(quick_list, 'quick_list.json')
+        self.window.run_command('show_remove_list')
 
     def removeLibrary(self, selected):
+        """
+        Run a CLI command with the ID of the library to uninstall,
+        also remove the reference of the ID in the preferences file.
+
+        Arguments:
+            selected {int}
+                position of the option selected in the quick panel.
+        """
         list = self.getLibrary('quick_list.json')
         lib_id = list[selected][2]
         lib_name = list[selected][0]
@@ -210,37 +227,16 @@ class Libraries():
                         'user_libraries', []).remove(lib_id)
                     self.Preferences.saveData()
 
-    def toggleLibrary(self, name):
-        installed = self.Preferences.get('user_libraries', False)
+    def saveLibraryData(self, data, file_name):
+        """
+        Stores the data of the libraries in a json file
 
-        if(installed):
-            if name in installed:
-                self.Preferences.data.setdefault(
-                    'user_libraries', []).remove(name)
-            else:
-                self.Preferences.data.setdefault(
-                    'user_libraries', []).append(name)
-            self.Preferences.saveData()
-        else:
-            self.Preferences.set('user_libraries', [name])
-        self.getInstalledList()
-
-    def getInstalledList(self):
-        # get file and preferences
-        order_list = self.getLibrary('order_list.json')
-        list = self.Preferences.get('user_libraries', '')
-
-        installed_list = []
-        for name, items in order_list.items():
-            if(name in list):
-                item_list = []
-                item_list.append(name)
-                item_list.append(items['description'])
-                installed_list.append(item_list)
-
-        return installed_list
-
-    def saveLibrary(self, data, file_name):
+        Arguments:
+            data {json}
+                json data with the libraries
+            file_name {string}
+                name of the json file
+        """
         libraries_path = Paths.getLibraryPath()
         library_path = os.path.join(libraries_path, file_name)
         libraries = JSONFile(library_path)
@@ -248,6 +244,16 @@ class Libraries():
         libraries.saveData()
 
     def getLibrary(self, file_name):
+        """
+        Get a specific json file and return the data
+
+        Arguments:
+            file_name {string}
+                Json file name where is stored the library data
+
+        Returns:
+            [dict] -- Dictionary with the library data
+        """
         plugin_path = Paths.getLibraryPath()
         library_path = os.path.join(plugin_path, file_name)
         libraries = JSONFile(library_path).getData()
@@ -255,7 +261,18 @@ class Libraries():
         return libraries
 
 
-def openInThread(type, window, keyword):
+def openInThread(type, window=None, keyword=None):
+    """
+    Open differents methods in a new thread (Download, Install,
+    Remove library) and show a progress message in the status bar.
+
+    Arguments:
+        type {string} -- string with the name of thread to run
+
+    Keyword Arguments:
+        window {object} -- Object with the current windows of ST {Default: None}
+        keyword {string} -- String with board selected {Default: None}
+    """
     if(type == 'download'):
         thread = threading.Thread(
             target=Libraries(window).downloadList, args=(keyword,))
@@ -266,6 +283,10 @@ def openInThread(type, window, keyword):
             target=Libraries(window).installLibrary, args=(keyword,))
         thread.start()
         ThreadProgress(thread, 'Installing', 'Done')
+    elif(type == 'list'):
+        thread = threading.Thread(target=Libraries().getInstalledList)
+        thread.start()
+        ThreadProgress(thread, 'Preparing List', 'Done')
     elif(type == 'remove'):
         thread = threading.Thread(
             target=Libraries(window).removeLibrary, args=(keyword,))
