@@ -201,16 +201,6 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
             Libraries.openInThread('install', self.window, result)
 
 
-class InstalledLibrariesCommand(sublime_plugin.WindowCommand):
-
-    def run(self):
-        choose = Libraries.Libraries().installedList()
-        quickPanel(self.window, choose, self.on_done)
-
-    def on_done(self, result):
-        pass
-
-
 class RemoveLibraryCommand(sublime_plugin.WindowCommand):
 
     def run(self):

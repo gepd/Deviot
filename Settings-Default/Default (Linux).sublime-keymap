@@ -25,10 +25,6 @@
         "command": "search_library"
     },
     {
-        "keys": ["alt+l", "alt+i"],
-        "command": "installed_library"
-    },
-    {
         "keys": ["alt+l", "alt+r"],
         "command": "remove_library"
     }
