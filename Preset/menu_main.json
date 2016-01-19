@@ -50,12 +50,18 @@
                 "caption": "Options",
                 "id":"options",
                 "children": [
-                                {"caption":"Show Verbose Output",
-                                 "command":"toggle_verbose"},
-                                {"caption":"Update Board List",
-                                 "command":"update_board_list"},
-                                 {"caption":"Keep Temp Files",
-                                 "command":"keep_temp_files"}
+                                {
+                                    "caption":"Show Verbose Output",
+                                    "checkbox":true,
+                                    "command":"toggle_verbose"
+                                },{
+                                    "caption":"Keep Temp Files",
+                                    "checkbox":true,
+                                    "command":"keep_temp_files"
+                                },{
+                                    "caption":"Update Board List",
+                                    "command":"update_board_list"
+                                }
                             ]
             },{
                 "caption": "Language",
