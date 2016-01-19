@@ -77,6 +77,9 @@ msgstr "Acerca de Deviot"
 
 # Mensajes y errores
 
+msgid "Updating Board Lists"
+msgstr "Actualizando Lista de Placas"
+
 msgid "{0} Isn't possible to upload an empty sketch\n"
 msgstr "{0} No es posible cargar un sketch vacío\n"
 

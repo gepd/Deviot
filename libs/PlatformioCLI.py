@@ -531,11 +531,18 @@ class PlatformioCLI(CommandsPy):
 
         Returns: {json object} -- list with all boards in a JSON format
         '''
+        window = sublime.active_window()
+        view = window.active_view()
+        Tools.setStatus(view, _('Updating Board Lists'), display=True)
+
         boards = []
         Run = CommandsPy()
 
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
+
+        Tools.setStatus(view, _('Done'), display=True, erase_time=4000)
+
         return boards
 
     def saveAPIBoards(self, update_method=False):
