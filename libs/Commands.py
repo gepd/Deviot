@@ -121,7 +121,10 @@ class CommandsPy(object):
 
                 if('downloading' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
                     message = 'Downloading package\\n\\nIt may take a while, please be patient.\\n'
+                    if(down and 'lib' in command and 'install' in command):
+                        message = 'Downloading dependence\\n'
                     self.message_queue.put(message)
+                    down = True
 
                 if('unpacking' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
                     message = 'Unpacking...\\n'

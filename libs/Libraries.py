@@ -166,6 +166,10 @@ class Libraries():
         command = ['lib', 'install %s' % lib_id]
         self.Commands.runCommand(command, extra_message=lib_name)
 
+        # update list of libraries installed in the preference file
+        self.getInstalledList(ids=True)
+
+        """
         # Save id in preferences
         if (not self.Commands.error_running):
             installed = self.Preferences.get('user_libraries', '')
@@ -176,9 +180,7 @@ class Libraries():
                     self.Preferences.saveData()
             else:
                 self.Preferences.set('user_libraries', [lib_id])
-
-    def writeLibrary(self, name):
-        pass
+        """
 
     def installedList(self):
         """
@@ -208,6 +210,7 @@ class Libraries():
                 for item in output:
                     installed_ids.append(str(item['id']))
                 self.Preferences.set('user_libraries', installed_ids)
+                return
 
         # arrange list to the quickpanel
         quick_list = []
