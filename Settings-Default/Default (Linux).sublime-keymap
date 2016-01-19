@@ -1,23 +1,27 @@
 [
     {
-        "keys": ["alt+d", "alt+b"], 
+        "keys": ["ctrl+shift+b"], 
         "command": "build_sketch"
     },{
-        "keys": ["alt+d", "alt+u"],
+        "keys": ["ctrl+shift+u"],
         "command": "upload_sketch"
     },{
-        "keys": ["alt+d", "alt+c"],
+        "keys": ["ctrl+shift+c"],
         "command": "clean_sketch"
     },{
-        "keys": ["alt+b", "alt+o"],
+        "keys": ["ctrl+shift+v"],
         "command": "toggle_verbose"
-    },
-    {
-        "keys": ["alt+u", "alt+b"],
+    },{
+        "keys": ["ctrl+alt+u"],
         "command": "update_board_list"
-    },
-    {
-        "keys": ["alt+k", "alt+t"],
+    },{
+        "keys": ["ctrl+shift+k"],
         "command": "keep_temp_files"
+    },{
+        "keys": ["ctrl+shift+s"],
+        "command": "search_library"
+    },{
+        "keys": ["ctrl+shift+r"],
+        "command": "remove_library"
     }
 ]

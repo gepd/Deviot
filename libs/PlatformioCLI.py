@@ -76,8 +76,6 @@ class PlatformioCLI(CommandsPy):
 
         self.view = view
         self.execute = True
-        self.env_path = self.Preferences.get('env_path', False)
-        self.vbose = self.Preferences.get('verbose_output', False)
         self.is_native = False
         self.is_iot = False
 
@@ -133,8 +131,7 @@ class PlatformioCLI(CommandsPy):
                 view.run_command('save')
 
             # Initilized commands
-            self.Commands = CommandsPy(
-                self.env_path, console=console, cwd=self.dir)
+            self.Commands = CommandsPy(console=console, cwd=self.dir)
 
     def checkInitFile(self):
 
@@ -244,7 +241,7 @@ class PlatformioCLI(CommandsPy):
 
         command = ['init', '%s' % (init_board)]
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command)
 
         if(not self.Commands.error_running):
             if(self.is_native):
@@ -283,7 +280,7 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run', '-e %s' % choosen_env]
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command)
 
         # set build sketch
         if(not self.Commands.error_running):
@@ -327,7 +324,7 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, choosen_env)]
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command)
         self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
@@ -345,7 +342,7 @@ class PlatformioCLI(CommandsPy):
 
         command = ['run', '-t clean']
 
-        self.Commands.runCommand(command, verbose=self.vbose)
+        self.Commands.runCommand(command)
 
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', False)
@@ -534,11 +531,18 @@ class PlatformioCLI(CommandsPy):
 
         Returns: {json object} -- list with all boards in a JSON format
         '''
+        window = sublime.active_window()
+        view = window.active_view()
+        Tools.setStatus(view, _('Updating Board Lists'), display=True)
+
         boards = []
-        Run = CommandsPy(env_path=self.env_path)
+        Run = CommandsPy()
 
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
+
+        Tools.setStatus(view, _('Done'), display=True, erase_time=4000)
+
         return boards
 
     def saveAPIBoards(self, update_method=False):

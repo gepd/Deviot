@@ -77,6 +77,9 @@ msgstr "Acerca de Deviot"
 
 # Mensajes y errores
 
+msgid "Updating Board Lists"
+msgstr "Actualizando Lista de Placas"
+
 msgid "{0} Isn't possible to upload an empty sketch\n"
 msgstr "{0} No es posible cargar un sketch vacío\n"
 
@@ -120,7 +123,7 @@ msgid "\nInstalling {0} package: "
 msgstr "\nInstalando paquete {0}: "
 
 msgid "Already installed\n"
-msgstr "Ya instalado\n"
+msgstr "Ya instalado(a)\n"
 
 msgid "Downloading package\n\nIt may take a while, please be patient.\n"
 msgstr "Descargando paquete\n\nPor favor sea paciente, esto podría demorar un poco.\n"
@@ -133,3 +136,32 @@ msgstr "Procesando"
 
 msgid "Done"
 msgstr "Listo"
+
+# Librerías
+
+msgid "Keyword:"
+msgstr "Palabra Clave:"
+
+msgid "{0} Installing Library {1} | "
+msgstr "{0} Instalando Librería {1} | "
+
+msgid "{0} Uninstalling Library {1} | "
+msgstr "{0} Desinstalando Librería {1} | "
+
+msgid "Searching"
+msgstr "Buscando"
+
+msgid "Looking Installed Libraries"
+msgstr "Buscando Librerías Instaladas"
+
+msgid "Installing"
+msgstr "Instalando"
+
+msgid "Downloading dependence\n"
+msgstr "Descargando dependencia\n"
+
+msgid "Preparing List"
+msgstr "Preparando Lista"
+
+msgid "Removing"
+msgstr "Eliminando"
