@@ -11,10 +11,7 @@ import json
 import time
 import sublime
 import threading
-import urllib.parse
-import urllib.request
 from codecs import decode
-from multiprocessing.pool import ThreadPool
 
 try:
     from . import __version__ as version
@@ -40,6 +37,15 @@ except:
     from libs.Commands import CommandsPy
     from libs.Messages import MessageQueue
     from libs.I18n import I18n
+
+if(Tools.getPythonVersion() < 3):
+    from urllib import urlencode
+    from urllib2 import Request
+    from urllib2 import urlopen
+else:
+    from urllib.parse import urlencode
+    from urllib.request import Request
+    from urllib.request import urlopen
 
 _ = I18n().translate
 
@@ -80,24 +86,21 @@ class Libraries():
             keyword {string}:
                 Keyword to search the library in the platformio API
         """
-        # show result in the quick panel
-        self.window.run_command('show_results')
-        return
         # building query
         request = {}
         request['query'] = keyword
-        query = urllib.parse.urlencode(request)
+        query = urlencode(request)
 
         # request parameters
         url = 'http://api.platformio.org/lib/search?'
         user_agent = 'Deviot/' + str(version) + \
             ' (Sublime-Text/' + str(sublime.version()) + ')'
         headers = {'User-Agent': user_agent}
-        req = urllib.request.Request(url + query, headers=headers)
+        req = Request(url + query, headers=headers)
 
         # receive first page
-        with urllib.request.urlopen(req) as response:
-            list = json.loads(response.read().decode(encoding='UTF-8'))
+        response = urlopen(req)
+        list = json.loads(response.read().decode())
 
         # check number of pages
         nloop = list['total'] / list['perpage']
@@ -107,14 +110,13 @@ class Libraries():
             for page in range(2, nloop + 1):
                 # building query of next pages
                 request['page'] = page
-                query = urllib.parse.urlencode(request)
-                req = urllib.request.Request(url + query, headers=headers)
+                query = urlencode(request)
+                req = Request(url + query, headers=headers)
                 # receive first page
-                with urllib.request.urlopen(req) as response:
-                    page_next = json.loads(
-                        response.read().decode(encoding='UTF-8'))
-                    for item_next in page_next['items']:
-                        list['items'].append(item_next)
+                response = urlopen(req)
+                page_next = json.loads(response.read().decode())
+                for item_next in page_next['items']:
+                    list['items'].append(item_next)
 
         # save data in file
         self.saveLibraryData(list, 'default_list.json')
