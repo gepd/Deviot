@@ -45,6 +45,12 @@ msgstr "Selecciona Una/Multiples Placa(s)"
 msgid "Select Environment"
 msgstr "Selecciona Un Entorno de Desarrollo"
 
+msgid "Search Library"
+msgstr "Buscar Librería"
+
+msgid "Remove Library"
+msgstr "Eliminar Librería"
+
 msgid "Build"
 msgstr "Compilar"
 
@@ -108,7 +114,7 @@ msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
 msgid "Success | it took {0}s\n"
-msgstr "Completado | Demoró {0}s\n"
+msgstr "Éxito | Demoró {0}s\n"
 
 msgid "\n{0} it took {1}s\n"
 msgstr "\n{0} Demoró {1}s\n"
@@ -117,7 +123,7 @@ msgid "Error\n{0} Details:\n\n"
 msgstr "Error\n{0} Detalles:\n\n"
 
 msgid "Success\n"
-msgstr "Completado\n"
+msgstr "Éxito\n"
 
 msgid "\nInstalling {0} package: "
 msgstr "\nInstalando paquete {0}: "
