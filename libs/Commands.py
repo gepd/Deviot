@@ -69,10 +69,9 @@ class CommandsPy(object):
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
 
-        # real time error build output
-        # ('-v --verbose' in command and not verbose)
+        # real time
         if(not verbose and 'version' not in command and 'json' not in command):
-            error, down, previous = False, False, ''
+            error, down, previous, warning = False, False, '', False
             while True:
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
@@ -90,14 +89,19 @@ class CommandsPy(object):
                 # detect error
                 if('in function' in output.lower() or
                         'in file' in output.lower() or
-                        'error:' in output.lower()):
-                    if(not error):
+                        'error:' in output.lower() or
+                        'include' in output.lower() or
+                        'fatal' in output.lower() or
+                        'warning' in output.lower()):
+                    if('warning' in output.lower()):
+                        warning = True
+                    if(not error and not warning):
                         current_time = time.strftime('%H:%M:%S')
                         message = 'Error\\n{0} Details:\\n\\n'
                         self.message_queue.put(message, current_time)
                         error = True
 
-                # realtime output for build command
+                        # realtime output for build command
                 if('run' in command and '-e' in command and not 'upload'):
                     if('installing' in output.lower()):
                         package = re.match(
@@ -105,16 +109,21 @@ class CommandsPy(object):
                         message = '\\nInstalling {0} package: '
                         self.message_queue.put(message, package)
 
-                    # output messages
-                    if (output.strip() and error and 'scons' not in output and
-                            'platform' not in output.lower() and
-                            'took' not in output.lower() and
-                            '..' not in output and not
-                            '.' == output.strip() and
-                            'exit status' not in output.lower()):
+                # strings used in more than one command
+                if (output.strip() and error and 'scons' not in output and
+                        'platform' not in output.lower() and
+                        'took' not in output.lower() and
+                        '..' not in output and not
+                        '.' == output.strip() and
+                        'exit status' not in output.lower() and
+                        'such file' in output.lower() or
+                        'include' in output.lower() or
+                        '^' in output.lower() or
+                        'warning' in output.lower()
+                        or warning):
+                    if(warning and '..' not in output and 'took' not in output.lower()):
                         self.message_queue.put(output)
 
-                # strings used in more than one command
                 if('already' in output.lower()):
                     message = 'Already installed\\n'
                     self.message_queue.put(message)
