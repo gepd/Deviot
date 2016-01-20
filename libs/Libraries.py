@@ -58,7 +58,7 @@ class Libraries():
 
     def __init__(self, window=None, view=None):
         self.view = view
-        self.window = None
+        self.window = window
         self.Preferences = Preferences()
 
         # create window and view if not exists
@@ -121,6 +121,9 @@ class Libraries():
         # save data in file
         self.saveLibraryData(list, 'default_list.json')
         # show result in the quick panel
+        sublime.set_timeout(self.show_results, 0)
+
+    def show_results(self):
         self.window.run_command('show_results')
 
     def getList(self):
