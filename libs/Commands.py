@@ -199,7 +199,7 @@ class CommandsPy(object):
             args = ''
 
         # output errors only
-        if(not verbose and 'run' == options and '-e' in args and not 'upload'):
+        if(not verbose and 'run' in options and '-e' in args and not 'upload' in args):
             args += ' -v --verbose'
 
         command = "platformio -f -c sublimetext %s %s 2>&1" % (
