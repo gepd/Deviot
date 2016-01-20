@@ -69,6 +69,7 @@ class PlatformioCLI(CommandsPy):
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('[ Deviot ]\\n')
+            time.sleep(0.02)
 
         # For installing purposes
         if(install):
