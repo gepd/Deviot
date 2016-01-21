@@ -44,13 +44,13 @@ Para conocer información con más detalles de los pasos de instalación de plat
 ## To Do / Por hacer
 - [ ] Add Serial Monitor
 - [x] <del>Languages</del>
-- [ ] PlatformIO API Libraries integration
+- [x] <del>PlatformIO API Libraries integration</del>
 - [ ] OTA Serial ports
 
 ---
 - [ ] Agregar Monitor Serial
 - [x] <del>Idiomas</del> 
-- [ ] Intengración de la API para librerías de platformIO
+- [x] <del>Intengración de la API para librerías de platformIO</del>
 - [ ] Puertos Seriales OTA
 
 **This plugin is under development, don't use in a production environment.**
