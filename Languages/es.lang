@@ -183,3 +183,9 @@ msgstr "Preparando Lista"
 
 msgid "Removing"
 msgstr "Eliminando"
+
+msgid "None Library Found"
+msgstr "Ninguna librería encontrada"
+
+msgid "None library installed"
+msgstr "Ninguna librería instalada"

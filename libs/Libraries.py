@@ -137,6 +137,12 @@ class Libraries():
         # get file
         list = self.getLibrary('default_list.json')
         list_ins = self.Preferences.get('user_libraries', '')
+
+        # if none result
+        if(list['total'] == 0):
+            list = [_('None library found')]
+            return list
+
         # arrange list to the quickpanel
         quick_list = []
         for item in list['items']:
@@ -227,7 +233,7 @@ class Libraries():
                 item_list.append(str(item['id']))
                 quick_list.append(item_list)
         else:
-            quick_list = ['None Library Installed']
+            quick_list = [_('None library installed')]
 
         # save the data and run the quick panel
         self.saveLibraryData(quick_list, 'quick_list.json')
