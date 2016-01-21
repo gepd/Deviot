@@ -70,7 +70,7 @@ def getDeviotUserPath():
     deviot_user_path = os.path.join(user_path, 'Deviot')
 
     try:
-        os.mkdir(deviot_user_path)
+        os.makedirs(deviot_user_path)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
@@ -86,7 +86,7 @@ def getLibraryPath():
     library_path = os.path.join(user_path, 'libraries')
 
     try:
-        os.mkdir(library_path)
+        os.makedirs(library_path)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
@@ -100,7 +100,7 @@ def getUserLibraryPath():
     library_path = os.path.join(user_path, 'User_Libs')
 
     try:
-        os.mkdir(library_path)
+        os.makedirs(library_path)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
@@ -117,7 +117,7 @@ def getTemplateMenuPath(file_name, user_path=False):
         preset_path = os.path.join(preset_path, 'Preset')
 
         try:
-            os.mkdir(preset_path)
+            os.makedirs(preset_path)
         except OSError as exc:
             if exc.errno != errno.EEXIST:
                 raise exc
@@ -137,7 +137,7 @@ def getSublimeMenuPath(sub_folder=False, user_path=False):
         menu_path = os.path.join(menu_path, sub_folder)
 
         try:
-            os.mkdir(menu_path)
+            os.makedirs(menu_path)
         except OSError as exc:
             if exc.errno != errno.EEXIST:
                 raise exc
@@ -199,7 +199,7 @@ def getDeviotTmpPath(file_name=False):
         tmp_path = os.path.join(tmp_path, file_name)
 
     try:
-        os.mkdir(tmp_path)
+        os.makedirs(tmp_path)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
