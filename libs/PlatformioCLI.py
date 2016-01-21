@@ -260,8 +260,8 @@ class PlatformioCLI(CommandsPy):
                         buffer += line + '\n'
                     if 'lib_dir' in line:
                         found = True
-                        lib_dir = 'lib_dir=' + lib_dir
-                        if lib_dir != line:
+                        compare = 'lib_dir=' + lib_dir
+                        if compare != line:
                             buffer += "lib_dir=%s\n" % lib_dir
                             write_file = True
                         else:
