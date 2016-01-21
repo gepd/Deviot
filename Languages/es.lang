@@ -45,6 +45,21 @@ msgstr "Selecciona Una/Multiples Placa(s)"
 msgid "Select Environment"
 msgstr "Selecciona Un Entorno de Desarrollo"
 
+msgid "Search Library"
+msgstr "Buscar Librería"
+
+msgid "Remove Library"
+msgstr "Eliminar Librería"
+
+msgid "Library Options"
+msgstr "Opciones de Librerías"
+
+msgid "Open User Libraries Folder"
+msgstr "Abrir Carpeta con Librerías de Usuario"
+
+msgid "Change Folder Library Path"
+msgstr "Cambiar Ruta de Carpeta"
+
 msgid "Build"
 msgstr "Compilar"
 
@@ -108,7 +123,7 @@ msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
 msgid "Success | it took {0}s\n"
-msgstr "Completado | Demoró {0}s\n"
+msgstr "Éxito | Demoró {0}s\n"
 
 msgid "\n{0} it took {1}s\n"
 msgstr "\n{0} Demoró {1}s\n"
@@ -117,7 +132,7 @@ msgid "Error\n{0} Details:\n\n"
 msgstr "Error\n{0} Detalles:\n\n"
 
 msgid "Success\n"
-msgstr "Completado\n"
+msgstr "Éxito\n"
 
 msgid "\nInstalling {0} package: "
 msgstr "\nInstalando paquete {0}: "
@@ -142,6 +157,9 @@ msgstr "Listo"
 msgid "Keyword:"
 msgstr "Palabra Clave:"
 
+msgid "Select Current Dir ({0})"
+msgstr "Seleccionar Directorio Actual ({0})"
+
 msgid "{0} Installing Library {1} | "
 msgstr "{0} Instalando Librería {1} | "
 
@@ -165,3 +183,9 @@ msgstr "Preparando Lista"
 
 msgid "Removing"
 msgstr "Eliminando"
+
+msgid "None Library Found"
+msgstr "Ninguna librería encontrada"
+
+msgid "None library installed"
+msgstr "Ninguna librería instalada"

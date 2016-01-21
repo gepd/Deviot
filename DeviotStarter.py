@@ -218,6 +218,20 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
             Libraries.openInThread('remove', self.window, result)
 
 
+class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        library = Paths.getUserLibraryPath()
+        url = Paths.getOpenFolderPath(library)
+        sublime.run_command('open_url', {'url': url})
+
+
+class ManuallyLibrary(sublime_plugin.WindowCommand):
+
+    def run(self):
+        Paths.selectDir(self.window, key='lib_dir', func=Preferences().set)
+
+
 class BuildSketchCommand(sublime_plugin.TextCommand):
     """
     Trigger a method to build the files in the current
