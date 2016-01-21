@@ -9,12 +9,16 @@ from __future__ import unicode_literals
 import os
 import errno
 import inspect
+import sublime
 
 try:
     from . import Tools
+    from .Dir import Dir
 except:
     from libs import Tools
+    from libs.Dir import Dir
 
+ROOT_PATH = 'System Root(/)'
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
@@ -80,6 +84,20 @@ def getDeviotUserPath():
 def getLibraryPath():
     user_path = getDeviotUserPath()
     library_path = os.path.join(user_path, 'libraries')
+
+    try:
+        os.mkdir(library_path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+    return library_path
+
+
+def getUserLibraryPath():
+    user_path = getDeviotUserPath()
+    library_path = os.path.join(user_path, 'User_Libs')
 
     try:
         os.mkdir(library_path)
@@ -188,3 +206,78 @@ def getDeviotTmpPath(file_name=False):
         pass
 
     return tmp_path
+
+
+def getOpenFolderPath(path):
+    #path = os.path.dirname(path)
+    url = 'file://' + path
+    return url
+
+
+def listWinVolume():
+    vol_list = []
+    for label in range(67, 90):
+        vol = chr(label) + ':\\'
+        if os.path.isdir(vol):
+            vol_list.append(vol)
+    return vol_list
+
+
+def listRootPath():
+    root_list = []
+    os_name = Tools.getOsName()
+    if os_name == 'windows':
+        root_list = listWinVolume()
+    else:
+        home_path = os.getenv('HOME')
+        root_list = [home_path, ROOT_PATH]
+    return root_list
+
+
+def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=None):
+    if index == -1:
+        return ''
+
+    if level > 0 and index == 0:
+        sel_path = paths[0].split('(')[1][:-1]
+        if func:
+            if key:
+                func(key, sel_path)
+        return
+
+    else:
+        if index == 1:
+            level -= 1
+        elif index > 1:
+            level += 1
+
+        if level <= 0:
+            level = 0
+            dir_path = '.'
+            parent_path = '..'
+
+            paths = listRootPath()
+
+        else:
+            sel_path = paths[index]
+            if sel_path == ROOT_PATH:
+                sel_path = '/'
+            dir_path = os.path.abspath(sel_path)
+            parent_path = os.path.join(dir_path, '..')
+
+            cur_dir = Dir(dir_path)
+            sub_dirs = cur_dir.listDirs()
+            paths = [d.getPath() for d in sub_dirs]
+
+        try:
+            from .I18n import I18n
+        except:
+            from libs.I18n import I18n
+
+        _ = I18n().translate
+
+        paths.insert(0, parent_path)
+        paths.insert(0, _('Select Current Dir ({0})', dir_path))
+
+    sublime.set_timeout(lambda: window.show_quick_panel(
+        paths, lambda index: selectDir(window, index, level, paths, key, func)), 5)

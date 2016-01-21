@@ -24,6 +24,19 @@
                 "caption": "Remove Library",
                 "id": "remove_library",
                 "command": "remove_library"
+            },{
+                "caption": "Library Options",
+                "id": "library_options",
+                "children": [
+                                {
+                                    "caption":"Open User Libraries Folder",
+                                    "command":"open_user_library_folder"
+                                },
+                                {
+                                    "caption":"Change Folder Library Path",
+                                    "command":"manually_library"
+                                }
+                            ]
             },
             {"caption": "-"},
             {
