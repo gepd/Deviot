@@ -92,6 +92,7 @@ class CommandsPy(object):
                         'error:' in output.lower() or
                         'include' in output.lower() or
                         'fatal' in output.lower() or
+                        'no such' in output.lower() or
                         'warning' in output.lower()):
                     if('warning' in output.lower()):
                         warning = True
@@ -118,10 +119,11 @@ class CommandsPy(object):
                         'exit status' not in output.lower() and
                         'such file' in output.lower() or
                         'include' in output.lower() or
+                        '#' in output.lower() or
                         '^' in output.lower() or
                         'warning' in output.lower()
                         or warning):
-                    if(warning and '..' not in output and 'took' not in output.lower()):
+                    if(error or warning and '..' not in output and 'took' not in output.lower()):
                         self.message_queue.put(output)
 
                 if('already' in output.lower()):
