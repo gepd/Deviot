@@ -51,6 +51,15 @@ msgstr "Buscar Librería"
 msgid "Remove Library"
 msgstr "Eliminar Librería"
 
+msgid "Library Options"
+msgstr "Opciones de Librerías"
+
+msgid "Open User Libraries Folder"
+msgstr "Abrir Carpeta con Librerías de Usuario"
+
+msgid "Change Folder Library Path"
+msgstr "Cambiar Ruta de Carpeta"
+
 msgid "Build"
 msgstr "Compilar"
 
@@ -147,6 +156,9 @@ msgstr "Listo"
 
 msgid "Keyword:"
 msgstr "Palabra Clave:"
+
+msgid "Select Current Dir ({0})"
+msgstr "Seleccionar Directorio Actual ({0})"
 
 msgid "{0} Installing Library {1} | "
 msgstr "{0} Instalando Librería {1} | "
