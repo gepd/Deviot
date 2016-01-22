@@ -38,10 +38,10 @@ En Unix, primero debes instalar `pip` y luego platformIO
 
 ![pip Install](https://github.com/gepd/Deviot/blob/master/Docs/images/unix_pip.gif?raw=true)
 
-From the command console write `sudo apt-get install python-pip`
+From the command console write `sudo apt-get install python-pip` (You will prompt for root password)
 
 ---
-Desde la terminal escribe `sudo apt-get install python-pip`
+Desde la terminal escribe `sudo apt-get install python-pip` (Se te solicitará la contraseña de tu cuenta)
 
 #### 2. Install platformIO / Instala platformIO
 
@@ -53,4 +53,26 @@ To install platformio write `pip install -U platformio`
 Para instalar platformIO escribe `pip install -U platformio`
 
 ### OSX
-...
+
+In OSX you must install `pip` and then platformIO
+
+---
+En OSX, primero debes instalar `pip` y luego platformIO
+
+#### 1. Install pip / Instala pip
+
+![pip install](https://github.com/gepd/Deviot/blob/master/Docs/images/osx_pip.gif?raw=true)
+
+From the command console write `sudo easy_install pip` (You will prompt for root password)
+
+---
+Desde la terminal escribe `sudo easy_install pip` (Se te solicitará la contraseña de tu cuenta)
+
+#### 2. Install platformIO / Instala platformIO
+
+![platformIO Install](https://github.com/gepd/Deviot/blob/master/Docs/images/osx_platformio.gif?raw=true)
+
+To install platformio write `pip install -U platformio`
+
+---
+Para instalar platformIO escribe `pip install -U platformio`
