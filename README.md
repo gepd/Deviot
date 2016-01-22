@@ -15,7 +15,7 @@ Si quieres ayudarme, siéntete libre de hacerlo en la forma que más te acomode.
 ## Setup / Instalación
 
 * [Install platformIO](https://github.com/gepd/Deviot/blob/master/Docs/setup.md)
-* Add a new repository to Sublime Text
+* Using the [package control](https://packagecontrol.io/installation), add a new repository to Sublime Text
 * Install the package `Deviot` from the list
 * If you see `Install platformIO` in the main menu, go to `Set environment PATH` and paste the path where python/platformIO was installed
 
@@ -23,7 +23,7 @@ To know detailed information about the setup of platformIO go to [this document]
 
 ---
 * [Instala platformIO](https://github.com/gepd/Deviot/blob/master/Docs/setup.md)
-* Agrega un nuevo repositorio a Sublime Text `https://github.com/gepd/Deviot.git`
+* Utilizando el [control de paquetes](https://packagecontrol.io/installation), agrega un nuevo repositorio a Sublime Text `https://github.com/gepd/Deviot.git`
 * Instala el paquete llamado `Deviot` desde la lista
 * Si vez `Instala platformIO` en el menú principal, anda a `Ingresar Ruta de Entorno` y pega la ruta donde instalaste python/platformIO
 
