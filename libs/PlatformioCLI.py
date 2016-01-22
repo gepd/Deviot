@@ -144,7 +144,8 @@ class PlatformioCLI(CommandsPy):
             return
         # Empy menu if it's not a IoT file
         if(not self.is_iot):
-            self.Menu.createEnvironmentMenu(empty=True)
+            if(Tools.getPythonVersion() > 2):
+                self.Menu.createEnvironmentMenu(empty=True)
             return
 
         ini_path = Paths.getFullIniPath(self.dir)
