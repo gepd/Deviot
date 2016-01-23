@@ -14,7 +14,7 @@ For example, see how can be organised `Foo` and `Bar` libraries:
 ![Private Library](https://github.com/gepd/Deviot/blob/master/Docs/images/private_library.png?raw=true)
 
 
-Then in `src/main.c` (or what you are using) you should use:
+Then in `main.c` (or what you are using) you should use:
 
 `#include <Foo.h>`
 
