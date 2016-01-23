@@ -154,8 +154,8 @@ msgstr "Listo"
 
 # Librerías
 
-msgid "Keyword:"
-msgstr "Palabra Clave:"
+msgid "Search Query:"
+msgstr "Buscar:"
 
 msgid "Select Current Dir ({0})"
 msgstr "Seleccionar Directorio Actual ({0})"
