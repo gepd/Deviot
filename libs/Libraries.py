@@ -11,7 +11,6 @@ import json
 import time
 import sublime
 import threading
-from codecs import decode
 
 try:
     from . import __version__ as version
@@ -20,7 +19,6 @@ try:
     from . import Messages
     from .JSONFile import JSONFile
     from .Preferences import Preferences
-    from .Menu import Menu
     from .Progress import ThreadProgress
     from .Commands import CommandsPy
     from .Messages import MessageQueue
@@ -32,7 +30,6 @@ except:
     from libs import Messages
     from libs.JSONFile import JSONFile
     from libs.Preferences import Preferences
-    from libs.Menu import Menu
     from libs.Progress import ThreadProgress
     from libs.Commands import CommandsPy
     from libs.Messages import MessageQueue
@@ -128,7 +125,7 @@ class Libraries():
 
     def getList(self):
         """
-        Gets the list with all libraries found and returns 
+        Gets the list with all libraries found and returns
         on the quick panel
 
         Returns:
@@ -179,19 +176,6 @@ class Libraries():
 
         # update list of libraries installed in the preference file
         self.getInstalledList(ids=True)
-
-        """
-        # Save id in preferences
-        if (not self.Commands.error_running):
-            installed = self.Preferences.get('user_libraries', '')
-            if(installed):
-                if(lib_id not in installed):
-                    self.Preferences.data.setdefault(
-                        'user_libraries', []).append(lib_id)
-                    self.Preferences.saveData()
-            else:
-                self.Preferences.set('user_libraries', [lib_id])
-        """
 
     def installedList(self):
         """
@@ -308,7 +292,7 @@ def openInThread(type, window=None, keyword=None):
         type {string} -- string with the name of thread to run
 
     Keyword Arguments:
-        window {object} -- Object with the current windows of ST {Default: None}
+        window {object} -- Object with the current windows of ST {Default:None}
         keyword {string} -- String with board selected {Default: None}
     """
     if(type == 'download'):

@@ -121,23 +121,30 @@ class CommandsPy(object):
                         'include' in output.lower() or
                         '#' in output.lower() or
                         '^' in output.lower() or
-                        'warning' in output.lower()
-                        or warning):
-                    if(error or warning and '..' not in output and 'took' not in output.lower()):
+                        'warning' in output.lower() or warning):
+                    if(error or warning and '..' not in output and
+                            'took' not in output.lower()):
                         self.message_queue.put(output)
 
                 if('already' in output.lower()):
                     message = 'Already installed\\n'
                     self.message_queue.put(message)
 
-                if('downloading' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
-                    message = 'Downloading package\\n\\nIt may take a while, please be patient.\\n'
+                if('downloading' in output.lower() and
+                        output.replace(" ", "") and
+                        output.replace(" ", "") != previous):
+
+                    message = 'Downloading package\\n\\n'
+                    message += 'It may take a while, please be patient.\\n'
+
                     if(down and 'lib' in command and 'install' in command):
                         message = 'Downloading dependence\\n'
                     self.message_queue.put(message)
                     down = True
 
-                if('unpacking' in output.lower() and output.replace(" ", "") and output.replace(" ", "") != previous):
+                if('unpacking' in output.lower() and
+                        output.replace(" ", "") and
+                        output.replace(" ", "") != previous):
                     message = 'Unpacking...\\n'
                     self.message_queue.put(message)
 
@@ -181,7 +188,7 @@ class CommandsPy(object):
         """
         if 'init' in command:
             return '{0} Initializing the project | '
-        elif '-e' in command and not 'upload' in command:
+        elif '-e' in command and 'upload' not in command:
             return '{0} Building the project | '
         elif '--upload-port' in command:
             return '{0} Uploading firmware | '
@@ -210,7 +217,8 @@ class CommandsPy(object):
             args = ''
 
         # output errors only
-        if(not verbose and 'run' in options and '-e' in args and not 'upload' in args):
+        if(not verbose and 'run' in options and
+                '-e' in args and 'upload' not in args):
             args += ' -v --verbose'
 
         command = "platformio -f -c sublimetext %s %s 2>&1" % (

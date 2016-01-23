@@ -234,11 +234,16 @@ class PlatformioCLI(CommandsPy):
         it can be the folder assigned by the system or the folder chosen
         by the user
         """
+        str_header = '[platformio]'
+        buffer = ""
+        write_file = False
+        write_header = True
+        header = False
+        found = False
+
         ini_path = Paths.getFullIniPath(self.dir)
         lib_dir = Paths.getUserLibraryPath()
         user_lib_dir = self.Preferences.get('lib_dir', False)
-        buffer, write_file, write_header, header, found = "", False, True, False, False
-        str_header = '[platformio]'
 
         if(user_lib_dir):
             lib_dir = user_lib_dir

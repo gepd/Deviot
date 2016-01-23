@@ -209,7 +209,6 @@ def getDeviotTmpPath(file_name=False):
 
 
 def getOpenFolderPath(path):
-    #path = os.path.dirname(path)
     url = 'file://' + path
     return url
 

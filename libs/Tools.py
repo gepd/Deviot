@@ -162,23 +162,8 @@ def getPlatformioError(error):
     """
     str_error = ""
     for line in error.split('\n'):
-        if(line and "processing" not in line.lower()
-            and "pioenvs" not in line.lower()
-                and "took" not in line.lower()):
+        if(line and "processing" not in line.lower() and
+                "pioenvs" not in line.lower() and
+                "took" not in line.lower()):
             str_error += line + '\n'
     return str_error
-
-
-def listAll(pattern='*'):
-    all_files = []
-    paths = glob.glob(os.path.join(self.path, pattern))
-    all_files = (AbstractFile(path) for path in paths)
-    all_files = [f for f in all_files if not f.is_temp_file()]
-    all_files.sort(key=lambda f: f.get_name().lower())
-    return all_files
-
-
-def listDirs(pattern='*'):
-    all_files = self.list_all(pattern)
-    dirs = [Dir(f.path) for f in all_files if f.is_dir()]
-    return dirs
