@@ -64,6 +64,8 @@ If you need to install a library that isn't in the library manager, follow the n
 - From the top Deviot menu go to `Library Options` >> `Open User Libraries Folder`
 - Copy your Library in that folder
 
+[**Read more**](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md) about how yor private library should be organized
+
 ---
 - Desde el menu `Deviot` anda a `Buscar Librería`
 - En el campo de búsqueda, escribe una palabra clave para buscar la librería.
@@ -75,6 +77,7 @@ Si necesitas instalar una librería que no está en el gestor, sigue los siguien
 - Desde el menu `Deviot` anda a `Opciones de Librerías` >> `Abrir Carpeta con Librerías de Usuario`
 - Copia tu librería en esa carpeta
 
+[**Leer más**](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md) sobre cómo tu librería privada debería estar organizada.
 
 ## To Do / Por hacer
 - [ ] Add Serial Monitor
