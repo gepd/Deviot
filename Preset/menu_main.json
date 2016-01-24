@@ -58,6 +58,166 @@
                 "id": "serial_ports",
                 "children":[]
             },
+            {
+                "caption": "Serial Monitor",
+                "id": "serial_monitor",
+                "children":
+                [
+                    {
+                        "caption": "Run",
+                        "id": "serial_monitor_run",
+                        "command": "serial_monitor_run",
+                        "checkbox": true
+                    },
+                    {
+                        "caption": "Send",
+                        "id": "send_message_serial",
+                        "command": "send_message_serial"
+                    },
+                    {
+                        "caption": "Baudrate",
+                        "id": "baudrate_item",
+                        "children":
+                        [
+                            {
+                                "caption": "300",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 300},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "1200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 1200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "2400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 2400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "4800",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 4800},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "9600",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 9600},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "14400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 14400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "19200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 19200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "28800",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 28800},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "38400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 38400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "57600",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 57600},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "115200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 115200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "230400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 230400},
+                                "checkbox": true
+                            }
+                        ]
+                    },
+                    {
+                        "caption": "Line Ending",
+                        "id": "line_ending_item",
+                        "children":
+                        [
+                            {
+                                "caption": "None",
+                                "id": "line_ending_none",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": ""},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "New Line",
+                                "id": "line_ending_new",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\n"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "Carriage Return",
+                                "id": "line_ending_return",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\r"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "Both NL & CR",
+                                "id": "line_ending_both",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\r\n"},
+                                "checkbox": true
+                            }
+                        ]
+                    },
+                    {
+                        "caption": "Display Mode",
+                        "id": "display_mode_item",
+                        "children":
+                        [
+                            {
+                                "caption": "Text",
+                                "id": "display_mode_text",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Text"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "Ascii",
+                                "id": "display_mode_sacii",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Ascii"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "Hex",
+                                "id": "display_mode_hex",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Hex"},
+                                "checkbox": true
+                            }
+                        ]
+                    }
+                ]
+            },
             {"caption": "-"},
             {
                 "caption": "Options",
