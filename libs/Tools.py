@@ -167,3 +167,75 @@ def getPlatformioError(error):
                 "took" not in line.lower()):
             str_error += line + '\n'
     return str_error
+
+
+def toggleSerialMonitor(window):
+    """
+    Toggle the state of the serial monitor
+
+    Arguments:
+        window {object}
+            windows to call or close the serial monitor
+
+    """
+    try:
+        from .Serial import SerialMonitor
+        from . import Serial
+        from .Preferences import Preferences
+        from .Messages import MonitorView
+    except:
+        from libs.Serial import SerialMonitor
+        from libs import Serial
+        from libs.Preferences import Preferences
+        from libs.Messages import MonitorView
+
+    monitor_module = Serial
+    serial_monitor = None
+
+    preferences = Preferences()
+    serial_port = preferences.get('id_port', '')
+    serial_ports = Serial.listSerialPorts()
+
+    if serial_port in serial_ports:
+        if serial_port in monitor_module.serials_in_use:
+            serial_monitor = monitor_module.serial_monitor_dict.get(
+                serial_port, None)
+        if not serial_monitor:
+            monitor_view = MonitorView(window, serial_port)
+            serial_monitor = SerialMonitor(serial_port, monitor_view)
+
+        if not serial_monitor.isRunning():
+            serial_monitor.start()
+
+            if serial_port not in monitor_module.serials_in_use:
+                monitor_module.serials_in_use.append(serial_port)
+            monitor_module.serial_monitor_dict[serial_port] = serial_monitor
+        else:
+            serial_monitor.stop()
+            monitor_module.serials_in_use.remove(serial_port)
+
+
+def sendSerialMessage(text):
+    """
+    Sends a text message over available the serial monitor
+
+    Arguments:
+        text {string}
+            Text to send
+    """
+    try:
+        from . import Serial
+        from .Preferences import Preferences
+    except:
+        from libs import Serial
+        from libs.Preferences import Preferences
+
+    monitor_module = Serial
+
+    preferences = Preferences()
+    serial_port = preferences.get('id_port', '')
+    if serial_port in monitor_module.serials_in_use:
+        serial_monitor = monitor_module.serial_monitor_dict.get(
+            serial_port, None)
+        if serial_monitor and serial_monitor.isRunning():
+            serial_monitor.send(text)
