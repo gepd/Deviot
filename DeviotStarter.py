@@ -70,6 +70,19 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        # Serial Monitor
+        monitor_module = Serial
+        if Messages.isMonitorView(view):
+            name = view.name()
+            serial_port = name.split('-')[1].strip()
+            if serial_port in monitor_module.serials_in_use:
+                cur_serial_monitor = monitor_module.serial_monitor_dict.get(
+                    serial_port, None)
+                if cur_serial_monitor:
+                    cur_serial_monitor.stop()
+                monitor_module.serials_in_use.remove(serial_port)
+
+        # Remove cache
         keep_cache = Preferences().get('keep_cache', False)
         if(keep_cache):
             return
