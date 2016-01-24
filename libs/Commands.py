@@ -116,7 +116,7 @@ class CommandsPy(object):
                         'took' not in output.lower() and
                         '..' not in output and not
                         '.' == output.strip() and
-                        'exit status' not in output.lower() and
+                        'exit status' not in output.lower() or
                         'such file' in output.lower() or
                         'include' in output.lower() or
                         '#' in output.lower() or
