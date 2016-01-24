@@ -181,6 +181,11 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
 
 class SearchLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Command to search a library in the platformio API
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         caption = _('Search Query:')
@@ -191,6 +196,12 @@ class SearchLibraryCommand(sublime_plugin.WindowCommand):
 
 
 class ShowResultsCommand(sublime_plugin.WindowCommand):
+    """
+    The results of the SearchLibraryCommand query in a quick_panel.
+    When one of the result is selected, it's installed by CLI
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         choose = Libraries.Libraries().getList()
@@ -202,12 +213,22 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
 
 
 class RemoveLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Remove a library by the CLI
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         Libraries.openInThread('list', self.window)
 
 
 class ShowRemoveListCommand(sublime_plugin.WindowCommand):
+    """
+    Show the list with all the installed libraries, and what you can remove
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         choose = Libraries.Libraries(self.window).installedList()
@@ -219,6 +240,11 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
 
 
 class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
+    """
+    Open a new window where the user libreries must be installed
+
+    Extends: sublime_plugin.TextCommand
+    """
 
     def run(self, edit):
         library = Paths.getUserLibraryPath()
@@ -227,6 +253,11 @@ class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
 
 
 class ManuallyLibrary(sublime_plugin.WindowCommand):
+    """
+    Open a window to change where the user libreries must be installed
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         Paths.selectDir(self.window, key='lib_dir', func=Preferences().set)
