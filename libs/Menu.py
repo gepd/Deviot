@@ -159,10 +159,13 @@ class Menu(object):
         for third_menu in menu_data[0]['children']:
             try:
                 for caption in third_menu['children']:
+                    caption['caption'] = _(caption['caption'])
                     try:
-                        caption['children']
+                        for item in caption['children']:
+                            item['caption'] = _(item['caption'])
                     except:
-                        caption['caption'] = _(caption['caption'])
+                        pass
+
             except:
                 pass
 

@@ -72,6 +72,39 @@ msgstr "Limpiar"
 msgid "Serial Port(s)"
 msgstr "Puerto(s) Serial"
 
+msgid "Serial Monitor"
+msgstr "Monitor Serial"
+
+msgid "Run"
+msgstr "Iniciar"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Baudrate"
+msgstr "Velocidad de Transmisión (baudrate)"
+
+msgid "Line Ending"
+msgstr "Final de Linea"
+
+msgid "None"
+msgstr "Ninguno"
+
+msgid "New Line"
+msgstr "Nueva Linea (NL)"
+
+msgid "Carriage Return"
+msgstr "Retorno de Linea (CR)"
+
+msgid "Both NL & CR"
+msgstr "Ambos NL & CR"
+
+msgid "Display Mode"
+msgstr "Modo de Visualización"
+
+msgid "Text"
+msgstr "Texto"
+
 msgid "Option"
 msgstr "Opciones"
 
@@ -189,3 +222,15 @@ msgstr "Ninguna librería encontrada"
 
 msgid "None library installed"
 msgstr "Ninguna librería instalada"
+
+
+# Monitor Serial
+
+msgid "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgstr "El puerto serial {0} está en uso. Intenta cerrar cualquier programa que pueda estar usandolo.\n"
+
+msgid "Send:"
+msgstr "Enviar:"
+
+msgid "[SENDED]"
+msgstr "[ENVIADO]"

@@ -105,3 +105,77 @@ class Console:
             else:
                 self.panel.run_command("append", {"characters": text})
             self.panel.set_read_only(True)
+
+
+class MonitorView:
+    """
+    Show the serial monitor messages from and to a device
+    """
+
+    def __init__(self, window, serial_port):
+        self.name = 'Serial Monitor - ' + serial_port
+        self.window, self.view = findInOpendView(self.name)
+        if self.view is None:
+            self.window = window
+            self.view = self.window.new_file()
+            self.view.set_name(self.name)
+        self.view.run_command('toggle_setting', {'setting': 'word_wrap'})
+        self.view.set_scratch(True)
+        self.window.focus_view(self.view)
+
+    def printScreen(self, text):
+        sublime.set_timeout(lambda: self.println(text), 0)
+
+    def println(self, text):
+        self.view.set_read_only(False)
+
+        if python_version < 3:
+            edit = self.view.begin_edit()
+            pos = self.view.size()
+            self.view.insert(edit, pos, text)
+            self.view.end_edit(edit)
+        else:
+            self.view.run_command("append", {"characters": text})
+        self.view.set_read_only(True)
+
+
+def findInOpendView(view_name):
+    """
+    Search a specific view in the list of available views
+
+    Arguments:
+        view_name {string}
+            Name of the view to search
+    """
+    opened_view = None
+    found = False
+    windows = sublime.windows()
+    for window in windows:
+        views = window.views()
+        for view in views:
+            name = view.name()
+            if name == view_name:
+                opened_view = view
+                found = True
+                break
+        if found:
+            break
+    return (window, opened_view)
+
+
+def isMonitorView(view):
+    """
+    Check if the view passed is Serial monitor 'type'
+
+    Arguments:
+        view {object}
+            current view
+
+    Returns:
+        [Bool] -- True or false if the view is Serial monitor 'type'
+    """
+    state = False
+    name = view.name()
+    if name and 'Serial Monitor - ' in name:
+        state = True
+    return state

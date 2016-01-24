@@ -74,7 +74,7 @@ class Libraries():
         self.Commands = CommandsPy(console=console)
 
     def downloadList(self, keyword):
-        """        
+        """
         Search a library in the platformio API api.platformio.org
         the data of all pages are stored in a json file. The result
         of the search is showing in the st quick panel

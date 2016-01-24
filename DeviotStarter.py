@@ -22,6 +22,8 @@ try:
     from .libs.QuickPanel import quickPanel
     from .libs import Libraries
     from .libs.I18n import I18n
+    from .libs import Serial
+    from .libs import Messages
 except:
     from libs import Paths
     from libs import Tools
@@ -32,6 +34,8 @@ except:
     from libs.QuickPanel import quickPanel
     from libs import Libraries
     from libs.I18n import I18n
+    from libs import Serial
+    from libs import Messages
 
 _ = I18n().translate
 
@@ -66,6 +70,19 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
+        # Serial Monitor
+        monitor_module = Serial
+        if Messages.isMonitorView(view):
+            name = view.name()
+            serial_port = name.split('-')[1].strip()
+            if serial_port in monitor_module.serials_in_use:
+                cur_serial_monitor = monitor_module.serial_monitor_dict.get(
+                    serial_port, None)
+                if cur_serial_monitor:
+                    cur_serial_monitor.stop()
+                monitor_module.serials_in_use.remove(serial_port)
+
+        # Remove cache
         keep_cache = Preferences().get('keep_cache', False)
         if(keep_cache):
             return
@@ -181,6 +198,11 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
 
 class SearchLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Command to search a library in the platformio API
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         caption = _('Search Query:')
@@ -191,6 +213,12 @@ class SearchLibraryCommand(sublime_plugin.WindowCommand):
 
 
 class ShowResultsCommand(sublime_plugin.WindowCommand):
+    """
+    The results of the SearchLibraryCommand query in a quick_panel.
+    When one of the result is selected, it's installed by CLI
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         choose = Libraries.Libraries().getList()
@@ -202,12 +230,22 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
 
 
 class RemoveLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Remove a library by the CLI
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         Libraries.openInThread('list', self.window)
 
 
 class ShowRemoveListCommand(sublime_plugin.WindowCommand):
+    """
+    Show the list with all the installed libraries, and what you can remove
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         choose = Libraries.Libraries(self.window).installedList()
@@ -219,6 +257,11 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
 
 
 class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
+    """
+    Open a new window where the user libreries must be installed
+
+    Extends: sublime_plugin.TextCommand
+    """
 
     def run(self, edit):
         library = Paths.getUserLibraryPath()
@@ -227,6 +270,11 @@ class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
 
 
 class ManuallyLibrary(sublime_plugin.WindowCommand):
+    """
+    Open a window to change where the user libreries must be installed
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         Paths.selectDir(self.window, key='lib_dir', func=Preferences().set)
@@ -307,6 +355,93 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_port):
         saved_id_port = Preferences().get('id_port')
         return saved_id_port == id_port
+
+
+class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
+    """
+    Run a selected serial monitor and show the messages in a new window
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        Tools.toggleSerialMonitor(self.window)
+
+    def is_checked(self):
+        monitor_module = Serial
+        state = False
+        serial_port = Preferences().get('id_port', '')
+        if serial_port in monitor_module.serials_in_use:
+            serial_monitor = monitor_module.serial_monitor_dict.get(
+                serial_port)
+            if serial_monitor and serial_monitor.isRunning():
+                state = True
+        return state
+
+
+class SendMessageSerialCommand(sublime_plugin.WindowCommand):
+    """
+    Send a text over the selected serial port
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        caption = _('Send:')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
+
+    def on_done(self, text):
+        if(text):
+            Tools.sendSerialMessage(text)
+            self.window.run_command('send_serial_message')
+
+
+class ChooseBaudrateItemCommand(sublime_plugin.WindowCommand):
+    """
+    Stores the baudrate selected for the user and save it in
+    the preferences file.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self, baudrate_item):
+        Preferences().set('baudrate', baudrate_item)
+
+    def is_checked(self, baudrate_item):
+        target_baudrate = Preferences().get('baudrate', 9600)
+        return baudrate_item == target_baudrate
+
+
+class ChooseLineEndingItemCommand(sublime_plugin.WindowCommand):
+    """
+    Stores the Line ending selected for the user and save it in
+    the preferences file.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self, line_ending_item):
+        Preferences().set('line_ending', line_ending_item)
+
+    def is_checked(self, line_ending_item):
+        target_line_ending = Preferences().get('line_endingline_ending', '\n')
+        return line_ending_item == target_line_ending
+
+
+class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
+    """
+    Stores the display mode selected for the user and save it in
+    the preferences file.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self, display_mode_item):
+        Preferences().set('display_mode', display_mode_item)
+
+    def is_checked(self, display_mode_item):
+        target_display_mode = Preferences().get('display_mode', 'Text')
+        return display_mode_item == target_display_mode
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
