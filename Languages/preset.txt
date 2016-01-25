@@ -1,0 +1,238 @@
+# LANGUAGE: Name (Name)
+# translations for Deviot Plugin.
+# Copyright (C) 2015-2016
+# This file is distributed under the same license as the Deviot Plugin.
+# Translator: 
+# 
+# Use this file to create your own language file, once you do it
+# save it in the ISO 639-1 format (two letters) and with the extension .lang
+
+# Setup Process
+
+msgid "1 Install PlatformIO"
+msgstr ""
+
+msgid "2 Set Environment PATH"
+msgstr ""
+
+msgid "Check again"
+msgstr ""
+
+msgid "SET-YOUR-ENVIRONMENT-PATH"
+msgstr ""
+
+msgid "Upgrade PlatformIO"
+msgstr ""
+
+msgid "{0} Checking requirements...\n"
+msgstr ""
+
+msgid "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgstr ""
+
+msgid "{0} You need to update platformIO"
+msgstr ""
+
+msgid "{0} PlatformIO has been detected, please wait...\n"
+msgstr ""
+
+msgid "{0} All done, you can code now!"
+msgstr ""
+
+# Menu
+
+msgid "Select board(s)"
+msgstr ""
+
+msgid "Select Environment"
+msgstr ""
+
+msgid "Search Library"
+msgstr ""
+
+msgid "Remove Library"
+msgstr ""
+
+msgid "Library Options"
+msgstr ""
+
+msgid "Open User Libraries Folder"
+msgstr ""
+
+msgid "Change Folder Library Path"
+msgstr ""
+
+msgid "Build"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
+msgid "Serial Port(s)"
+msgstr ""
+
+msgid "Serial Monitor"
+msgstr ""
+
+msgid "Run"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Baudrate"
+msgstr ""
+
+msgid "Line Ending"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "New Line"
+msgstr ""
+
+msgid "Carriage Return"
+msgstr ""
+
+msgid "Both NL & CR"
+msgstr ""
+
+msgid "Display Mode"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Option"
+msgstr ""
+
+msgid "Show Verbose Output"
+msgstr ""
+
+msgid "Update Board List"
+msgstr ""
+
+msgid "Keep Temp Files"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "About Deviot"
+msgstr ""
+
+# Mensajes y errores
+
+msgid "Updating Board Lists"
+msgstr ""
+
+msgid "{0} Isn't possible to upload an empty sketch\n"
+msgstr ""
+
+msgid "{0} {1} is not a IoT File\n"
+msgstr ""
+
+msgid "{0} None board Selected\n"
+msgstr ""
+
+msgid "{0} Initializing the project | "
+msgstr ""
+
+msgid "{0} Building the project | "
+msgstr ""
+
+msgid "{0} None serial port selected\n"
+msgstr ""
+
+msgid "{0} None environment selected\n"
+msgstr ""
+
+msgid "{0} Uploading firmware | "
+msgstr ""
+
+msgid "{0} Cleaning built files | "
+msgstr ""
+
+msgid "Success | it took {0}s\n"
+msgstr ""
+
+msgid "\n{0} it took {1}s\n"
+msgstr ""
+
+msgid "Error\n{0} Details:\n\n"
+msgstr ""
+
+msgid "Success\n"
+msgstr ""
+
+msgid "\nInstalling {0} package: "
+msgstr ""
+
+msgid "Already installed\n"
+msgstr ""
+
+msgid "Downloading package\n\nIt may take a while, please be patient.\n"
+msgstr ""
+
+msgid "Unpacking...\n"
+msgstr ""
+
+msgid "Processing"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+# Libraries
+
+msgid "Search Query:"
+msgstr ""
+
+msgid "Select Current Dir ({0})"
+msgstr ""
+
+msgid "{0} Installing Library {1} | "
+msgstr ""
+
+msgid "{0} Uninstalling Library {1} | "
+msgstr ""
+
+msgid "Searching"
+msgstr ""
+
+msgid "Looking Installed Libraries"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "Downloading dependence\n"
+msgstr ""
+
+msgid "Preparing List"
+msgstr ""
+
+msgid "Removing"
+msgstr ""
+
+msgid "None Library Found"
+msgstr ""
+
+msgid "None library installed"
+msgstr ""
+
+
+# Serial Monitor
+
+msgid "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgstr ""
+
+msgid "Send:"
+msgstr ""
+
+msgid "[SENDED]"
+msgstr ""
