@@ -1,4 +1,19 @@
 # Deviot Release Notes
+### Version 1.4 BETA | 24 Jan 2016
+* New Monitor serial
+* New option to show the user library folder
+* New option to change the user library folder
+* Fixed bug showing errors in serial console
+* Fixed bug showing library manager in ST2
+
+### Version 1.3 BETA | 19 Jan 2016
+* New library manager based on the platformIO API and CLI
+* New option to keep temp files
+* New recognition of platformio.ini file in Deviot menu
+* Fixed shortcuts in Linux
+* Fixed bugs in Sublime Text 2
+* Fixed order bug in env_var at setup
+* Fixed multiples minor bugs
 
 ### Version 1.2 BETA | 08 Jan 2016
 * Added Multi project recognition (platformIO, Arduino style)
