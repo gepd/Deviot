@@ -80,14 +80,14 @@ Si necesitas instalar una librería que no está en el gestor, sigue los siguien
 [**Leer más**](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md) sobre cómo tu librería privada debería estar organizada.
 
 ## To Do / Por hacer
-- [ ] Add Serial Monitor
+- [x] <del>Add Serial Monitor</del>
 - [x] <del>Languages</del>
 - [x] <del>PlatformIO API Libraries integration</del>
 - [ ] Recognise library examples
 - [ ] OTA Serial ports
 
 ---
-- [ ] Agregar Monitor Serial
+- [x] <del>Agregar Monitor Serial</del>
 - [x] <del>Idiomas</del> 
 - [x] <del>Intengración de la API para librerías de platformIO</del>
 - [ ] Reconocer ejemplos de librerías
