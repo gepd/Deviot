@@ -79,6 +79,11 @@ Si necesitas instalar una librería que no está en el gestor, sigue los siguien
 
 [**Leer más**](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md) sobre cómo tu librería privada debería estar organizada.
 
+## Languages / Idiomas
+At this moment **Deviot** is available in English and Spanish. If you want to contribute and translate it to your language use [this template](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt), you should let the `msgid` as is, and paste your translated string in `msgstr` when you finish it pull a request with the new file.
+
+The file should be called in the [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format (Two letters) and with the extension `.lang`
+
 ## To Do / Por hacer
 - [x] <del>Add Serial Monitor</del>
 - [x] <del>Languages</del>
