@@ -71,15 +71,6 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put('[ Deviot ]\\n')
             time.sleep(0.02)
 
-        # avoid to do anything with a monitor view
-        view_name = view.name()
-        if('monitor' in view_name.lower()):
-            current_time = time.strftime('%H:%M:%S')
-            msg = '{0} File not valid to upload\\n'
-            self.message_queue.put(msg, current_time)
-            self.execute = False
-            return
-
         # For installing purposes
         if(install):
             return
@@ -90,8 +81,17 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = False
 
         if(view):
-            file_path = Tools.getPathFromView(view)
+            # avoid to do anything with a monitor view
+            view_name = view.name()
             sketch_size = view.size()
+            file_path = Tools.getPathFromView(view)
+
+            if(not file_path and 'monitor' in view_name.lower()):
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} File not valid to upload\\n'
+                self.message_queue.put(msg, current_time)
+                self.execute = False
+                return
 
             # unsaved file
             if(command and not file_path and sketch_size > 0):
