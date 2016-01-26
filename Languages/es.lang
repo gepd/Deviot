@@ -134,6 +134,9 @@ msgstr "{0} No es posible cargar un sketch vacío\n"
 msgid "{0} {1} is not a IoT File\n"
 msgstr "{0} {1} No es un archivo IoT\n"
 
+msgid "{0} File not valid to upload\n"
+msgstr "{0} Archivo no válido para cargar\n"
+
 msgid "{0} None board Selected\n"
 msgstr "{0} Ninguna placa ha sido seleccionada"
 

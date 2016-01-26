@@ -133,6 +133,9 @@ msgstr ""
 msgid "{0} Isn't possible to upload an empty sketch\n"
 msgstr ""
 
+msgid "{0} File not valid to upload\n"
+msgstr ""
+
 msgid "{0} {1} is not a IoT File\n"
 msgstr ""
 

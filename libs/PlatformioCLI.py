@@ -71,6 +71,15 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.put('[ Deviot ]\\n')
             time.sleep(0.02)
 
+        # avoid to do anything with a monitor view
+        view_name = view.name()
+        if('monitor' in view_name.lower()):
+            current_time = time.strftime('%H:%M:%S')
+            msg = '{0} File not valid to upload\\n'
+            self.message_queue.put(msg, current_time)
+            self.execute = False
+            return
+
         # For installing purposes
         if(install):
             return
