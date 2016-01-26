@@ -90,6 +90,15 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = False
 
         if(view):
+            file_path = Tools.getPathFromView(view)
+            sketch_size = view.size()
+
+            # unsaved file
+            if(command and not file_path and sketch_size > 0):
+                saved_file = self.saveCodeInFile(view)
+                view = saved_file[1]
+                file_path = Tools.getPathFromView(view)
+
             # current file / view
             current_path = Paths.getCurrentFilePath(view)
             if(not current_path):
@@ -97,16 +106,8 @@ class PlatformioCLI(CommandsPy):
             self.is_iot = Tools.isIOTFile(view)
             current_dir = Paths.getCWD(current_path)
             parent_dir = Paths.getParentCWD(current_path)
-            sketch_size = view.size()
-            file_path = Tools.getPathFromView(view)
             file_name = Tools.getFileNameFromPath(file_path)
             temp_name = Tools.getFileNameFromPath(current_path, ext=False)
-
-            # unsaved file
-            if(command and not file_path and sketch_size > 0):
-                saved_file = self.saveCodeInFile(view)
-                view = saved_file[1]
-                file_path = Tools.getPathFromView(view)
 
             if(not self.is_iot):
                 self.execute = False
