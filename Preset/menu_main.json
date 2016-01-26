@@ -59,7 +59,7 @@
                 "children":[]
             },
             {
-                "caption": "Serial Monitor",
+                "caption": "Monitor Serial",
                 "id": "serial_monitor",
                 "children":
                 [
