@@ -70,7 +70,9 @@ class CommandsPy(object):
                                    universal_newlines=True, shell=True)
 
         # real time
-        if(not verbose and 'version' not in command and 'json' not in command):
+        if(not verbose and 'version' not in command and
+                'json' not in command and
+                'upload' not in command):
             error, down, previous, warning = False, False, '', False
             while True:
                 output = process.stdout.readline()
@@ -88,13 +90,17 @@ class CommandsPy(object):
 
                 # detect error
                 if('in function' in output.lower() or
+                        'member function' in output.lower() or
                         'in file' in output.lower() or
                         'error:' in output.lower() or
                         'include' in output.lower() or
                         'fatal' in output.lower() or
                         'no such' in output.lower() or
                         'warning' in output.lower()):
-                    if('warning' in output.lower()):
+                    if(not warning and 'warning' in output or 'member' in output):
+                        current_time = time.strftime('%H:%M:%S')
+                        message = 'Warning(s)\\n{0} Details:\\n\\n'
+                        self.message_queue.put(message, current_time)
                         warning = True
                     if(not error and not warning):
                         current_time = time.strftime('%H:%M:%S')
@@ -102,8 +108,8 @@ class CommandsPy(object):
                         self.message_queue.put(message, current_time)
                         error = True
 
-                        # realtime output for build command
-                if('run' in command and '-e' in command and not 'upload'):
+                # realtime output for build command
+                if('run' in command and '-e' in command):
                     if('installing' in output.lower()):
                         package = re.match(
                             r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
@@ -122,6 +128,7 @@ class CommandsPy(object):
                         '#' in output.lower() or
                         '^' in output.lower() or
                         'warning' in output.lower() or warning):
+
                     if(error or warning and '..' not in output and
                             'took' not in output.lower()):
                         self.message_queue.put(output)
