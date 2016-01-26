@@ -166,7 +166,7 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('native', False)
             self.Preferences.set('ini_path', self.dir)
             if(not os.path.isfile(ini_path)):
-                self.Menu.createEnvironmentMenu()
+                self.Menu.createEnvironmentMenu(empty=True)
                 return
         else:
             self.Preferences.set('native', True)
@@ -356,7 +356,7 @@ class PlatformioCLI(CommandsPy):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None environment selected\\n'
             self.message_queue.put(msg, current_time)
-            return
+            return False
 
         # initialize the sketch
         self.initSketchProject(choosen_env)
@@ -373,9 +373,9 @@ class PlatformioCLI(CommandsPy):
         # set build sketch
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', True)
+            return choosen_env
         else:
             self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -386,27 +386,22 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        id_port = self.Preferences.get('id_port', '')
-        choosen_env = self.Preferences.get('env_selected', '')
-
-        # check environment selected
+        # Compiling code
+        choosen_env = self.buildSketchProject()
         if(not choosen_env):
-            current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None environment selected\\n'
-            self.message_queue.put(msg, current_time)
             return
+
+        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
+            return
+
+        id_port = self.Preferences.get('id_port', '')
 
         # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None serial port selected\\n'
             self.message_queue.put(msg, current_time)
-            return
-
-        # Compiling code
-        self.buildSketchProject()
-        if(self.Commands.error_running):
-            self.message_queue.stopPrint()
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
