@@ -84,26 +84,30 @@ class PlatformioCLI(CommandsPy):
             # current file / view
             current_path = Paths.getCurrentFilePath(view)
             if(not current_path):
-                return
-            self.is_iot = Tools.isIOTFile(view)
-            current_dir = Paths.getCWD(current_path)
-            parent_dir = Paths.getParentCWD(current_path)
-            sketch_size = view.size()
-            file_path = Tools.getPathFromView(view)
-            file_name = Tools.getFileNameFromPath(file_path)
-            temp_name = Tools.getFileNameFromPath(current_path, ext=False)
-
-            # unsaved file
-            if(command and not file_path and sketch_size > 0):
-                saved_file = self.saveCodeInFile(view)
-                view = saved_file[1]
-                file_path = Tools.getPathFromView(view)
-
-            if(not self.is_iot):
                 self.execute = False
+                self.is_iot = False
+                file_name = '-'
+
+            if(self.execute):
+                self.is_iot = Tools.isIOTFile(view)
+                current_dir = Paths.getCWD(current_path)
+                parent_dir = Paths.getParentCWD(current_path)
+                sketch_size = view.size()
+                file_path = Tools.getPathFromView(view)
+                file_name = Tools.getFileNameFromPath(file_path)
+                temp_name = Tools.getFileNameFromPath(current_path, ext=False)
+
+                # unsaved file
+                if(command and not file_path and sketch_size > 0):
+                    saved_file = self.saveCodeInFile(view)
+                    view = saved_file[1]
+                    file_path = Tools.getPathFromView(view)
+
+                if(not self.is_iot):
+                    self.execute = False
 
             # check IoT type file
-            if(console and not self.is_iot and not self.execute):
+            if(console and not self.is_iot):
                 msg = '{0} {1} is not a IoT File\\n'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
@@ -299,6 +303,9 @@ class PlatformioCLI(CommandsPy):
         function can only be use if the workig file is an IoT type
         (checked by isIOTFile)
         '''
+        if(not self.execute or not self.is_iot):
+            return
+
         # check if it was already initialized
         ini_path = Paths.getFullIniPath(self.dir)
         if(os.path.isfile(ini_path)):
@@ -330,8 +337,7 @@ class PlatformioCLI(CommandsPy):
         Command to build the current working sketch, it must to be IoT
         type (checked by isIOTFile)
         '''
-        if(not self.execute):
-            self.message_queue.stopPrint()
+        if(not self.execute or not self.is_iot):
             return
 
         # get environment based on the current project
@@ -371,8 +377,7 @@ class PlatformioCLI(CommandsPy):
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
         '''
-        if(not self.execute):
-            self.message_queue.stopPrint()
+        if(not self.execute or not self.is_iot):
             return
 
         id_port = self.Preferences.get('id_port', '')
@@ -409,7 +414,7 @@ class PlatformioCLI(CommandsPy):
         Delete compiled object files, libraries and firmware/program binaries
         if a sketch has been built previously
         '''
-        if(not self.execute):
+        if(not self.execute or not self.is_iot):
             return
 
         builded_sketch = self.Preferences.get('builded_sketch', '')
