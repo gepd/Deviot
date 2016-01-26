@@ -23,5 +23,18 @@
     },{
         "keys": ["ctrl+shift+r"],
         "command": "remove_library"
+    },{
+        "keys": ["alt+s", "alt+r"],
+        "command": "serial_monitor_run"
+    },{
+        "keys": ["alt+s", "alt+m"],
+        "command": "send_message_serial"
+    },{
+        "keys": ["alt+shift+r"],
+        "command": "serial_monitor_run"
+    },{
+        "keys": ["alt+shift+m"],
+        "command": "send_message_serial"
     }
+
 ]

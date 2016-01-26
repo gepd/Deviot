@@ -11,21 +11,23 @@
     },{
         "keys": ["alt+b", "alt+o"],
         "command": "toggle_verbose"
-    },
-    {
+    },{
         "keys": ["alt+u", "alt+b"],
         "command": "update_board_list"
-    },
-    {
+    },{
         "keys": ["alt+k", "alt+t"],
         "command": "keep_temp_files"
-    },
-    {
+    },{
         "keys": ["alt+l", "alt+s"],
         "command": "search_library"
-    },
-    {
+    },{
         "keys": ["alt+l", "alt+r"],
         "command": "remove_library"
+    },{
+        "keys": ["alt+s", "alt+r"],
+        "command": "serial_monitor_run"
+    },{
+        "keys": ["alt+s", "alt+m"],
+        "command": "send_message_serial"
     }
 ]
