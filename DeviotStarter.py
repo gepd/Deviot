@@ -393,7 +393,7 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
     def on_done(self, text):
         if(text):
             Tools.sendSerialMessage(text)
-            self.window.run_command('send_serial_message')
+            self.window.run_command('send_message_serial')
 
 
 class ChooseBaudrateItemCommand(sublime_plugin.WindowCommand):
