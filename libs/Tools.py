@@ -239,3 +239,21 @@ def sendSerialMessage(text):
             serial_port, None)
         if serial_monitor and serial_monitor.isRunning():
             serial_monitor.send(text)
+
+
+def closeSerialMonitors():
+    try:
+        from . import Serial
+    except:
+        from libs import Serial
+
+    monitor_module = Serial
+    in_use = monitor_module.serials_in_use
+
+    if in_use:
+        for port in in_use:
+            cur_serial_monitor = monitor_module.serial_monitor_dict.get(
+                port, None)
+            if cur_serial_monitor:
+                cur_serial_monitor.stop()
+            monitor_module.serials_in_use.remove(port)
