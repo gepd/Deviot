@@ -507,3 +507,9 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         sublime.run_command('open_url', {'url': 'https://goo.gl/c41EXS'})
+
+
+class AddStatusCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit, text, erase_time):
+        Tools.setStatus(self.view, text, erase_time)
