@@ -247,5 +247,5 @@ msgstr "El puerto serial {0} está en uso. Intenta cerrar cualquier programa que
 msgid "Send:"
 msgstr "Enviar:"
 
-msgid "[SENDED]"
-msgstr "[ENVIADO]"
+msgid "\n[SENDED] {0}\n"
+msgstr "\n[ENVIADO] {0}\n"

@@ -249,5 +249,5 @@ msgstr ""
 msgid "Send:"
 msgstr ""
 
-msgid "[SENDED]"
+msgid "\n[SENDED] {0}\n"
 msgstr ""
