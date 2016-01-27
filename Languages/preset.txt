@@ -39,7 +39,9 @@ msgstr ""
 msgid "{0} All done, you can code now!"
 msgstr ""
 
+
 # Menu
+
 
 msgid "Select board(s)"
 msgstr ""
@@ -74,7 +76,7 @@ msgstr ""
 msgid "Serial Port(s)"
 msgstr ""
 
-msgid "Serial Monitor"
+msgid "Monitor Serial"
 msgstr ""
 
 msgid "Run"
@@ -125,12 +127,17 @@ msgstr ""
 msgid "About Deviot"
 msgstr ""
 
+
 # Mensajes y errores
+
 
 msgid "Updating Board Lists"
 msgstr ""
 
 msgid "{0} Isn't possible to upload an empty sketch\n"
+msgstr ""
+
+msgid "{0} File not valid to upload\n"
 msgstr ""
 
 msgid "{0} {1} is not a IoT File\n"
@@ -142,7 +149,7 @@ msgstr ""
 msgid "{0} Initializing the project | "
 msgstr ""
 
-msgid "{0} Building the project | "
+msgid "{0} Building the project | Processing...\n"
 msgstr ""
 
 msgid "{0} None serial port selected\n"
@@ -157,16 +164,22 @@ msgstr ""
 msgid "{0} Cleaning built files | "
 msgstr ""
 
-msgid "Success | it took {0}s\n"
+msgid "{0} SUCCESS | it took {1}s\n"
 msgstr ""
 
-msgid "\n{0} it took {1}s\n"
+msgid "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
 msgstr ""
 
-msgid "Error\n{0} Details:\n\n"
+msgid "{0} ERROR | it took {1}s\n"
 msgstr ""
 
 msgid "Success\n"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Success with warning(s)"
 msgstr ""
 
 msgid "\nInstalling {0} package: "
@@ -187,7 +200,9 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
+
 # Libraries
+
 
 msgid "Search Query:"
 msgstr ""

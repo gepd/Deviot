@@ -8,15 +8,21 @@ from __future__ import unicode_literals
 
 import subprocess
 import os
-import re
 import time
+import sublime
 
 try:
     from . import Messages
     from .Preferences import Preferences
+    from . import Tools
+    from .I18n import I18n
 except:
     from Libs import Messages
     from Libs.Preferences import Preferences
+    from Libs import Tools
+    from libs.I18n import I18n
+
+_ = I18n().translate
 
 
 class CommandsPy(object):
@@ -69,62 +75,37 @@ class CommandsPy(object):
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
 
+        show_warning = False
+        show_error = False
+
         # real time
-        if(not verbose and 'version' not in command and 'json' not in command):
-            error, down, previous, warning = False, False, '', False
+        if(not verbose and 'version' not in command and
+                'json' not in command and
+                'upload' not in command):
+            error, down, previous = False, False, ''
             while True:
                 output = process.stdout.readline()
                 if output == '' and process.poll() is not None:
                     # print took time and break the loop
                     if(error):
                         self.error_running = True
-                        current_time = time.strftime('%H:%M:%S')
-                        diff_time = time.time() - start_time
-                        diff_time = '{0:.2f}'.format(diff_time)
-                        message = '\\n{0} it took {1}s\\n'
-                        self.message_queue.put(
-                            message, current_time, diff_time)
                     break
 
-                # detect error
-                if('in function' in output.lower() or
-                        'in file' in output.lower() or
-                        'error:' in output.lower() or
-                        'include' in output.lower() or
-                        'fatal' in output.lower() or
-                        'no such' in output.lower() or
-                        'warning' in output.lower()):
-                    if('warning' in output.lower()):
-                        warning = True
-                    if(not error and not warning):
-                        current_time = time.strftime('%H:%M:%S')
-                        message = 'Error\\n{0} Details:\\n\\n'
-                        self.message_queue.put(message, current_time)
-                        error = True
+                if('warning' in output.lower() or
+                   'in function' in output.lower() or
+                   'error:' in output.lower() or
+                   '^' in output):
+                    if('^' in output):
+                        output = previous + output
+                    self.message_queue.put(output)
 
-                        # realtime output for build command
-                if('run' in command and '-e' in command and not 'upload'):
-                    if('installing' in output.lower()):
-                        package = re.match(
-                            r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
-                        message = '\\nInstalling {0} package: '
-                        self.message_queue.put(message, package)
+                if(output.strip()):
+                    previous = output
 
-                # strings used in more than one command
-                if (output.strip() and error and 'scons' not in output and
-                        'platform' not in output.lower() and
-                        'took' not in output.lower() and
-                        '..' not in output and not
-                        '.' == output.strip() and
-                        'exit status' not in output.lower() or
-                        'such file' in output.lower() or
-                        'include' in output.lower() or
-                        '#' in output.lower() or
-                        '^' in output.lower() or
-                        'warning' in output.lower() or warning):
-                    if(error or warning and '..' not in output and
-                            'took' not in output.lower()):
-                        self.message_queue.put(output)
+                if('warning' in output.lower()):
+                    show_warning = True
+                if('error' in output.lower()):
+                    show_error = True
 
                 if('already' in output.lower()):
                     message = 'Already installed\\n'
@@ -161,12 +142,34 @@ class CommandsPy(object):
         if(return_code > 0):
             self.error_running = True
 
+        current_time = time.strftime('%H:%M:%S')
+        diff_time = time.time() - start_time
+        diff_time = '{0:.2f}'.format(diff_time)
+        self.status_bar = ""
+
         # Print success status
-        if(self.console and not verbose and return_code == 0):
-            diff_time = time.time() - start_time
-            diff_time = '{0:.2f}'.format(diff_time)
-            message = 'Success | it took {0}s\\n'
-            self.message_queue.put(message, diff_time)
+        if(self.console and not verbose and
+                return_code == 0 and not show_warning):
+            message = '{0} SUCCESS | it took {1}s\\n'
+            self.status_bar = _('Success')
+            self.message_queue.put(message, current_time, diff_time)
+
+        # output warning
+        if(show_warning and not show_error):
+            self.status_bar = _('Success with warning(s)')
+            message = '{0} SUCCESS but with WARNING(s) | it took {1}s\\n'
+            self.message_queue.put(message, current_time, diff_time)
+
+        # output error
+        if(not show_warning and show_error):
+            self.status_bar = _('Error')
+            message = '{0} ERROR | it took {1}s\\n'
+            self.message_queue.put(message, current_time, diff_time)
+
+        # create window to show message in status bar
+        if self.status_bar:
+            self.status_erase_time = 5000
+            sublime.set_timeout(self.setStatus, 0)
 
         # print full verbose output (when is active)
         if(verbose):
@@ -189,7 +192,7 @@ class CommandsPy(object):
         if 'init' in command:
             return '{0} Initializing the project | '
         elif '-e' in command and 'upload' not in command:
-            return '{0} Building the project | '
+            return '{0} Building the project | Processing...\\n'
         elif '--upload-port' in command:
             return '{0} Uploading firmware | '
         elif '-t clean' in command:
@@ -225,3 +228,11 @@ class CommandsPy(object):
             options, args)
 
         return command
+
+    def setStatus(self):
+        window = sublime.active_window()
+        view = window.active_view()
+
+        view.run_command(
+            'add_status', {'text': self.status_bar,
+                           'erase_time': self.status_erase_time})
