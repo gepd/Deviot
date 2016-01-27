@@ -164,6 +164,9 @@ msgstr ""
 msgid "{0} Cleaning built files | "
 msgstr ""
 
+msgid "SUCCESS | it took {1}s\n"
+msgstr ""
+
 msgid "{0} SUCCESS | it took {1}s\n"
 msgstr ""
 
@@ -171,9 +174,6 @@ msgid "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
 msgstr ""
 
 msgid "{0} ERROR | it took {1}s\n"
-msgstr ""
-
-msgid "Success\n"
 msgstr ""
 
 msgid "Success"
