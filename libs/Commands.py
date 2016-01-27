@@ -14,12 +14,10 @@ import sublime
 try:
     from . import Messages
     from .Preferences import Preferences
-    from . import Tools
     from .I18n import I18n
 except:
     from Libs import Messages
     from Libs.Preferences import Preferences
-    from Libs import Tools
     from libs.I18n import I18n
 
 _ = I18n().translate
@@ -61,6 +59,7 @@ class CommandsPy(object):
         verbose = self.Preferences.get('verbose_output', False)
 
         # get command
+        self.type_build = False
         command = self.createCommand(commands, verbose)
 
         # Console message
@@ -77,7 +76,6 @@ class CommandsPy(object):
 
         show_warning = False
         show_error = False
-
         # real time
         if(not verbose and 'version' not in command and
                 'json' not in command and
@@ -91,21 +89,22 @@ class CommandsPy(object):
                         self.error_running = True
                     break
 
-                if('warning' in output.lower() or
+                if('warning:' in output.lower() or
                    'in function' in output.lower() or
+                   'in file' in output.lower() or
                    'error:' in output.lower() or
                    '^' in output):
                     if('^' in output):
                         output = previous + output
                     self.message_queue.put(output)
 
+                if('warning:' in output.lower()):
+                    show_warning = True
+                if('error:' in output.lower()):
+                    show_error = True
+
                 if(output.strip()):
                     previous = output
-
-                if('warning' in output.lower()):
-                    show_warning = True
-                if('error' in output.lower()):
-                    show_error = True
 
                 if('already' in output.lower()):
                     message = 'Already installed\\n'
@@ -150,7 +149,10 @@ class CommandsPy(object):
         # Print success status
         if(self.console and not verbose and
                 return_code == 0 and not show_warning):
-            message = '{0} SUCCESS | it took {1}s\\n'
+            if(self.type_build):
+                message = '{0} SUCCESS | it took {1}s\\n'
+            else:
+                message = 'SUCCESS | it took {1}s\\n'
             self.status_bar = _('Success')
             self.message_queue.put(message, current_time, diff_time)
 
@@ -161,7 +163,7 @@ class CommandsPy(object):
             self.message_queue.put(message, current_time, diff_time)
 
         # output error
-        if(not show_warning and show_error):
+        if(show_error):
             self.status_bar = _('Error')
             message = '{0} ERROR | it took {1}s\\n'
             self.message_queue.put(message, current_time, diff_time)
@@ -192,6 +194,7 @@ class CommandsPy(object):
         if 'init' in command:
             return '{0} Initializing the project | '
         elif '-e' in command and 'upload' not in command:
+            self.type_build = True
             return '{0} Building the project | Processing...\\n'
         elif '--upload-port' in command:
             return '{0} Uploading firmware | '
