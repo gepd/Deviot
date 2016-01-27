@@ -8,15 +8,21 @@ from __future__ import unicode_literals
 
 import subprocess
 import os
-import re
 import time
+import sublime
 
 try:
     from . import Messages
     from .Preferences import Preferences
+    from . import Tools
+    from .I18n import I18n
 except:
     from Libs import Messages
     from Libs.Preferences import Preferences
+    from Libs import Tools
+    from libs.I18n import I18n
+
+_ = I18n().translate
 
 
 class CommandsPy(object):
@@ -139,21 +145,33 @@ class CommandsPy(object):
         current_time = time.strftime('%H:%M:%S')
         diff_time = time.time() - start_time
         diff_time = '{0:.2f}'.format(diff_time)
+        status_bar = ""
 
         # Print success status
-        if(self.console and not verbose and return_code == 0 and not show_warning):
+        if(self.console and not verbose and
+                return_code == 0 and not show_warning):
             message = '{0} SUCCESS | it took {1}s\\n'
+            status_bar = _('Success')
             self.message_queue.put(message, current_time, diff_time)
 
         # output warning
         if(show_warning and not show_error):
+            status_bar = _('Success with warning(s)')
             message = '{0} SUCCESS but with WARNING(s) | it took {1}s\\n'
             self.message_queue.put(message, current_time, diff_time)
 
         # output error
         if(not show_warning and show_error):
+            status_bar = _('Error')
             message = '{0} ERROR | it took {1}s\\n'
             self.message_queue.put(message, current_time, diff_time)
+
+        # create window to show message in status bar
+        if status_bar:
+            self.window = sublime.active_window()
+            self.view = self.window.active_view()
+
+            Tools.setStatus(self.view, status_bar, erase_time=5000)
 
         # print full verbose output (when is active)
         if(verbose):

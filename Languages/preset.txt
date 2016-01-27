@@ -176,6 +176,12 @@ msgstr ""
 msgid "Success\n"
 msgstr ""
 
+msgid "Success"
+msgstr ""
+
+msgid "Success with warning(s)"
+msgstr ""
+
 msgid "\nInstalling {0} package: "
 msgstr ""
 
