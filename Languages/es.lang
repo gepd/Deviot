@@ -37,7 +37,9 @@ msgstr "{0} Se ha Detectado PlatformIO, por favor espera...\n"
 msgid "{0} All done, you can code now!"
 msgstr "{0} ¡Todo listo, ya puedes comenzar a escribir tu código!"
 
+
 # Menu
+
 
 msgid "Select board(s)"
 msgstr "Selecciona Una/Multiples Placa(s)"
@@ -123,7 +125,9 @@ msgstr "Idioma"
 msgid "About Deviot"
 msgstr "Acerca de Deviot"
 
+
 # Mensajes y errores
+
 
 msgid "Updating Board Lists"
 msgstr "Actualizando Lista de Placas"
@@ -143,8 +147,8 @@ msgstr "{0} Ninguna placa ha sido seleccionada"
 msgid "{0} Initializing the project | "
 msgstr "{0} Inicializando el proyecto | "
 
-msgid "{0} Building the project | "
-msgstr "{0} Compilando el proyecto | "
+msgid "{0} Building the project | Processing...\n"
+msgstr "{0} Compilando el proyecto | Procesando...\n"
 
 msgid "{0} None serial port selected\n"
 msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
@@ -158,14 +162,14 @@ msgstr "{0} Cargando firmware | "
 msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
-msgid "Success | it took {0}s\n"
-msgstr "Éxito | Demoró {0}s\n"
+msgid "{0} SUCCESS | it took {1}s\n"
+msgstr "{0} ÉXITO | Demoró {1}s\n"
 
-msgid "\n{0} it took {1}s\n"
-msgstr "\n{0} Demoró {1}s\n"
+msgid "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
+msgstr "{0} ÉXITO pero con ADVERTENCIA(s) | Demoró {1}s\n"
 
-msgid "Error\n{0} Details:\n\n"
-msgstr "Error\n{0} Detalles:\n\n"
+msgid "{0} ERROR | it took {1}s\n"
+msgstr "{0} ERROR | Demoró {1}s\n"
 
 msgid "Success\n"
 msgstr "Éxito\n"
@@ -188,7 +192,9 @@ msgstr "Procesando"
 msgid "Done"
 msgstr "Listo"
 
+
 # Librerías
+
 
 msgid "Search Query:"
 msgstr "Buscar:"
