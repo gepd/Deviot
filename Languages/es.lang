@@ -162,6 +162,9 @@ msgstr "{0} Cargando firmware | "
 msgid "{0} Cleaning built files | "
 msgstr "{0} Limpiando archivos compilados | "
 
+msgid "SUCCESS | it took {1}s\n"
+msgstr "ÉXITO | Demoró {1}s\n"
+
 msgid "{0} SUCCESS | it took {1}s\n"
 msgstr "{0} ÉXITO | Demoró {1}s\n"
 
@@ -170,9 +173,6 @@ msgstr "{0} ÉXITO pero con ADVERTENCIA(s) | Demoró {1}s\n"
 
 msgid "{0} ERROR | it took {1}s\n"
 msgstr "{0} ERROR | Demoró {1}s\n"
-
-msgid "Success\n"
-msgstr "Éxito\n"
 
 msgid "Success"
 msgstr "Éxito"
@@ -247,5 +247,5 @@ msgstr "El puerto serial {0} está en uso. Intenta cerrar cualquier programa que
 msgid "Send:"
 msgstr "Enviar:"
 
-msgid "[SENDED]"
-msgstr "[ENVIADO]"
+msgid "\n[SENDED] {0}\n"
+msgstr "\n[ENVIADO] {0}\n"

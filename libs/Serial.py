@@ -115,7 +115,7 @@ class SerialMonitor(object):
     def send(self, out_text):
         line_ending = self.Preferences.get('line_ending', '\n')
         out_text += line_ending
-        self.queue.put('[SENDED] {0}\\n', out_text)
+        self.queue.put('\\n[SENDED] {0}\\n', out_text)
         out_text = out_text.encode('utf-8', 'replace')
         self.serial.write(out_text)
 
