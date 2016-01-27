@@ -81,17 +81,17 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = False
 
         if(view):
-            # current file / view
-            current_path = Paths.getCurrentFilePath(view)
-            if(not current_path):
-                return
-            self.is_iot = Tools.isIOTFile(view)
-            current_dir = Paths.getCWD(current_path)
-            parent_dir = Paths.getParentCWD(current_path)
+            # avoid to do anything with a monitor view
+            view_name = view.name()
             sketch_size = view.size()
             file_path = Tools.getPathFromView(view)
-            file_name = Tools.getFileNameFromPath(file_path)
-            temp_name = Tools.getFileNameFromPath(current_path, ext=False)
+
+            if(not file_path and 'monitor' in view_name.lower()):
+                current_time = time.strftime('%H:%M:%S')
+                msg = '{0} File not valid to upload\\n'
+                self.message_queue.put(msg, current_time)
+                self.execute = False
+                return
 
             # unsaved file
             if(command and not file_path and sketch_size > 0):
@@ -99,11 +99,22 @@ class PlatformioCLI(CommandsPy):
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
 
+            # current file / view
+            current_path = Paths.getCurrentFilePath(view)
+            if(not current_path):
+                return
+            self.is_iot = Tools.isIOTFile(view)
+            current_dir = Paths.getCWD(current_path)
+            parent_dir = Paths.getParentCWD(current_path)
+            file_name = Tools.getFileNameFromPath(file_path)
+            temp_name = Tools.getFileNameFromPath(current_path, ext=False)
+
             if(not self.is_iot):
                 self.execute = False
 
             # check IoT type file
             if(console and not self.is_iot and not self.execute):
+                current_time = time.strftime('%H:%M:%S')
                 msg = '{0} {1} is not a IoT File\\n'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
@@ -155,7 +166,7 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('native', False)
             self.Preferences.set('ini_path', self.dir)
             if(not os.path.isfile(ini_path)):
-                self.Menu.createEnvironmentMenu()
+                self.Menu.createEnvironmentMenu(empty=True)
                 return
         else:
             self.Preferences.set('native', True)
@@ -345,7 +356,7 @@ class PlatformioCLI(CommandsPy):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None environment selected\\n'
             self.message_queue.put(msg, current_time)
-            return
+            return False
 
         # initialize the sketch
         self.initSketchProject(choosen_env)
@@ -362,9 +373,9 @@ class PlatformioCLI(CommandsPy):
         # set build sketch
         if(not self.Commands.error_running):
             self.Preferences.set('builded_sketch', True)
+            return choosen_env
         else:
             self.Preferences.set('builded_sketch', False)
-        self.message_queue.stopPrint()
 
     def uploadSketchProject(self):
         '''
@@ -375,27 +386,22 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        id_port = self.Preferences.get('id_port', '')
-        choosen_env = self.Preferences.get('env_selected', '')
-
-        # check environment selected
+        # Compiling code
+        choosen_env = self.buildSketchProject()
         if(not choosen_env):
-            current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None environment selected\\n'
-            self.message_queue.put(msg, current_time)
             return
+
+        if(self.Commands.error_running):
+            self.message_queue.stopPrint()
+            return
+
+        id_port = self.Preferences.get('id_port', '')
 
         # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
             msg = '{0} None serial port selected\\n'
             self.message_queue.put(msg, current_time)
-            return
-
-        # Compiling code
-        self.buildSketchProject()
-        if(self.Commands.error_running):
-            self.message_queue.stopPrint()
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
@@ -618,7 +624,7 @@ class PlatformioCLI(CommandsPy):
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
 
-        Tools.setStatus(view, _('Done'), display=True, erase_time=4000)
+        Tools.setStatus(view, _('Done'), erase_time=4000)
 
         return boards
 

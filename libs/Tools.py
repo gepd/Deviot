@@ -76,28 +76,28 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view, text=False, display=False, erase_time=0):
+def setStatus(view, text=False, erase_time=0):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
 
     Arguments: view {st object} -- stores many info related with ST
     '''
+
     if(not view):
         return
 
     info = []
-    if isIOTFile(view) or display:
-        info.append(__title__ + ' v' + str(__version__))
-        if(text):
-            info.append(text)
-        full_info = ' | '.join(info)
+    if isIOTFile(view) and not erase_time:
+        info = __title__ + ' v' + str(__version__)
+        view.set_status('_deviot_version', info)
 
-        view.set_status('_deviot_status', full_info)
+    if(text and erase_time):
+        view.set_status('_deviot_extra', text)
 
     if(erase_time > 0):
         def cleanStatus():
-            view.erase_status('_deviot_status')
+            view.erase_status('_deviot_extra')
         sublime.set_timeout(cleanStatus, erase_time)
 
 
@@ -239,3 +239,21 @@ def sendSerialMessage(text):
             serial_port, None)
         if serial_monitor and serial_monitor.isRunning():
             serial_monitor.send(text)
+
+
+def closeSerialMonitors():
+    try:
+        from . import Serial
+    except:
+        from libs import Serial
+
+    monitor_module = Serial
+    in_use = monitor_module.serials_in_use
+
+    if in_use:
+        for port in in_use:
+            cur_serial_monitor = monitor_module.serial_monitor_dict.get(
+                port, None)
+            if cur_serial_monitor:
+                cur_serial_monitor.stop()
+            monitor_module.serials_in_use.remove(port)

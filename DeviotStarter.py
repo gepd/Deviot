@@ -309,6 +309,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
+        Tools.closeSerialMonitors()
         view = self.view
         console_name = 'Deviot|Upload' + str(time.time())
         console = Console(view.window(), name=console_name)
@@ -393,7 +394,7 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
     def on_done(self, text):
         if(text):
             Tools.sendSerialMessage(text)
-            self.window.run_command('send_serial_message')
+            self.window.run_command('send_message_serial')
 
 
 class ChooseBaudrateItemCommand(sublime_plugin.WindowCommand):
@@ -506,3 +507,9 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         sublime.run_command('open_url', {'url': 'https://goo.gl/c41EXS'})
+
+
+class AddStatusCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit, text, erase_time):
+        Tools.setStatus(self.view, text, erase_time)
