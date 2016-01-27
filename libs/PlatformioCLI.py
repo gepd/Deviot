@@ -624,7 +624,7 @@ class PlatformioCLI(CommandsPy):
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
 
-        Tools.setStatus(view, _('Done'), display=True, erase_time=4000)
+        Tools.setStatus(view, _('Done'), erase_time=4000)
 
         return boards
 
