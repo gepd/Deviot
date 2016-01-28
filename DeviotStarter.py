@@ -309,7 +309,6 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        Tools.closeSerialMonitors()
         view = self.view
         console_name = 'Deviot|Upload' + str(time.time())
         console = Console(view.window(), name=console_name)

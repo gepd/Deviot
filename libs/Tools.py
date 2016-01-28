@@ -169,7 +169,7 @@ def getPlatformioError(error):
     return str_error
 
 
-def toggleSerialMonitor(window):
+def toggleSerialMonitor(window=None):
     """
     Toggle the state of the serial monitor
 
@@ -195,6 +195,10 @@ def toggleSerialMonitor(window):
     preferences = Preferences()
     serial_port = preferences.get('id_port', '')
     serial_ports = Serial.listSerialPorts()
+
+    # create window and view if not exists
+    if window is None:
+        window = sublime.active_window()
 
     if serial_port in serial_ports:
         if serial_port in monitor_module.serials_in_use:
@@ -241,7 +245,7 @@ def sendSerialMessage(text):
             serial_monitor.send(text)
 
 
-def closeSerialMonitors():
+def closeSerialMonitors(preferences):
     try:
         from . import Serial
     except:
@@ -255,5 +259,6 @@ def closeSerialMonitors():
             cur_serial_monitor = monitor_module.serial_monitor_dict.get(
                 port, None)
             if cur_serial_monitor:
+                preferences.set('autorun_monitor', True)
                 cur_serial_monitor.stop()
             monitor_module.serials_in_use.remove(port)

@@ -392,6 +392,9 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
+        # Stop serial monitor
+        Tools.closeSerialMonitors(self.Preferences)
+
         # Compiling code
         choosen_env = self.buildSketchProject()
         if(not choosen_env):
@@ -417,6 +420,11 @@ class PlatformioCLI(CommandsPy):
                    (id_port, choosen_env)]
 
         self.Commands.runCommand(command)
+        if(not self.Commands.error_running):
+            autorun = self.Preferences.get('autorun_monitor', False)
+            if(autorun):
+                Tools.toggleSerialMonitor()
+                self.Preferences.set('autorun_monitor', False)
         self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
