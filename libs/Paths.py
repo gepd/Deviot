@@ -276,7 +276,7 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         _ = I18n().translate
 
         paths.insert(0, parent_path)
-        paths.insert(0, _('Select Current Dir ({0})', dir_path))
+        paths.insert(0, _('select_cur_dir_{0}', dir_path))
 
     sublime.set_timeout(lambda: window.show_quick_panel(
         paths, lambda index: selectDir(window, index, level, paths, key, func)), 5)

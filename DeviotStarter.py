@@ -205,7 +205,7 @@ class SearchLibraryCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        caption = _('Search Query:')
+        caption = _('search_query')
         self.window.show_input_panel(caption, '', self.on_done, None, None)
 
     def on_done(self, result):
@@ -388,7 +388,7 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        caption = _('Send:')
+        caption = _('send')
         self.window.show_input_panel(caption, '', self.on_done, None, None)
 
     def on_done(self, text):

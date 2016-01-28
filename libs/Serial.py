@@ -89,9 +89,7 @@ class SerialMonitor(object):
                 monitor_thread = threading.Thread(target=self.receive)
                 monitor_thread.start()
             else:
-                msg = 'Serial port {0} already in use. '
-                msg += 'Try stopping any programs that may be using it.\\n'
-                self.queue.put(msg, self.port)
+                self.queue.put('serial_port_used_{0}', self.port)
                 self.stop()
 
     def stop(self):
@@ -115,7 +113,7 @@ class SerialMonitor(object):
     def send(self, out_text):
         line_ending = self.Preferences.get('line_ending', '\n')
         out_text += line_ending
-        self.queue.put('\\n[SENDED] {0}\\n', out_text)
+        self.queue.put('sended_{0}', out_text)
         out_text = out_text.encode('utf-8', 'replace')
         self.serial.write(out_text)
 
