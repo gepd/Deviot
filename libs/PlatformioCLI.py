@@ -89,8 +89,11 @@ class PlatformioCLI(CommandsPy):
             file_path = Tools.getPathFromView(view)
 
             if(not file_path and 'monitor' in view_name.lower()):
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put('invalid_file_{0}', current_time)
+                try:
+                    current_time = time.strftime('%H:%M:%S')
+                    self.message_queue.put('invalid_file_{0}', current_time)
+                except:
+                    pass
                 self.execute = False
                 return
 
@@ -100,7 +103,7 @@ class PlatformioCLI(CommandsPy):
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
 
-            if(not sketch_size):
+            if(command and not sketch_size):
                 self.message_queue.put('not_empty_sketch_{0}', current_time)
 
             # current file / view
