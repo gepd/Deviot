@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import subprocess
 import os
+import re
 import time
 import sublime
 
@@ -106,27 +107,30 @@ class CommandsPy(object):
                 if(output.strip()):
                     previous = output
 
+                # realtime output for build command
+                if('run' in command and '-e' in command and not 'upload'):
+                    if('installing' in output.lower()):
+                        package = re.match(
+                            r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
+                        self.message_queue.put('install_package_{0}', package)
+
                 if('already' in output.lower()):
-                    message = 'Already installed\\n'
-                    self.message_queue.put(message)
+                    self.message_queue.put('already_installed')
 
                 if('downloading' in output.lower() and
                         output.replace(" ", "") and
                         output.replace(" ", "") != previous):
 
-                    message = 'Downloading package\\n\\n'
-                    message += 'It may take a while, please be patient.\\n'
-
+                    message = 'downloading_package'
                     if(down and 'lib' in command and 'install' in command):
-                        message = 'Downloading dependence\\n'
+                        message = 'download_dependece'
                     self.message_queue.put(message)
                     down = True
 
                 if('unpacking' in output.lower() and
                         output.replace(" ", "") and
                         output.replace(" ", "") != previous):
-                    message = 'Unpacking...\\n'
-                    self.message_queue.put(message)
+                    self.message_queue.put('unpacking')
 
                 if(output.replace(" ", "")):
                     previous = output
@@ -150,22 +154,22 @@ class CommandsPy(object):
         if(self.console and not verbose and
                 return_code == 0 and not show_warning):
             if(self.type_build):
-                message = '{0} SUCCESS | it took {1}s\\n'
+                message = 'success_took_{0}{1}'
             else:
-                message = 'SUCCESS | it took {1}s\\n'
-            self.status_bar = _('Success')
+                message = 'success_took_{1}'
+            self.status_bar = _('success')
             self.message_queue.put(message, current_time, diff_time)
 
         # output warning
         if(show_warning and not show_error):
-            self.status_bar = _('Success with warning(s)')
-            message = '{0} SUCCESS but with WARNING(s) | it took {1}s\\n'
+            self.status_bar = _('success_warnings')
+            message = 'success_warnings_took__{0}{1}'
             self.message_queue.put(message, current_time, diff_time)
 
         # output error
         if(show_error):
-            self.status_bar = _('Error')
-            message = '{0} ERROR | it took {1}s\\n'
+            self.status_bar = _('error')
+            message = 'error_took_{0}{1}'
             self.message_queue.put(message, current_time, diff_time)
 
         # create window to show message in status bar
@@ -192,18 +196,18 @@ class CommandsPy(object):
             command {string} -- CLI command
         """
         if 'init' in command:
-            return '{0} Initializing the project | '
+            return 'init_project_{0}'
         elif '-e' in command and 'upload' not in command:
             self.type_build = True
-            return '{0} Building the project | Processing...\\n'
+            return 'built_project_{0}'
         elif '--upload-port' in command:
-            return '{0} Uploading firmware | '
+            return 'uploading_firmware_{0}'
         elif '-t clean' in command:
-            return '{0} Cleaning built files | '
+            return 'clean_built_files__{0}'
         elif 'lib install' in command:
-            return'{0} Installing Library {1} | '
+            return'installing_lib_{0}{1}'
         elif 'lib uninstall' in command:
-            return'{0} Uninstalling Library {1} | '
+            return'uninstalling_lib_{0}{1}'
         else:
             return None
 

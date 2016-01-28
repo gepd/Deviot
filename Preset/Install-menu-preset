@@ -6,12 +6,12 @@
         "children":
         [
             {
-                "caption": "1 Install PlatformIO",
+                "caption": "menu_one_install_platformio",
                 "id":"platformio_install",
                 "command": "platformio_install"
             },
             {
-                "caption": "2 Set Environment PATH", 
+                "caption": "menu_two_set_env_path", 
                 "command": "open_file",
                 "args": {
                     "file": "${packages}/User/Deviot/Deviot Preferences.sublime-settings"
@@ -19,7 +19,7 @@
             },
             {"caption": "-"},
             {
-                "caption": "Check again",
+                "caption": "menu_check_again",
                 "command": "check_requirements"
             }
         ]

@@ -205,7 +205,7 @@ class SearchLibraryCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        caption = _('Search Query:')
+        caption = _('search_query')
         self.window.show_input_panel(caption, '', self.on_done, None, None)
 
     def on_done(self, result):
@@ -309,7 +309,6 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        Tools.closeSerialMonitors()
         view = self.view
         console_name = 'Deviot|Upload' + str(time.time())
         console = Console(view.window(), name=console_name)
@@ -388,7 +387,7 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        caption = _('Send:')
+        caption = _('send')
         self.window.show_input_panel(caption, '', self.on_done, None, None)
 
     def on_done(self, text):
@@ -425,7 +424,7 @@ class ChooseLineEndingItemCommand(sublime_plugin.WindowCommand):
         Preferences().set('line_ending', line_ending_item)
 
     def is_checked(self, line_ending_item):
-        target_line_ending = Preferences().get('line_endingline_ending', '\n')
+        target_line_ending = Preferences().get('line_ending', '\n')
         return line_ending_item == target_line_ending
 
 

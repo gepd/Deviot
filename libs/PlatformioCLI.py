@@ -20,6 +20,7 @@ try:
     from . import Tools
     from .Messages import MessageQueue
     from .Serial import SerialListener
+    from .Serial import listSerialPorts
     from .Preferences import Preferences
     from .JSONFile import JSONFile
     from .Menu import Menu
@@ -32,6 +33,7 @@ except:
     from libs.Commands import CommandsPy
     from libs.Messages import MessageQueue
     from libs.Serial import SerialListener
+    from libs.Serial import listSerialPorts
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
     from libs.Menu import Menu
@@ -87,9 +89,11 @@ class PlatformioCLI(CommandsPy):
             file_path = Tools.getPathFromView(view)
 
             if(not file_path and 'monitor' in view_name.lower()):
-                current_time = time.strftime('%H:%M:%S')
-                msg = '{0} File not valid to upload\\n'
-                self.message_queue.put(msg, current_time)
+                try:
+                    current_time = time.strftime('%H:%M:%S')
+                    self.message_queue.put('invalid_file_{0}', current_time)
+                except:
+                    pass
                 self.execute = False
                 return
 
@@ -98,6 +102,9 @@ class PlatformioCLI(CommandsPy):
                 saved_file = self.saveCodeInFile(view)
                 view = saved_file[1]
                 file_path = Tools.getPathFromView(view)
+
+            if(command and not sketch_size):
+                self.message_queue.put('not_empty_sketch_{0}', current_time)
 
             # current file / view
             current_path = Paths.getCurrentFilePath(view)
@@ -115,7 +122,7 @@ class PlatformioCLI(CommandsPy):
             # check IoT type file
             if(console and not self.is_iot and not self.execute):
                 current_time = time.strftime('%H:%M:%S')
-                msg = '{0} {1} is not a IoT File\\n'
+                msg = 'not_iot_{0}{1}'
                 if(not file_name):
                     msg = '{0} Isn\'t possible to upload an empty sketch\\n'
                 self.message_queue.put(msg, current_time, file_name)
@@ -321,7 +328,7 @@ class PlatformioCLI(CommandsPy):
 
         if(not init_board):
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None board Selected\\n'
+            msg = 'none_board_sel_{0}'
             self.message_queue.put(msg, current_time)
             self.Commands.error_running = True
             return
@@ -354,8 +361,7 @@ class PlatformioCLI(CommandsPy):
         # check environment selected
         if(not choosen_env):
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None environment selected\\n'
-            self.message_queue.put(msg, current_time)
+            self.message_queue.put('none_env_select_{0}', current_time)
             return False
 
         # initialize the sketch
@@ -386,6 +392,9 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
+        # Stop serial monitor
+        Tools.closeSerialMonitors(self.Preferences)
+
         # Compiling code
         choosen_env = self.buildSketchProject()
         if(not choosen_env):
@@ -396,18 +405,26 @@ class PlatformioCLI(CommandsPy):
             return
 
         id_port = self.Preferences.get('id_port', '')
+        current_ports = listSerialPorts()
+
+        if(id_port not in current_ports):
+            id_port = False
 
         # check port selected
         if(not id_port):
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} None serial port selected\\n'
-            self.message_queue.put(msg, current_time)
+            self.message_queue.put('none_port_select_{0}', current_time)
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
                    (id_port, choosen_env)]
 
         self.Commands.runCommand(command)
+        if(not self.Commands.error_running):
+            autorun = self.Preferences.get('autorun_monitor', False)
+            if(autorun):
+                Tools.toggleSerialMonitor()
+                self.Preferences.set('autorun_monitor', False)
         self.message_queue.stopPrint()
 
     def cleanSketchProject(self):
@@ -450,7 +467,7 @@ class PlatformioCLI(CommandsPy):
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
             action_thread.start()
-        ThreadProgress(action_thread, _('Processing'), _('Done'))
+        ThreadProgress(action_thread, _('processing'), _('done'))
 
     def saveCodeInFile(self, view):
         """
@@ -492,7 +509,7 @@ class PlatformioCLI(CommandsPy):
         try:
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put(
-                "{0} Checking requirements...\\n", current_time)
+                "checking_requirements_{0}", current_time)
         except:
             pass
 
@@ -533,26 +550,22 @@ class PlatformioCLI(CommandsPy):
             # console feedback
             try:
                 current_time = time.strftime('%H:%M:%S')
-                msg = '{0} Platformio is not installed '
-                msg += 'or it\'s installed in a custom path.\\n'
-                msg += 'Please set your path in the preferences file from '
-                msg += 'ST Menu > Deviot > Set Environment PATH'
-                self.message_queue.put(msg, current_time)
+                self.message_queue.put(
+                    'error_platformio_not_installed_{0}', current_time)
                 time.sleep(0.01)
             except:
                 pass
 
             # Preferences instructions
             if(not user_env_path):
-                self.Preferences.set('env_path', _(
-                    'SET-YOUR-ENVIRONMENT-PATH'))
+                self.Preferences.set('env_path', _('ask_set_env_path'))
             return False
 
         # Check the minimum version
         if(not Run.error_running and int(version) <= 270):
             # Update menu
             temp_menu = self.Menu.getSublimeMenu()
-            status = _('Upgrade PlatformIO')
+            status = _('upgrade_plaformio')
             temp_menu[0]['children'][0]['caption'] = status
             temp_menu[0]['children'][1] = 0
             temp_menu[0]['children'][3]['caption'] = _("Check again")
@@ -561,8 +574,8 @@ class PlatformioCLI(CommandsPy):
             # console feedback
             try:
                 current_time = time.strftime('%H:%M:%S')
-                msg = '{0} You need to update platformIO'
-                self.message_queue.put(msg, current_time)
+                self.message_queue.put(
+                    'need_upgrade_platformio_{0}', current_time)
                 time.sleep(0.01)
             except:
                 pass
@@ -572,8 +585,7 @@ class PlatformioCLI(CommandsPy):
         # console feedback
         try:
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} PlatformIO has been detected, please wait...\\n'
-            self.message_queue.put(msg, current_time)
+            self.message_queue.put('platformio_detected_{0}', current_time)
         except:
             pass
 
@@ -600,8 +612,7 @@ class PlatformioCLI(CommandsPy):
         # console feedback
         try:
             current_time = time.strftime('%H:%M:%S')
-            msg = '{0} All done, you can code now!'
-            self.message_queue.put(msg, current_time)
+            self.message_queue.put('platformio_install_done_{0}', current_time)
         except:
             pass
 
@@ -616,7 +627,7 @@ class PlatformioCLI(CommandsPy):
         '''
         window = sublime.active_window()
         view = window.active_view()
-        Tools.setStatus(view, _('Updating Board Lists'), display=True)
+        Tools.setStatus(view, _('updating_board_list'), display=True)
 
         boards = []
         Run = CommandsPy()

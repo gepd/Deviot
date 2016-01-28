@@ -7,245 +7,245 @@
 
 # Proceso de Instalación
 
-msgid "1 Install PlatformIO"
+msgid "menu_one_install_platformio"
 msgstr "1 Instalar PlatformIO"
 
-msgid "2 Set Environment PATH"
+msgid "menu_two_set_env_path"
 msgstr "2 Ingresar Ruta de Entorno"
 
-msgid "Check again"
+msgid "menu_check_again"
 msgstr "Verificar Nuevamente"
 
-msgid "SET-YOUR-ENVIRONMENT-PATH"
+msgid "ask_set_env_path"
 msgstr "INGRESA-TU-RUTA-DE-ENTORNO"
 
-msgid "Upgrade PlatformIO"
+msgid "upgrade_plaformio"
 msgstr "Actualizar PlatformIO"
 
-msgid "{0} Checking requirements...\n"
+msgid "checking_requirements_{0}"
 msgstr "{0} Verificando requisitos...\n"
 
-msgid "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgid "error_platformio_not_installed_{0}"
 msgstr "{0} Platformio no está instalado o se ha instalado en una ruta personalizada.\nPor favor ingresa tu ruta de entorno desde el Menu ST > Deviot > Ingresar Ruta de Entorno"
 
-msgid "{0} You need to update platformIO"
+msgid "need_upgrade_platformio_{0}"
 msgstr "{0} Necesitas actualizar platformIO"
 
-msgid "{0} PlatformIO has been detected, please wait...\n"
+msgid "platformio_detected_{0}"
 msgstr "{0} Se ha Detectado PlatformIO, por favor espera...\n"
 
-msgid "{0} All done, you can code now!"
+msgid "platformio_install_done_{0}"
 msgstr "{0} ¡Todo listo, ya puedes comenzar a escribir tu código!"
 
 
 # Menu
 
 
-msgid "Select board(s)"
+msgid "menu_select_boards"
 msgstr "Selecciona Una/Multiples Placa(s)"
 
-msgid "Select Environment"
+msgid "menu_select_env"
 msgstr "Selecciona Un Entorno de Desarrollo"
 
-msgid "Search Library"
+msgid "menu_search_lib"
 msgstr "Buscar Librería"
 
-msgid "Remove Library"
+msgid "menu_remove_lib"
 msgstr "Eliminar Librería"
 
-msgid "Library Options"
+msgid "menu_option_lib"
 msgstr "Opciones de Librerías"
 
-msgid "Open User Libraries Folder"
+msgid "menu_open_user_lib_folder"
 msgstr "Abrir Carpeta con Librerías de Usuario"
 
-msgid "Change Folder Library Path"
+msgid "menu_change_user_lib_path"
 msgstr "Cambiar Ruta de Carpeta"
 
-msgid "Build"
+msgid "menu_build"
 msgstr "Compilar"
 
-msgid "Upload"
+msgid "menu_upload"
 msgstr "Cargar"
 
-msgid "Clean"
+msgid "menu_clean"
 msgstr "Limpiar"
 
-msgid "Serial Port(s)"
+msgid "menu_serial_ports"
 msgstr "Puerto(s) Serial"
 
-msgid "Monitor Serial"
+msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
-msgid "Run"
+msgid "menu_run"
 msgstr "Iniciar"
 
-msgid "Send"
+msgid "menu_send"
 msgstr "Enviar"
 
-msgid "Baudrate"
+msgid "menu_baudrate"
 msgstr "Velocidad de Transmisión (baudrate)"
 
-msgid "Line Ending"
+msgid "menu_line_ending"
 msgstr "Final de Linea"
 
-msgid "None"
+msgid "menu_none"
 msgstr "Ninguno"
 
-msgid "New Line"
+msgid "menu_new_line"
 msgstr "Nueva Linea (NL)"
 
-msgid "Carriage Return"
+msgid "menu_cr"
 msgstr "Retorno de Linea (CR)"
 
-msgid "Both NL & CR"
+msgid "menu_nl_cr"
 msgstr "Ambos NL & CR"
 
-msgid "Display Mode"
+msgid "menu_display_mode"
 msgstr "Modo de Visualización"
 
-msgid "Text"
+msgid "menu_text"
 msgstr "Texto"
 
-msgid "Option"
+msgid "menu_option"
 msgstr "Opciones"
 
-msgid "Show Verbose Output"
+msgid "menu_show_verbose"
 msgstr "Mostrar Detalles de Salida"
 
-msgid "Update Board List"
+msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"
 
-msgid "Keep Temp Files"
+msgid "menu_keep_temp_files"
 msgstr "Mantener Archivos Temporales"
 
-msgid "Language"
+msgid "menu_languages"
 msgstr "Idioma"
 
-msgid "About Deviot"
+msgid "menu_about_deviot"
 msgstr "Acerca de Deviot"
 
 
 # Mensajes y errores
 
 
-msgid "Updating Board Lists"
+msgid "updating_board_list"
 msgstr "Actualizando Lista de Placas"
 
-msgid "{0} Isn't possible to upload an empty sketch\n"
+msgid "not_empty_sketch_{0}"
 msgstr "{0} No es posible cargar un sketch vacío\n"
 
-msgid "{0} {1} is not a IoT File\n"
-msgstr "{0} {1} No es un archivo IoT\n"
-
-msgid "{0} File not valid to upload\n"
+msgid "invalid_file_{0}"
 msgstr "{0} Archivo no válido para cargar\n"
 
-msgid "{0} None board Selected\n"
+msgid "not_iot_{0}{1}"
+msgstr "{0} {1} No es un archivo IoT\n"
+
+msgid "none_board_sel_{0}"
 msgstr "{0} Ninguna placa ha sido seleccionada"
 
-msgid "{0} Initializing the project | "
+msgid "init_project_{0}"
 msgstr "{0} Inicializando el proyecto | "
 
-msgid "{0} Building the project | Processing...\n"
+msgid "built_project_{0}"
 msgstr "{0} Compilando el proyecto | Procesando...\n"
 
-msgid "{0} None serial port selected\n"
+msgid "none_port_select_{0}"
 msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
 
-msgid "{0} None environment selected\n"
+msgid "none_env_select_{0}"
 msgstr "{0} Ningún entorno de desarrollo ha sido seleccionado\n"
 
-msgid "{0} Uploading firmware | "
+msgid "uploading_firmware_{0}"
 msgstr "{0} Cargando firmware | "
 
-msgid "{0} Cleaning built files | "
+msgid "clean_built_files__{0}"
 msgstr "{0} Limpiando archivos compilados | "
 
-msgid "SUCCESS | it took {1}s\n"
+msgid "success_took_{1}"
 msgstr "ÉXITO | Demoró {1}s\n"
 
-msgid "{0} SUCCESS | it took {1}s\n"
+msgid "success_took_{0}{1}"
 msgstr "{0} ÉXITO | Demoró {1}s\n"
 
-msgid "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
+msgid "success_warnings_took__{0}{1}"
 msgstr "{0} ÉXITO pero con ADVERTENCIA(s) | Demoró {1}s\n"
 
-msgid "{0} ERROR | it took {1}s\n"
+msgid "error_took_{0}{1}"
 msgstr "{0} ERROR | Demoró {1}s\n"
 
-msgid "Success"
+msgid "success"
 msgstr "Éxito"
 
-msgid "Success with warning(s)"
+msgid "error"
+msgstr "Error"
+
+msgid "success_warnings"
 msgstr "Éxito con advertencia(s)"
 
-msgid "\nInstalling {0} package: "
-msgstr "\nInstalando paquete {0}: "
-
-msgid "Already installed\n"
-msgstr "Ya instalado(a)\n"
-
-msgid "Downloading package\n\nIt may take a while, please be patient.\n"
-msgstr "Descargando paquete\n\nPor favor sea paciente, esto podría demorar un poco.\n"
-
-msgid "Unpacking...\n"
-msgstr "Descomprimiendo...\n"
-
-msgid "Processing"
+msgid "processing"
 msgstr "Procesando"
 
-msgid "Done"
+msgid "done"
 msgstr "Listo"
 
 
 # Librerías
 
 
-msgid "Search Query:"
+msgid "search_query"
 msgstr "Buscar:"
 
-msgid "Select Current Dir ({0})"
+msgid "select_cur_dir_{0}"
 msgstr "Seleccionar Directorio Actual ({0})"
 
-msgid "{0} Installing Library {1} | "
+msgid "installing_lib_{0}{1}"
 msgstr "{0} Instalando Librería {1} | "
 
-msgid "{0} Uninstalling Library {1} | "
+msgid "uninstalling_lib_{0}{1}"
 msgstr "{0} Desinstalando Librería {1} | "
 
-msgid "Searching"
+msgid "searching"
 msgstr "Buscando"
 
-msgid "Looking Installed Libraries"
-msgstr "Buscando Librerías Instaladas"
-
-msgid "Installing"
+msgid "installing"
 msgstr "Instalando"
 
-msgid "Downloading dependence\n"
+msgid "install_package_{0}"
+msgstr "\nInstalando paquete {0}: "
+
+msgid "already_installed"
+msgstr "Ya instalado(a)\n"
+
+msgid "downloading_package"
+msgstr "Descargando paquete\n\nPor favor sea paciente, esto podría demorar un poco.\n"
+
+msgid "unpacking"
+msgstr "Descomprimiendo...\n"
+
+msgid "download_dependece"
 msgstr "Descargando dependencia\n"
 
-msgid "Preparing List"
+msgid "preparing_list"
 msgstr "Preparando Lista"
 
-msgid "Removing"
+msgid "removing"
 msgstr "Eliminando"
 
-msgid "None Library Found"
+msgid "none_lib_found"
 msgstr "Ninguna librería encontrada"
 
-msgid "None library installed"
+msgid "none_lib_installed"
 msgstr "Ninguna librería instalada"
 
 
 # Monitor Serial
 
-msgid "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgid "serial_port_used_{0}"
 msgstr "El puerto serial {0} está en uso. Intenta cerrar cualquier programa que pueda estar usandolo.\n"
 
-msgid "Send:"
+msgid "send"
 msgstr "Enviar:"
 
-msgid "\n[SENDED] {0}\n"
+msgid "sended_{0}"
 msgstr "\n[ENVIADO] {0}\n"

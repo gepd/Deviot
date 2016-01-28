@@ -6,76 +6,76 @@
         "children":
         [            
             {
-                "caption": "Select board(s)",
+                "caption": "menu_select_boards",
                 "id": "select_board",
                 "children":[]
             },{
-                "caption": "Select Environment",
+                "caption": "menu_select_env",
                 "command": "main_environment",
                 "id": "environment",
                 "children":[]
             },
            {"caption": "-"},
             {
-                "caption": "Search Library",
+                "caption": "menu_search_lib",
                 "id": "search_library",
                 "command": "search_library"
             },{
-                "caption": "Remove Library",
+                "caption": "menu_remove_lib",
                 "id": "remove_library",
                 "command": "remove_library"
             },{
-                "caption": "Library Options",
+                "caption": "menu_option_lib",
                 "id": "library_options",
                 "children": [
                                 {
-                                    "caption":"Open User Libraries Folder",
+                                    "caption":"menu_open_user_lib_folder",
                                     "command":"open_user_library_folder"
                                 },
                                 {
-                                    "caption":"Change Folder Library Path",
+                                    "caption":"menu_change_user_lib_path",
                                     "command":"manually_library"
                                 }
                             ]
             },
             {"caption": "-"},
             {
-                "caption": "Build",
+                "caption": "menu_build",
                 "id": "build_sketch",
                 "command": "build_sketch"
             },{
-                "caption": "Upload",
+                "caption": "menu_upload",
                 "id": "upload_sketch",
                 "command": "upload_sketch"
             },{
-                "caption": "Clean",
+                "caption": "menu_clean",
                 "id": "clean_sketch",
                 "command": "clean_sketch"
             },
             {"caption": "-"},
             {
-                "caption": "Serial Port(s)",
+                "caption": "menu_serial_ports",
                 "id": "serial_ports",
                 "children":[]
             },
             {
-                "caption": "Monitor Serial",
+                "caption": "menu_monitor_serial",
                 "id": "serial_monitor",
                 "children":
                 [
                     {
-                        "caption": "Run",
+                        "caption": "menu_run",
                         "id": "serial_monitor_run",
                         "command": "serial_monitor_run",
                         "checkbox": true
                     },
                     {
-                        "caption": "Send",
+                        "caption": "menu_send",
                         "id": "send_message_serial",
                         "command": "send_message_serial"
                     },
                     {
-                        "caption": "Baudrate",
+                        "caption": "menu_baudrate",
                         "id": "baudrate_item",
                         "children":
                         [
@@ -154,33 +154,33 @@
                         ]
                     },
                     {
-                        "caption": "Line Ending",
+                        "caption": "menu_line_ending",
                         "id": "line_ending_item",
                         "children":
                         [
                             {
-                                "caption": "None",
+                                "caption": "menu_none",
                                 "id": "line_ending_none",
                                 "command": "choose_line_ending_item",
                                 "args": {"line_ending_item": ""},
                                 "checkbox": true
                             },
                             {
-                                "caption": "New Line",
+                                "caption": "menu_nline",
                                 "id": "line_ending_new",
                                 "command": "choose_line_ending_item",
                                 "args": {"line_ending_item": "\n"},
                                 "checkbox": true
                             },
                             {
-                                "caption": "Carriage Return",
+                                "caption": "menu_cr",
                                 "id": "line_ending_return",
                                 "command": "choose_line_ending_item",
                                 "args": {"line_ending_item": "\r"},
                                 "checkbox": true
                             },
                             {
-                                "caption": "Both NL & CR",
+                                "caption": "menu_nl_cr",
                                 "id": "line_ending_both",
                                 "command": "choose_line_ending_item",
                                 "args": {"line_ending_item": "\r\n"},
@@ -189,12 +189,12 @@
                         ]
                     },
                     {
-                        "caption": "Display Mode",
+                        "caption": "menu_display_mode",
                         "id": "display_mode_item",
                         "children":
                         [
                             {
-                                "caption": "Text",
+                                "caption": "menu_text",
                                 "id": "display_mode_text",
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Text"},
@@ -213,6 +213,13 @@
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Hex"},
                                 "checkbox": true
+                            },
+                            {
+                                "caption": "Hex + Ascii",
+                                "id": "display_mode_hex",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Mix"},
+                                "checkbox": true
                             }
                         ]
                     }
@@ -220,28 +227,28 @@
             },
             {"caption": "-"},
             {
-                "caption": "Options",
+                "caption": "menu_option",
                 "id":"options",
                 "children": [
                                 {
-                                    "caption":"Show Verbose Output",
+                                    "caption":"menu_show_verbose",
                                     "checkbox":true,
                                     "command":"toggle_verbose"
                                 },{
-                                    "caption":"Keep Temp Files",
+                                    "caption":"menu_keep_temp_files",
                                     "checkbox":true,
                                     "command":"keep_temp_files"
                                 },{
-                                    "caption":"Update Board List",
+                                    "caption":"menu_update_board_list",
                                     "command":"update_board_list"
                                 }
                             ]
             },{
-                "caption": "Language",
+                "caption": "menu_languages",
                 "id":"language",
                 "children": []
             },{
-                "caption": "About Deviot",
+                "caption": "menu_about_deviot",
                 "command": "about_deviot"
             }
         ]

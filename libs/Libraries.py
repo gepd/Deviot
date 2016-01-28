@@ -137,7 +137,7 @@ class Libraries():
 
         # if none result
         if(list['total'] == 0):
-            list = [_('None library found')]
+            list = [_('none_lib_found')]
             return list
 
         # arrange list to the quickpanel
@@ -217,7 +217,7 @@ class Libraries():
                 item_list.append(str(item['id']))
                 quick_list.append(item_list)
         else:
-            quick_list = [_('None library installed')]
+            quick_list = [_('none_lib_installed')]
 
         # save the data and run the quick panel
         self.saveLibraryData(quick_list, 'quick_list.json')
@@ -299,18 +299,18 @@ def openInThread(type, window=None, keyword=None):
         thread = threading.Thread(
             target=Libraries(window).downloadList, args=(keyword,))
         thread.start()
-        ThreadProgress(thread, _('Searching'), _('Done'))
+        ThreadProgress(thread, _('searching'), _('done'))
     elif(type == 'install'):
         thread = threading.Thread(
             target=Libraries(window).installLibrary, args=(keyword,))
         thread.start()
-        ThreadProgress(thread, _('Installing'), _('Done'))
+        ThreadProgress(thread, _('installing'), _('done'))
     elif(type == 'list'):
         thread = threading.Thread(target=Libraries().getInstalledList)
         thread.start()
-        ThreadProgress(thread, _('Preparing List'), _('Done'))
+        ThreadProgress(thread, _('preparing_list'), _('done'))
     elif(type == 'remove'):
         thread = threading.Thread(
             target=Libraries(window).removeLibrary, args=(keyword,))
         thread.start()
-        ThreadProgress(thread, _('Removing'), _('Done'))
+        ThreadProgress(thread, _('removing'), _('done'))

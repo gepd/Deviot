@@ -1,4 +1,26 @@
 # Deviot Release Notes
+### Version 1.4.2 BETA | 28 Jan 2016
+* New display mode Hex + Ascii in monitor serial
+* New auto-run monitor serial if before to upload a sketch it was running
+* Updated the translation files to simplify the way to internationalize the plugin
+* Monitor serial: Removing CR and NULL tag in text mode
+* Bug fix trying to upload a sketch with a serial port that was online before.
+* Multiples minor bugs fixed
+
+### Version 1.4.1.1 BETA | 27 Jan 2016
+* Fixed problem showing errors after compile
+
+### Version 1.4.1 BETA | 27 Jan 2016
+* New show compile result in the status bar
+* Bug fix in auto-saving file/sketch
+* Bug fixes in environment menu after auto-save a file
+* Bug fix uploading a sketch when a serial monitor is in use
+* Fixed problem showing errors without verbose mode active
+* Minor bug fix in send persistent function
+* Bug fixes in ST2 to add compability to the plugin
+* Fixed multiples minor bugs
+
+
 ### Version 1.4 BETA | 24 Jan 2016
 * New Monitor serial
 * New option to show the user library folder
