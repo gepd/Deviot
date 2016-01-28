@@ -85,7 +85,7 @@ At this moment **Deviot** is available in english and spanish. If you want to co
 The file should be called in the [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format (two letters) and with the extension `.lang`
 
 ---
-En este momento **Deviot** está disponible en inglés y español. Si deseas ayudar y traducir el plugin a tu idioma, usa [este archivo](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) como referencia (o cualquier otro en esa carpeta). Debes dejar la cadena `msgid` como está, y pegar tu palabra/oración en `msgstr`. Cuando finalices, envía el nuevo archivo con un [pull request](https://github.com/gepd/Deviot/pulls)
+En este momento **Deviot** está disponible en inglés y español. Si deseas ayudar y traducir el plugin a tu idioma, usa [este archivo](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) como referencia (o cualquier otro en esa carpeta). Debes dejar la cadena `msgid` como está, y pegar tu palabra/oración traducido/a en `msgstr`. Cuando finalices, envía el nuevo archivo con un [pull request](https://github.com/gepd/Deviot/pulls)
 
 El archivo debe ser nombrado en el formato [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (dos letras) y con la extensión `.lang`
 
