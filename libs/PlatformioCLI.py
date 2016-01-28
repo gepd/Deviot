@@ -20,6 +20,7 @@ try:
     from . import Tools
     from .Messages import MessageQueue
     from .Serial import SerialListener
+    from .Serial import listSerialPorts
     from .Preferences import Preferences
     from .JSONFile import JSONFile
     from .Menu import Menu
@@ -32,6 +33,7 @@ except:
     from libs.Commands import CommandsPy
     from libs.Messages import MessageQueue
     from libs.Serial import SerialListener
+    from libs.Serial import listSerialPorts
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
     from libs.Menu import Menu
@@ -396,6 +398,10 @@ class PlatformioCLI(CommandsPy):
             return
 
         id_port = self.Preferences.get('id_port', '')
+        current_ports = listSerialPorts()
+
+        if(id_port not in current_ports):
+            id_port = False
 
         # check port selected
         if(not id_port):
