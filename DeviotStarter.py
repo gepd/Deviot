@@ -425,7 +425,7 @@ class ChooseLineEndingItemCommand(sublime_plugin.WindowCommand):
         Preferences().set('line_ending', line_ending_item)
 
     def is_checked(self, line_ending_item):
-        target_line_ending = Preferences().get('line_endingline_ending', '\n')
+        target_line_ending = Preferences().get('line_ending', '\n')
         return line_ending_item == target_line_ending
 
 
