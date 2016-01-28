@@ -149,6 +149,7 @@ def convertMode(in_text, str_len=0):
                 text += '\n'
     else:
         text = in_text.decode('utf-8', 'replace')
+        text = text.replace('\r', '').replace('NULL', '')
     return text
 
 
