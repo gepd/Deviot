@@ -213,6 +213,13 @@
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Hex"},
                                 "checkbox": true
+                            },
+                            {
+                                "caption": "Hex + Ascii",
+                                "id": "display_mode_hex",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Mix"},
+                                "checkbox": true
                             }
                         ]
                     }

@@ -147,6 +147,25 @@ def convertMode(in_text, str_len=0):
                 text += '\t'
             if (index + str_len + 1) % 16 == 0:
                 text += '\n'
+    elif display_mode == 'Mix':
+        text_mix = u''
+        for (index, character) in enumerate(in_text):
+            text_mix += chr(character)
+            text += u'%02X ' % character
+            if (index + str_len + 1) % 8 == 0:
+                text += '\t'
+            if (index + str_len + 1) % 16 == 0:
+                text_mix = text_mix.replace('\n', '+')
+                text += text_mix
+                text += '\n'
+                text_mix = ''
+        if(text_mix):
+            less = (31 - index)
+            for sp in range(less):
+                text += '   '
+            text += '\t'
+            text += text_mix
+
     else:
         text = in_text.decode('utf-8', 'replace')
         text = text.replace('\r', '').replace('NULL', '')
