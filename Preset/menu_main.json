@@ -25,6 +25,10 @@
                 "id": "remove_library",
                 "command": "remove_library"
             },{
+                "caption": "menu_import_library",
+                "id": "import_library",
+                "command": "import_library"
+            },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
                 "children": [

@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 import json
+import glob
 
 try:
     from . import Serial, Paths
@@ -108,6 +109,27 @@ class Menu(object):
         env_menu[0]['children'][0]['children'] = environments
         self.saveSublimeMenu(data=env_menu,
                              sub_folder='environment',
+                             user_path=True)
+
+    def createLibraryImportMenu(self):
+        library_paths = Paths.getLibraryFolders()
+        children = []
+
+        menu_import_lib = self.getTemplateMenu(file_name='import_library.json')
+
+        for library_dir in library_paths:
+            sub_path = glob.glob(library_dir)
+            for library in sub_path:
+                caption = os.path.basename(library)
+                temp_info = {}
+                temp_info['caption'] = caption
+                temp_info['command'] = 'add_library'
+                temp_info['args'] = {'library_name': caption}
+                children.append(temp_info)
+
+        menu_import_lib[0]['children'][0]['children'] = children
+        self.saveSublimeMenu(data=menu_import_lib,
+                             sub_folder='import_library',
                              user_path=True)
 
     def createSerialPortsMenu(self):

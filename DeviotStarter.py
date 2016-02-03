@@ -56,6 +56,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Tools.createCompletions()
         Tools.createSyntaxFile()
+        Menu().createLibraryImportMenu()
 
         super(DeviotListener, self).__init__()
 
