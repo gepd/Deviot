@@ -6,7 +6,6 @@
         "children":
         [
             {
-                "caption": "Import Library",
                 "id": "import_library",
                 "children":[]
             }

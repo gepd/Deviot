@@ -6,7 +6,6 @@
         "children":
         [
             {
-                "caption": "Serial Port",
                 "id": "serial_ports",
                 "children":[]
             }
