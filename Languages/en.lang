@@ -52,6 +52,9 @@ msgstr "Search Library"
 msgid "menu_remove_lib"
 msgstr "Remove Library"
 
+msgid "menu_import_library"
+msgstr "Import Library"
+
 msgid "menu_option_lib"
 msgstr "Library Options"
 

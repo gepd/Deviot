@@ -53,6 +53,9 @@ msgstr "Buscar Librería"
 msgid "menu_remove_lib"
 msgstr "Eliminar Librería"
 
+msgid "menu_import_library"
+msgstr "Importar Librería"
+
 msgid "menu_option_lib"
 msgstr "Opciones de Librerías"
 
