@@ -24,6 +24,7 @@ try:
     from .libs.I18n import I18n
     from .libs import Serial
     from .libs import Messages
+    from .libs import Keywords
 except:
     from libs import Paths
     from libs import Tools
@@ -52,6 +53,9 @@ class DeviotListener(sublime_plugin.EventListener):
         """
         if(not PlatformioCLI().platformioCheck()):
             return None
+
+        Tools.createCompletions()
+        Tools.createSyntaxFile()
 
         super(DeviotListener, self).__init__()
 

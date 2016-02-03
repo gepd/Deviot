@@ -109,6 +109,32 @@ def getUserLibraryPath():
     return library_path
 
 
+def getPioLibrary():
+    user_path = os.path.expanduser("~")
+    pio_path = os.path.join(user_path, ".platformio")
+    pio_lib = os.path.join(pio_path, 'lib')
+    return pio_lib
+
+
+def getSyntaxPath():
+    preset_path = getPresetPath()
+    sintax_path = os.path.join(preset_path, 'Arduino.syntax')
+    return sintax_path
+
+
+def getTmLanguage():
+    preset_path = getPluginPath()
+    tm_path = os.path.join(preset_path, 'Arduino.tmLanguage')
+    return tm_path
+
+
+def getPioPackages():
+    user_path = os.path.expanduser("~")
+    pio_path = os.path.join(user_path, ".platformio")
+    pio_lib = os.path.join(pio_path, 'packages')
+    return pio_lib
+
+
 def getTemplateMenuPath(file_name, user_path=False):
     if(not user_path):
         preset_path = getPresetPath()
@@ -279,4 +305,5 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         paths.insert(0, _('select_cur_dir_{0}', dir_path))
 
     sublime.set_timeout(lambda: window.show_quick_panel(
-        paths, lambda index: selectDir(window, index, level, paths, key, func)), 5)
+        paths, lambda index: selectDir(
+            window, index, level, paths, key, func)), 5)
