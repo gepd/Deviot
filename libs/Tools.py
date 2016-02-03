@@ -273,32 +273,8 @@ def getKeywords():
         from libs import Paths
         from libs import Keywords
 
-    keywords_dirs = []
     keywords = []
-
-    # User Library
-    user_lib_path = Paths.getUserLibraryPath()
-    user_lib_path = os.path.join(user_lib_path, '*')
-
-    # Platformio Libraries
-    pio_lib_path = Paths.getPioLibrary()
-    pio_lib_path = os.path.join(pio_lib_path, '*')
-
-    # Core Paths
-    pio_packages = Paths.getPioPackages()
-    pio_packages = os.path.join(pio_packages, '*')
-    sub_dirs = glob.glob(pio_packages)
-    for path in sub_dirs:
-        sub_paths = glob.glob(path)
-        for sub_path in sub_paths:
-            sub_path = os.path.join(sub_path, '*')
-            sub_path = glob.glob(sub_path)
-            for core_lib in sub_path:
-                if 'libraries' in core_lib:
-                    lib = os.path.join(core_lib, '*')
-                    keywords_dirs.append(lib)
-
-    keywords_dirs += [user_lib_path, pio_lib_path]
+    keywords_dirs = Paths.getLibraryFolders()
 
     for path in keywords_dirs:
         sub_dirs = glob.glob(path)
