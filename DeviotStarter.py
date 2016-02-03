@@ -24,7 +24,6 @@ try:
     from .libs.I18n import I18n
     from .libs import Serial
     from .libs import Messages
-    from .libs import Keywords
 except:
     from libs import Paths
     from libs import Tools
@@ -259,6 +258,12 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
     def on_done(self, result):
         if(result != -1):
             Libraries.openInThread('remove', self.window, result)
+
+
+class AddLibraryCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit, library_path):
+        Tools.addLibraryToSketch(self.view, edit, library_path)
 
 
 class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):

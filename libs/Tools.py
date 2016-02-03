@@ -6,6 +6,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import re
 import sys
 import glob
 import locale
@@ -16,6 +17,9 @@ try:
 except:
     import __version__
     import __title__
+
+H_EXTS = ['.h']
+include = r'^\s*#include\s*[<"](\S+)[">]'
 
 
 def getPathFromView(view):
@@ -367,3 +371,37 @@ def createSyntaxFile():
     file_path = Paths.getTmLanguage()
     language_file = JSONFile(file_path)
     language_file.writeFile(sintax)
+
+
+def addLibraryToSketch(view, edit, lib_path):
+    lib_src = os.path.join(lib_path, 'src')
+    if os.path.isdir(lib_src):
+        lib_path = lib_src
+    lib_path = os.path.join(lib_path, '*')
+
+    region = sublime.Region(0, view.size())
+    src_text = view.substr(region)
+    headers = list_headers_from_src(src_text)
+
+    h_files = []
+    sub_files = glob.glob(lib_path)
+    for file in sub_files:
+        file_name = os.path.basename(file)
+        if H_EXTS[0] in file_name:
+            h_files.append(file_name)
+
+    h_files = [f for f in h_files if f not in headers]
+
+    includes = ['#include <%s>' % f for f in h_files]
+    text = '\n'.join(includes)
+    if text:
+        text += '\n'
+    print(text)
+    view.insert(edit, 0, text)
+
+
+def list_headers_from_src(src_text):
+    pattern_text = include
+    pattern = re.compile(pattern_text, re.M | re.S)
+    headers = pattern.findall(src_text)
+    return headers

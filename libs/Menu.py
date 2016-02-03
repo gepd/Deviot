@@ -112,6 +112,10 @@ class Menu(object):
                              user_path=True)
 
     def createLibraryImportMenu(self):
+        """
+        Creates the import library menu
+        this method search in the user and core libraries
+        """
         library_paths = Paths.getLibraryFolders()
         added_lib = []
         children = []
