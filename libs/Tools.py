@@ -396,8 +396,11 @@ def addLibraryToSketch(view, edit, lib_path):
     text = '\n'.join(includes)
     if text:
         text += '\n'
-    print(text)
-    view.insert(edit, 0, text)
+
+    position = view.find('#include', 0).a
+    position = (position if position != -1 else 0)
+
+    view.insert(edit, position, text)
 
 
 def list_headers_from_src(src_text):
