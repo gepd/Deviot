@@ -332,7 +332,7 @@ def createCompletions():
     keyword_ids = set(keyword_ids)
     keyword_ids = [word for word in keyword_ids]
 
-    completions_dict = {'scope': 'source.arduino'}
+    completions_dict = {'scope': 'source.iot'}
     completions_dict['completions'] = keyword_ids
 
     file = JSONFile(completion_path)

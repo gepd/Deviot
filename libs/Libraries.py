@@ -47,7 +47,7 @@ else:
 _ = I18n().translate
 
 
-class Libraries():
+class Libraries:
     """
     Handle the library API from platformIO
     More info: http://docs.platformio.org/en/latest/librarymanager/index.html
