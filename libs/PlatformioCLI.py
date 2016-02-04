@@ -313,7 +313,7 @@ class PlatformioCLI(CommandsPy):
             with open(ini_path, 'w') as new_file:
                 new_file.write(buffer)
 
-    def initSketchProject(self, choosen):
+    def initSketchProject(self, chosen):
         '''
         command to initialize the board(s) selected by the user. This
         function can only be use if the workig file is an IoT type
@@ -323,10 +323,10 @@ class PlatformioCLI(CommandsPy):
         ini_path = Paths.getFullIniPath(self.dir)
         if(os.path.isfile(ini_path)):
             with open(ini_path) as file:
-                if(choosen in file.read()):
+                if(chosen in file.read()):
                     return
 
-        init_board = '--board=%s ' % choosen
+        init_board = '--board=%s ' % chosen
 
         if(not init_board):
             current_time = time.strftime('%H:%M:%S')
@@ -458,7 +458,8 @@ class PlatformioCLI(CommandsPy):
                    Valid values: build/upload/clean
         """
         if(type == 'init'):
-            action_thread = threading.Thread(target=self.initSketchProject)
+            action_thread = threading.Thread(
+                target=self.initSketchProject, args=(chosen,))
             action_thread.start()
         elif(type == 'build'):
             action_thread = threading.Thread(target=self.buildSketchProject)
