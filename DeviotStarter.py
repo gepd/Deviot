@@ -56,6 +56,7 @@ class DeviotListener(sublime_plugin.EventListener):
         Tools.createCompletions()
         Tools.createSyntaxFile()
         Menu().createLibraryImportMenu()
+        Menu().createLibraryExamplesMenu()
 
         super(DeviotListener, self).__init__()
 
@@ -264,6 +265,12 @@ class AddLibraryCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, library_path):
         Tools.addLibraryToSketch(self.view, edit, library_path)
+
+
+class OpenExampleCommand(sublime_plugin.WindowCommand):
+
+    def run(self, example_path):
+        Tools.openExample(example_path, self.window)
 
 
 class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):

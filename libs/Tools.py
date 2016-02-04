@@ -408,3 +408,11 @@ def list_headers_from_src(src_text):
     pattern = re.compile(pattern_text, re.M | re.S)
     headers = pattern.findall(src_text)
     return headers
+
+
+def openExample(path, window):
+    files = os.path.join(path, '*')
+    files = glob.glob(files)
+    for file in files:
+        if '.ino' in file:
+            window.open_file(file)
