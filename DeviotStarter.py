@@ -351,6 +351,17 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
         return is_enabled
 
 
+class HideConsoleCommand(sublime_plugin.WindowCommand):
+    """
+    Hide the deviot console
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.run_command("hide_panel", {"panel": "output.exec"})
+
+
 class SelectPortCommand(sublime_plugin.WindowCommand):
     """
     Saves the port COM selected by the user in the

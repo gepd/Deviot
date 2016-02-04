@@ -76,6 +76,9 @@ msgstr "Upload"
 msgid "menu_clean"
 msgstr "Clean"
 
+msgid "menu_hide_console"
+msgstr "Hide Deviot Console"
+
 msgid "menu_serial_ports"
 msgstr "Serial Port(s)"
 

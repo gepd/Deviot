@@ -59,6 +59,10 @@
                 "caption": "menu_clean",
                 "id": "clean_sketch",
                 "command": "clean_sketch"
+            },{
+                "caption": "menu_hide_console",
+                "id": "hide_console",
+                "command": "hide_console"
             },
             {"caption": "-"},
             {

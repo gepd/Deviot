@@ -77,6 +77,9 @@ msgstr "Cargar"
 msgid "menu_clean"
 msgstr "Limpiar"
 
+msgid "menu_hide_console"
+msgstr "Ocultar Consola Deviot"
+
 msgid "menu_serial_ports"
 msgstr "Puerto(s) Serial"
 
