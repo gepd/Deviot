@@ -115,6 +115,8 @@ class PlatformioInstallCommand(sublime_plugin.WindowCommand):
     """
         This command send the user to a website with platformio install
         instructions
+
+        Extends: sublime_plugin.WindowCommand
     """
 
     def run(self):
@@ -125,6 +127,8 @@ class CheckRequirementsCommand(sublime_plugin.TextCommand):
     """
         Check the if minimum requirements has been established
         detailed information in libs/PlatformioCLI.py
+
+        Extends: sublime_plugin.TextCommand
     """
 
     def run(self, edit):
@@ -255,12 +259,22 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
 
 
 class AddLibraryCommand(sublime_plugin.TextCommand):
+    """
+    Include the header(s) from the selected library into a sketch
+
+    Extends: sublime_plugin.TextCommand
+    """
 
     def run(self, edit, library_path):
         Tools.addLibraryToSketch(self.view, edit, library_path)
 
 
 class OpenExampleCommand(sublime_plugin.WindowCommand):
+    """
+    Open the selected example from the deviot menu
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self, example_path):
         Tools.openExample(example_path, self.window)
@@ -379,6 +393,11 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
+    """
+    Add a IP to the list of COM ports
+
+    Extends: sublime_plugin.WindowCommand
+    """
 
     def run(self):
         caption = _('add_ip_caption')
@@ -543,6 +562,11 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
 
 class AddStatusCommand(sublime_plugin.TextCommand):
+    """
+    Add a message in the status bar
+
+    Extends: sublime_plugin.TextCommand
+    """
 
     def run(self, edit, text, erase_time):
         Tools.setStatus(self.view, text, erase_time)

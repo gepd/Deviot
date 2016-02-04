@@ -112,6 +112,11 @@ def setStatus(view, text=False, erase_time=0, key=False):
 
 
 def userPreferencesStatus(view):
+    '''
+    Shows the COM port and the environment selected for the user
+
+    Arguments: view {st object} -- stores many info related with ST
+    '''
     try:
         from .Preferences import Preferences
     except:
@@ -278,6 +283,12 @@ def sendSerialMessage(text):
 
 
 def closeSerialMonitors(preferences):
+    """
+    Closes all the serial monitor running
+
+    Arguments:
+        preferences {object} -- User preferences instance
+    """
     try:
         from . import Serial
     except:
@@ -303,6 +314,12 @@ except:
 
 
 def getKeywords():
+    """
+    Gets the keywords from the installed libraries
+
+    Returns:
+        [list] -- list of object with the keywords
+    """
     try:
         from . import Paths
     except:
@@ -321,6 +338,9 @@ def getKeywords():
 
 
 def createCompletions():
+    """
+    Generate the completions file
+    """
     try:
         from . import Paths
         from .JSONFile import JSONFile
@@ -351,6 +371,9 @@ def createCompletions():
 
 
 def createSyntaxFile():
+    """
+    Generate the syntax file based in the installed libraries
+    """
     try:
         from . import Paths
         from .JSONFile import JSONFile
@@ -405,6 +428,14 @@ def createSyntaxFile():
 
 
 def addLibraryToSketch(view, edit, lib_path):
+    """
+    Search the file in the given path and adds as a library header
+
+    Arguments:
+        view {object} -- ST view
+        edit {object} -- ST object
+        lib_path {string} -- path where library is located
+    """
     lib_src = os.path.join(lib_path, 'src')
     if os.path.isdir(lib_src):
         lib_path = lib_src
@@ -435,6 +466,15 @@ def addLibraryToSketch(view, edit, lib_path):
 
 
 def list_headers_from_src(src_text):
+    """
+    Gets the library header(s)  already included in the sketch
+
+    Arguments:
+        src_text {string} -- text string with all the sketch
+
+    Returns:
+        [String] -- library header(s) already included
+    """
     pattern_text = include
     pattern = re.compile(pattern_text, re.M | re.S)
     headers = pattern.findall(src_text)
@@ -442,6 +482,13 @@ def list_headers_from_src(src_text):
 
 
 def openExample(path, window):
+    """
+    Opens an example file in the given path
+
+    Arguments:
+        path {string} -- example folder
+        window {object} -- window st object to open the new sketch
+    """
     files = os.path.join(path, '*')
     files = glob.glob(files)
     for file in files:
