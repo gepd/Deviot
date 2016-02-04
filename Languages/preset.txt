@@ -7,247 +7,260 @@
 # Use this file to create your own language file, once you do it
 # save it in the ISO 639-1 format (two letters) and with the extension .lang
 
+
 # Setup Process
 
-msgid "1 Install PlatformIO"
+msgid "menu_one_install_platformio"
 msgstr ""
 
-msgid "2 Set Environment PATH"
+msgid "menu_two_set_env_path"
 msgstr ""
 
-msgid "Check again"
+msgid "menu_check_again"
 msgstr ""
 
-msgid "SET-YOUR-ENVIRONMENT-PATH"
+msgid "ask_set_env_path"
 msgstr ""
 
-msgid "Upgrade PlatformIO"
+msgid "upgrade_plaformio"
 msgstr ""
 
-msgid "{0} Checking requirements...\n"
+msgid "checking_requirements_{0}"
 msgstr ""
 
-msgid "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgid "error_platformio_not_installed_{0}"
 msgstr ""
 
-msgid "{0} You need to update platformIO"
+msgid "need_upgrade_platformio_{0}"
 msgstr ""
 
-msgid "{0} PlatformIO has been detected, please wait...\n"
+msgid "platformio_detected_{0}"
 msgstr ""
 
-msgid "{0} All done, you can code now!"
+msgid "platformio_install_done_{0}"
 msgstr ""
 
 
 # Menu
 
 
-msgid "Select board(s)"
+msgid "menu_select_boards"
 msgstr ""
 
-msgid "Select Environment"
+msgid "menu_select_env"
 msgstr ""
 
-msgid "Search Library"
+msgid "menu_search_lib"
 msgstr ""
 
-msgid "Remove Library"
+msgid "menu_remove_lib"
 msgstr ""
 
-msgid "Library Options"
+msgid "menu_import_library"
 msgstr ""
 
-msgid "Open User Libraries Folder"
+msgid "menu_library_examples"
 msgstr ""
 
-msgid "Change Folder Library Path"
+msgid "menu_option_lib"
 msgstr ""
 
-msgid "Build"
+msgid "menu_open_user_lib_folder"
 msgstr ""
 
-msgid "Upload"
+msgid "menu_change_user_lib_path"
 msgstr ""
 
-msgid "Clean"
+msgid "menu_build"
 msgstr ""
 
-msgid "Serial Port(s)"
+msgid "menu_upload"
 msgstr ""
 
-msgid "Monitor Serial"
+msgid "menu_clean"
 msgstr ""
 
-msgid "Run"
+msgid "menu_serial_ports"
 msgstr ""
 
-msgid "Send"
+msgid "menu_add_ip"
 msgstr ""
 
-msgid "Baudrate"
+msgid "menu_monitor_serial"
 msgstr ""
 
-msgid "Line Ending"
+msgid "menu_run"
 msgstr ""
 
-msgid "None"
+msgid "menu_send"
 msgstr ""
 
-msgid "New Line"
+msgid "menu_baudrate"
 msgstr ""
 
-msgid "Carriage Return"
+msgid "menu_line_ending"
 msgstr ""
 
-msgid "Both NL & CR"
+msgid "menu_none"
 msgstr ""
 
-msgid "Display Mode"
+msgid "menu_new_line"
 msgstr ""
 
-msgid "Text"
+msgid "menu_cr"
 msgstr ""
 
-msgid "Option"
+msgid "menu_nl_cr"
 msgstr ""
 
-msgid "Show Verbose Output"
+msgid "menu_display_mode"
 msgstr ""
 
-msgid "Update Board List"
+msgid "menu_text"
 msgstr ""
 
-msgid "Keep Temp Files"
+msgid "menu_option"
 msgstr ""
 
-msgid "Language"
+msgid "menu_show_verbose"
 msgstr ""
 
-msgid "About Deviot"
+msgid "menu_update_board_list"
+msgstr ""
+
+msgid "menu_keep_temp_files"
+msgstr ""
+
+msgid "menu_languages"
+msgstr ""
+
+msgid "menu_about_deviot"
 msgstr ""
 
 
 # Mensajes y errores
 
 
-msgid "Updating Board Lists"
+msgid "updating_board_list"
 msgstr ""
 
-msgid "{0} Isn't possible to upload an empty sketch\n"
+msgid "not_empty_sketch_{0}"
 msgstr ""
 
-msgid "{0} File not valid to upload\n"
+msgid "invalid_file_{0}"
 msgstr ""
 
-msgid "{0} {1} is not a IoT File\n"
+msgid "not_iot_{0}{1}"
 msgstr ""
 
-msgid "{0} None board Selected\n"
+msgid "none_board_sel_{0}"
 msgstr ""
 
-msgid "{0} Initializing the project | "
+msgid "init_project_{0}"
 msgstr ""
 
-msgid "{0} Building the project | Processing...\n"
+msgid "built_project_{0}"
 msgstr ""
 
-msgid "{0} None serial port selected\n"
+msgid "none_port_select_{0}"
 msgstr ""
 
-msgid "{0} None environment selected\n"
+msgid "none_env_select_{0}"
 msgstr ""
 
-msgid "{0} Uploading firmware | "
+msgid "uploading_firmware_{0}"
 msgstr ""
 
-msgid "{0} Cleaning built files | "
+msgid "clean_built_files__{0}"
 msgstr ""
 
-msgid "SUCCESS | it took {1}s\n"
+msgid "success_took_{1}"
 msgstr ""
 
-msgid "{0} SUCCESS | it took {1}s\n"
+msgid "success_took_{0}{1}"
 msgstr ""
 
-msgid "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
+msgid "success_warnings_took__{0}{1}"
 msgstr ""
 
-msgid "{0} ERROR | it took {1}s\n"
+msgid "error_took_{0}{1}"
 msgstr ""
 
-msgid "Success"
+msgid "success"
 msgstr ""
 
-msgid "Success with warning(s)"
+msgid "error"
 msgstr ""
 
-msgid "\nInstalling {0} package: "
+msgid "success_warnings"
 msgstr ""
 
-msgid "Already installed\n"
+msgid "processing"
 msgstr ""
 
-msgid "Downloading package\n\nIt may take a while, please be patient.\n"
-msgstr ""
-
-msgid "Unpacking...\n"
-msgstr ""
-
-msgid "Processing"
-msgstr ""
-
-msgid "Done"
+msgid "done"
 msgstr ""
 
 
 # Libraries
 
 
-msgid "Search Query:"
+msgid "search_query"
 msgstr ""
 
-msgid "Select Current Dir ({0})"
+msgid "add_ip_caption"
 msgstr ""
 
-msgid "{0} Installing Library {1} | "
+msgid "select_cur_dir_{0}"
 msgstr ""
 
-msgid "{0} Uninstalling Library {1} | "
+msgid "installing_lib_{0}{1}"
 msgstr ""
 
-msgid "Searching"
+msgid "uninstalling_lib_{0}{1}"
 msgstr ""
 
-msgid "Looking Installed Libraries"
+msgid "searching"
 msgstr ""
 
-msgid "Installing"
+msgid "installing"
 msgstr ""
 
-msgid "Downloading dependence\n"
+msgid "install_package_{0}"
 msgstr ""
 
-msgid "Preparing List"
+msgid "already_installed"
 msgstr ""
 
-msgid "Removing"
+msgid "downloading_package"
 msgstr ""
 
-msgid "None Library Found"
+msgid "unpacking"
 msgstr ""
 
-msgid "None library installed"
+msgid "download_dependece"
+msgstr ""
+
+msgid "preparing_list"
+msgstr ""
+
+msgid "removing"
+msgstr ""
+
+msgid "none_lib_found"
+msgstr ""
+
+msgid "none_lib_installed"
 msgstr ""
 
 
 # Serial Monitor
 
-msgid "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgid "serial_port_used_{0}"
 msgstr ""
 
-msgid "Send:"
+msgid "send"
 msgstr ""
 
-msgid "\n[SENDED] {0}\n"
+msgid "sended_{0}"
 msgstr ""
