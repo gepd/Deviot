@@ -269,13 +269,17 @@ def closeSerialMonitors(preferences):
             monitor_module.serials_in_use.remove(port)
 
 
+try:
+    from . import Keywords
+except:
+    from libs import Keywords
+
+
 def getKeywords():
     try:
         from . import Paths
-        from . import Keywords
     except:
         from libs import Paths
-        from libs import Keywords
 
     keywords = []
     keywords_dirs = Paths.getLibraryFolders()
