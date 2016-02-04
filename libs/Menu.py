@@ -176,6 +176,46 @@ class Menu(object):
                              sub_folder='import_library',
                              user_path=True)
 
+    def createLibraryExamplesMenu(self):
+        """
+        Shows the examples of the library in a menu
+        """
+        examples = []
+        children = []
+
+        library_paths = Paths.getLibraryFolders()
+        for path in library_paths:
+            sub_paths = glob.glob(path)
+            for sub in sub_paths:
+                sub = os.path.join(sub, '*')
+                libs = glob.glob(sub)
+                for lib in libs:
+                    caption = os.path.basename(os.path.dirname(lib))
+                    if os.path.isdir(lib) and 'examples' in lib:
+                        file_examples = os.path.join(lib, '*')
+                        file_examples = glob.glob(file_examples)
+                        for file in file_examples:
+                            caption_example = os.path.basename(file)
+                            temp_info = {}
+                            temp_info['caption'] = caption_example
+                            temp_info['command'] = 'open_example'
+                            temp_info['args'] = {'example_path': file}
+                            children.append(temp_info)
+                        temp_info = {}
+                        temp_info['caption'] = caption
+                        temp_info['children'] = children
+                        examples.append(temp_info)
+                        children = []
+
+        # get preset
+        menu_lib_example = self.getTemplateMenu(file_name='examples.json')
+
+        # save file
+        menu_lib_example[0]['children'][0]['children'] = examples
+        self.saveSublimeMenu(data=menu_lib_example,
+                             sub_folder='library_example',
+                             user_path=True)
+
     def createSerialPortsMenu(self):
         '''
         Creates a menu list with all serial ports available
