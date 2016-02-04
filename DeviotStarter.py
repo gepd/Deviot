@@ -143,28 +143,19 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self, board_id):
-        """
-        Get the ID of the board selected and store it in a
-        preference file.
-
-        Arguments: board_id {string} -- id of the board selected
-        """
         native = Preferences().get('native', False)
         remove = Preferences().boardSelected(board_id)
         if(remove):
             PlatformioCLI().removeEnvFromFile(board_id)
         if(native and not remove):
+            view = self.window.active_view()
+            console_name = 'Deviot|Init' + str(time.time())
+            console = Console(view.window(), name=console_name)
             Preferences().set('init_queue', board_id)
-            PlatformioCLI().openInThread('init')
+            PlatformioCLI(view, console).openInThread('init', chosen=board_id)
         Menu().createEnvironmentMenu()
 
     def is_checked(self, board_id):
-        """
-        Check if the node in the menu is check or not, this
-        function need to return always a bolean
-
-        Arguments: board_id {string} -- id of the board selected
-        """
         check = Preferences().checkBoard(board_id)
         return check
 
