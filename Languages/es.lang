@@ -80,6 +80,9 @@ msgstr "Limpiar"
 msgid "menu_serial_ports"
 msgstr "Puerto(s) Serial"
 
+msgid "menu_add_ip"
+msgstr "Agregar IP Manualmente"
+
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
@@ -201,6 +204,9 @@ msgstr "Listo"
 
 msgid "search_query"
 msgstr "Buscar:"
+
+msgid "add_ip_caption"
+msgstr "Escribe la Dirección IP:"
 
 msgid "select_cur_dir_{0}"
 msgstr "Seleccionar Directorio Actual ({0})"

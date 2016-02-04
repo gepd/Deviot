@@ -374,6 +374,19 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         return saved_id_port == id_port
 
 
+class AddSerialIpCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        caption = _('add_ip_caption')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
+
+    def on_done(self, result):
+        if(result != -1):
+            result = (result if result != 0 else False)
+            Preferences().set('ip_port', result)
+            Menu().createSerialPortsMenu()
+
+
 class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
     """
     Run a selected serial monitor and show the messages in a new window
