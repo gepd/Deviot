@@ -29,6 +29,10 @@
                 "id": "import_library",
                 "command": "import_library"
             },{
+                "caption": "menu_library_examples",
+                "id": "library_examples",
+                "command": "library_examples"
+            },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
                 "children": [
