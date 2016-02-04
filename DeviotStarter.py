@@ -68,6 +68,7 @@ class DeviotListener(sublime_plugin.EventListener):
         """
         PlatformioCLI(view, command=False).checkInitFile()
         Tools.setStatus(view)
+        Tools.userPreferencesStatus(view)
 
     def on_close(self, view):
         """
@@ -187,6 +188,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             key = 'native_env_selected'
 
         Preferences().set(key, board_id)
+        Tools.userPreferencesStatus(self.window.active_view())
 
     def is_checked(self, board_id):
         native = Preferences().get('native', False)

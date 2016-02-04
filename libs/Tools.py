@@ -81,7 +81,7 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view, text=False, erase_time=0):
+def setStatus(view, text=False, erase_time=0, key=False):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
@@ -92,8 +92,13 @@ def setStatus(view, text=False, erase_time=0):
     if(not view):
         return
 
+    is_iot = isIOTFile(view)
+
+    if(key and is_iot):
+        view.set_status(key, text)
+
     info = []
-    if isIOTFile(view) and not erase_time:
+    if(is_iot and not erase_time):
         info = __title__ + ' v' + str(__version__)
         view.set_status('_deviot_version', info)
 
@@ -104,6 +109,28 @@ def setStatus(view, text=False, erase_time=0):
         def cleanStatus():
             view.erase_status('_deviot_extra')
         sublime.set_timeout(cleanStatus, erase_time)
+
+
+def userPreferencesStatus(view):
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+    pass
+    native = Preferences().get('native', False)
+
+    # Check for environment
+    if native:
+        env = Preferences().get('native_env_selected', False)
+    else:
+        env = Preferences().get('env_selected', False)
+    if env:
+        setStatus(view, env.upper(), key='_deviot_env')
+
+    # check for port
+    env = Preferences().get('id_port', False)
+    if env:
+        setStatus(view, env, key='_deviot_port')
 
 
 def singleton(cls):
