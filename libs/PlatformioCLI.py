@@ -70,8 +70,6 @@ class PlatformioCLI(CommandsPy):
             current_time = time.strftime('%H:%M:%S')
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
-            self.message_queue.put('[ Deviot ]\\n')
-            time.sleep(0.02)
 
         # For installing purposes
         if(install):
@@ -148,6 +146,10 @@ class PlatformioCLI(CommandsPy):
             # unsaved changes
             if (command and view.is_dirty()):
                 view.run_command('save')
+
+            if(console):
+                self.message_queue.put('[ Deviot ] {0}\\n', file_name)
+                time.sleep(0.02)
 
             # Initilized commands
             self.Commands = CommandsPy(console=console, cwd=self.dir)
