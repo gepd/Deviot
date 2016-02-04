@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import glob
 import errno
 import inspect
 import sublime
@@ -307,3 +308,32 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
     sublime.set_timeout(lambda: window.show_quick_panel(
         paths, lambda index: selectDir(
             window, index, level, paths, key, func)), 5)
+
+
+def getLibraryFolders():
+
+    # User Library
+    user_lib_path = getUserLibraryPath()
+    user_lib_path = os.path.join(user_lib_path, '*')
+
+    # Platformio Libraries
+    pio_lib_path = getPioLibrary()
+    pio_lib_path = os.path.join(pio_lib_path, '*')
+
+    library_folders = [user_lib_path, pio_lib_path]
+
+    # Core Paths
+    pio_packages = getPioPackages()
+    pio_packages = os.path.join(pio_packages, '*')
+    sub_dirs = glob.glob(pio_packages)
+    for path in sub_dirs:
+        sub_paths = glob.glob(path)
+        for sub_path in sub_paths:
+            sub_path = os.path.join(sub_path, '*')
+            sub_path = glob.glob(sub_path)
+            for core_lib in sub_path:
+                if 'libraries' in core_lib:
+                    lib = os.path.join(core_lib, '*')
+                    library_folders.append(lib)
+
+    return library_folders

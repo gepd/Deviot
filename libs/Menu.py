@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 import json
+import glob
 
 try:
     from . import Serial, Paths
@@ -108,6 +109,111 @@ class Menu(object):
         env_menu[0]['children'][0]['children'] = environments
         self.saveSublimeMenu(data=env_menu,
                              sub_folder='environment',
+                             user_path=True)
+
+    def createLibraryImportMenu(self):
+        """
+        Creates the import library menu
+        this method search in the user and core libraries
+        """
+        library_paths = Paths.getLibraryFolders()
+        added_lib = []
+        children = []
+
+        # get preset
+        menu_import_lib = self.getTemplateMenu(file_name='import_library.json')
+
+        for library_dir in library_paths:
+            # add separator
+            if 'arduinoteensy' not in library_dir:
+                temp_info = {}
+                temp_info['caption'] = '-'
+                children.append(temp_info)
+            sub_path = glob.glob(library_dir)
+
+            # search in sub path
+            for library in sub_path:
+
+                # Add core libraries
+                if '__cores__' in library:
+                    core_subs = os.path.join(library, '*')
+                    core_subs = glob.glob(core_subs)
+                    for core_sub in core_subs:
+                        core_sub_subs = os.path.join(core_sub, '*')
+                        core_sub_subs = glob.glob(core_sub_subs)
+                        for core_lib in core_sub_subs:
+                            caption = os.path.basename(core_lib)
+                            if caption not in added_lib:
+                                temp_info = {}
+                                temp_info['caption'] = caption
+                                temp_info['command'] = 'add_library'
+                                temp_info['args'] = {'library_path': library}
+                                children.append(temp_info)
+                                added_lib.append(caption)
+
+                # the rest of the libraries
+                caption = os.path.basename(library)
+
+                # get library name from json file
+                pio_libs = os.path.join('platformio', 'lib')
+                if pio_libs in library:
+                    library_json = os.path.join(library, 'library.json')
+                    json = JSONFile(library_json)
+                    json = json.getData()
+                    caption = json['name']
+
+                if caption not in added_lib and '__cores__' not in caption:
+                    temp_info = {}
+                    temp_info['caption'] = caption
+                    temp_info['command'] = 'add_library'
+                    temp_info['args'] = {'library_path': library}
+                    children.append(temp_info)
+                    added_lib.append(caption)
+
+        # save file
+        menu_import_lib[0]['children'][0]['children'] = children
+        self.saveSublimeMenu(data=menu_import_lib,
+                             sub_folder='import_library',
+                             user_path=True)
+
+    def createLibraryExamplesMenu(self):
+        """
+        Shows the examples of the library in a menu
+        """
+        examples = []
+        children = []
+
+        library_paths = Paths.getLibraryFolders()
+        for path in library_paths:
+            sub_paths = glob.glob(path)
+            for sub in sub_paths:
+                sub = os.path.join(sub, '*')
+                libs = glob.glob(sub)
+                for lib in libs:
+                    caption = os.path.basename(os.path.dirname(lib))
+                    if os.path.isdir(lib) and 'examples' in lib:
+                        file_examples = os.path.join(lib, '*')
+                        file_examples = glob.glob(file_examples)
+                        for file in file_examples:
+                            caption_example = os.path.basename(file)
+                            temp_info = {}
+                            temp_info['caption'] = caption_example
+                            temp_info['command'] = 'open_example'
+                            temp_info['args'] = {'example_path': file}
+                            children.append(temp_info)
+                        temp_info = {}
+                        temp_info['caption'] = caption
+                        temp_info['children'] = children
+                        examples.append(temp_info)
+                        children = []
+
+        # get preset
+        menu_lib_example = self.getTemplateMenu(file_name='examples.json')
+
+        # save file
+        menu_lib_example[0]['children'][0]['children'] = examples
+        self.saveSublimeMenu(data=menu_lib_example,
+                             sub_folder='library_example',
                              user_path=True)
 
     def createSerialPortsMenu(self):

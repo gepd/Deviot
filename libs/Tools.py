@@ -6,6 +6,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import re
 import sys
 import glob
 import locale
@@ -16,6 +17,9 @@ try:
 except:
     import __version__
     import __title__
+
+H_EXTS = ['.h']
+include = r'^\s*#include\s*[<"](\S+)[">]'
 
 
 def getPathFromView(view):
@@ -273,32 +277,8 @@ def getKeywords():
         from libs import Paths
         from libs import Keywords
 
-    keywords_dirs = []
     keywords = []
-
-    # User Library
-    user_lib_path = Paths.getUserLibraryPath()
-    user_lib_path = os.path.join(user_lib_path, '*')
-
-    # Platformio Libraries
-    pio_lib_path = Paths.getPioLibrary()
-    pio_lib_path = os.path.join(pio_lib_path, '*')
-
-    # Core Paths
-    pio_packages = Paths.getPioPackages()
-    pio_packages = os.path.join(pio_packages, '*')
-    sub_dirs = glob.glob(pio_packages)
-    for path in sub_dirs:
-        sub_paths = glob.glob(path)
-        for sub_path in sub_paths:
-            sub_path = os.path.join(sub_path, '*')
-            sub_path = glob.glob(sub_path)
-            for core_lib in sub_path:
-                if 'libraries' in core_lib:
-                    lib = os.path.join(core_lib, '*')
-                    keywords_dirs.append(lib)
-
-    keywords_dirs += [user_lib_path, pio_lib_path]
+    keywords_dirs = Paths.getLibraryFolders()
 
     for path in keywords_dirs:
         sub_dirs = glob.glob(path)
@@ -391,3 +371,48 @@ def createSyntaxFile():
     file_path = Paths.getTmLanguage()
     language_file = JSONFile(file_path)
     language_file.writeFile(sintax)
+
+
+def addLibraryToSketch(view, edit, lib_path):
+    lib_src = os.path.join(lib_path, 'src')
+    if os.path.isdir(lib_src):
+        lib_path = lib_src
+    lib_path = os.path.join(lib_path, '*')
+
+    region = sublime.Region(0, view.size())
+    src_text = view.substr(region)
+    headers = list_headers_from_src(src_text)
+
+    h_files = []
+    sub_files = glob.glob(lib_path)
+    for file in sub_files:
+        file_name = os.path.basename(file)
+        if H_EXTS[0] in file_name:
+            h_files.append(file_name)
+
+    h_files = [f for f in h_files if f not in headers]
+
+    includes = ['#include <%s>' % f for f in h_files]
+    text = '\n'.join(includes)
+    if text:
+        text += '\n'
+
+    position = view.find('#include', 0).a
+    position = (position if position != -1 else 0)
+
+    view.insert(edit, position, text)
+
+
+def list_headers_from_src(src_text):
+    pattern_text = include
+    pattern = re.compile(pattern_text, re.M | re.S)
+    headers = pattern.findall(src_text)
+    return headers
+
+
+def openExample(path, window):
+    files = os.path.join(path, '*')
+    files = glob.glob(files)
+    for file in files:
+        if '.ino' in file:
+            window.open_file(file)
