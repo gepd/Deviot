@@ -1,5 +1,5 @@
 # Deviot Release Notes
-### Version 1.4.3 | 04 Feb 2016
+### Version 1.0 | 04 Feb 2016
 * New import library menu option
 * New library examples menu option
 * New Option to hide the build/upload/clean status console
@@ -10,7 +10,7 @@
 * Bug fix initializing a board from the menu option
 * Other minor bugs fixed
 
-### Version 1.4.2 BETA | 28 Jan 2016
+### Version 0.4.2 BETA | 28 Jan 2016
 * New display mode Hex + Ascii in monitor serial
 * New auto-run monitor serial if before to upload a sketch it was running
 * Updated the translation files to simplify the way to internationalize the plugin
@@ -18,10 +18,10 @@
 * Bug fix trying to upload a sketch with a serial port that was online before.
 * Multiples minor bugs fixed
 
-### Version 1.4.1.1 BETA | 27 Jan 2016
+### Version 0.4.1.1 BETA | 27 Jan 2016
 * Fixed problem showing errors after compile
 
-### Version 1.4.1 BETA | 27 Jan 2016
+### Version 0.4.1 BETA | 27 Jan 2016
 * New show compile result in the status bar
 * Bug fix in auto-saving file/sketch
 * Bug fixes in environment menu after auto-save a file
@@ -32,7 +32,7 @@
 * Fixed multiples minor bugs
 
 
-### Version 1.4 BETA | 24 Jan 2016
+### Version 0.4 BETA | 24 Jan 2016
 * New Monitor serial
 * New option to show the user library folder
 * New option to change the user library folder
@@ -55,7 +55,7 @@
 * Improved order in plugin files
 * Minor bug fixed in ST2
 
-### Version 1.0 BETA | 27 Dec 2015
+### Version 0.1.0 BETA | 27 Dec 2015
 * New instructions when platformio isn't installed
 * New Option to set the environment path
 * New port serial handled with pyserial
@@ -66,5 +66,5 @@
 * New automatically saved the sketch when build/upload
 * Fixed multiples minor bugs
 
-### Version 0.5 | 11 Dec 2015
+### Version 0.0.1 | 11 Dec 2015
 * First alpha release
