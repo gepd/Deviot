@@ -1,16 +1,14 @@
 # Deviot - Beta
 ![Deviot preview](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot.gif?raw=true)
 
-Sublime Text plugin (for v2&3) for IoT development using [PlatformIO](http://platformio.org/) ecosystem and supporting **~200** boards!
+**Deviot** is a plugin based in [stino](https://github.com/Robot-Will/Stino) for Sublime Text 2 & 3 to IoT development using [PlatformIO](http://platformio.org/) ecosystem and supporting **~200** boards!
 
-The integration with platformIO is not 100% ready, but will be in the near future. 
-If you want to help me, please feel free to do it at any way you can.
+The main features to work with almost any board are already implemented. If you want to report an issue or suggest a new feature do it [here](https://github.com/gepd/Deviot/issues)
 
 ---
-Plugin para Sublime text (v2&3) que ayuda al desarrollo de aplicaciones IoT usando el ecosistema [platformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
+Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 2 & 3 en el que puedes desarrollar aplicaciones para el IoT, usa el ecosistema [platformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
 
-La integración con platformIO no está 100% lista, pero lo estará en un futuro cercano.
-Si quieres ayudarme, siéntete libre de hacerlo en la forma que más te acomode.
+Las principales funciones para trabajar con casi cualquier placa ya están implementadas. Si deseas reportar un error o sugerir una nueva funcion/característica hazlo desde [aquí](https://github.com/gepd/Deviot/issues)
 
 ## Setup / Instalación
 
@@ -93,15 +91,28 @@ El archivo debe ser nombrado en el formato [ISO 639-1](https://en.wikipedia.org/
 - [x] <del>Add Serial Monitor</del>
 - [x] <del>Languages</del>
 - [x] <del>PlatformIO API Libraries integration</del>
-- [ ] Recognise library examples
+- [x] <del>Recognise library examples</del>
 - [ ] OTA Serial ports
 
 ---
 - [x] <del>Agregar Monitor Serial</del>
 - [x] <del>Idiomas</del> 
 - [x] <del>Intengración de la API para librerías de platformIO</del>
-- [ ] Reconocer ejemplos de librerías
+- [x] <del>Reconocer ejemplos de librerías</del>
 - [ ] Puertos Seriales OTA
+
+## Licence / Licencia
+Copyright 2015-2016 GEPD <gepd at outlook.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and associated documentation files. [Read](https://github.com/gepd/Deviot/blob/master/LICENCE) the full Licence file.
+
+---
+Derechos de Autor 2015-2016 GEPD <gepd at outlook.com>
+
+
+Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y archivos de documentación asociados [Leer](https://github.com/gepd/Deviot/blob/master/LICENCE) el archivo de licencia completo.
+
 
 **This plugin is under development, don't use in a production environment.**
 

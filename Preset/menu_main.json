@@ -25,6 +25,14 @@
                 "id": "remove_library",
                 "command": "remove_library"
             },{
+                "caption": "menu_import_library",
+                "id": "import_library",
+                "command": "import_library"
+            },{
+                "caption": "menu_library_examples",
+                "id": "library_examples",
+                "command": "library_examples"
+            },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
                 "children": [
@@ -51,6 +59,10 @@
                 "caption": "menu_clean",
                 "id": "clean_sketch",
                 "command": "clean_sketch"
+            },{
+                "caption": "menu_hide_console",
+                "id": "hide_console",
+                "command": "hide_console"
             },
             {"caption": "-"},
             {

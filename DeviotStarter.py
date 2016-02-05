@@ -53,6 +53,11 @@ class DeviotListener(sublime_plugin.EventListener):
         if(not PlatformioCLI().platformioCheck()):
             return None
 
+        Tools.createCompletions()
+        Tools.createSyntaxFile()
+        Menu().createLibraryImportMenu()
+        Menu().createLibraryExamplesMenu()
+
         super(DeviotListener, self).__init__()
 
     def on_activated(self, view):
@@ -63,6 +68,7 @@ class DeviotListener(sublime_plugin.EventListener):
         """
         PlatformioCLI(view, command=False).checkInitFile()
         Tools.setStatus(view)
+        Tools.userPreferencesStatus(view)
 
     def on_close(self, view):
         """
@@ -109,6 +115,8 @@ class PlatformioInstallCommand(sublime_plugin.WindowCommand):
     """
         This command send the user to a website with platformio install
         instructions
+
+        Extends: sublime_plugin.WindowCommand
     """
 
     def run(self):
@@ -119,6 +127,8 @@ class CheckRequirementsCommand(sublime_plugin.TextCommand):
     """
         Check the if minimum requirements has been established
         detailed information in libs/PlatformioCLI.py
+
+        Extends: sublime_plugin.TextCommand
     """
 
     def run(self, edit):
@@ -137,28 +147,19 @@ class SelectBoardCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self, board_id):
-        """
-        Get the ID of the board selected and store it in a
-        preference file.
-
-        Arguments: board_id {string} -- id of the board selected
-        """
         native = Preferences().get('native', False)
         remove = Preferences().boardSelected(board_id)
         if(remove):
             PlatformioCLI().removeEnvFromFile(board_id)
         if(native and not remove):
+            view = self.window.active_view()
+            console_name = 'Deviot|Init' + str(time.time())
+            console = Console(view.window(), name=console_name)
             Preferences().set('init_queue', board_id)
-            PlatformioCLI().openInThread('init')
+            PlatformioCLI(view, console).openInThread('init', chosen=board_id)
         Menu().createEnvironmentMenu()
 
     def is_checked(self, board_id):
-        """
-        Check if the node in the menu is check or not, this
-        function need to return always a bolean
-
-        Arguments: board_id {string} -- id of the board selected
-        """
         check = Preferences().checkBoard(board_id)
         return check
 
@@ -182,6 +183,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             key = 'native_env_selected'
 
         Preferences().set(key, board_id)
+        Tools.userPreferencesStatus(self.window.active_view())
 
     def is_checked(self, board_id):
         native = Preferences().get('native', False)
@@ -254,6 +256,28 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
     def on_done(self, result):
         if(result != -1):
             Libraries.openInThread('remove', self.window, result)
+
+
+class AddLibraryCommand(sublime_plugin.TextCommand):
+    """
+    Include the header(s) from the selected library into a sketch
+
+    Extends: sublime_plugin.TextCommand
+    """
+
+    def run(self, edit, library_path):
+        Tools.addLibraryToSketch(self.view, edit, library_path)
+
+
+class OpenExampleCommand(sublime_plugin.WindowCommand):
+    """
+    Open the selected example from the deviot menu
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self, example_path):
+        Tools.openExample(example_path, self.window)
 
 
 class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
@@ -341,6 +365,17 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
         return is_enabled
 
 
+class HideConsoleCommand(sublime_plugin.WindowCommand):
+    """
+    Hide the deviot console
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.run_command("hide_panel", {"panel": "output.exec"})
+
+
 class SelectPortCommand(sublime_plugin.WindowCommand):
     """
     Saves the port COM selected by the user in the
@@ -355,6 +390,24 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_port):
         saved_id_port = Preferences().get('id_port')
         return saved_id_port == id_port
+
+
+class AddSerialIpCommand(sublime_plugin.WindowCommand):
+    """
+    Add a IP to the list of COM ports
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        caption = _('add_ip_caption')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
+
+    def on_done(self, result):
+        if(result != -1):
+            result = (result if result != 0 else False)
+            Preferences().set('ip_port', result)
+            Menu().createSerialPortsMenu()
 
 
 class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
@@ -509,6 +562,11 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
 
 class AddStatusCommand(sublime_plugin.TextCommand):
+    """
+    Add a message in the status bar
+
+    Extends: sublime_plugin.TextCommand
+    """
 
     def run(self, edit, text, erase_time):
         Tools.setStatus(self.view, text, erase_time)

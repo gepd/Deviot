@@ -52,6 +52,12 @@ msgstr "Search Library"
 msgid "menu_remove_lib"
 msgstr "Remove Library"
 
+msgid "menu_import_library"
+msgstr "Import Library"
+
+msgid "menu_library_examples"
+msgstr "Examples"
+
 msgid "menu_option_lib"
 msgstr "Library Options"
 
@@ -70,8 +76,14 @@ msgstr "Upload"
 msgid "menu_clean"
 msgstr "Clean"
 
+msgid "menu_hide_console"
+msgstr "Hide Deviot Console"
+
 msgid "menu_serial_ports"
 msgstr "Serial Port(s)"
+
+msgid "menu_add_ip"
+msgstr "Add IP Manually"
 
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
@@ -194,6 +206,9 @@ msgstr "Done"
 
 msgid "search_query"
 msgstr "Search Query:"
+
+msgid "add_ip_caption"
+msgstr "Write the IP Address:"
 
 msgid "select_cur_dir_{0}"
 msgstr "Select Current Dir ({0})"
