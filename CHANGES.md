@@ -1,4 +1,15 @@
 # Deviot Release Notes
+### Version 1.4.3 | 04 Feb 2016
+* New import library menu option
+* New library examples menu option
+* New Option to hide the build/upload/clean status console
+* New syntax recognition
+* New completions based in the library files (ctrl+space)
+* New Add IP manually to work with OTA boards
+* New the selected COM port and environment is displayed in the status bar
+* Bug fix initializing a board from the menu option
+* Other minor bugs fixed
+
 ### Version 1.4.2 BETA | 28 Jan 2016
 * New display mode Hex + Ascii in monitor serial
 * New auto-run monitor serial if before to upload a sketch it was running
