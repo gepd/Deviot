@@ -102,13 +102,13 @@ El archivo debe ser nombrado en el formato [ISO 639-1](https://en.wikipedia.org/
 - [ ] Puertos Seriales OTA
 
 ## Licence / Licencia
-Copyright 2015-2016 GEPD <gepd at outlook.com>
+Copyright 2015-2016 GEPD <gepd@outlook.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files. [Read](https://github.com/gepd/Deviot/blob/master/LICENCE) the full Licence file.
 
 ---
-Derechos de Autor 2015-2016 GEPD <gepd at outlook.com>
+Derechos de Autor 2015-2016 GEPD <gepd@outlook.com>
 
 
 Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y archivos de documentación asociados [Leer](https://github.com/gepd/Deviot/blob/master/LICENCE) el archivo de licencia completo.
