@@ -122,7 +122,7 @@ class PlatformioCLI(CommandsPy):
                 current_time = time.strftime('%H:%M:%S')
                 msg = 'not_iot_{0}{1}'
                 if(not file_name):
-                    msg = '{0} Isn\'t possible to upload an empty sketch\\n'
+                    msg = 'not_empty_sketch_{0}'
                 self.message_queue.put(msg, current_time, file_name)
                 return
 
