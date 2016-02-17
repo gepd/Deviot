@@ -522,7 +522,7 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
+        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu)
 
 
 class KeepTempFilesCommand(sublime_plugin.WindowCommand):

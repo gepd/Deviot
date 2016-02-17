@@ -630,7 +630,7 @@ class PlatformioCLI(CommandsPy):
         '''
         window = sublime.active_window()
         view = window.active_view()
-        Tools.setStatus(view, _('updating_board_list'), display=True)
+        Tools.setStatus(view, _('updating_board_list'))
 
         boards = []
         Run = CommandsPy()
