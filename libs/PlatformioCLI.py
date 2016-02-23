@@ -251,71 +251,6 @@ class PlatformioCLI(CommandsPy):
                     new_file.write("\n%s\n" % header)
                     new_file.write("src_dir=%s\n" % src_dir)
 
-    def overrideLib(self):
-        """
-        Adds in the platformio.ini file, the path of the libraries folder,
-        it can be the folder assigned by the system or the folder chosen
-        by the user
-        """
-        str_header = '[platformio]'
-        buffer = ""
-        write_file = False
-        write_header = True
-        header = False
-        found = False
-
-        ini_path = Paths.getFullIniPath(self.dir)
-        lib_dir = Paths.getUserLibraryPath()
-        user_lib_dir = self.Preferences.get('lib_dir', False)
-
-        if(user_lib_dir):
-            lib_dir = user_lib_dir
-
-        with open(ini_path) as file:
-            for line in file:
-                # save lines not in [platformio]
-                if not header:
-                    buffer += line
-
-                # [platformio] found
-                if str_header in line:
-                    header = True
-                    write_header = False
-
-                # search inside [platformio]
-                if header:
-                    line = line.strip()
-                    if line and 'lib_dir' not in line and str_header not in line:
-                        buffer += line + '\n'
-                    if 'lib_dir' in line:
-                        found = True
-                        compare = 'lib_dir=' + lib_dir
-                        if compare != line:
-                            buffer += "lib_dir=%s\n" % lib_dir
-                            write_file = True
-                        else:
-                            buffer += line
-
-                    if header and not line and not found and not write_file:
-                        buffer += "lib_dir=%s\n" % lib_dir
-                        write_file = True
-
-                    if not line:
-                        buffer += '\n\n'
-                        header = False
-
-            # check if thre is something to add
-            if not found and not write_file:
-                if write_header:
-                    buffer += "\n%s\n" % str_header
-                buffer += "lib_dir=%s\n" % lib_dir
-                write_file = True
-
-        # write the file if is necessary
-        if(write_file):
-            with open(ini_path, 'w') as new_file:
-                new_file.write(buffer)
-
     def initSketchProject(self, chosen):
         '''
         command to initialize the board(s) selected by the user. This
@@ -371,7 +306,6 @@ class PlatformioCLI(CommandsPy):
 
         # initialize the sketch
         self.initSketchProject(choosen_env)
-        self.overrideLib()
 
         if(self.Commands.error_running):
             self.message_queue.stopPrint()
