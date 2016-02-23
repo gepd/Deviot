@@ -105,7 +105,7 @@ class DeviotListener(sublime_plugin.EventListener):
         if(not file_path):
             return
         file_name = Tools.getFileNameFromPath(file_path, ext=False)
-        tmp_path = Paths.getDeviotTmpPath()
+        tmp_path = Paths.getTempPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
 
@@ -288,7 +288,7 @@ class OpenExampleCommand(sublime_plugin.WindowCommand):
         Tools.openExample(example_path, self.window)
 
 
-class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
+class OpenLibraryFolderCommand(sublime_plugin.TextCommand):
     """
     Open a new window where the user libreries must be installed
 
@@ -494,6 +494,18 @@ class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
         return display_mode_item == target_display_mode
 
 
+class UpdateBoardListCommand(sublime_plugin.WindowCommand):
+    """
+    Update the board list, extracting the info from platformIO
+    ecosystem
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu)
+
+
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
     """
     Saves the verbose output option selected by the user in the
@@ -510,18 +522,6 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
         return Preferences().get('verbose_output', False)
 
 
-class UpdateBoardListCommand(sublime_plugin.WindowCommand):
-    """
-    Update the board list, extracting the info from platformIO
-    ecosystem
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu)
-
-
 class KeepTempFilesCommand(sublime_plugin.WindowCommand):
     """
     When is select avoid to remove the cache from the temporal folder.
@@ -535,6 +535,19 @@ class KeepTempFilesCommand(sublime_plugin.WindowCommand):
 
     def is_checked(self):
         return Preferences().get('keep_cache', False)
+
+
+class OpenTempFolderCommand(sublime_plugin.TextCommand):
+    """
+    Open a new window where the user libreries must be installed
+
+    Extends: sublime_plugin.TextCommand
+    """
+
+    def run(self, edit):
+        temp = Paths.getTempPath()
+        url = Paths.getOpenFolderPath(temp)
+        sublime.run_command('open_url', {'url': url})
 
 
 class SelectLanguageCommand(sublime_plugin.WindowCommand):

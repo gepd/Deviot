@@ -64,7 +64,7 @@ msgstr "Examples"
 msgid "menu_option_lib"
 msgstr "Library Options"
 
-msgid "menu_open_user_lib_folder"
+msgid "menu_open_lib_folder"
 msgstr "Open Libraries Folder"
 
 msgid "menu_change_user_lib_path"
@@ -124,14 +124,17 @@ msgstr "Text"
 msgid "menu_option"
 msgstr "Option"
 
-msgid "menu_show_verbose"
-msgstr "Full Verbose Output When Build"
-
 msgid "menu_update_board_list"
 msgstr "Update Board List"
 
+msgid "menu_show_verbose"
+msgstr "Full Verbose Output When Build"
+
 msgid "menu_keep_temp_files"
 msgstr "Keep Temp Files"
+
+msgid "menu_open_temp_folder"
+msgstr "Open Temp Folder"
 
 msgid "menu_languages"
 msgstr "Language"

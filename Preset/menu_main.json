@@ -37,8 +37,8 @@
                 "id": "library_options",
                 "children": [
                                 {
-                                    "caption":"menu_open_user_lib_folder",
-                                    "command":"open_user_library_folder"
+                                    "caption":"menu_open_lib_folder",
+                                    "command":"open_library_folder"
                                 }
                             ]
             },
@@ -239,16 +239,23 @@
                 "id":"options",
                 "children": [
                                 {
+                                    "caption":"menu_update_board_list",
+                                    "command":"update_board_list"
+                                },
+                                {
                                     "caption":"menu_show_verbose",
                                     "checkbox":true,
                                     "command":"toggle_verbose"
-                                },{
+                                },
+                                {"caption": "-"},
+                                {
                                     "caption":"menu_keep_temp_files",
                                     "checkbox":true,
                                     "command":"keep_temp_files"
-                                },{
-                                    "caption":"menu_update_board_list",
-                                    "command":"update_board_list"
+                                },
+                                {
+                                    "caption":"menu_open_temp_folder",
+                                    "command":"open_temp_folder"
                                 }
                             ]
             },{

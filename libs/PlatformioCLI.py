@@ -141,7 +141,7 @@ class PlatformioCLI(CommandsPy):
 
             # set native paths
             if(not self.is_native):
-                tmp_path = Paths.getDeviotTmpPath(temp_name)
+                tmp_path = Paths.getTempPath(temp_name)
                 self.src = current_dir
                 self.dir = tmp_path
 
@@ -416,7 +416,7 @@ class PlatformioCLI(CommandsPy):
         """
         ext = '.ino'
 
-        tmp_path = Paths.getDeviotTmpPath()
+        tmp_path = Paths.getTempPath()
         file_name = str(time.time()).split('.')[0]
         file_path = os.path.join(tmp_path, file_name)
         file_path = os.path.join(file_path, 'src')

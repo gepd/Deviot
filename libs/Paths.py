@@ -254,7 +254,7 @@ def getFullIniPath(path):
     return ini_path
 
 
-def getDeviotTmpPath(file_name=False):
+def getTempPath(file_name=False):
     tmp_path = '/tmp'
     os_name = Tools.getOsName()
     if os_name == 'windows':
