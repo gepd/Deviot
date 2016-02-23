@@ -581,7 +581,7 @@ def generateFiles():
     # Creates new menu
     api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
                                            user_path=True)
-
+    # create main files
     if(not os.path.exists(api_boards)):
         PlatformioCLI().saveAPIBoards()
     Menu().createMainMenu()
@@ -590,3 +590,7 @@ def generateFiles():
     Tools.createSyntaxFile()
     Menu().createLibraryImportMenu()
     Menu().createLibraryExamplesMenu()
+
+    # Run serial port listener
+    Serial = SerialListener(func=Menu().createSerialPortsMenu)
+    Serial.start()

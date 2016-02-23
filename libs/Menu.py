@@ -221,9 +221,9 @@ class Menu(object):
         Creates a menu list with all serial ports available
         '''
         port_list = Serial.listSerialPorts()
-        ip_port = Preferences().get('ip_port', 0)
+        ip_port = Preferences().get('ip_port', '')
 
-        if(ip_port != "0"):
+        if(ip_port):
             port_list.insert(0, ip_port)
 
         menu_preset = self.getTemplateMenu(file_name='serial.json')

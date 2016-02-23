@@ -50,10 +50,15 @@ def plugin_loaded():
         thread.start()
         ThreadProgress(thread, _('processing'), _('done'))
     else:
+        # creating files
         Tools.createCompletions()
         Tools.createSyntaxFile()
         Menu().createLibraryImportMenu()
         Menu().createLibraryExamplesMenu()
+
+        # Run serial port listener
+        Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
+        Serial_Lib.start()
 
 
 class DeviotListener(sublime_plugin.EventListener):
@@ -396,7 +401,7 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, result):
         if(result != -1):
-            result = (result if result != 0 else False)
+            result = (result if result != 0 else '')
             Preferences().set('ip_port', result)
             Menu().createSerialPortsMenu()
 
