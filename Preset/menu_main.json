@@ -39,10 +39,6 @@
                                 {
                                     "caption":"menu_open_user_lib_folder",
                                     "command":"open_user_library_folder"
-                                },
-                                {
-                                    "caption":"menu_change_user_lib_path",
-                                    "command":"manually_library"
                                 }
                             ]
             },

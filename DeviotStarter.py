@@ -288,20 +288,9 @@ class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        library = Paths.getUserLibraryPath()
+        library = Paths.getPioLibrary()
         url = Paths.getOpenFolderPath(library)
         sublime.run_command('open_url', {'url': url})
-
-
-class ManuallyLibrary(sublime_plugin.WindowCommand):
-    """
-    Open a window to change where the user libreries must be installed
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        Paths.selectDir(self.window, key='lib_dir', func=Preferences().set)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):

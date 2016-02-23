@@ -151,20 +151,6 @@ def getLibraryPath():
     return library_path
 
 
-def getUserLibraryPath():
-    user_path = getDeviotUserPath()
-    library_path = os.path.join(user_path, 'User_Libs')
-
-    try:
-        os.makedirs(library_path)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
-    return library_path
-
-
 def getPioLibrary():
     user_path = os.path.expanduser('~')
     pio_lib = os.path.join(user_path, '.platformio', 'lib')
@@ -365,15 +351,11 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
 
 def getLibraryFolders():
 
-    # User Library
-    user_lib_path = getUserLibraryPath()
-    user_lib_path = os.path.join(user_lib_path, '*')
-
     # Platformio Libraries
     pio_lib_path = getPioLibrary()
     pio_lib_path = os.path.join(pio_lib_path, '*')
 
-    library_folders = [user_lib_path, pio_lib_path]
+    library_folders = [pio_lib_path]
 
     # Core Paths
     pio_packages = getPioPackages()
