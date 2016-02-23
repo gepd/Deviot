@@ -57,5 +57,22 @@
                 ]
             }
         ]
+    },{
+        "id": "deviot",
+    },{
+        "caption": "-",
+    },{
+        "caption": "✔",
+        "command": "build_sketch"
+    },{
+        "caption": "📥",
+        "command": "upload_sketch"
+    },{
+        "caption": "✖",
+        "command": "clean_sketch"
+    },{
+        "caption": "🔻",
+        "command": "hide_console"
     }
+
 ]
