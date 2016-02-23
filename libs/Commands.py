@@ -83,57 +83,53 @@ class CommandsPy(object):
                 'upload' not in command):
             error, down, previous = False, False, ''
             while True:
-                output = process.stdout.readline()
+                output = process.stdout.readline().lower()
                 if output == '' and process.poll() is not None:
                     # print took time and break the loop
                     if(error):
                         self.error_running = True
                     break
 
-                if('warning:' in output.lower() or
-                   'in function' in output.lower() or
-                   'in file' in output.lower() or
-                   'error:' in output.lower() or
+                if('warning:' in output or
+                   'in function' in output or
+                   'in file' in output or
+                   'error:' in output or
                    '^' in output):
                     if('^' in output):
                         output = previous + output
                     self.message_queue.put(output)
 
-                if('warning:' in output.lower()):
+                if('warning:' in output):
                     show_warning = True
-                if('error:' in output.lower()):
+                if('error:' in output):
                     show_error = True
-
-                if(output.strip()):
-                    previous = output
 
                 # realtime output for build command
                 if('run' in command and '-e' in command and not 'upload'):
-                    if('installing' in output.lower()):
+                    if('installing' in output):
                         package = re.match(
                             r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
                         self.message_queue.put('install_package_{0}', package)
 
-                if('already' in output.lower()):
+                if('already' in output):
                     self.message_queue.put('already_installed')
 
-                if('downloading' in output.lower() and
-                        output.replace(" ", "") and
-                        output.replace(" ", "") != previous):
-
-                    message = 'downloading_package'
+                if('downloading' in output.strip() and output != previous):
+                    package = re.match(
+                        r"\w+ (\w+\W?\w+?)\s", previous).group(1)
+                    message = 'downloading_package{0}'
                     if(down and 'lib' in command and 'install' in command):
                         message = 'download_dependece'
-                    self.message_queue.put(message)
+                    self.message_queue.put(message, package)
                     down = True
 
-                if('unpacking' in output.lower() and
+                if('unpacking' in output and
                         output.replace(" ", "") and
                         output.replace(" ", "") != previous):
                     self.message_queue.put('unpacking')
 
-                if(output.replace(" ", "")):
-                    previous = output
+                if(output.strip()):
+                    previous = output.lower()
 
         # output
         output = process.communicate()

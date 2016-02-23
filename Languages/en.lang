@@ -246,8 +246,8 @@ msgstr "\nInstalling {0} package: "
 msgid "already_installed"
 msgstr "Already installed\n"
 
-msgid "downloading_package"
-msgstr "Downloading package\n\nIt may take a while, please be patient.\n"
+msgid "downloading_package{0}"
+msgstr "Downloading package {0}\n\nIt may take a while, please be patient.\n"
 
 msgid "unpacking"
 msgstr "Unpacking...\n"
