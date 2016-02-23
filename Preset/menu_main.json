@@ -264,30 +264,5 @@
                 "command": "about_deviot"
             }
         ]
-    },
-    {
-        "caption": "-",
-        "id":"separator1",
-    },
-    {
-        "caption": "✔",
-        "id":"build_sketch",
-        "command": "build_sketch"
-    },
-    {
-        "caption": "📥",
-        "id":"upload_sketch",
-        "command": "upload_sketch"
-    },
-    {
-        "caption": "✖",
-        "id":"clean_sketch",
-        "command": "clean_sketch"
-    },
-    {
-        "caption": "🔻",
-        "id":"hide_console",
-        "command": "hide_console"
     }
-
 ]
