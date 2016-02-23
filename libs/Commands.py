@@ -222,7 +222,7 @@ class CommandsPy(object):
         options = commands[0]
 
         try:
-            args = commands[1]
+            args = " ".join(commands[1:])
         except:
             args = ''
 
