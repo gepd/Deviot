@@ -62,7 +62,7 @@ class Menu(object):
                 if('name' in infokey):
                     temp_info = {}
                     temp_info['caption'] = infovalue
-                    temp_info['command'] = 'select_board'
+                    temp_info['command'] = 'deviot_select_board'
                     temp_info['checkbox'] = True
                     temp_info['args'] = {'board_id': datakey}
                     children = vendors.setdefault(vendor, [])

@@ -138,7 +138,7 @@ class CheckRequirementsCommand(sublime_plugin.TextCommand):
         PlatformioCLI(view, console, True).platformioCheck()
 
 
-class SelectBoardCommand(sublime_plugin.WindowCommand):
+class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
     """
     This class trigger two methods to know what board(s)
     were chosen and to store it in a preference file.
