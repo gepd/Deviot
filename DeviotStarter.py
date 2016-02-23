@@ -53,6 +53,7 @@ def plugin_loaded():
         # creating files
         Tools.createCompletions()
         Tools.createSyntaxFile()
+        Menu().createMainMenu()
         Menu().createLibraryImportMenu()
         Menu().createLibraryExamplesMenu()
 
