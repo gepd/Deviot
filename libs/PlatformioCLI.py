@@ -124,6 +124,7 @@ class PlatformioCLI(CommandsPy):
                 if(not file_name):
                     msg = 'not_empty_sketch_{0}'
                 self.message_queue.put(msg, current_time, file_name)
+                self.execute = False
                 return
 
             if(not command and not self.is_iot):
@@ -502,124 +503,6 @@ class PlatformioCLI(CommandsPy):
 
         return (True, view)
 
-    def platformioCheck(self):
-        '''
-        Check if is possible to run a platformIO command
-        if isn't, get the env_path value set by the user,
-        from the preferences file and tries to run it again
-        '''
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put(
-                "checking_requirements_{0}", current_time)
-        except:
-            pass
-
-        # default paths
-        if(Tools.getOsName() == 'windows'):
-            default_path = ["C:\Python27", "C:\Python27\Scripts"]
-        else:
-            default_path = ["/usr/bin", "/usr/local/bin"]
-
-        # paths from user preferences file
-        user_env_path = self.Preferences.get('env_path', False)
-        if(user_env_path):
-            for path in reversed(user_env_path.split(os.path.pathsep)):
-                if(os.path.isabs(path)):
-                    default_path.insert(0, path)
-
-        # Joining system environment paths and default paths
-        system_paths = os.environ.get("PATH", "").split(os.path.pathsep)
-        for path in system_paths:
-            default_path.append(path)
-        default_path = list(OrderedDict.fromkeys(default_path))
-        env_path = os.path.pathsep.join(default_path)
-
-        command = ['--version']
-
-        Run = CommandsPy(env_path=env_path)
-        version = Run.runCommand(command, setReturn=True)
-        version = re.sub(r'\D', '', version)
-        version = version if version != '' else 0
-
-        if(Run.error_running or version == 0):
-            # translate menu
-            temp_menu = self.Menu.getTemplateMenu('Install-menu-preset')
-            for item in temp_menu[0]['children']:
-                item['caption'] = _(item['caption'])
-            self.Menu.saveSublimeMenu(temp_menu)
-
-            # console feedback
-            try:
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    'error_platformio_not_installed_{0}', current_time)
-                time.sleep(0.01)
-            except:
-                pass
-
-            # Preferences instructions
-            if(not user_env_path):
-                self.Preferences.set('env_path', _('ask_set_env_path'))
-            return False
-
-        # Check the minimum version
-        if(not Run.error_running and int(version) <= 270):
-            # Update menu
-            temp_menu = self.Menu.getSublimeMenu()
-            status = _('upgrade_plaformio')
-            temp_menu[0]['children'][0]['caption'] = status
-            temp_menu[0]['children'][1] = 0
-            temp_menu[0]['children'][3]['caption'] = _("Check again")
-            self.Menu.saveSublimeMenu(temp_menu)
-
-            # console feedback
-            try:
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    'need_upgrade_platformio_{0}', current_time)
-                time.sleep(0.01)
-            except:
-                pass
-
-            return False
-
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('platformio_detected_{0}', current_time)
-        except:
-            pass
-
-        # save user preferences
-        protected = self.Preferences.get('protected', False)
-        if(not protected):
-            self.Preferences.set('env_path', env_path)
-            self.Preferences.set('protected', True)
-            self.Preferences.set('enable_menu', True)
-            self.env_path = Preferences().get('env_path', False)
-
-        # Creates new menu
-        api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
-                                               user_path=True)
-
-        if(not os.path.exists(api_boards)):
-            self.saveAPIBoards()
-        self.Menu.createMainMenu()
-
-        # Run serial port listener
-        Serial = SerialListener(func=self.Menu.createSerialPortsMenu)
-        Serial.start()
-
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('platformio_install_done_{0}', current_time)
-        except:
-            pass
-
-        return True
 
     def getAPIBoards(self):
         '''
@@ -691,3 +574,20 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
+
+
+def generateFiles():
+    # Creates new menu
+    api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
+                                           user_path=True)
+    print("============= LOOK ======")
+    print(api_boards)
+    if(not os.path.exists(api_boards)):
+        print("============= LOOK ======")
+        PlatformioCLI().saveAPIBoards()
+    Menu().createMainMenu()
+
+    Tools.createCompletions()
+    Tools.createSyntaxFile()
+    Menu().createLibraryImportMenu()
+    Menu().createLibraryExamplesMenu()

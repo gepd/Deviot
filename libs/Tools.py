@@ -187,23 +187,24 @@ def getSystemLang():
         sys_language = sys_language.lower()
     return sys_language[:2]
 
+def getDefaultPaths():
+    if(getOsName() == 'windows'):
+        default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
+    else:
+        default_path = ["/usr/bin", "/usr/local/bin"]
+    return default_path
 
-def getPlatformioError(error):
-    """
-    Extracts descriptive error lines and removes all the
-    unnecessary information
+def getHeaders():
+    user_agent = 'Deviot/1.0.0 (Sublime-Text/3103)'
+    headers = {'User-Agent': user_agent}
+    return headers
 
-    Arguments:
-        error {string} -- Full error log gets from platformIO
-                          ecosystem
-    """
-    str_error = ""
-    for line in error.split('\n'):
-        if(line and "processing" not in line.lower() and
-                "pioenvs" not in line.lower() and
-                "took" not in line.lower()):
-            str_error += line + '\n'
-    return str_error
+
+def extract_tar(tar_path, extract_path='.'):
+    import tarfile
+    tar = tarfile.open(tar_path, 'r:gz')
+    for item in tar:
+        tar.extract(item, extract_path)
 
 
 def toggleSerialMonitor(window=None):

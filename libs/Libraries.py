@@ -13,10 +13,11 @@ import sublime
 import threading
 
 try:
-    from . import __version__ as version
+    
     from . import Paths
     from . import Tools
     from . import Messages
+    from . import __version__ as version
     from .JSONFile import JSONFile
     from .Preferences import Preferences
     from .Progress import ThreadProgress
@@ -25,9 +26,9 @@ try:
     from .I18n import I18n
 except:
     import libs.Paths as Paths
-    import libs.Tools as Tools
-    from libs import __version__ as version
+    import libs.Tools as Tools    
     from libs import Messages
+    from libs import __version__ as version
     from libs.JSONFile import JSONFile
     from libs.Preferences import Preferences
     from libs.Progress import ThreadProgress

@@ -7,10 +7,11 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import glob
 import time
 import sublime
-import glob
 import sublime_plugin
+import threading
 from shutil import rmtree
 
 try:
@@ -24,6 +25,8 @@ try:
     from .libs.I18n import I18n
     from .libs import Serial
     from .libs import Messages
+    from .libs.Progress import ThreadProgress
+    from .libs.Install import PioInstall
 except:
     from libs import Paths
     from libs import Tools
@@ -39,26 +42,23 @@ except:
 
 _ = I18n().translate
 
+def plugin_loaded():
+    protected = Preferences().get('protected')
+    if(not protected):
+        thread = threading.Thread(target=PioInstall().checkPio)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
+    else:
+        Tools.createCompletions()
+        Tools.createSyntaxFile()
+        Menu().createLibraryImportMenu()
+        Menu().createLibraryExamplesMenu()
 
 class DeviotListener(sublime_plugin.EventListener):
     """
     This is the first class to run when the plugin is excecuted
     Extends: sublime_plugin.EventListener
     """
-
-    def __init__(self):
-        """
-        Checks if platformIO is installed
-        """
-        if(not PlatformioCLI().platformioCheck()):
-            return None
-
-        Tools.createCompletions()
-        Tools.createSyntaxFile()
-        Menu().createLibraryImportMenu()
-        Menu().createLibraryExamplesMenu()
-
-        super(DeviotListener, self).__init__()
 
     def on_activated(self, view):
         """

@@ -23,52 +23,51 @@ ROOT_PATH = 'System Root(/)'
 
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
-# Get the path of deviot plugin
 
+# Get the path of deviot plugin
 
 def getPluginPath():
     plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
-# Get the package sublime text path
 
+# Get the package sublime text path
 
 def getPackagesPath():
     plugin_path = getPluginPath()
     packages_path = os.path.dirname(plugin_path)
     return packages_path
 
-# Get the path of the Preset folder
 
+# Get the path of the Preset folder
 
 def getPresetPath():
     plugin_path = getPluginPath()
     preset_path = os.path.join(plugin_path, 'Preset')
     return preset_path
 
-# Get the path of the language list
 
+# Get the path of the language list
 
 def getLanguagePath():
     plugin_path = getPluginPath()
     language_path = os.path.join(plugin_path, 'Languages')
     return language_path
 
-# Get the path of the language list
 
+# Get the path of the language list
 
 def getLanguageList():
     preset_path = getPresetPath()
     language_list = os.path.join(preset_path, 'languages.list')
     return language_list
 
-# Get deviot path from user folder
 
+# Get deviot path from user folder
 
 def getDeviotUserPath():
     packages_path = getPackagesPath()
-    user_path = os.path.join(packages_path, 'User')
-    deviot_user_path = os.path.join(user_path, 'Deviot')
+    deviot_user_path = os.path.join(packages_path, 'User', 'Deviot')
 
     try:
         os.makedirs(deviot_user_path)
@@ -79,8 +78,64 @@ def getDeviotUserPath():
 
     return deviot_user_path
 
-# get the library user folder
 
+# get platformio virtualenv path
+
+def getEnvDir():
+    plugin_user_path = getDeviotUserPath()
+    env_dir = os.path.join(plugin_user_path, 'penv')
+
+    try:
+        os.makedirs(env_dir)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+    return env_dir
+
+
+# get platformio virtualenv bin path
+
+def getEnvBinDir():
+    env_dir = getEnvDir()
+    env_bin_dir = os.path.join(env_dir, 'Scripts' if 'windows' in Tools.getOsName() else 'bin' )
+
+    try:
+        os.makedirs(env_bin_dir)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+    return env_bin_dir
+
+
+# get cache path
+
+def getCacheDir():
+    plugin_user_path = getDeviotUserPath()
+    cache_dir = os.path.join(plugin_user_path, '.cache')
+
+    try:
+        os.makedirs(cache_dir)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+    return cache_dir
+
+
+# get virtualenv tar file
+
+def getEnvFile():
+    cache_dir = getCacheDir()
+    env_file = os.path.join(cache_dir, 'virtualenv.tar.gz')
+    return env_file
+
+
+# get the library user folder
 
 def getLibraryPath():
     user_path = getDeviotUserPath()
@@ -111,9 +166,8 @@ def getUserLibraryPath():
 
 
 def getPioLibrary():
-    user_path = os.path.expanduser("~")
-    pio_path = os.path.join(user_path, ".platformio")
-    pio_lib = os.path.join(pio_path, 'lib')
+    user_path = os.path.expanduser('~')
+    pio_lib = os.path.join(user_path, '.platformio', 'lib')
     return pio_lib
 
 
@@ -130,9 +184,8 @@ def getTmLanguage():
 
 
 def getPioPackages():
-    user_path = os.path.expanduser("~")
-    pio_path = os.path.join(user_path, ".platformio")
-    pio_lib = os.path.join(pio_path, 'packages')
+    user_path = os.path.expanduser('~')
+    pio_lib = os.path.join(user_path, '.platformio', 'packages')
     return pio_lib
 
 
