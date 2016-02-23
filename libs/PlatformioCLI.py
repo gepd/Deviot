@@ -26,6 +26,7 @@ try:
     from .Menu import Menu
     from .I18n import I18n
     from .Progress import ThreadProgress
+    from . import __version__ as version
 except:
     import libs.Paths as Paths
     import libs.Tools as Tools
@@ -149,7 +150,8 @@ class PlatformioCLI(CommandsPy):
                 view.run_command('save')
 
             if(console):
-                self.message_queue.put('[ Deviot ] {0}\\n', file_name)
+                self.message_queue.put(
+                    '[ Deviot {0} ] {1}\\n', version, file_name)
                 time.sleep(0.02)
 
             # Initilized commands
