@@ -126,7 +126,7 @@ msgid "menu_option"
 msgstr "Opciones"
 
 msgid "menu_show_verbose"
-msgstr "Mostrar Detalles de Salida"
+msgstr "Salida Detallada al Compilar"
 
 msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"

@@ -125,7 +125,7 @@ msgid "menu_option"
 msgstr "Option"
 
 msgid "menu_show_verbose"
-msgstr "Show Verbose Output"
+msgstr "Full Verbose Output When Build"
 
 msgid "menu_update_board_list"
 msgstr "Update Board List"
