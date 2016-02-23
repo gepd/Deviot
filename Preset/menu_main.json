@@ -256,8 +256,22 @@
                 "id":"language",
                 "children": []
             },{
-                "caption": "menu_about_deviot",
-                "command": "about_deviot"
+                "caption": "menu_donate_deviot",
+                "command": "donate_deviot"
+            },{
+                "caption": "menu_about",
+                "id": "menu_about",
+                "children": [                        
+                                {
+                                    "caption": "menu_about_deviot",
+                                    "command": "about_deviot"
+                                },
+                                {
+                                    "caption": "menu_about_pio",
+                                    "command": "about_pio"
+                                }
+
+                            ]
             }
         ]
     }

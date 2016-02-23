@@ -547,6 +547,17 @@ class SelectLanguageCommand(sublime_plugin.WindowCommand):
         return saved_id_lang == id_lang
 
 
+class DonateDeviotCommand(sublime_plugin.WindowCommand):
+    """
+    Show the Deviot github site.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        sublime.run_command('open_url', {'url': 'https://goo.gl/LqdDrC'})
+
+
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
     """
     Show the Deviot github site.
@@ -556,6 +567,17 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         sublime.run_command('open_url', {'url': 'https://goo.gl/c41EXS'})
+
+
+class AboutPioCommand(sublime_plugin.WindowCommand):
+    """
+    Show the Deviot github site.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        sublime.run_command('open_url', {'url': 'http://goo.gl/66BHnk'})
 
 
 class AddStatusCommand(sublime_plugin.TextCommand):

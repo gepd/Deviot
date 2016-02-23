@@ -137,8 +137,17 @@ msgstr "Mantener Archivos Temporales"
 msgid "menu_languages"
 msgstr "Idioma"
 
+msgid "menu_donate_deviot"
+msgstr "❤ Hacer una donación"
+
+msgid "menu_about"
+msgstr "Acerca de"
+
 msgid "menu_about_deviot"
 msgstr "Acerca de Deviot"
+
+msgid "menu_about_pio"
+msgstr "Acerca de Platformio"
 
 
 # Mensajes y errores

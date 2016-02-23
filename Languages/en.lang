@@ -136,8 +136,17 @@ msgstr "Keep Temp Files"
 msgid "menu_languages"
 msgstr "Language"
 
+msgid "menu_donate_deviot"
+msgstr "❤ Donate"
+
+msgid "menu_about"
+msgstr "About"
+
 msgid "menu_about_deviot"
 msgstr "About Deviot"
+
+msgid "menu_about_pio"
+msgstr "About Platformio"
 
 
 # Mensajes y errores
