@@ -57,7 +57,7 @@ class PioInstall(object):
     def checkPio(self):
         # defining default env paths
         os.environ['PATH'] = self.getEnvPaths()
-        
+
         # checking python
         cmd = ['python', '--version']
         out = childProcess(cmd)
@@ -65,36 +65,27 @@ class PioInstall(object):
         # show error and link to download
         if(out[0] > 0):
             current_time = time.strftime('%H:%M:%S')
-            go_to = sublime.ok_cancel_dialog("Deviot need Python 2.7 to work, please download and install it", "Download python")
+            go_to = sublime.ok_cancel_dialog("deviot_need_python", "button_download_python")
             if(go_to):
-                sublime.run_command('open_url', {'url': 'https://www.python.org/downloads/'})
+                sublime.run_command(
+                    'open_url', {'url': 'https://www.python.org/downloads/'})
             return
 
-        # check python version
-        py_version = int(sub(r"\D", '', out[1]))
-
-        if(py_version >= 3000):
-            print(py_version)
-            go_to = sublime.ok_cancel_dialog("Deviot work with python 2, seems like you are using version 3. Please install version 2", "Download Python 2")
-            if(go_to):
-                sublime.run_command('open_url', {'url': 'https://www.python.org/downloads/'})
-            return
-
-
-        # check if pio is installed        
+        # check if pio is installed
         self.message_queue.startPrint()
-        self.message_queue.put("[Deviot {0}] Setup\n", version)
+        self.message_queue.put("deviot_setup{0}", version)
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Checking platformio on your computer\n", current_time)
-        
+
         cmd = ['pio', '--version']
         out = childProcess(cmd)
 
         if(out[0] == 0):
-            sublime.error_message("not pio")
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("pio_is_installed{0}", current_time)
+            return
 
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Platformio is not installed\nPreparing to installing it, please be patient it may take a while.\n", current_time)
+        self.message_queue.put("pio_isn_installed{0}", current_time)
 
         # check if virtualenv file is cached
         if(os.path.exists(self.env_file)):
@@ -103,7 +94,7 @@ class PioInstall(object):
         # download virtualenv
         if(not self.cached_file):
             current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put("{0} Downloading necessary files...\n", current_time)
+            self.message_queue.put("downloading_files{0}", current_time)
             headers = Tools.getHeaders()
             url_file = 'https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.1.tar.gz'
 
@@ -113,7 +104,7 @@ class PioInstall(object):
                 file = file_open.read()
             except:
                 current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put("{0} There was an error downloading the necessary files...\n", current_time)
+                self.message_queue.put("error_downloading_files{0}", current_time)
                 print("There was an error downloading virtualenv")
                 return
             # save file
@@ -123,19 +114,19 @@ class PioInstall(object):
                 output.close()
             except:
                 current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put("{0} There was an error saving the necessary files...\n", current_time)                
+                self.message_queue.put("error_saving_files{0}", current_time)
                 print("There was an error saving the virtualenv file")
                 return
 
         # extract file
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Extracting files...\n", current_time)                
+        self.message_queue.put("extracting_files{0}", current_time)
         tmp = tempfile.mkdtemp()
         Tools.extract_tar(self.env_file, tmp)
 
         # install virtualenv in a temp dir
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Preparing files...\n", current_time) 
+        self.message_queue.put("{0} Installing Platformio...\n", current_time)
 
         temp_env = os.path.join(tmp, 'env-root')
         cwd = os.path.join(tmp, 'virtualenv-14.0.1')
@@ -152,11 +143,8 @@ class PioInstall(object):
         rmtree(tmp)
 
         # install pio
-        current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Installing Platformio...\n", current_time) 
-
         executable = os.path.join(self.env_bin_dir, 'pip')
-        cmd = ['\"' + executable  + '\"', 'install', 'platformio']
+        cmd = ['\"' + executable + '\"', 'install', 'platformio']
         childProcess(cmd)
 
         # save env paths
@@ -167,8 +155,7 @@ class PioInstall(object):
         generateFiles()
 
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Installation finished, now you can enjoy Deviot!\n", current_time) 
-
+        self.message_queue.put("setup_finished{0}", current_time)
 
     def getEnvPaths(self):
         # default paths
@@ -178,7 +165,7 @@ class PioInstall(object):
         env_paths = []
         env_paths.extend(default_paths)
         env_paths.extend(system_paths)
-        
+
         env_paths = list(OrderedDict.fromkeys(env_paths))
         env_paths = os.path.pathsep.join(env_paths)
 
@@ -186,7 +173,7 @@ class PioInstall(object):
 
     def saveEnvPaths(self, new_path):
         env_paths = self.getEnvPaths().split(os.path.pathsep)
-        
+
         paths = []
         paths.extend(new_path)
         paths.extend(env_paths)
@@ -203,8 +190,8 @@ def childProcess(command, cwd=None):
     command.append("2>&1")
     command = ' '.join(command)
     process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, cwd=cwd,
-                                   universal_newlines=True, shell=True)
+                               stdout=subprocess.PIPE, cwd=cwd,
+                               universal_newlines=True, shell=True)
 
     output = process.communicate()
     stdout = output[0]

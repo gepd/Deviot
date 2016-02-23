@@ -7,35 +7,38 @@
 
 # Proceso de Instalación
 
-msgid "menu_one_install_platformio"
-msgstr "1 Instalar PlatformIO"
+msgid "deviot_need_python"
+msgstr "Deviot necesita Python 2.7 para funcionar, por favor descargalo e instalalo"
 
-msgid "menu_two_set_env_path"
-msgstr "2 Ingresar Ruta de Entorno"
+msgid "button_download_python"
+msgstr "Descargar Python"
 
-msgid "menu_check_again"
-msgstr "Verificar Nuevamente"
+msgid "deviot_setup{0}"
+msgstr "[Deviot {0}] Instalación\n"
 
-msgid "ask_set_env_path"
-msgstr "INGRESA-TU-RUTA-DE-ENTORNO"
+msgid "pio_is_installed{0}"
+msgstr "{0} Platformio está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
 
-msgid "upgrade_plaformio"
-msgstr "Actualizar PlatformIO"
+msgid "pio_isn_installed{0}"
+msgstr "{0} Platformio no está instalado\nPreparándose para instalarlo. Por favor sea paciente esto podría demorar un poco\n"
 
-msgid "checking_requirements_{0}"
-msgstr "{0} Verificando requisitos...\n"
+msgid "downloading_files{0}"
+msgstr "{0} Descargando archivos necesarios...\n"
 
-msgid "error_platformio_not_installed_{0}"
-msgstr "{0} Platformio no está instalado o se ha instalado en una ruta personalizada.\nPor favor ingresa tu ruta de entorno desde el Menu ST > Deviot > Ingresar Ruta de Entorno"
+msgid "error_downloading_files{0}"
+msgstr "{0} Hubo un error descargando los archivos...\n"
 
-msgid "need_upgrade_platformio_{0}"
-msgstr "{0} Necesitas actualizar platformIO"
+msgid "error_saving_files{0}"
+msgstr "{0} Hubo un error guardando los archivos...\n"
 
-msgid "platformio_detected_{0}"
-msgstr "{0} Se ha Detectado PlatformIO, por favor espera...\n"
+msgid "extracting_files{0}"
+msgstr "{0} Extrayendo archivos...\n"
 
-msgid "platformio_install_done_{0}"
-msgstr "{0} ¡Todo listo, ya puedes comenzar a escribir tu código!"
+msgid "installing_pio{0}"
+msgstr "{0} Instalando Platformio...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
 
 
 # Menu

@@ -6,35 +6,38 @@
 
 # Setup Process
 
-msgid "menu_one_install_platformio"
-msgstr "1 Install PlatformIO"
+msgid "deviot_need_python"
+msgstr "Deviot need Python 2.7 to work, please download and install it"
 
-msgid "menu_two_set_env_path"
-msgstr "2 Set Environment PATH"
+msgid "button_download_python"
+msgstr "Download Python"
 
-msgid "menu_check_again"
-msgstr "Check again"
+msgid "deviot_setup{0}"
+msgstr "[Deviot {0}] Setup\n"
 
-msgid "ask_set_env_path"
-msgstr "SET-YOUR-ENVIRONMENT-PATH"
+msgid "pio_is_installed{0}"
+msgstr "{0} Platformio is installed in your system, you can enjoy Deviot now!"
 
-msgid "upgrade_plaformio"
-msgstr "Upgrade PlatformIO"
+msgid "pio_isn_installed{0}"
+msgstr "{0} Platformio is not installed\nPreparing to installing it, please be patient it may take a while.\n"
 
-msgid "checking_requirements_{0}"
-msgstr "{0} Checking requirements...\n"
+msgid "downloading_files{0}"
+msgstr "{0} Downloading necessary files...\n"
 
-msgid "error_platformio_not_installed_{0}"
-msgstr "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgid "error_downloading_files{0}"
+msgstr "{0} There was an error downloading the necessary files...\n"
 
-msgid "need_upgrade_platformio_{0}"
-msgstr "{0} You need to update platformIO"
+msgid "error_saving_files{0}"
+msgstr "{0} There was an error saving the necessary files...\n"
 
-msgid "platformio_detected_{0}"
-msgstr "{0} PlatformIO has been detected, please wait...\n"
+msgid "extracting_files{0}"
+msgstr "{0} Extracting files...\n"
 
-msgid "platformio_install_done_{0}"
-msgstr "{0} All done, you can code now!"
+msgid "installing_pio{0}"
+msgstr "{0} Installing Platformio...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} Installation finished, now you can enjoy Deviot!\n"
 
 
 # Menu
