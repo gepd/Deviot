@@ -177,9 +177,7 @@ class PlatformioCLI(CommandsPy):
         if(not self.is_native):
             self.Preferences.set('native', False)
             self.Preferences.set('ini_path', self.dir)
-            if(not os.path.isfile(ini_path)):
-                self.Menu.createEnvironmentMenu(empty=True)
-                return
+            self.Menu.createEnvironmentMenu()
         else:
             self.Preferences.set('native', True)
             self.Preferences.set('ini_path', self.dir)
