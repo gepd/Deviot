@@ -187,6 +187,7 @@ def getSystemLang():
         sys_language = sys_language.lower()
     return sys_language[:2]
 
+
 def getDefaultPaths():
     if(getOsName() == 'windows'):
         default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
@@ -194,8 +195,10 @@ def getDefaultPaths():
         default_path = ["/usr/bin", "/usr/local/bin"]
     return default_path
 
+
 def getHeaders():
-    user_agent = 'Deviot/1.0.0 (Sublime-Text/3103)'
+    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (__version__,
+                                                  sublime.version())
     headers = {'User-Agent': user_agent}
     return headers
 
