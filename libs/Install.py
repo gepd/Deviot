@@ -12,7 +12,6 @@ import tempfile
 import sublime
 import subprocess
 from shutil import rmtree
-from re import sub
 
 try:
     from urllib.request import Request
@@ -34,6 +33,7 @@ except:
     import libs.Tools as Tools
     from libs import Messages
     from .libs.Preferences import Preferences
+
 
 class PioInstall(object):
 
@@ -65,7 +65,8 @@ class PioInstall(object):
         # show error and link to download
         if(out[0] > 0):
             current_time = time.strftime('%H:%M:%S')
-            go_to = sublime.ok_cancel_dialog("deviot_need_python", "button_download_python")
+            go_to = sublime.ok_cancel_dialog(
+                "deviot_need_python", "button_download_python")
             if(go_to):
                 sublime.run_command(
                     'open_url', {'url': 'https://www.python.org/downloads/'})
@@ -104,7 +105,8 @@ class PioInstall(object):
                 file = file_open.read()
             except:
                 current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put("error_downloading_files{0}", current_time)
+                self.message_queue.put(
+                    "error_downloading_files{0}", current_time)
                 print("There was an error downloading virtualenv")
                 return
             # save file
