@@ -580,10 +580,9 @@ def generateFiles():
     # Creates new menu
     api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
                                            user_path=True)
-    print("============= LOOK ======")
-    print(api_boards)
+
+
     if(not os.path.exists(api_boards)):
-        print("============= LOOK ======")
         PlatformioCLI().saveAPIBoards()
     Menu().createMainMenu()
 
