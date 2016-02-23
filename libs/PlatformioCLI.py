@@ -505,7 +505,6 @@ class PlatformioCLI(CommandsPy):
 
         return (True, view)
 
-
     def getAPIBoards(self):
         '''
         Get the list of boards from platformIO API using CLI.
@@ -582,7 +581,6 @@ def generateFiles():
     # Creates new menu
     api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
                                            user_path=True)
-
 
     if(not os.path.exists(api_boards)):
         PlatformioCLI().saveAPIBoards()

@@ -14,7 +14,7 @@ msgid "button_download_python"
 msgstr "Descargar Python"
 
 msgid "deviot_setup{0}"
-msgstr "[Deviot {0}] Instalación\n"
+msgstr "[ Deviot {0} ] Instalación\n"
 
 msgid "pio_is_installed{0}"
 msgstr "{0} Platformio está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
@@ -66,7 +66,7 @@ msgid "menu_option_lib"
 msgstr "Opciones de Librerías"
 
 msgid "menu_open_user_lib_folder"
-msgstr "Abrir Carpeta con Librerías de Usuario"
+msgstr "Abrir Carpeta con Librerías"
 
 msgid "menu_change_user_lib_path"
 msgstr "Cambiar Ruta de Carpeta"

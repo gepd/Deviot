@@ -99,7 +99,8 @@ def getEnvDir():
 
 def getEnvBinDir():
     env_dir = getEnvDir()
-    env_bin_dir = os.path.join(env_dir, 'Scripts' if 'windows' in Tools.getOsName() else 'bin' )
+    env_bin_dir = os.path.join(
+        env_dir, 'Scripts' if 'windows' in Tools.getOsName() else 'bin')
 
     try:
         os.makedirs(env_bin_dir)

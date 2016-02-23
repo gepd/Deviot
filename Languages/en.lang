@@ -13,7 +13,7 @@ msgid "button_download_python"
 msgstr "Download Python"
 
 msgid "deviot_setup{0}"
-msgstr "[Deviot {0}] Setup\n"
+msgstr "[ Deviot {0} ] Setup\n"
 
 msgid "pio_is_installed{0}"
 msgstr "{0} Platformio is installed in your system, you can enjoy Deviot now!"
@@ -65,7 +65,7 @@ msgid "menu_option_lib"
 msgstr "Library Options"
 
 msgid "menu_open_user_lib_folder"
-msgstr "Open User Libraries Folder"
+msgstr "Open Libraries Folder"
 
 msgid "menu_change_user_lib_path"
 msgstr "Change Folder Library Path"

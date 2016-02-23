@@ -42,6 +42,7 @@ except:
 
 _ = I18n().translate
 
+
 def plugin_loaded():
     protected = Preferences().get('protected')
     if(not protected):
@@ -53,6 +54,7 @@ def plugin_loaded():
         Tools.createSyntaxFile()
         Menu().createLibraryImportMenu()
         Menu().createLibraryExamplesMenu()
+
 
 class DeviotListener(sublime_plugin.EventListener):
     """
