@@ -125,7 +125,7 @@ class PioInstall(object):
         current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("extracting_files{0}", current_time)
         tmp = tempfile.mkdtemp()
-        Tools.extract_tar(self.env_file, tmp)
+        Tools.extractTar(self.env_file, tmp)
 
         # install virtualenv in a temp dir
         current_time = time.strftime('%H:%M:%S')

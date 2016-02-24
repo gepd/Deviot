@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import os
 import json
 import glob
+from re import match
 
 try:
     from . import Serial, Paths
@@ -191,6 +192,7 @@ class Menu(object):
                 libs = glob.glob(sub)
                 for lib in libs:
                     caption = os.path.basename(os.path.dirname(lib))
+                    caption = match(r"^(\w+)_", caption).group(1)
                     if os.path.isdir(lib) and 'examples' in lib:
                         file_examples = os.path.join(lib, '*')
                         file_examples = glob.glob(file_examples)

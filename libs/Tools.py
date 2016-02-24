@@ -211,7 +211,7 @@ def getHeaders():
     return headers
 
 
-def extract_tar(tar_path, extract_path='.'):
+def extractTar(tar_path, extract_path='.'):
     import tarfile
     tar = tarfile.open(tar_path, 'r:gz')
     for item in tar:
@@ -455,7 +455,7 @@ def addLibraryToSketch(view, edit, lib_path):
 
     region = sublime.Region(0, view.size())
     src_text = view.substr(region)
-    headers = list_headers_from_src(src_text)
+    headers = listHeadersFromSrc(src_text)
 
     h_files = []
     sub_files = glob.glob(lib_path)
@@ -477,7 +477,7 @@ def addLibraryToSketch(view, edit, lib_path):
     view.insert(edit, position, text)
 
 
-def list_headers_from_src(src_text):
+def listHeadersFromSrc(src_text):
     """
     Gets the library header(s)  already included in the sketch
 
