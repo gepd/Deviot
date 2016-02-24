@@ -40,6 +40,7 @@ except:
     from libs.Menu import Menu
     from libs.I18n import I18n
     from libs.Progress import ThreadProgress
+    from libs import __version__ as version
 
 _ = I18n().translate
 

@@ -33,7 +33,9 @@ except:
     import libs.Paths as Paths
     import libs.Tools as Tools
     from libs import Messages
-    from .libs.Preferences import Preferences
+    from libs import __version__ as version
+    from libs.Preferences import Preferences
+    from libs.PlatformioCLI import generateFiles
 
 
 class PioInstall(object):
@@ -84,6 +86,8 @@ class PioInstall(object):
         if(out[0] == 0):
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("pio_is_installed{0}", current_time)
+            
+            self.endSetup()
             return
 
         current_time = time.strftime('%H:%M:%S')
@@ -157,12 +161,7 @@ class PioInstall(object):
         pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
         self.Preferences.set('pio_version', pio_version)
 
-        # save env paths
-        env_path = [self.env_bin_dir]
-        self.saveEnvPaths(env_path)
-
-        # creating files (menu, completions, syntax)
-        generateFiles()
+        self.endSetup()
 
         current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("setup_finished{0}", current_time)
@@ -194,6 +193,14 @@ class PioInstall(object):
         self.Preferences.set('env_path', paths)
         self.Preferences.set('protected', True)
         self.Preferences.set('enable_menu', True)
+
+    def endSetup(self):
+        # save env paths
+        env_path = [self.env_bin_dir]
+        self.saveEnvPaths(env_path)
+
+        # creating files (menu, completions, syntax)
+        generateFiles()
 
 
 def childProcess(command, cwd=None):
