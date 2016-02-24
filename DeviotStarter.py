@@ -39,9 +39,10 @@ except:
     from libs.I18n import I18n
     from libs import Serial
     from libs import Messages
+    from libs.Progress import ThreadProgress
+    from libs.Install import PioInstall
 
 _ = I18n().translate
-
 
 def plugin_loaded():
     protected = Preferences().get('protected')
@@ -61,6 +62,9 @@ def plugin_loaded():
         Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
         Serial_Lib.start()
 
+# for ST2
+if(int(sublime.version()) < 3000):
+    sublime.set_timeout(plugin_loaded, 300)
 
 class DeviotListener(sublime_plugin.EventListener):
     """
