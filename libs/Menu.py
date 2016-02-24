@@ -193,7 +193,7 @@ class Menu(object):
                 for lib in libs:
                     caption = os.path.basename(os.path.dirname(lib))
                     caption = match(r"^(\w+)_", caption).group(1)
-                    if os.path.isdir(lib) and 'examples' in lib:
+                    if os.path.isdir(lib) and os.listdir(lib) and 'examples' in lib:
                         file_examples = os.path.join(lib, '*')
                         file_examples = glob.glob(file_examples)
                         for file in file_examples:
