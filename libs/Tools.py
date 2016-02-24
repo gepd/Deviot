@@ -506,3 +506,13 @@ def openExample(path, window):
     for file in files:
         if '.ino' in file:
             window.open_file(file)
+
+
+def updateMenuLibs():
+    try:
+        from .Menu import Menu
+    except:
+        from libs.Menu import Menu
+
+    Menu().createLibraryImportMenu()
+    Menu().createLibraryExamplesMenu()

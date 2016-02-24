@@ -177,6 +177,8 @@ class Libraries:
 
         # update list of libraries installed in the preference file
         self.getInstalledList(ids=True)
+        # update menu
+        Tools.updateMenuLibs()
 
     def installedList(self):
         """
@@ -253,6 +255,9 @@ class Libraries:
                     self.Preferences.data.setdefault(
                         'user_libraries', []).remove(lib_id)
                     self.Preferences.saveData()
+
+        # update menu
+        Tools.updateMenuLibs()
 
     def saveLibraryData(self, data, file_name):
         """
