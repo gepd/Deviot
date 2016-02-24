@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 import os
 import json
 import glob
-from re import match
+from re import search
 
 try:
     from . import Serial, Paths
@@ -192,7 +192,9 @@ class Menu(object):
                 libs = glob.glob(sub)
                 for lib in libs:
                     caption = os.path.basename(os.path.dirname(lib))
-                    caption = match(r"^(\w+)_", caption).group(1)
+                    new_caption = search(r"^(\w+)_ID?", caption)
+                    if(new_caption is not None):
+                        caption = new_caption.group(1)
                     if os.path.isdir(lib) and os.listdir(lib) and 'examples' in lib:
                         file_examples = os.path.join(lib, '*')
                         file_examples = glob.glob(file_examples)
@@ -208,6 +210,7 @@ class Menu(object):
                         temp_info['children'] = children
                         examples.append(temp_info)
                         children = []
+            examples.append({'caption': '-'})
 
         # get preset
         menu_lib_example = self.getTemplateMenu(file_name='examples.json')
