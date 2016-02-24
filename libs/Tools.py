@@ -99,7 +99,15 @@ def setStatus(view, text=False, erase_time=0, key=False):
 
     info = []
     if(is_iot and not erase_time):
-        info = __title__ + ' v' + str(__version__)
+
+        try:
+            from .Preferences import Preferences
+        except:
+            from libs.Preferences import Preferences
+
+        pio_version = Preferences().get('pio_version', 0)
+
+        info = '%s v%s | Pio v%s' % (__title__, str(__version__), pio_version)
         view.set_status('_deviot_version', info)
 
     if(text and erase_time):

@@ -149,6 +149,13 @@ class PioInstall(object):
         cmd = ['\"' + executable + '\"', 'install', 'platformio']
         childProcess(cmd)
 
+        # get pio version
+        cmd = ['pio', '--version']
+        out = childProcess(cmd)
+
+        pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
+        self.Preferences.set('pio_version', pio_version)
+
         # save env paths
         env_path = [self.env_bin_dir]
         self.saveEnvPaths(env_path)
