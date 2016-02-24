@@ -139,8 +139,11 @@ msgstr "Salida Detallada al Compilar"
 msgid "menu_keep_temp_files"
 msgstr "Mantener Archivos Temporales"
 
-msgid "menu_open_temp_folder"
-msgstr "Abrir Carpeta Temporal"
+msgid "menu_open_build_folder"
+msgstr "Abrir Carpeta de Compilación"
+
+msgid "menu_change_build_folder"
+msgstr "Cambiar Carpeta de Compilación"
 
 msgid "menu_languages"
 msgstr "Idioma"

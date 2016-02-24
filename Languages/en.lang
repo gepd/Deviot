@@ -138,8 +138,11 @@ msgstr "Full Verbose Output When Build"
 msgid "menu_keep_temp_files"
 msgstr "Keep Temp Files"
 
-msgid "menu_open_temp_folder"
-msgstr "Open Temp Folder"
+msgid "menu_open_build_folder"
+msgstr "Open Build Folder"
+
+msgid "menu_change_build_folder"
+msgstr "Change Build Folder"
 
 msgid "menu_languages"
 msgstr "Language"

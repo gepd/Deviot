@@ -143,9 +143,11 @@ class PlatformioCLI(CommandsPy):
 
             # set native paths
             if(not self.is_native):
-                tmp_path = Paths.getTempPath(temp_name)
+                build_dir = self.Preferences.get('build_dir', False)
+                if(not build_dir):
+                    build_dir = Paths.getTempPath(temp_name)
                 self.src = current_dir
-                self.dir = tmp_path
+                self.dir = build_dir
 
             # unsaved changes
             if (command and view.is_dirty()):

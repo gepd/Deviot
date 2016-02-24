@@ -259,8 +259,12 @@
                                     "command":"keep_temp_files"
                                 },
                                 {
-                                    "caption":"menu_open_temp_folder",
-                                    "command":"open_temp_folder"
+                                    "caption":"menu_open_build_folder",
+                                    "command":"open_build_folder"
+                                },
+                                {
+                                    "caption":"menu_change_build_folder",
+                                    "command":"change_build_folder"
                                 }
                             ]
             },{

@@ -44,6 +44,7 @@ except:
 
 _ = I18n().translate
 
+
 def plugin_loaded():
     protected = Preferences().get('protected')
     if(not protected):
@@ -65,6 +66,7 @@ def plugin_loaded():
 # for ST2
 if(int(sublime.version()) < 3000):
     sublime.set_timeout(plugin_loaded, 300)
+
 
 class DeviotListener(sublime_plugin.EventListener):
     """
@@ -550,7 +552,7 @@ class KeepTempFilesCommand(sublime_plugin.WindowCommand):
         return Preferences().get('keep_cache', False)
 
 
-class OpenTempFolderCommand(sublime_plugin.TextCommand):
+class OpenBuildFolderCommand(sublime_plugin.TextCommand):
     """
     Open a new window where the user libreries must be installed
 
@@ -561,6 +563,12 @@ class OpenTempFolderCommand(sublime_plugin.TextCommand):
         temp = Paths.getTempPath()
         url = Paths.getOpenFolderPath(temp)
         sublime.run_command('open_url', {'url': url})
+
+
+class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
 
 
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
