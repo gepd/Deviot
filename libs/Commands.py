@@ -48,7 +48,7 @@ class CommandsPy(object):
         if(env_path):
             os.environ['PATH'] = env_path
 
-    def runCommand(self, commands, setReturn=False, extra_message=None):
+    def runCommand(self, commands, setReturn=False, extra_message=None, verbose=False):
         """
         Runs a CLI command to  do/get the differents options from platformIO
         """
@@ -62,7 +62,8 @@ class CommandsPy(object):
             return False
 
         # get verbose from preferences
-        verbose = self.Preferences.get('verbose_output', False)
+        if(not verbose):
+            verbose = self.Preferences.get('verbose_output', False)
 
         # get command
         self.type_build = False

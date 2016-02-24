@@ -494,6 +494,15 @@ class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
         return display_mode_item == target_display_mode
 
 
+class UpgradePioCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        view = self.view
+        console_name = 'Deviot|Upgrade' + str(time.time())
+        console = Console(view.window(), name=console_name)
+        PlatformioCLI(view, console, install=True).openInThread('upgrade')
+
+
 class UpdateBoardListCommand(sublime_plugin.WindowCommand):
     """
     Update the board list, extracting the info from platformIO

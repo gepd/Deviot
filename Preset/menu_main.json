@@ -239,6 +239,11 @@
                 "id":"options",
                 "children": [
                                 {
+                                    "caption":"menu_upgrade_pio",
+                                    "command":"upgrade_pio"
+                                },
+                                {"caption": "-"},
+                                {
                                     "caption":"menu_update_board_list",
                                     "command":"update_board_list"
                                 },

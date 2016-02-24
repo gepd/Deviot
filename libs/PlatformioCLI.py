@@ -74,6 +74,7 @@ class PlatformioCLI(CommandsPy):
 
         # For installing purposes
         if(install):
+            self.Commands = CommandsPy(console=console)
             return
 
         self.view = view
@@ -386,6 +387,17 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
+    def upgradePio(self):
+
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
+        self.message_queue.put('searching_pio_updates', version)
+
+        command = ['upgrade']
+        self.Commands.runCommand(command, verbose=True)
+
+        self.saveAPIBoards()
+        self.Menu.createMainMenu()
+
     def openInThread(self, type, chosen=False):
         """
         Opens each action; build/upload/clean in a new thread
@@ -402,6 +414,9 @@ class PlatformioCLI(CommandsPy):
             action_thread.start()
         elif (type == 'upload'):
             action_thread = threading.Thread(target=self.uploadSketchProject)
+            action_thread.start()
+        elif(type == 'upgrade'):
+            action_thread = threading.Thread(target=self.upgradePio)
             action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)

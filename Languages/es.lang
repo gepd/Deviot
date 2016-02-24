@@ -40,6 +40,8 @@ msgstr "{0} Instalando Platformio...\n"
 msgid "setup_finished{0}"
 msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
 
+msgid "searching_pio_updates"
+msgstr "Buscando Actualizaciones de Platformio...\n\n"
 
 # Menu
 
@@ -124,6 +126,9 @@ msgstr "Texto"
 
 msgid "menu_option"
 msgstr "Opciones"
+
+msgid "menu_upgrade_pio"
+msgstr "Actualizar Platformio"
 
 msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"
