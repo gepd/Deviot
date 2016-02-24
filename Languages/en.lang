@@ -234,6 +234,9 @@ msgstr "{0} Installing Library {1} | "
 msgid "uninstalling_lib_{0}{1}"
 msgstr "{0} Uninstalling Library {1} | "
 
+msgid "download_lib"
+msgstr "Downloading...\n"
+
 msgid "searching"
 msgstr "Searching"
 
@@ -243,8 +246,8 @@ msgstr "Installing"
 msgid "install_package_{0}"
 msgstr "\nInstalling {0} package: "
 
-msgid "already_installed"
-msgstr "Already installed\n"
+msgid "already_installed{0}"
+msgstr "{0} already installed\n"
 
 msgid "downloading_package{0}"
 msgstr "Downloading package {0}\n\nIt may take a while, please be patient.\n"

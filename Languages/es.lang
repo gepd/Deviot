@@ -238,14 +238,17 @@ msgstr "{0} Desinstalando Librería {1} | "
 msgid "searching"
 msgstr "Buscando"
 
+msgid "download_lib"
+msgstr "Descargando...\n"
+
 msgid "installing"
 msgstr "Instalando"
 
 msgid "install_package_{0}"
 msgstr "\nInstalando paquete {0}: "
 
-msgid "already_installed"
-msgstr "Ya instalado(a)\n"
+msgid "already_installed{0}"
+msgstr "{0} ya está instalado\n"
 
 msgid "downloading_package{0}"
 msgstr "Descargando paquete {0}\n\nPor favor sea paciente, esto podría demorar un poco.\n"

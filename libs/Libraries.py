@@ -13,7 +13,7 @@ import sublime
 import threading
 
 try:
-    
+
     from . import Paths
     from . import Tools
     from . import Messages
@@ -26,7 +26,7 @@ try:
     from .I18n import I18n
 except:
     import libs.Paths as Paths
-    import libs.Tools as Tools    
+    import libs.Tools as Tools
     from libs import Messages
     from libs import __version__ as version
     from libs.JSONFile import JSONFile
@@ -172,7 +172,7 @@ class Libraries:
         time.sleep(0.01)
 
         # Install Library with CLI
-        command = ['lib', 'install %s' % lib_id]
+        command = ['lib', 'install', lib_id]
         self.Commands.runCommand(command, extra_message=lib_name)
 
         # update list of libraries installed in the preference file
@@ -194,7 +194,7 @@ class Libraries:
         stores the data in a json file and run a command to show the
         quick panel with all the data founded
         """
-        command = ['lib', 'list --json-output']
+        command = ['lib', 'list', '--json-output']
         Commands = CommandsPy()
         output = Commands.runCommand(command, setReturn=True)
         output = json.loads(output)

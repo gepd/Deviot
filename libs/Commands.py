@@ -52,6 +52,11 @@ class CommandsPy(object):
         """
         Runs a CLI command to  do/get the differents options from platformIO
         """
+        real_time = True
+        self.show_warning = False
+        self.show_error = False
+        self.previous = ''
+        self.down_string = False
 
         if(not commands):
             return False
@@ -63,10 +68,12 @@ class CommandsPy(object):
         self.type_build = False
         command = self.createCommand(commands, verbose)
 
+        # time info
+        current_time = time.strftime('%H:%M:%S')
+        self.start_time = time.time()
+
         # Console message
         cmd_type = self.getTypeAction(command)
-        current_time = time.strftime('%H:%M:%S')
-        start_time = time.time()
         if(cmd_type):
             self.message_queue.put(cmd_type, current_time, extra_message)
 
@@ -75,80 +82,92 @@ class CommandsPy(object):
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
 
-        show_warning = False
-        show_error = False
-        # real time
-        if(not verbose and 'version' not in command and
-                'json' not in command and
-                'upload' not in command):
-            error, down, previous = False, False, ''
+        if(setReturn):
+            output = process.communicate()
+            stdout = output[0]
+            stderr = output[1]
+            real_time = False
+
+        if(real_time):
+            # realtime output
             while True:
-                output = process.stdout.readline().lower()
+                output = process.stdout.readline()
+                # exit when there is nothing to show
                 if output == '' and process.poll() is not None:
-                    # print took time and break the loop
-                    if(error):
-                        self.error_running = True
                     break
 
-                if('warning:' in output or
-                   'in function' in output or
-                   'in file' in output or
-                   'error:' in output or
-                   '^' in output):
-                    if('^' in output):
-                        output = previous + output
-                    self.message_queue.put(output)
-
-                if('warning:' in output):
-                    show_warning = True
-                if('error:' in output):
-                    show_error = True
-
-                # realtime output for build command
-                if('run' in command and '-e' in command and not 'upload'):
-                    if('installing' in output):
-                        package = re.match(
-                            r'\w+\s(\w+-*\w+)\s\w+', output).group(1)
-                        self.message_queue.put('install_package_{0}', package)
-
-                if('already' in output):
-                    self.message_queue.put('already_installed')
-
-                if('downloading' in output.strip() and output != previous):
-                    package = re.match(
-                        r"\w+ (\w+\W?\w+?)\s", previous).group(1)
-                    message = 'downloading_package{0}'
-                    if(down and 'lib' in command and 'install' in command):
-                        message = 'download_dependece'
-                    self.message_queue.put(message, package)
-                    down = True
-
-                if('unpacking' in output and
-                        output.replace(" ", "") and
-                        output.replace(" ", "") != previous):
-                    self.message_queue.put('unpacking')
+                self.outputFilter(output, command, verbose)
 
                 if(output.strip()):
-                    previous = output.lower()
+                    self.previous = output.lower()
 
-        # output
-        output = process.communicate()
-        stdout = output[0]
-        stderr = output[1]
+        # results
         return_code = process.returncode
+        self.resultsOutput(return_code, verbose)
 
+        # return output
+        if(setReturn):
+            if(return_code > 0):
+                print(stderr)
+            return stdout
+
+    def outputFilter(self, output, command, verbose):
+        # show full output
+        if(verbose):
+            self.message_queue.put(output)
+            return
+
+        outputif = output.lower()
+
+        # warning and errors
+        if('warning:' in outputif or 'in function' in outputif or
+                'in file' in outputif or 'error:' in outputif or '^' in outputif):
+            if('^' in outputif):
+                output = self.previous + output
+            self.message_queue.put(output)
+
+        if('warning:' in outputif):
+            self.show_warning = True
+
+        if('error:' in outputif):
+            self.show_error = True
+
+        # realtime output for build command
+        if('run' in command and '-e' in command and not 'upload'):
+            if('installing' in outputif):
+                package = re.match(r"\w+ (\w+\W?\w+?)\s", output).group(1)
+                self.message_queue.put('install_package_{0}', package)
+
+        if('already' in outputif):
+            package = re.match(r"\w+ (\w+\W?\w+?)\s", self.previous).group(1)
+            self.message_queue.put('already_installed{0}', package)
+
+        if('downloading' in outputif.strip() and outputif != self.previous):
+            message = 'downloading_package{0}' if 'lib' not in command else 'download_lib'
+            package = re.match(r"\w+ (\w+\W?\w+?)\s", self.previous).group(1)
+
+            if(self.down_string and 'lib' in command and 'install' in command):
+                message = 'download_dependece'
+            self.message_queue.put(message, package)
+            self.down_string = True
+
+        if('unpacking' in outputif and outputif.replace(" ", "") and
+                outputif.replace(" ", "") != self.previous):
+            self.message_queue.put('unpacking')
+
+    def resultsOutput(self, return_code, verbose):
         # set error
         if(return_code > 0):
             self.error_running = True
 
         current_time = time.strftime('%H:%M:%S')
-        diff_time = time.time() - start_time
+        diff_time = time.time() - self.start_time
         diff_time = '{0:.2f}'.format(diff_time)
         self.status_bar = ""
 
         # Print success status
         if(self.console and not verbose and
-                return_code == 0 and not show_warning):
+                return_code == 0 and not self.show_warning):
             if(self.type_build):
                 message = 'success_took_{0}{1}'
             else:
@@ -157,13 +176,13 @@ class CommandsPy(object):
             self.message_queue.put(message, current_time, diff_time)
 
         # output warning
-        if(show_warning and not show_error):
+        if(self.show_warning and not self.show_error):
             self.status_bar = _('success_warnings')
             message = 'success_warnings_took__{0}{1}'
             self.message_queue.put(message, current_time, diff_time)
 
         # output error
-        if(show_error):
+        if(self.show_error):
             self.status_bar = _('error')
             message = 'error_took_{0}{1}'
             self.message_queue.put(message, current_time, diff_time)
@@ -172,16 +191,6 @@ class CommandsPy(object):
         if self.status_bar:
             self.status_erase_time = 5000
             sublime.set_timeout(self.setStatus, 0)
-
-        # print full verbose output (when is active)
-        if(verbose):
-            self.message_queue.put(stdout)
-            if(stderr):
-                self.message_queue.put(stderr)
-
-        # return output
-        if(setReturn):
-            return stdout
 
     def getTypeAction(self, command):
         """
