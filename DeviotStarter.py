@@ -537,6 +537,16 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
         return Preferences().get('verbose_output', False)
 
 
+class RemoveUserFilesCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        confirm = sublime.ok_cancel_dialog(
+            _('confirm_del_pref'), _('continue'))
+
+        if(confirm):
+            Tools.removePreferences()
+
+
 class KeepTempFilesCommand(sublime_plugin.WindowCommand):
     """
     When is select avoid to remove the cache from the temporal folder.

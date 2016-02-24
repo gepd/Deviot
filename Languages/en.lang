@@ -135,6 +135,9 @@ msgstr "Update Board List"
 msgid "menu_show_verbose"
 msgstr "Full Verbose Output When Build"
 
+msgid "menu_remove_user_files"
+msgstr "Remove Preferences Files"
+
 msgid "menu_keep_temp_files"
 msgstr "Keep Temp Files"
 
@@ -207,6 +210,12 @@ msgstr "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
 
 msgid "error_took_{0}{1}"
 msgstr "{0} ERROR | it took {1}s\n"
+
+msgid "continue"
+msgstr "Continue"
+
+msgid "confirm_del_pref"
+msgstr "After this, you will need to restart Sublime Text. Do you want to continue?"
 
 msgid "success"
 msgstr "Success"

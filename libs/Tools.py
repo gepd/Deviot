@@ -516,3 +516,18 @@ def updateMenuLibs():
 
     Menu().createLibraryImportMenu()
     Menu().createLibraryExamplesMenu()
+
+
+def removePreferences():
+    from shutil import rmtree
+    try:
+        from . import Paths
+    except:
+        from libs import Paths
+
+    user_path = Paths.getDeviotUserPath()
+    main_menu = Paths.getSublimeMenuPath()
+
+    # remove files
+    rmtree(user_path, ignore_errors=False)
+    os.remove(main_menu)

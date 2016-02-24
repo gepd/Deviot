@@ -136,6 +136,9 @@ msgstr "Actualizar Lista de Placas"
 msgid "menu_show_verbose"
 msgstr "Salida Detallada al Compilar"
 
+msgid "menu_remove_user_files"
+msgstr "Eliminar Archivos de Preferencias"
+
 msgid "menu_keep_temp_files"
 msgstr "Mantener Archivos Temporales"
 
@@ -208,6 +211,12 @@ msgstr "{0} ÉXITO pero con ADVERTENCIA(s) | Demoró {1}s\n"
 
 msgid "error_took_{0}{1}"
 msgstr "{0} ERROR | Demoró {1}s\n"
+
+msgid "continue"
+msgstr "Continuar"
+
+msgid "confirm_del_pref"
+msgstr "Después de esto, necesitarás reiniciar Sublime Text. Deseas Continuar?"
 
 msgid "success"
 msgstr "Éxito"

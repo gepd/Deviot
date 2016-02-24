@@ -254,6 +254,10 @@
                                 },
                                 {"caption": "-"},
                                 {
+                                    "caption":"menu_remove_user_files",
+                                    "command":"remove_user_files"
+                                },
+                                {
                                     "caption":"menu_keep_temp_files",
                                     "checkbox":true,
                                     "command":"keep_temp_files"
