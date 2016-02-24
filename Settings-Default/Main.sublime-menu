@@ -58,18 +58,21 @@
             }
         ]
     },{
-        "id": "deviot",
+        "id": "deviot"
     },{
-        "caption": "-",
+        "caption": "-"
     },{
         "caption": "✔",
         "command": "build_sketch"
     },{
-        "caption": "📥",
+        "caption": "📤",
         "command": "upload_sketch"
     },{
-        "caption": "✖",
-        "command": "clean_sketch"
+        "caption": "📺",
+        "command": "serial_monitor_run"
+    },{
+        "caption": "📝",
+        "command": "send_message_serial"
     },{
         "caption": "🔻",
         "command": "hide_console"
