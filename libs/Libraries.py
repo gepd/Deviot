@@ -168,7 +168,7 @@ class Libraries:
         lib_name = list[selected][0]
 
         self.message_queue.startPrint()
-        self.message_queue.put('[ Deviot ]\\n')
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
         time.sleep(0.01)
 
         # Install Library with CLI
@@ -237,8 +237,12 @@ class Libraries:
         lib_id = list[selected][2]
         lib_name = list[selected][0]
 
+        self.message_queue.startPrint()
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
+        time.sleep(0.01)
+
         # uninstall Library with CLI
-        command = ['lib', 'uninstall %s' % lib_id]
+        command = ['lib', 'uninstall', lib_id]
         self.Commands.runCommand(command, extra_message=lib_name)
 
         # remove from preferences

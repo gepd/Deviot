@@ -12,6 +12,7 @@ import tempfile
 import sublime
 import subprocess
 from shutil import rmtree
+from re import match
 
 try:
     from urllib.request import Request
@@ -128,7 +129,7 @@ class PioInstall(object):
 
         # install virtualenv in a temp dir
         current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("{0} Installing Platformio...\n", current_time)
+        self.message_queue.put("installing_pio{0}", current_time)
 
         temp_env = os.path.join(tmp, 'env-root')
         cwd = os.path.join(tmp, 'virtualenv-14.0.1')
@@ -204,7 +205,6 @@ def childProcess(command, cwd=None):
 
     output = process.communicate()
     stdout = output[0]
-    stderr = output[1]
     return_code = process.returncode
 
     return (return_code, stdout)
