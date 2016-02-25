@@ -86,7 +86,7 @@ class PioInstall(object):
         if(out[0] == 0):
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("pio_is_installed{0}", current_time)
-            
+
             self.endSetup()
             return
 
@@ -141,7 +141,11 @@ class PioInstall(object):
         childProcess(cmd, cwd)
 
         # make vitualenv
-        cwd = os.path.join(tmp, 'env-root', 'Python27', 'Lib', 'site-packages')
+        for root, dirs, files in os.walk(tmp):
+            for file in files:
+                if(file == 'virtualenv.py'):
+                    cwd = root
+
         if(os.path.exists(cwd)):
             cmd = ['python', 'virtualenv.py', '\"' + self.env_dir + '\"']
             childProcess(cmd, cwd)
@@ -155,7 +159,8 @@ class PioInstall(object):
         childProcess(cmd)
 
         # get pio version
-        cmd = ['pio', '--version']
+        executable = os.path.join(self.env_bin_dir, 'pio')
+        cmd = ['\"' + executable + '\"', '--version']
         out = childProcess(cmd)
 
         pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
