@@ -155,6 +155,14 @@ def getLibraryPath():
 def getPioLibrary():
     user_path = os.path.expanduser('~')
     pio_lib = os.path.join(user_path, '.platformio', 'lib')
+
+    try:
+        os.makedirs(pio_lib)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
     return pio_lib
 
 
