@@ -18,8 +18,14 @@
         "keys": ["alt+k", "alt+t"],
         "command": "keep_temp_files"
     },{
+        "keys": ["alt+r", "alt+f"],
+        "command": "remove_user_files"
+    },{
         "keys": ["alt+l", "alt+s"],
         "command": "search_library"
+    },{
+        "keys": ["alt+o", "alt+l"],
+        "command": "open_library_folder"
     },{
         "keys": ["alt+l", "alt+r"],
         "command": "remove_library"
@@ -29,5 +35,14 @@
     },{
         "keys": ["alt+s", "alt+m"],
         "command": "send_message_serial"
+    },{
+        "keys": ["alt+u", "alt+p"],
+        "command": "upgrade_pio"
+    },{
+        "keys": ["alt+o", "alt+b"],
+        "command": "open_build_folder"
+    },{
+        "keys": ["alt+c", "alt+b"],
+        "command": "change_build_folder"
     }
 ]
