@@ -99,7 +99,15 @@ def setStatus(view, text=False, erase_time=0, key=False):
 
     info = []
     if(is_iot and not erase_time):
-        info = __title__ + ' v' + str(__version__)
+
+        try:
+            from .Preferences import Preferences
+        except:
+            from libs.Preferences import Preferences
+
+        pio_version = Preferences().get('pio_version', 0)
+
+        info = '%s v%s | Pio v%s' % (__title__, str(__version__), pio_version)
         view.set_status('_deviot_version', info)
 
     if(text and erase_time):
@@ -188,22 +196,26 @@ def getSystemLang():
     return sys_language[:2]
 
 
-def getPlatformioError(error):
-    """
-    Extracts descriptive error lines and removes all the
-    unnecessary information
+def getDefaultPaths():
+    if(getOsName() == 'windows'):
+        default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
+    else:
+        default_path = ["/usr/bin", "/usr/local/bin"]
+    return default_path
 
-    Arguments:
-        error {string} -- Full error log gets from platformIO
-                          ecosystem
-    """
-    str_error = ""
-    for line in error.split('\n'):
-        if(line and "processing" not in line.lower() and
-                "pioenvs" not in line.lower() and
-                "took" not in line.lower()):
-            str_error += line + '\n'
-    return str_error
+
+def getHeaders():
+    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (__version__,
+                                                  sublime.version())
+    headers = {'User-Agent': user_agent}
+    return headers
+
+
+def extractTar(tar_path, extract_path='.'):
+    import tarfile
+    tar = tarfile.open(tar_path, 'r:gz')
+    for item in tar:
+        tar.extract(item, extract_path)
 
 
 def toggleSerialMonitor(window=None):
@@ -443,7 +455,7 @@ def addLibraryToSketch(view, edit, lib_path):
 
     region = sublime.Region(0, view.size())
     src_text = view.substr(region)
-    headers = list_headers_from_src(src_text)
+    headers = listHeadersFromSrc(src_text)
 
     h_files = []
     sub_files = glob.glob(lib_path)
@@ -465,7 +477,7 @@ def addLibraryToSketch(view, edit, lib_path):
     view.insert(edit, position, text)
 
 
-def list_headers_from_src(src_text):
+def listHeadersFromSrc(src_text):
     """
     Gets the library header(s)  already included in the sketch
 
@@ -494,3 +506,31 @@ def openExample(path, window):
     for file in files:
         if '.ino' in file:
             window.open_file(file)
+
+
+def updateMenuLibs():
+    try:
+        from .Menu import Menu
+    except:
+        from libs.Menu import Menu
+
+    Menu().createLibraryImportMenu()
+    Menu().createLibraryExamplesMenu()
+
+
+def removePreferences():
+    from shutil import rmtree
+    try:
+        from . import Paths
+    except:
+        from libs import Paths
+
+    plug_path = Paths.getPluginPath()
+    dst = os.path.join(plug_path, 'Settings-Default', 'Main.sublime-menu')
+    user_path = Paths.getDeviotUserPath()
+    main_menu = Paths.getSublimeMenuPath()
+
+    # remove files
+    rmtree(user_path, ignore_errors=False)
+    os.remove(main_menu)
+    os.remove(dst)

@@ -37,12 +37,8 @@
                 "id": "library_options",
                 "children": [
                                 {
-                                    "caption":"menu_open_user_lib_folder",
-                                    "command":"open_user_library_folder"
-                                },
-                                {
-                                    "caption":"menu_change_user_lib_path",
-                                    "command":"manually_library"
+                                    "caption":"menu_open_lib_folder",
+                                    "command":"open_library_folder"
                                 }
                             ]
             },
@@ -243,16 +239,36 @@
                 "id":"options",
                 "children": [
                                 {
+                                    "caption":"menu_upgrade_pio",
+                                    "command":"upgrade_pio"
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"menu_update_board_list",
+                                    "command":"update_board_list"
+                                },
+                                {
                                     "caption":"menu_show_verbose",
                                     "checkbox":true,
                                     "command":"toggle_verbose"
-                                },{
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"menu_remove_user_files",
+                                    "command":"remove_user_files"
+                                },
+                                {
                                     "caption":"menu_keep_temp_files",
                                     "checkbox":true,
                                     "command":"keep_temp_files"
-                                },{
-                                    "caption":"menu_update_board_list",
-                                    "command":"update_board_list"
+                                },
+                                {
+                                    "caption":"menu_open_build_folder",
+                                    "command":"open_build_folder"
+                                },
+                                {
+                                    "caption":"menu_change_build_folder",
+                                    "command":"change_build_folder"
                                 }
                             ]
             },{
@@ -260,8 +276,22 @@
                 "id":"language",
                 "children": []
             },{
-                "caption": "menu_about_deviot",
-                "command": "about_deviot"
+                "caption": "menu_donate_deviot",
+                "command": "donate_deviot"
+            },{
+                "caption": "menu_about",
+                "id": "menu_about",
+                "children": [                        
+                                {
+                                    "caption": "menu_about_deviot",
+                                    "command": "about_deviot"
+                                },
+                                {
+                                    "caption": "menu_about_pio",
+                                    "command": "about_pio"
+                                }
+
+                            ]
             }
         ]
     }

@@ -13,10 +13,11 @@ import sublime
 import threading
 
 try:
-    from . import __version__ as version
+
     from . import Paths
     from . import Tools
     from . import Messages
+    from . import __version__ as version
     from .JSONFile import JSONFile
     from .Preferences import Preferences
     from .Progress import ThreadProgress
@@ -26,8 +27,8 @@ try:
 except:
     import libs.Paths as Paths
     import libs.Tools as Tools
-    from libs import __version__ as version
     from libs import Messages
+    from libs import __version__ as version
     from libs.JSONFile import JSONFile
     from libs.Preferences import Preferences
     from libs.Progress import ThreadProgress
@@ -167,15 +168,17 @@ class Libraries:
         lib_name = list[selected][0]
 
         self.message_queue.startPrint()
-        self.message_queue.put('[ Deviot ]\\n')
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
         time.sleep(0.01)
 
         # Install Library with CLI
-        command = ['lib', 'install %s' % lib_id]
+        command = ['lib', 'install', lib_id]
         self.Commands.runCommand(command, extra_message=lib_name)
 
         # update list of libraries installed in the preference file
         self.getInstalledList(ids=True)
+        # update menu
+        Tools.updateMenuLibs()
 
     def installedList(self):
         """
@@ -193,7 +196,7 @@ class Libraries:
         stores the data in a json file and run a command to show the
         quick panel with all the data founded
         """
-        command = ['lib', 'list --json-output']
+        command = ['lib', 'list', '--json-output']
         Commands = CommandsPy()
         output = Commands.runCommand(command, setReturn=True)
         output = json.loads(output)
@@ -236,8 +239,12 @@ class Libraries:
         lib_id = list[selected][2]
         lib_name = list[selected][0]
 
+        self.message_queue.startPrint()
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
+        time.sleep(0.01)
+
         # uninstall Library with CLI
-        command = ['lib', 'uninstall %s' % lib_id]
+        command = ['lib', 'uninstall', lib_id]
         self.Commands.runCommand(command, extra_message=lib_name)
 
         # remove from preferences
@@ -248,6 +255,9 @@ class Libraries:
                     self.Preferences.data.setdefault(
                         'user_libraries', []).remove(lib_id)
                     self.Preferences.saveData()
+
+        # update menu
+        Tools.updateMenuLibs()
 
     def saveLibraryData(self, data, file_name):
         """

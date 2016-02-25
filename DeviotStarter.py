@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
@@ -7,10 +7,11 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import glob
 import time
 import sublime
-import glob
 import sublime_plugin
+import threading
 from shutil import rmtree
 
 try:
@@ -24,6 +25,8 @@ try:
     from .libs.I18n import I18n
     from .libs import Serial
     from .libs import Messages
+    from .libs.Progress import ThreadProgress
+    from .libs.Install import PioInstall
 except:
     from libs import Paths
     from libs import Tools
@@ -36,8 +39,33 @@ except:
     from libs.I18n import I18n
     from libs import Serial
     from libs import Messages
+    from libs.Progress import ThreadProgress
+    from libs.Install import PioInstall
 
 _ = I18n().translate
+
+
+def plugin_loaded():
+    protected = Preferences().get('protected')
+    if(not protected):
+        thread = threading.Thread(target=PioInstall().checkPio)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
+    else:
+        # creating files
+        Tools.createCompletions()
+        Tools.createSyntaxFile()
+        Menu().createMainMenu()
+        Menu().createLibraryImportMenu()
+        Menu().createLibraryExamplesMenu()
+
+        # Run serial port listener
+        Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
+        Serial_Lib.start()
+
+# for ST2
+if(int(sublime.version()) < 3000):
+    sublime.set_timeout(plugin_loaded, 300)
 
 
 class DeviotListener(sublime_plugin.EventListener):
@@ -45,20 +73,6 @@ class DeviotListener(sublime_plugin.EventListener):
     This is the first class to run when the plugin is excecuted
     Extends: sublime_plugin.EventListener
     """
-
-    def __init__(self):
-        """
-        Checks if platformIO is installed
-        """
-        if(not PlatformioCLI().platformioCheck()):
-            return None
-
-        Tools.createCompletions()
-        Tools.createSyntaxFile()
-        Menu().createLibraryImportMenu()
-        Menu().createLibraryExamplesMenu()
-
-        super(DeviotListener, self).__init__()
 
     def on_activated(self, view):
         """
@@ -97,7 +111,7 @@ class DeviotListener(sublime_plugin.EventListener):
         if(not file_path):
             return
         file_name = Tools.getFileNameFromPath(file_path, ext=False)
-        tmp_path = Paths.getDeviotTmpPath()
+        tmp_path = Paths.getTempPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
 
@@ -138,7 +152,7 @@ class CheckRequirementsCommand(sublime_plugin.TextCommand):
         PlatformioCLI(view, console, True).platformioCheck()
 
 
-class SelectBoardCommand(sublime_plugin.WindowCommand):
+class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
     """
     This class trigger two methods to know what board(s)
     were chosen and to store it in a preference file.
@@ -280,7 +294,7 @@ class OpenExampleCommand(sublime_plugin.WindowCommand):
         Tools.openExample(example_path, self.window)
 
 
-class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
+class OpenLibraryFolderCommand(sublime_plugin.TextCommand):
     """
     Open a new window where the user libreries must be installed
 
@@ -288,20 +302,9 @@ class OpenUserLibraryFolderCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        library = Paths.getUserLibraryPath()
+        library = Paths.getPioLibrary()
         url = Paths.getOpenFolderPath(library)
         sublime.run_command('open_url', {'url': url})
-
-
-class ManuallyLibrary(sublime_plugin.WindowCommand):
-    """
-    Open a window to change where the user libreries must be installed
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        Paths.selectDir(self.window, key='lib_dir', func=Preferences().set)
 
 
 class BuildSketchCommand(sublime_plugin.TextCommand):
@@ -405,7 +408,7 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, result):
         if(result != -1):
-            result = (result if result != 0 else False)
+            result = (result if result != 0 else '')
             Preferences().set('ip_port', result)
             Menu().createSerialPortsMenu()
 
@@ -497,6 +500,27 @@ class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
         return display_mode_item == target_display_mode
 
 
+class UpgradePioCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        view = self.view
+        console_name = 'Deviot|Upgrade' + str(time.time())
+        console = Console(view.window(), name=console_name)
+        PlatformioCLI(view, console, install=True).openInThread('upgrade')
+
+
+class UpdateBoardListCommand(sublime_plugin.WindowCommand):
+    """
+    Update the board list, extracting the info from platformIO
+    ecosystem
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu)
+
+
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
     """
     Saves the verbose output option selected by the user in the
@@ -513,16 +537,14 @@ class ToggleVerboseCommand(sublime_plugin.WindowCommand):
         return Preferences().get('verbose_output', False)
 
 
-class UpdateBoardListCommand(sublime_plugin.WindowCommand):
-    """
-    Update the board list, extracting the info from platformIO
-    ecosystem
-
-    Extends: sublime_plugin.WindowCommand
-    """
+class RemoveUserFilesCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu())
+        confirm = sublime.ok_cancel_dialog(
+            _('confirm_del_pref'), _('continue'))
+
+        if(confirm):
+            Tools.removePreferences()
 
 
 class KeepTempFilesCommand(sublime_plugin.WindowCommand):
@@ -540,6 +562,25 @@ class KeepTempFilesCommand(sublime_plugin.WindowCommand):
         return Preferences().get('keep_cache', False)
 
 
+class OpenBuildFolderCommand(sublime_plugin.TextCommand):
+    """
+    Open a new window where the user libreries must be installed
+
+    Extends: sublime_plugin.TextCommand
+    """
+
+    def run(self, edit):
+        temp = Paths.getTempPath()
+        url = Paths.getOpenFolderPath(temp)
+        sublime.run_command('open_url', {'url': url})
+
+
+class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
+
+
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
     def run(self, id_lang):
@@ -548,6 +589,17 @@ class SelectLanguageCommand(sublime_plugin.WindowCommand):
     def is_checked(self, id_lang):
         saved_id_lang = Preferences().get('id_lang')
         return saved_id_lang == id_lang
+
+
+class DonateDeviotCommand(sublime_plugin.WindowCommand):
+    """
+    Show the Deviot github site.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        sublime.run_command('open_url', {'url': 'https://goo.gl/LqdDrC'})
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
@@ -559,6 +611,17 @@ class AboutDeviotCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         sublime.run_command('open_url', {'url': 'https://goo.gl/c41EXS'})
+
+
+class AboutPioCommand(sublime_plugin.WindowCommand):
+    """
+    Show the Deviot github site.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        sublime.run_command('open_url', {'url': 'http://goo.gl/66BHnk'})
 
 
 class AddStatusCommand(sublime_plugin.TextCommand):

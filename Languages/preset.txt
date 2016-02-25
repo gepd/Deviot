@@ -10,34 +10,37 @@
 
 # Setup Process
 
-msgid "menu_one_install_platformio"
+msgid "deviot_need_python"
 msgstr ""
 
-msgid "menu_two_set_env_path"
+msgid "button_download_python"
 msgstr ""
 
-msgid "menu_check_again"
+msgid "deviot_setup{0}"
 msgstr ""
 
-msgid "ask_set_env_path"
+msgid "pio_is_installed{0}"
 msgstr ""
 
-msgid "upgrade_plaformio"
+msgid "pio_isn_installed{0}"
 msgstr ""
 
-msgid "checking_requirements_{0}"
+msgid "downloading_files{0}"
 msgstr ""
 
-msgid "error_platformio_not_installed_{0}"
+msgid "error_downloading_files{0}"
 msgstr ""
 
-msgid "need_upgrade_platformio_{0}"
+msgid "error_saving_files{0}"
 msgstr ""
 
-msgid "platformio_detected_{0}"
+msgid "extracting_files{0}"
 msgstr ""
 
-msgid "platformio_install_done_{0}"
+msgid "installing_pio{0}"
+msgstr ""
+
+msgid "setup_finished{0}"
 msgstr ""
 
 

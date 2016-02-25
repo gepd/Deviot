@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import os
 import json
 import glob
+from re import search
 
 try:
     from . import Serial, Paths
@@ -62,7 +63,7 @@ class Menu(object):
                 if('name' in infokey):
                     temp_info = {}
                     temp_info['caption'] = infovalue
-                    temp_info['command'] = 'select_board'
+                    temp_info['command'] = 'deviot_select_board'
                     temp_info['checkbox'] = True
                     temp_info['args'] = {'board_id': datakey}
                     children = vendors.setdefault(vendor, [])
@@ -191,7 +192,10 @@ class Menu(object):
                 libs = glob.glob(sub)
                 for lib in libs:
                     caption = os.path.basename(os.path.dirname(lib))
-                    if os.path.isdir(lib) and 'examples' in lib:
+                    new_caption = search(r"^(\w+)_ID?", caption)
+                    if(new_caption is not None):
+                        caption = new_caption.group(1)
+                    if os.path.isdir(lib) and os.listdir(lib) and 'examples' in lib:
                         file_examples = os.path.join(lib, '*')
                         file_examples = glob.glob(file_examples)
                         for file in file_examples:
@@ -206,6 +210,7 @@ class Menu(object):
                         temp_info['children'] = children
                         examples.append(temp_info)
                         children = []
+            examples.append({'caption': '-'})
 
         # get preset
         menu_lib_example = self.getTemplateMenu(file_name='examples.json')
@@ -221,9 +226,9 @@ class Menu(object):
         Creates a menu list with all serial ports available
         '''
         port_list = Serial.listSerialPorts()
-        ip_port = Preferences().get('ip_port', 0)
+        ip_port = Preferences().get('ip_port', '')
 
-        if(ip_port != "0"):
+        if(ip_port):
             port_list.insert(0, ip_port)
 
         menu_preset = self.getTemplateMenu(file_name='serial.json')

@@ -9,32 +9,41 @@
         "keys": ["ctrl+shift+c"],
         "command": "clean_sketch"
     },{
-        "keys": ["ctrl+shift+v"],
+        "keys": ["alt+shift+v"],
         "command": "toggle_verbose"
     },{
-        "keys": ["ctrl+alt+u"],
+        "keys": ["alt+shift+u"],
         "command": "update_board_list"
     },{
-        "keys": ["ctrl+shift+k"],
+        "keys": ["alt+shift+k"],
         "command": "keep_temp_files"
+    },{
+        "keys": ["alt+shift+r"],
+        "command": "remove_user_files"
     },{
         "keys": ["ctrl+shift+s"],
         "command": "search_library"
     },{
+        "keys": ["alt+shift+l"],
+        "command": "open_library_folder"
+    },{
         "keys": ["ctrl+shift+r"],
         "command": "remove_library"
     },{
-        "keys": ["alt+s", "alt+r"],
+        "keys": ["ctrl+alt+r"],
         "command": "serial_monitor_run"
     },{
-        "keys": ["alt+s", "alt+m"],
+        "keys": ["ctrl+alt+s"],
         "command": "send_message_serial"
     },{
-        "keys": ["alt+shift+r"],
-        "command": "serial_monitor_run"
+        "keys": ["alt+shift+p"],
+        "command": "upgrade_pio"
     },{
-        "keys": ["alt+shift+m"],
-        "command": "send_message_serial"
+        "keys": ["alt+shift+b"],
+        "command": "open_build_folder"
+    },{
+        "keys": ["alt+shift+c"],
+        "command": "change_build_folder"
     }
 
 ]

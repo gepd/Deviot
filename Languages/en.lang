@@ -6,36 +6,41 @@
 
 # Setup Process
 
-msgid "menu_one_install_platformio"
-msgstr "1 Install PlatformIO"
+msgid "deviot_need_python"
+msgstr "Deviot need Python 2.7 to work, please download and install it"
 
-msgid "menu_two_set_env_path"
-msgstr "2 Set Environment PATH"
+msgid "button_download_python"
+msgstr "Download Python"
 
-msgid "menu_check_again"
-msgstr "Check again"
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Setup\n"
 
-msgid "ask_set_env_path"
-msgstr "SET-YOUR-ENVIRONMENT-PATH"
+msgid "pio_is_installed{0}"
+msgstr "{0} Platformio is installed in your system, you can enjoy Deviot now!"
 
-msgid "upgrade_plaformio"
-msgstr "Upgrade PlatformIO"
+msgid "pio_isn_installed{0}"
+msgstr "{0} Platformio is not installed\nPreparing to installing it, please be patient it may take a while.\n"
 
-msgid "checking_requirements_{0}"
-msgstr "{0} Checking requirements...\n"
+msgid "downloading_files{0}"
+msgstr "{0} Downloading necessary files...\n"
 
-msgid "error_platformio_not_installed_{0}"
-msgstr "{0} Platformio is not installed or it's installed in a custom path.\nPlease set your path in the preferences file from ST Menu > Deviot > Set Environment PATH"
+msgid "error_downloading_files{0}"
+msgstr "{0} There was an error downloading the necessary files...\n"
 
-msgid "need_upgrade_platformio_{0}"
-msgstr "{0} You need to update platformIO"
+msgid "error_saving_files{0}"
+msgstr "{0} There was an error saving the necessary files...\n"
 
-msgid "platformio_detected_{0}"
-msgstr "{0} PlatformIO has been detected, please wait...\n"
+msgid "extracting_files{0}"
+msgstr "{0} Extracting files...\n"
 
-msgid "platformio_install_done_{0}"
-msgstr "{0} All done, you can code now!"
+msgid "installing_pio{0}"
+msgstr "{0} Installing Platformio...\n"
 
+msgid "setup_finished{0}"
+msgstr "{0} Installation finished, now you can enjoy Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Searching Platformio Upgrades...\n\n"
 
 # Menu
 
@@ -61,8 +66,8 @@ msgstr "Examples"
 msgid "menu_option_lib"
 msgstr "Library Options"
 
-msgid "menu_open_user_lib_folder"
-msgstr "Open User Libraries Folder"
+msgid "menu_open_lib_folder"
+msgstr "Open Libraries Folder"
 
 msgid "menu_change_user_lib_path"
 msgstr "Change Folder Library Path"
@@ -121,20 +126,41 @@ msgstr "Text"
 msgid "menu_option"
 msgstr "Option"
 
-msgid "menu_show_verbose"
-msgstr "Show Verbose Output"
+msgid "menu_upgrade_pio"
+msgstr "Upgrade Platformio"
 
 msgid "menu_update_board_list"
 msgstr "Update Board List"
 
+msgid "menu_show_verbose"
+msgstr "Full Verbose Output When Build"
+
+msgid "menu_remove_user_files"
+msgstr "Remove Preferences Files"
+
 msgid "menu_keep_temp_files"
 msgstr "Keep Temp Files"
+
+msgid "menu_open_build_folder"
+msgstr "Open Build Folder"
+
+msgid "menu_change_build_folder"
+msgstr "Change Build Folder"
 
 msgid "menu_languages"
 msgstr "Language"
 
+msgid "menu_donate_deviot"
+msgstr "❤ Donate"
+
+msgid "menu_about"
+msgstr "About"
+
 msgid "menu_about_deviot"
 msgstr "About Deviot"
+
+msgid "menu_about_pio"
+msgstr "About Platformio"
 
 
 # Mensajes y errores
@@ -185,6 +211,12 @@ msgstr "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
 msgid "error_took_{0}{1}"
 msgstr "{0} ERROR | it took {1}s\n"
 
+msgid "continue"
+msgstr "Continue"
+
+msgid "confirm_del_pref"
+msgstr "After this, you will need to restart Sublime Text. Do you want to continue?"
+
 msgid "success"
 msgstr "Success"
 
@@ -219,6 +251,9 @@ msgstr "{0} Installing Library {1} | "
 msgid "uninstalling_lib_{0}{1}"
 msgstr "{0} Uninstalling Library {1} | "
 
+msgid "download_lib"
+msgstr "Downloading...\n"
+
 msgid "searching"
 msgstr "Searching"
 
@@ -228,11 +263,11 @@ msgstr "Installing"
 msgid "install_package_{0}"
 msgstr "\nInstalling {0} package: "
 
-msgid "already_installed"
-msgstr "Already installed\n"
+msgid "already_installed{0}"
+msgstr "{0} already installed\n"
 
-msgid "downloading_package"
-msgstr "Downloading package\n\nIt may take a while, please be patient.\n"
+msgid "downloading_package{0}"
+msgstr "Downloading package {0}\n\nIt may take a while, please be patient.\n"
 
 msgid "unpacking"
 msgstr "Unpacking...\n"

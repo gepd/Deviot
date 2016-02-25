@@ -7,11 +7,11 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
-import re
 import time
 import json
 import threading
 import sublime
+from re import compile, match
 
 try:
     from collections import OrderedDict
@@ -26,6 +26,7 @@ try:
     from .Menu import Menu
     from .I18n import I18n
     from .Progress import ThreadProgress
+    from . import __version__ as version
 except:
     import libs.Paths as Paths
     import libs.Tools as Tools
@@ -39,6 +40,7 @@ except:
     from libs.Menu import Menu
     from libs.I18n import I18n
     from libs.Progress import ThreadProgress
+    from libs import __version__ as version
 
 _ = I18n().translate
 
@@ -73,6 +75,7 @@ class PlatformioCLI(CommandsPy):
 
         # For installing purposes
         if(install):
+            self.Commands = CommandsPy(console=console)
             return
 
         self.view = view
@@ -122,8 +125,9 @@ class PlatformioCLI(CommandsPy):
                 current_time = time.strftime('%H:%M:%S')
                 msg = 'not_iot_{0}{1}'
                 if(not file_name):
-                    msg = '{0} Isn\'t possible to upload an empty sketch\\n'
+                    msg = 'not_empty_sketch_{0}'
                 self.message_queue.put(msg, current_time, file_name)
+                self.execute = False
                 return
 
             if(not command and not self.is_iot):
@@ -139,16 +143,19 @@ class PlatformioCLI(CommandsPy):
 
             # set native paths
             if(not self.is_native):
-                tmp_path = Paths.getDeviotTmpPath(temp_name)
+                build_dir = self.Preferences.get('build_dir', False)
+                if(not build_dir):
+                    build_dir = Paths.getTempPath(temp_name)
                 self.src = current_dir
-                self.dir = tmp_path
+                self.dir = build_dir
 
             # unsaved changes
             if (command and view.is_dirty()):
                 view.run_command('save')
 
             if(console):
-                self.message_queue.put('[ Deviot ] {0}\\n', file_name)
+                self.message_queue.put(
+                    '[ Deviot {0} ] {1}\\n', version, file_name)
                 time.sleep(0.02)
 
             # Initilized commands
@@ -174,9 +181,8 @@ class PlatformioCLI(CommandsPy):
         if(not self.is_native):
             self.Preferences.set('native', False)
             self.Preferences.set('ini_path', self.dir)
-            if(not os.path.isfile(ini_path)):
-                self.Menu.createEnvironmentMenu(empty=True)
-                return
+            self.Menu.createEnvironmentMenu()
+            return
         else:
             self.Preferences.set('native', True)
             self.Preferences.set('ini_path', self.dir)
@@ -248,71 +254,6 @@ class PlatformioCLI(CommandsPy):
                     new_file.write("\n%s\n" % header)
                     new_file.write("src_dir=%s\n" % src_dir)
 
-    def overrideLib(self):
-        """
-        Adds in the platformio.ini file, the path of the libraries folder,
-        it can be the folder assigned by the system or the folder chosen
-        by the user
-        """
-        str_header = '[platformio]'
-        buffer = ""
-        write_file = False
-        write_header = True
-        header = False
-        found = False
-
-        ini_path = Paths.getFullIniPath(self.dir)
-        lib_dir = Paths.getUserLibraryPath()
-        user_lib_dir = self.Preferences.get('lib_dir', False)
-
-        if(user_lib_dir):
-            lib_dir = user_lib_dir
-
-        with open(ini_path) as file:
-            for line in file:
-                # save lines not in [platformio]
-                if not header:
-                    buffer += line
-
-                # [platformio] found
-                if str_header in line:
-                    header = True
-                    write_header = False
-
-                # search inside [platformio]
-                if header:
-                    line = line.strip()
-                    if line and 'lib_dir' not in line and str_header not in line:
-                        buffer += line + '\n'
-                    if 'lib_dir' in line:
-                        found = True
-                        compare = 'lib_dir=' + lib_dir
-                        if compare != line:
-                            buffer += "lib_dir=%s\n" % lib_dir
-                            write_file = True
-                        else:
-                            buffer += line
-
-                    if header and not line and not found and not write_file:
-                        buffer += "lib_dir=%s\n" % lib_dir
-                        write_file = True
-
-                    if not line:
-                        buffer += '\n\n'
-                        header = False
-
-            # check if thre is something to add
-            if not found and not write_file:
-                if write_header:
-                    buffer += "\n%s\n" % str_header
-                buffer += "lib_dir=%s\n" % lib_dir
-                write_file = True
-
-        # write the file if is necessary
-        if(write_file):
-            with open(ini_path, 'w') as new_file:
-                new_file.write(buffer)
-
     def initSketchProject(self, chosen):
         '''
         command to initialize the board(s) selected by the user. This
@@ -368,7 +309,6 @@ class PlatformioCLI(CommandsPy):
 
         # initialize the sketch
         self.initSketchProject(choosen_env)
-        self.overrideLib()
 
         if(self.Commands.error_running):
             self.message_queue.stopPrint()
@@ -450,6 +390,24 @@ class PlatformioCLI(CommandsPy):
             self.Preferences.set('builded_sketch', False)
         self.message_queue.stopPrint()
 
+    def upgradePio(self):
+
+        self.message_queue.put('[ Deviot {0} ]\\n', version)
+        self.message_queue.put('searching_pio_updates', version)
+
+        command = ['upgrade']
+        self.Commands.runCommand(command, verbose=True)
+
+        command = ['--version']
+        out = self.Commands.runCommand(command, verbose=True, setReturn=True)
+
+        if(out):
+            pio_version = match(r"\w+\W \w+ (.+)", out).group(1)
+            self.Preferences.set('pio_version', pio_version)
+
+        self.saveAPIBoards()
+        self.Menu.createMainMenu()
+
     def openInThread(self, type, chosen=False):
         """
         Opens each action; build/upload/clean in a new thread
@@ -467,6 +425,9 @@ class PlatformioCLI(CommandsPy):
         elif (type == 'upload'):
             action_thread = threading.Thread(target=self.uploadSketchProject)
             action_thread.start()
+        elif(type == 'upgrade'):
+            action_thread = threading.Thread(target=self.upgradePio)
+            action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
             action_thread.start()
@@ -481,7 +442,7 @@ class PlatformioCLI(CommandsPy):
         """
         ext = '.ino'
 
-        tmp_path = Paths.getDeviotTmpPath()
+        tmp_path = Paths.getTempPath()
         file_name = str(time.time()).split('.')[0]
         file_path = os.path.join(tmp_path, file_name)
         file_path = os.path.join(file_path, 'src')
@@ -502,125 +463,6 @@ class PlatformioCLI(CommandsPy):
 
         return (True, view)
 
-    def platformioCheck(self):
-        '''
-        Check if is possible to run a platformIO command
-        if isn't, get the env_path value set by the user,
-        from the preferences file and tries to run it again
-        '''
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put(
-                "checking_requirements_{0}", current_time)
-        except:
-            pass
-
-        # default paths
-        if(Tools.getOsName() == 'windows'):
-            default_path = ["C:\Python27", "C:\Python27\Scripts"]
-        else:
-            default_path = ["/usr/bin", "/usr/local/bin"]
-
-        # paths from user preferences file
-        user_env_path = self.Preferences.get('env_path', False)
-        if(user_env_path):
-            for path in reversed(user_env_path.split(os.path.pathsep)):
-                if(os.path.isabs(path)):
-                    default_path.insert(0, path)
-
-        # Joining system environment paths and default paths
-        system_paths = os.environ.get("PATH", "").split(os.path.pathsep)
-        for path in system_paths:
-            default_path.append(path)
-        default_path = list(OrderedDict.fromkeys(default_path))
-        env_path = os.path.pathsep.join(default_path)
-
-        command = ['--version']
-
-        Run = CommandsPy(env_path=env_path)
-        version = Run.runCommand(command, setReturn=True)
-        version = re.sub(r'\D', '', version)
-        version = version if version != '' else 0
-
-        if(Run.error_running or version == 0):
-            # translate menu
-            temp_menu = self.Menu.getTemplateMenu('Install-menu-preset')
-            for item in temp_menu[0]['children']:
-                item['caption'] = _(item['caption'])
-            self.Menu.saveSublimeMenu(temp_menu)
-
-            # console feedback
-            try:
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    'error_platformio_not_installed_{0}', current_time)
-                time.sleep(0.01)
-            except:
-                pass
-
-            # Preferences instructions
-            if(not user_env_path):
-                self.Preferences.set('env_path', _('ask_set_env_path'))
-            return False
-
-        # Check the minimum version
-        if(not Run.error_running and int(version) <= 270):
-            # Update menu
-            temp_menu = self.Menu.getSublimeMenu()
-            status = _('upgrade_plaformio')
-            temp_menu[0]['children'][0]['caption'] = status
-            temp_menu[0]['children'][1] = 0
-            temp_menu[0]['children'][3]['caption'] = _("Check again")
-            self.Menu.saveSublimeMenu(temp_menu)
-
-            # console feedback
-            try:
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    'need_upgrade_platformio_{0}', current_time)
-                time.sleep(0.01)
-            except:
-                pass
-
-            return False
-
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('platformio_detected_{0}', current_time)
-        except:
-            pass
-
-        # save user preferences
-        protected = self.Preferences.get('protected', False)
-        if(not protected):
-            self.Preferences.set('env_path', env_path)
-            self.Preferences.set('protected', True)
-            self.Preferences.set('enable_menu', True)
-            self.env_path = Preferences().get('env_path', False)
-
-        # Creates new menu
-        api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
-                                               user_path=True)
-
-        if(not os.path.exists(api_boards)):
-            self.saveAPIBoards()
-        self.Menu.createMainMenu()
-
-        # Run serial port listener
-        Serial = SerialListener(func=self.Menu.createSerialPortsMenu)
-        Serial.start()
-
-        # console feedback
-        try:
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('platformio_install_done_{0}', current_time)
-        except:
-            pass
-
-        return True
-
     def getAPIBoards(self):
         '''
         Get the list of boards from platformIO API using CLI.
@@ -630,7 +472,7 @@ class PlatformioCLI(CommandsPy):
         '''
         window = sublime.active_window()
         view = window.active_view()
-        Tools.setStatus(view, _('updating_board_list'), display=True)
+        Tools.setStatus(view, _('updating_board_list'))
 
         boards = []
         Run = CommandsPy()
@@ -691,3 +533,22 @@ class PlatformioCLI(CommandsPy):
         # Save board list
         self.Menu.saveTemplateMenu(
             boards_list, 'env_boards.json', user_path=True)
+
+
+def generateFiles():
+    # Creates new menu
+    api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
+                                           user_path=True)
+    # create main files
+    if(not os.path.exists(api_boards)):
+        PlatformioCLI().saveAPIBoards()
+    Menu().createMainMenu()
+
+    Tools.createCompletions()
+    Tools.createSyntaxFile()
+    Menu().createLibraryImportMenu()
+    Menu().createLibraryExamplesMenu()
+
+    # Run serial port listener
+    Serial = SerialListener(func=Menu().createSerialPortsMenu)
+    Serial.start()
