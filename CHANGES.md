@@ -1,5 +1,21 @@
 # Deviot Release Notes
-### Version 1.0 | 04 Feb 2016
+### Version 1.1.0 | 25 Feb 2016
+* New Auto-install platformio
+* New icon shortcuts (Windows, Linux Only)
+* New menu option "Show Build Folder"
+* New menu option "Change Build Folder"
+* New menu option "Remove Prefences Files"
+* New menu option "Donate"
+* New menu option "About Platformio"
+* New menu option "Upgrade Platformio"
+* Reorganized menu "options"
+* Bug fixes showing messages in the user console
+* Bug fix to avoid display empty examples folder in the library menu
+* Bug fix when installing a library manually and it not being recognized
+* Bug fix to show selected environments when a sketch hasn't a platformio.ini file
+* Other minor bugs fixed
+
+### Version 1.0.0 | 04 Feb 2016
 * New import library menu option
 * New library examples menu option
 * New Option to hide the build/upload/clean status console
@@ -39,7 +55,7 @@
 * Fixed bug showing errors in serial console
 * Fixed bug showing library manager in ST2
 
-### Version 1.3 BETA | 19 Jan 2016
+### Version 0.3 BETA | 19 Jan 2016
 * New library manager based on the platformIO API and CLI
 * New option to keep temp files
 * New recognition of platformio.ini file in Deviot menu
@@ -48,14 +64,14 @@
 * Fixed order bug in env_var at setup
 * Fixed multiples minor bugs
 
-### Version 1.2 BETA | 08 Jan 2016
+### Version 0.2 BETA | 08 Jan 2016
 * Added Multi project recognition (platformIO, Arduino style)
 * Added Language(s)
 * Improved path environment configuration
 * Improved order in plugin files
 * Minor bug fixed in ST2
 
-### Version 0.1.0 BETA | 27 Dec 2015
+### Version 0.1 BETA | 27 Dec 2015
 * New instructions when platformio isn't installed
 * New Option to set the environment path
 * New port serial handled with pyserial
