@@ -1,7 +1,7 @@
 # Deviot Release Notes
 ### Version 1.1.0 | 25 Feb 2016
 * New Auto-install platformio
-* New icon shortcuts (Windows, Linux Only)
+* New icon shortcuts (Windows, OSX Only)
 * New menu option "Show Build Folder"
 * New menu option "Change Build Folder"
 * New menu option "Remove Prefences Files"
