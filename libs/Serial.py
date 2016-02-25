@@ -43,6 +43,7 @@ class SerialListener(object):
             self.is_alive = True
             listener_thread = threading.Thread(target=self.update)
             listener_thread.start()
+        self.func()
 
     def update(self):
         while self.is_alive:
