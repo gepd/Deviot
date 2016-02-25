@@ -7,11 +7,11 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
-import re
 import time
 import json
 import threading
 import sublime
+from re import compile, match
 
 try:
     from collections import OrderedDict
@@ -397,6 +397,13 @@ class PlatformioCLI(CommandsPy):
 
         command = ['upgrade']
         self.Commands.runCommand(command, verbose=True)
+
+        command = ['--version']
+        out = self.Commands.runCommand(command, verbose=True, setReturn=True)
+
+        if(out):
+            pio_version = match(r"\w+\W \w+ (.+)", out).group(1)
+            self.Preferences.set('pio_version', pio_version)
 
         self.saveAPIBoards()
         self.Menu.createMainMenu()
