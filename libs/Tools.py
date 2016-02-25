@@ -525,9 +525,12 @@ def removePreferences():
     except:
         from libs import Paths
 
+    plug_path = Paths.getPluginPath()
+    dst = os.path.join(plug_path, 'Settings-Default', 'Main.sublime-menu')
     user_path = Paths.getDeviotUserPath()
     main_menu = Paths.getSublimeMenuPath()
 
     # remove files
     rmtree(user_path, ignore_errors=False)
     os.remove(main_menu)
+    os.remove(dst)

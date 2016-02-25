@@ -11,7 +11,7 @@ import time
 import tempfile
 import sublime
 import subprocess
-from shutil import rmtree
+from shutil import rmtree, copy
 from re import match
 
 try:
@@ -203,6 +203,22 @@ class PioInstall(object):
         # save env paths
         env_path = [self.env_bin_dir]
         self.saveEnvPaths(env_path)
+
+        # copy menu
+        sys_os = Tools.getOsName()
+        preset_path = Paths.getPresetPath()
+        plg_path = Paths.getPluginPath()
+        dst = os.path.join(plg_path, 'Settings-Default', 'Main.sublime-menu')
+
+        if(sys_os == 'windows'):
+            src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
+            copy(src_path, dst)
+        elif(sys_os == 'osx'):
+            src_path = os.path.join(preset_path, 'Main.sublime-menu.osx')
+            copy(src_path, dst)
+        else:
+            src_path = os.path.join(preset_path, 'Main.sublime-menu.linux')
+            copy(src_path, dst)
 
         # creating files (menu, completions, syntax)
         generateFiles()
