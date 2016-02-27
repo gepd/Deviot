@@ -6,6 +6,12 @@
         "children":
         [            
             {
+                "caption": "menu_new_sketch",
+                "id": "menu_new_sketch",
+                "command": "deviot_new_sketch"
+            },
+            {"caption": "-"},
+            {
                 "caption": "menu_select_boards",
                 "id": "select_board",
                 "children":[]
@@ -15,7 +21,7 @@
                 "id": "environment",
                 "children":[]
             },
-           {"caption": "-"},
+            {"caption": "-"},
             {
                 "caption": "menu_search_lib",
                 "id": "search_library",
@@ -269,6 +275,10 @@
                                 {
                                     "caption":"menu_change_build_folder",
                                     "command":"change_build_folder"
+                                },
+                                {
+                                    "caption":"menu_use_cpp_new",
+                                    "command":"use_cpp_template"
                                 }
                             ]
             },{

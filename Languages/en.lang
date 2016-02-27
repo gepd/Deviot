@@ -44,6 +44,8 @@ msgstr "Searching Platformio Upgrades...\n\n"
 
 # Menu
 
+msgid "menu_new_sketch"
+msgstr "New Sketch"
 
 msgid "menu_select_boards"
 msgstr "Select board(s)"
@@ -147,6 +149,9 @@ msgstr "Open Build Folder"
 msgid "menu_change_build_folder"
 msgstr "Change Build Folder"
 
+msgid "menu_use_cpp_new"
+msgstr "Use CPP File on New File"
+
 msgid "menu_languages"
 msgstr "Language"
 
@@ -165,6 +170,8 @@ msgstr "About Platformio"
 
 # Mensajes y errores
 
+msgid "caption_new_sketch"
+msgstr "Name for New Sketch:"
 
 msgid "updating_board_list"
 msgstr "Updating Board Lists"

@@ -125,32 +125,15 @@ class DeviotListener(sublime_plugin.EventListener):
         Menu().createEnvironmentMenu(empty=True)
 
 
-class PlatformioInstallCommand(sublime_plugin.WindowCommand):
-    """
-        This command send the user to a website with platformio install
-        instructions
-
-        Extends: sublime_plugin.WindowCommand
-    """
+class DeviotNewSketchCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        sublime.run_command('open_url', {'url': 'http://goo.gl/66BHnk'})
+        caption = _('caption_new_sketch')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
 
-
-class CheckRequirementsCommand(sublime_plugin.TextCommand):
-    """
-        Check the if minimum requirements has been established
-        detailed information in libs/PlatformioCLI.py
-
-        Extends: sublime_plugin.TextCommand
-    """
-
-    def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Check' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console, True).platformioCheck()
-
+    def on_done(self, sketch_name):
+        Paths.selectDir(self.window, key=sketch_name, func=Tools.createSketch)
+        
 
 class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
     """
@@ -580,6 +563,13 @@ class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
     def run(self):
         Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
 
+class UseCppTemplate(sublime_plugin.WindowCommand):
+    def run(self):
+        keep = Preferences().get('use_cpp', False)
+        Preferences().set('use_cpp', not keep)
+
+    def is_checked(self):
+        return Preferences().get('use_cpp', False)
 
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 

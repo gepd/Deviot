@@ -45,6 +45,8 @@ msgstr "Buscando Actualizaciones de Platformio...\n\n"
 
 # Menu
 
+msgid "menu_new_sketch"
+msgstr "Nuevo Sketch"
 
 msgid "menu_select_boards"
 msgstr "Selecciona Una/Multiples Placa(s)"
@@ -148,6 +150,9 @@ msgstr "Abrir Carpeta de Compilación"
 msgid "menu_change_build_folder"
 msgstr "Cambiar Carpeta de Compilación"
 
+msgid "menu_use_cpp_new"
+msgstr "Usar CPP con Nuevo Archivo"
+
 msgid "menu_languages"
 msgstr "Idioma"
 
@@ -166,6 +171,8 @@ msgstr "Acerca de Platformio"
 
 # Mensajes y errores
 
+msgid "caption_new_sketch"
+msgstr "Nombre para el Sketch:"
 
 msgid "updating_board_list"
 msgstr "Actualizando Lista de Placas"

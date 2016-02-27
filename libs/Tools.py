@@ -195,6 +195,47 @@ def getSystemLang():
         sys_language = sys_language.lower()
     return sys_language[:2]
 
+def createSketch(sketch_name, path):
+    try:
+        from . import Paths
+        from .Preferences import Preferences
+    except:
+        from libs import Paths
+        from libs.Preferences import Preferences
+
+    # file path
+    sketch_path = os.path.join(path, sketch_name)
+    if not os.path.exists(sketch_path):
+        os.makedirs(sketch_path)
+
+    # use cpp file/template intead of ino
+    cpp = Preferences().get('use_cpp', False)
+    if cpp:
+        ext = '.cpp'
+    else:
+        ext = '.ino'
+
+    # get template
+    template_file_name = 'template' + ext
+    preset_path = Paths.getPresetPath()
+    template_file_path = os.path.join(preset_path, template_file_name)
+    with open(template_file_path) as file:
+        src_code = file.read()
+    src_file_name = sketch_name + ext
+    src_file_path = os.path.join(sketch_path, src_file_name)
+
+    # save new file
+    with open(src_file_path, 'w') as src_file:
+        src_code = src_code.replace('${src_file_name}', src_file_name)
+        src_file.write(src_code)
+
+    # open new file
+    window = sublime.active_window()
+    view = window.open_file(src_file_path)
+    views.append(view)
+    if views:
+        window.focus_view(views[0])
+
 
 def getDefaultPaths():
     if(getOsName() == 'windows'):
