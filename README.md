@@ -1,4 +1,4 @@
-English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/setup-es.md)
+English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/README-es.md)
 
 # Deviot
 **Deviot** is a plugin based in [stino](https://github.com/Robot-Will/Stino) for Sublime Text 2 & 3 to IoT development using [PlatformIO](http://platformio.org/) ecosystem and supporting **~200** boards!

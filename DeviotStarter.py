@@ -44,6 +44,8 @@ except:
 
 _ = I18n().translate
 
+package_name = 'Deviot'
+
 
 def plugin_loaded():
     protected = Preferences().get('protected')
@@ -63,9 +65,20 @@ def plugin_loaded():
         Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
         Serial_Lib.start()
 
-# for ST2
+
+def plugin_unloaded():
+    try:
+        from package_control import events
+
+        if events.remove(package_name):
+            Tools.removePreferences()
+    except:
+        pass
+
+# Compat with ST2
 if(int(sublime.version()) < 3000):
     sublime.set_timeout(plugin_loaded, 300)
+    unload_handler = plugin_unloaded
 
 
 class DeviotListener(sublime_plugin.EventListener):
@@ -133,7 +146,7 @@ class DeviotNewSketchCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, sketch_name):
         Paths.selectDir(self.window, key=sketch_name, func=Tools.createSketch)
-        
+
 
 class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
     """
@@ -563,13 +576,16 @@ class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
     def run(self):
         Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
 
+
 class UseCppTemplate(sublime_plugin.WindowCommand):
+
     def run(self):
         keep = Preferences().get('use_cpp', False)
         Preferences().set('use_cpp', not keep)
 
     def is_checked(self):
         return Preferences().get('use_cpp', False)
+
 
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
