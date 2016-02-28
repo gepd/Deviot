@@ -121,13 +121,15 @@ class CommandsPy(object):
         outputif = output.lower()
 
         # warning and errors
-        if('warning:' in outputif or 'in function' in outputif or
-                'in file' in outputif or 'error:' in outputif or '^' in outputif):
+        if('warning:' in outputif and 'cygwin' not in outputif or
+                'in function' in outputif or 'in file' in outputif or
+                'error:' in outputif or '^' in outputif):
+
             if('^' in outputif):
                 output = self.previous + output
             self.message_queue.put(output)
 
-        if('warning:' in outputif):
+        if('warning:' in outputif and 'cygwin' not in outputif):
             self.show_warning = True
 
         if('error:' in outputif):
