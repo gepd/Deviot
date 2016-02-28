@@ -21,7 +21,7 @@ Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para 
 4. ¡Hecho!
 
 ##### Barra de Shortcuts
-![Shortcut bar](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.gif?raw=true)
+![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
 
 1. Compilar
 2. Cargar

@@ -21,12 +21,12 @@ English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/setup-es.md
 4. Done!
 
 ##### Shortcuts Bar
-![Shortcut bar](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.gif?raw=true)
+![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
 
 1. Build
 2. Upload
 3. Start Monitor Serial
-4. Send Text Throgh the Port Serial
+4. Send Text Through the Port Serial
 5. Hide Message Console
 
 ##### Other Features
