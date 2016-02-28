@@ -1,4 +1,10 @@
 # Deviot Release Notes
+### Version 1.1.2 | 28 Feb 2016
+* New option menu "New Sketch"
+* New option menu "Use CPP File on New File"
+* Bug fix false warning at uploading a firmware
+* Minor language string fix
+
 ### Version 1.1.0 | 25 Feb 2016
 * New Auto-install platformio
 * New icon shortcuts (Windows, OSX Only)
