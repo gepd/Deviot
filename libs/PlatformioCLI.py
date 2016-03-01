@@ -190,11 +190,11 @@ class PlatformioCLI(CommandsPy):
         # get data from platformio.ini file
         ini_list = []
         with open(ini_path, 'r') as file:
-            pattern = re.compile(r'\[(\w+)\W(\w+)\]')
+            pattern = compile(r'\[(\w+)\W(\w+)\]')
             for line in file:
                 if pattern.findall(line):
                     if('#' not in line):
-                        line = re.match(r"\[\w+:(\w+)\]", line).group(1)
+                        line = match(r"\[\w+:(\w+)\]", line).group(1)
                         ini_list.append(line)
 
         # save preferences, update menu data
