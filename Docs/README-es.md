@@ -1,7 +1,7 @@
 [English](https://github.com/gepd/Deviot/blob/master/README.md) | Español
 
 # Deviot
-Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 2 & 3 en el que puedes desarrollar aplicaciones para el IoT, usa el ecosistema [platformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
+Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 2 & 3 en el que puedes desarrollar aplicaciones para el IoT, usa el ecosistema [PlatformIO](http://platformio.org/) que soporta ¡más de **~200** placas!
 
 ## Instalación
 

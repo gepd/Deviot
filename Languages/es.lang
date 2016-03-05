@@ -17,10 +17,10 @@ msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Instalación\n"
 
 msgid "pio_is_installed{0}"
-msgstr "{0} Platformio está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
+msgstr "{0} PlatformIO está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
 
 msgid "pio_isn_installed{0}"
-msgstr "{0} Platformio no está instalado\nPreparándose para instalarlo. Por favor sea paciente esto podría demorar un poco\n"
+msgstr "{0} PlatformIO no está instalado\nPreparándose para instalarlo. Por favor sea paciente esto podría demorar un poco\n"
 
 msgid "downloading_files{0}"
 msgstr "{0} Descargando archivos necesarios...\n"
@@ -35,13 +35,13 @@ msgid "extracting_files{0}"
 msgstr "{0} Extrayendo archivos...\n"
 
 msgid "installing_pio{0}"
-msgstr "{0} Instalando Platformio...\n"
+msgstr "{0} Instalando PlatformIO...\n"
 
 msgid "setup_finished{0}"
 msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
 
 msgid "searching_pio_updates"
-msgstr "Buscando Actualizaciones de Platformio...\n\n"
+msgstr "Buscando Actualizaciones de PlatformIO...\n\n"
 
 # Menu
 
@@ -130,7 +130,7 @@ msgid "menu_option"
 msgstr "Opciones"
 
 msgid "menu_upgrade_pio"
-msgstr "Actualizar Platformio"
+msgstr "Actualizar PlatformIO"
 
 msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"
@@ -166,7 +166,7 @@ msgid "menu_about_deviot"
 msgstr "Acerca de Deviot"
 
 msgid "menu_about_pio"
-msgstr "Acerca de Platformio"
+msgstr "Acerca de PlatformIO"
 
 
 # Mensajes y errores
