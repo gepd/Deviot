@@ -138,7 +138,13 @@ class PioInstall(object):
         temp_env = os.path.join(tmp, 'env-root')
         cwd = os.path.join(tmp, 'virtualenv-14.0.1')
         cmd = ['python', 'setup.py', 'install', '--root', temp_env]
-        childProcess(cmd, cwd)
+        out = childProcess(cmd, cwd)
+
+        # error
+        if(out[0] > 0):
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("error_installing_env_{0}", current_time)
+            return
 
         # make vitualenv
         for root, dirs, files in os.walk(tmp):
@@ -148,7 +154,13 @@ class PioInstall(object):
 
         if(os.path.exists(cwd)):
             cmd = ['python', 'virtualenv.py', '\"' + self.env_dir + '\"']
-            childProcess(cmd, cwd)
+            out = childProcess(cmd, cwd)
+
+            # error
+            if(out[0] > 0):
+                current_time = time.strftime('%H:%M:%S')
+                self.message_queue.put("error_making_env_{0}", current_time)
+                return
 
         # remove temp dir
         rmtree(tmp)
@@ -156,15 +168,13 @@ class PioInstall(object):
         # install pio
         executable = os.path.join(self.env_bin_dir, 'pip')
         cmd = ['\"' + executable + '\"', 'install', 'platformio']
-        childProcess(cmd)
-
-        # get pio version
-        executable = os.path.join(self.env_bin_dir, 'pio')
-        cmd = ['\"' + executable + '\"', '--version']
         out = childProcess(cmd)
 
-        pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
-        self.Preferences.set('pio_version', pio_version)
+        # error
+        if(out[0] > 0):
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("error_installing_pio_{0}", current_time)
+            return
 
         self.endSetup()
 
@@ -200,6 +210,14 @@ class PioInstall(object):
         self.Preferences.set('enable_menu', True)
 
     def endSetup(self):
+        # get pio version
+        executable = os.path.join(self.env_bin_dir, 'pio')
+        cmd = ['\"' + executable + '\"', '--version']
+        out = childProcess(cmd)
+
+        pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
+        self.Preferences.set('pio_version', pio_version)
+
         # save env paths
         env_path = [self.env_bin_dir]
         self.saveEnvPaths(env_path)

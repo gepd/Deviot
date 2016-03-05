@@ -201,6 +201,15 @@ msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
 msgid "none_env_select_{0}"
 msgstr "{0} Ningún entorno de desarrollo ha sido seleccionado\n"
 
+msgid "error_installing_env_{0}"
+msgstr "{0} Error Installing virtualenv\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} Error Creating the virtualenv\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} Error Installing PlatformIO\n"
+
 msgid "uploading_firmware_{0}"
 msgstr "{0} Cargando firmware | "
 

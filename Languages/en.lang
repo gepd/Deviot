@@ -200,6 +200,15 @@ msgstr "{0} None serial port selected\n"
 msgid "none_env_select_{0}"
 msgstr "{0} None environment selected\n"
 
+msgid "error_installing_env_{0}"
+msgstr "{0} Error Installing virtualenv\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} Error Creating the virtualenv\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} Error Installing PlatformIO\n"
+
 msgid "uploading_firmware_{0}"
 msgstr "{0} Uploading firmware | "
 
