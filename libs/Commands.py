@@ -16,10 +16,14 @@ try:
     from . import Messages
     from .Preferences import Preferences
     from .I18n import I18n
+    from .Paths import getEnvBinDir
+    from .Tools import getOsName
 except:
     from Libs import Messages
     from Libs.Preferences import Preferences
     from libs.I18n import I18n
+    from libs.Paths import getEnvBinDir
+    from libs.Tools import getOsName
 
 _ = I18n().translate
 
@@ -39,6 +43,8 @@ class CommandsPy(object):
         self.error_running = False
         self.console = console
         self.cwd = cwd
+        env_bin_dir = getEnvBinDir()
+        self.python = os.path.join(env_bin_dir, 'python')
 
         # env_path from preferences
         if(not env_path):
@@ -239,8 +245,12 @@ class CommandsPy(object):
                 '-e' in args and 'upload' not in args):
             args += ' -v --verbose'
 
-        command = "platformio -f -c sublimetext %s %s 2>&1" % (
-            options, args)
+        if(getOsName() == 'osx'):
+            command = '"%s" -m platformio -f -c sublimetext %s %s 2>&1' % (
+                self.python, options, args)
+        else:
+            command = "platformio -f -c sublimetext %s %s 2>&1" % (
+                options, args)
 
         return command
 
