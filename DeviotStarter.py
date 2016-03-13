@@ -627,7 +627,7 @@ class AboutPioCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        sublime.run_command('open_url', {'url': 'http://goo.gl/66BHnk'})
+        sublime.run_command('open_url', {'url': 'http://goo.gl/KiXeZL'})
 
 
 class AddStatusCommand(sublime_plugin.TextCommand):
