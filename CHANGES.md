@@ -1,4 +1,9 @@
 # Deviot Release Notes
+### Version 1.1.3 | 13 Mar 2016
+* Fixed error auto-installing platformio in OSX
+* Removed Shortcut icons from OSX
+* Others minor bugs fixed
+
 ### Version 1.1.2 | 28 Feb 2016
 * New option menu "New Sketch"
 * New option menu "Use CPP File on New File"
@@ -19,7 +24,7 @@
 * Bug fix to avoid display empty examples folder in the library menu
 * Bug fix when installing a library manually and it not being recognized
 * Bug fix to show selected environments when a sketch hasn't a platformio.ini file
-* Other minor bugs fixed
+* Others minor bugs fixed
 
 ### Version 1.0.0 | 04 Feb 2016
 * New import library menu option
@@ -30,7 +35,7 @@
 * New Add IP manually to work with OTA boards
 * New the selected COM port and environment is displayed in the status bar
 * Bug fix initializing a board from the menu option
-* Other minor bugs fixed
+* Others minor bugs fixed
 
 ### Version 0.4.2 BETA | 28 Jan 2016
 * New display mode Hex + Ascii in monitor serial
