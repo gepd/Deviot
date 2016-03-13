@@ -57,25 +57,5 @@
                 ]
             }
         ]
-    },{
-        "id": "deviot"
-    },{
-        "caption": "-"
-    },{
-        "caption": "✔",
-        "command": "build_sketch"
-    },{
-        "caption": "📤",
-        "command": "upload_sketch"
-    },{
-        "caption": "📺",
-        "command": "serial_monitor_run"
-    },{
-        "caption": "📝",
-        "command": "send_message_serial"
-    },{
-        "caption": "🔻",
-        "command": "hide_console"
     }
-
 ]
