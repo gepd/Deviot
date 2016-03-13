@@ -20,7 +20,7 @@ English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/README-es.m
 3. Build or upload your code
 4. Done!
 
-##### Shortcuts Bar
+##### Shortcuts Bar (Only in Windows)
 ![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
 
 1. Build

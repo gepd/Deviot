@@ -20,7 +20,7 @@ Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para 
 3. Compila o carga tu código
 4. ¡Hecho!
 
-##### Barra de Shortcuts
+##### Barra de Shortcuts (Sólo en Windows)
 ![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
 
 1. Compilar

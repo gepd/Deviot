@@ -48,6 +48,7 @@ class PioInstall(object):
         self.cache_dir = Paths.getCacheDir()
         self.env_file = Paths.getEnvFile()
         self.cached_file = False
+        self.os = Tools.getOsName()
 
         # console
         window = sublime.active_window()
@@ -80,7 +81,13 @@ class PioInstall(object):
         self.message_queue.put("deviot_setup{0}", version)
         current_time = time.strftime('%H:%M:%S')
 
-        cmd = ['pio', '--version']
+        # get pio version
+        if(self.os == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pio')
+            cmd = ['"%s"' % (executable), '--version']
         out = childProcess(cmd)
 
         if(out[0] == 0):
@@ -166,8 +173,12 @@ class PioInstall(object):
         rmtree(tmp)
 
         # install pio
-        executable = os.path.join(self.env_bin_dir, 'pip')
-        cmd = ['\"' + executable + '\"', 'install', 'platformio']
+        if(self.os == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['\"' + executable + '\"', '-m', 'pip', 'install', '-U', 'platformio']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pip')
+            cmd = ['\"' + executable + '\"', 'install', '-U', 'platformio']
         out = childProcess(cmd)
 
         # error
@@ -206,21 +217,24 @@ class PioInstall(object):
         paths = os.path.pathsep.join(paths)
 
         self.Preferences.set('env_path', paths)
-        self.Preferences.set('protected', True)
-        self.Preferences.set('enable_menu', True)
 
     def endSetup(self):
+        # save env paths
+        if(self.os != 'osx'):
+            env_path = [self.env_bin_dir]
+            self.saveEnvPaths(env_path)
+
         # get pio version
-        executable = os.path.join(self.env_bin_dir, 'pio')
-        cmd = ['\"' + executable + '\"', '--version']
+        if(self.os == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pio')
+            cmd = ['"%s"' % (executable), '--version']
         out = childProcess(cmd)
 
         pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
         self.Preferences.set('pio_version', pio_version)
-
-        # save env paths
-        env_path = [self.env_bin_dir]
-        self.saveEnvPaths(env_path)
 
         # copy menu
         sys_os = Tools.getOsName()
@@ -240,6 +254,9 @@ class PioInstall(object):
 
         # creating files (menu, completions, syntax)
         generateFiles()
+
+        self.Preferences.set('protected', True)
+        self.Preferences.set('enable_menu', True)
 
 
 def childProcess(command, cwd=None):
