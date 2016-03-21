@@ -46,6 +46,10 @@ class CommandsPy(object):
         env_bin_dir = getEnvBinDir()
         self.python = os.path.join(env_bin_dir, 'python')
 
+        # not use env vars in osx
+        if(getOsName() == 'osx'):
+            return
+
         # env_path from preferences
         if(not env_path):
             env_path = self.Preferences.get('env_path', False)

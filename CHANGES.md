@@ -1,4 +1,9 @@
 # Deviot Release Notes
+### Version 1.1.3.1 | 21 Mar 2016
+* Fixed error installing Pio in ST2 | issue #6
+* Minor changes in the about platformio links
+* Minor fix using pio in OSX
+
 ### Version 1.1.3 | 13 Mar 2016
 * Fixed error auto-installing platformio in OSX
 * Removed Shortcut icons from OSX
