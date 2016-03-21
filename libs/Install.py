@@ -253,7 +253,7 @@ class PioInstall(object):
             copy(src_path, dst)
 
         # creating files (menu, completions, syntax)
-        generateFiles()
+        sublime.set_timeout(generateFiles, 0)
 
         self.Preferences.set('protected', True)
         self.Preferences.set('enable_menu', True)
