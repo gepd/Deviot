@@ -1,3 +1,6 @@
+[![https://github.com/gepd/Deviot/blob/master/LICENCE](https://img.shields.io/badge/Licence-%20Apache%20Software%20License-green.svg)](https://github.com/gepd/Deviot/blob/master/LICENCE)
+[![https://gratipay.com/~gepd/](https://img.shields.io/donate/Deviot.png?color=yellow)](https://gratipay.com/~gepd/)
+
 English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/README-es.md)
 
 # Deviot
