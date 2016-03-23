@@ -25,6 +25,7 @@ try:
     from . import __version__ as version
     from .Preferences import Preferences
     from .PlatformioCLI import generateFiles
+    from .libs.I18n import I18n
 except:
     from urllib2 import Request
     from urllib2 import urlopen
@@ -36,7 +37,9 @@ except:
     from libs import __version__ as version
     from libs.Preferences import Preferences
     from libs.PlatformioCLI import generateFiles
+    from libs.I18n import I18n
 
+_ = I18n().translate
 
 class PioInstall(object):
 
@@ -70,7 +73,7 @@ class PioInstall(object):
         if(out[0] > 0):
             current_time = time.strftime('%H:%M:%S')
             go_to = sublime.ok_cancel_dialog(
-                "deviot_need_python", "button_download_python")
+                _("deviot_need_python"), _("button_download_python"))
             if(go_to):
                 sublime.run_command(
                     'open_url', {'url': 'https://www.python.org/downloads/'})
