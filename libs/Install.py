@@ -11,6 +11,7 @@ import time
 import tempfile
 import sublime
 import subprocess
+import platform
 from shutil import rmtree, copy
 from re import match
 
@@ -249,7 +250,10 @@ class PioInstall(object):
         dst = os.path.join(plg_path, 'Settings-Default', 'Main.sublime-menu')
 
         if(sys_os == 'windows'):
-            src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
+            if(platform.release() == '7'):
+                src_path = os.path.join(preset_path, 'Main.sublime-menu.w7')
+            else:    
+                src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
             copy(src_path, dst)
         elif(sys_os == 'osx'):
             src_path = os.path.join(preset_path, 'Main.sublime-menu.osx')
