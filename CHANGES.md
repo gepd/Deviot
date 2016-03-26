@@ -1,4 +1,9 @@
 # Deviot Release Notes
+### Version 1.1.5 | 26 Mar 2016
+* Fixed update PlatformIO option (Deviot > Options > Upgrade PlatformIO)
+* Fixed language strings when python is not installed
+* Changed shorcuts icons in Windows 7
+
 ### Version 1.1.4 | 21 Mar 2016
 * Fixed error installing Pio in ST2 | issue #6
 * Minor changes in the about platformio links
