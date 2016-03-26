@@ -65,16 +65,16 @@
         "caption": "✔",
         "command": "build_sketch"
     },{
-        "caption": "📤",
+        "caption": "⤴",
         "command": "upload_sketch"
     },{
-        "caption": "📺",
+        "caption": "➡",
         "command": "serial_monitor_run"
     },{
-        "caption": "📝",
+        "caption": "✏",
         "command": "send_message_serial"
     },{
-        "caption": "🔻",
+        "caption": "✖",
         "command": "hide_console"
     }
 

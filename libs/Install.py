@@ -11,6 +11,7 @@ import time
 import tempfile
 import sublime
 import subprocess
+import platform
 from shutil import rmtree, copy
 from re import match
 
@@ -24,7 +25,7 @@ try:
     from . import Messages
     from . import __version__ as version
     from .Preferences import Preferences
-    from .PlatformioCLI import generateFiles
+    from .I18n import I18n
 except:
     from urllib2 import Request
     from urllib2 import urlopen
@@ -35,8 +36,9 @@ except:
     from libs import Messages
     from libs import __version__ as version
     from libs.Preferences import Preferences
-    from libs.PlatformioCLI import generateFiles
+    from libs.I18n import I18n
 
+_ = I18n().translate
 
 class PioInstall(object):
 
@@ -70,7 +72,7 @@ class PioInstall(object):
         if(out[0] > 0):
             current_time = time.strftime('%H:%M:%S')
             go_to = sublime.ok_cancel_dialog(
-                "deviot_need_python", "button_download_python")
+                _("deviot_need_python"), _("button_download_python"))
             if(go_to):
                 sublime.run_command(
                     'open_url', {'url': 'https://www.python.org/downloads/'})
@@ -160,7 +162,7 @@ class PioInstall(object):
                     cwd = root
 
         if(os.path.exists(cwd)):
-            cmd = ['python', 'virtualenv.py', '\"' + self.env_dir + '\"']
+            cmd = ['python', 'virtualenv.py', '"%s"' % (self.env_dir)]
             out = childProcess(cmd, cwd)
 
             # error
@@ -175,10 +177,10 @@ class PioInstall(object):
         # install pio
         if(self.os == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['\"' + executable + '\"', '-m', 'pip', 'install', '-U', 'platformio']
+            cmd = ['"%s"' % (executable), '-m', 'pip', 'install', '-U', 'platformio']
         else:
             executable = os.path.join(self.env_bin_dir, 'pip')
-            cmd = ['\"' + executable + '\"', 'install', '-U', 'platformio']
+            cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
         out = childProcess(cmd)
 
         # error
@@ -219,6 +221,11 @@ class PioInstall(object):
         self.Preferences.set('env_path', paths)
 
     def endSetup(self):
+        try:
+            from .PlatformioCLI import generateFiles
+        except:
+            from libs.PlatformioCLI import generateFiles
+
         # save env paths
         if(self.os != 'osx'):
             env_path = [self.env_bin_dir]
@@ -243,7 +250,10 @@ class PioInstall(object):
         dst = os.path.join(plg_path, 'Settings-Default', 'Main.sublime-menu')
 
         if(sys_os == 'windows'):
-            src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
+            if(platform.release() == '7'):
+                src_path = os.path.join(preset_path, 'Main.sublime-menu.w7')
+            else:    
+                src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
             copy(src_path, dst)
         elif(sys_os == 'osx'):
             src_path = os.path.join(preset_path, 'Main.sublime-menu.osx')
@@ -258,6 +268,48 @@ class PioInstall(object):
         self.Preferences.set('protected', True)
         self.Preferences.set('enable_menu', True)
 
+    def checkUpdate(self):
+        self.message_queue.startPrint()
+        self.message_queue.put('_deviot_{0}', version)
+        self.message_queue.put('checking_pio_updates')
+        
+        # try to update
+        if(self.os == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'pip', 'install', '-U', 'platformio']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pip')
+            cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
+        out = childProcess(cmd)
+
+        # error updating
+        if(out[0] > 0):
+            self.message_queue.put('error_pio_updates')
+            return
+
+        # get version
+        if(self.os == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pio')
+            cmd = ['"%s"' % (executable), '--version']
+        out = childProcess(cmd)
+
+        pio_old_ver = self.Preferences.get('pio_version', 0)
+        pio_new_ver = match(r"\w+\W \w+ (.+)", out[1]).group(1)
+
+        # pio up to date
+        if(pio_new_ver == pio_old_ver):
+            self.message_queue.put('pio_up_date{0}', pio_new_ver)
+            self.Preferences.set('pio_version', pio_new_ver)
+            return
+        # pio update installed
+        elif(pio_new_ver > pio_old_ver):
+            self.message_queue.put('pio_new_updated_installed{0}', pio_new_ver)
+            self.Preferences.set('pio_version', pio_new_ver)
+            return
+
 
 def childProcess(command, cwd=None):
     command.append("2>&1")
@@ -269,5 +321,8 @@ def childProcess(command, cwd=None):
     output = process.communicate()
     stdout = output[0]
     return_code = process.returncode
+
+    if(return_code > 0):
+        print(stdout)
 
     return (return_code, stdout)

@@ -171,6 +171,21 @@ msgstr "Acerca de PlatformIO"
 
 # Mensajes y errores
 
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "checking_pio_updates"
+msgstr "Buscando actualizaciones de PlatformIO...\n"
+
+msgid "error_pio_updates"
+msgstr "Ocurrió un error actualizando PlatformIO\n"
+
+msgid "pio_up_date{0}"
+msgstr "Tienes instalada la última versión de PlatformIO ({0})\n"
+
+msgid "pio_new_updated_installed{0}"
+msgstr "Una nueva version fue encontrada e instalada ({0})\n"
+
 msgid "caption_new_sketch"
 msgstr "Nombre para el Sketch:"
 
