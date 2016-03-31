@@ -514,7 +514,7 @@ class UpdateBoardListCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI().saveAPIBoards(update_method=Menu().createMainMenu)
+        PlatformioCLI(install=True).openInThread('update_boards')
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
