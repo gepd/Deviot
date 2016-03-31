@@ -185,6 +185,12 @@ msgstr "PlatformIO is up to date ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "A new version was found and installed ({0})\n"
 
+msgid "download_board_list"
+msgstr "Downloading board list\n"
+
+msgid "list_updated"
+msgstr "List updated!\n"
+
 msgid "caption_new_sketch"
 msgstr "Name for New Sketch:"
 

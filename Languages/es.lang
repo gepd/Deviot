@@ -186,6 +186,12 @@ msgstr "Tienes instalada la última versión de PlatformIO ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "Una nueva version fue encontrada e instalada ({0})\n"
 
+msgid "download_board_list"
+msgstr "Descargando lista de placas\n"
+
+msgid "list_updated"
+msgstr "¡Lista actualizada!\n"
+
 msgid "caption_new_sketch"
 msgstr "Nombre para el Sketch:"
 
