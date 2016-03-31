@@ -158,10 +158,18 @@ class Menu(object):
                 # get library name from json file
                 pio_libs = os.path.join('platformio', 'lib')
                 if pio_libs in library:
+
+                    # get library json details
                     library_json = os.path.join(library, 'library.json')
+                    if (not os.path.exists(library_json)):
+                        library_json = os.path.join(
+                            library, 'library.properties')
+
+                    # when there´s json content, read it
                     json = JSONFile(library_json)
                     json = json.getData()
-                    caption = json['name']
+                    if (json != {}):
+                        caption = json['name']
 
                 if caption not in added_lib and '__cores__' not in caption:
                     temp_info = {}
