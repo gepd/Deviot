@@ -180,7 +180,7 @@
                                 "checkbox": true
                             },
                             {
-                                "caption": "menu_nline",
+                                "caption": "menu_new_line",
                                 "id": "line_ending_new",
                                 "command": "choose_line_ending_item",
                                 "args": {"line_ending_item": "\n"},
