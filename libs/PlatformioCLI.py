@@ -334,6 +334,18 @@ class PlatformioCLI(CommandsPy):
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
         '''
+        id_port = self.Preferences.get('id_port', '')
+        current_ports = listSerialPorts()
+
+        if(id_port not in current_ports):
+            id_port = False
+
+        # check port selected
+        if(not id_port):
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put('none_port_select_{0}', current_time)
+            self.execute = False
+
         if(not self.execute):
             self.message_queue.stopPrint()
             return
@@ -348,18 +360,6 @@ class PlatformioCLI(CommandsPy):
 
         if(self.Commands.error_running):
             self.message_queue.stopPrint()
-            return
-
-        id_port = self.Preferences.get('id_port', '')
-        current_ports = listSerialPorts()
-
-        if(id_port not in current_ports):
-            id_port = False
-
-        # check port selected
-        if(not id_port):
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('none_port_select_{0}', current_time)
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
