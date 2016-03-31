@@ -161,13 +161,14 @@ class Menu(object):
 
                     # get library json details
                     library_json = os.path.join(library, 'library.json')
-                    if (os.path.exists(library_json) == False):
-                        library_json = os.path.join(library, 'library.properties')
+                    if (not os.path.exists(library_json)):
+                        library_json = os.path.join(
+                            library, 'library.properties')
 
                     # when there´s json content, read it
                     json = JSONFile(library_json)
                     json = json.getData()
-                    if (json != {} ):
+                    if (json != {}):
                         caption = json['name']
 
                 if caption not in added_lib and '__cores__' not in caption:

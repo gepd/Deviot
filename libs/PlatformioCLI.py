@@ -18,6 +18,7 @@ try:
     from .Commands import CommandsPy
     from . import Paths
     from . import Tools
+    from .Messages import Console
     from .Messages import MessageQueue
     from .Serial import SerialListener
     from .Serial import listSerialPorts
@@ -27,12 +28,14 @@ try:
     from .I18n import I18n
     from .Progress import ThreadProgress
     from . import __version__ as version
+    from .Install import PioInstall
 except:
     import libs.Paths as Paths
     import libs.Tools as Tools
-    from libs.OrderedDict import OrderedDict
-    from libs.Commands import CommandsPy
+    from libs.Messages import Console
     from libs.Messages import MessageQueue
+    from libs.OrderedDict import OrderedDict
+    from libs.Commands import CommandsPy    
     from libs.Serial import SerialListener
     from libs.Serial import listSerialPorts
     from libs.Preferences import Preferences
@@ -41,6 +44,7 @@ except:
     from libs.I18n import I18n
     from libs.Progress import ThreadProgress
     from libs import __version__ as version
+    from libs.Install import PioInstall
 
 _ = I18n().translate
 
@@ -330,6 +334,18 @@ class PlatformioCLI(CommandsPy):
         Upload the sketch to the select board to the select COM port
         it returns an error if any com port is selected
         '''
+        id_port = self.Preferences.get('id_port', '')
+        current_ports = listSerialPorts()
+
+        if(id_port not in current_ports):
+            id_port = False
+
+        # check port selected
+        if(not id_port):
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put('none_port_select_{0}', current_time)
+            self.execute = False
+
         if(not self.execute):
             self.message_queue.stopPrint()
             return
@@ -344,18 +360,6 @@ class PlatformioCLI(CommandsPy):
 
         if(self.Commands.error_running):
             self.message_queue.stopPrint()
-            return
-
-        id_port = self.Preferences.get('id_port', '')
-        current_ports = listSerialPorts()
-
-        if(id_port not in current_ports):
-            id_port = False
-
-        # check port selected
-        if(not id_port):
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put('none_port_select_{0}', current_time)
             return
 
         command = ['run', '-t upload --upload-port %s -e %s' %
@@ -409,6 +413,9 @@ class PlatformioCLI(CommandsPy):
             action_thread.start()
         elif(type == 'upgrade'):
             action_thread = threading.Thread(target=PioInstall().checkUpdate)
+            action_thread.start()
+        elif(type == 'update_boards'):
+            action_thread = threading.Thread(target=PlatformioCLI().saveAPIBoards)
             action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
@@ -470,15 +477,33 @@ class PlatformioCLI(CommandsPy):
         '''
         Save the JSON object in a specific JSON file
         '''
+        try:
+            from .Menu import Menu
+        except:
+            from libs.Menu import Menu
 
+        window = sublime.active_window()
+        view = window.active_view()
+        Tools.setStatus(view, _('updating_board_list'))
+
+        # console
+        console_name = 'Deviot|GetBoards' + str(time.time())
+        console = Console(window, name=console_name)
+
+        # Queue for the user console
+        message_queue = MessageQueue(console)
+        message_queue.startPrint()
+        message_queue.put("[Deviot {0}]\n", version)
+        
+        message_queue.put("download_board_list")        
         boards = self.getAPIBoards()
 
         self.Menu.saveTemplateMenu(
             data=boards, file_name='platformio_boards.json', user_path=True)
         self.saveEnvironmentFile()
 
-        if(update_method):
-            update_method()
+        Menu().createMainMenu()
+        message_queue.put("list_updated")
 
     def saveEnvironmentFile(self):
         '''
