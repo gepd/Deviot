@@ -2,8 +2,9 @@
 ### Version 1.1.6 | 31 Mar 2016
 * Added compatibility to old libraries (PR https://github.com/gepd/Deviot/pull/11)
 * Added feedback while board list are updating
-* Fixed issue selecting serial port (https://github.com/gepd/Deviot/issues/12)
 * Avoids show false success messages in user console when the serial port is not selected.
+* Fixed issue selecting serial port (https://github.com/gepd/Deviot/issues/12)
+* Fixed error showing "New Line" item in Monitor Serial menu
 
 ### Version 1.1.5 | 26 Mar 2016
 * Fixed update PlatformIO option (Deviot > Options > Upgrade PlatformIO)
