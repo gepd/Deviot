@@ -221,11 +221,6 @@ class PioInstall(object):
         self.Preferences.set('env_path', paths)
 
     def endSetup(self):
-        try:
-            from .PlatformioCLI import generateFiles
-        except:
-            from libs.PlatformioCLI import generateFiles
-
         # save env paths
         if(self.os != 'osx'):
             env_path = [self.env_bin_dir]
@@ -263,10 +258,18 @@ class PioInstall(object):
             copy(src_path, dst)
 
         # creating files (menu, completions, syntax)
-        sublime.set_timeout(generateFiles, 0)
+        sublime.set_timeout(self.generateFilesCall, 0)
 
         self.Preferences.set('protected', True)
         self.Preferences.set('enable_menu', True)
+
+    def generateFilesCall(self):
+        try:
+            from .PlatformioCLI import generateFiles
+        except:
+            from libs.PlatformioCLI import generateFiles
+
+        generateFiles(install=True)
 
     def checkUpdate(self):
         self.message_queue.startPrint()
