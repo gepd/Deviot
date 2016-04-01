@@ -41,7 +41,7 @@ class MessageQueue(object):
     def put(self, text, *args):
         text = _(text, *args)
         if '\\n' in text:
-            text = text.replace('\\n', '\n')  # [:-2] + '\n'
+            text = text.replace('\\n', '\n')
         self.queue.put(text)
 
     def startPrint(self, one_time=False):
@@ -127,14 +127,24 @@ class MonitorView:
         sublime.set_timeout(lambda: self.println(text), 0)
 
     def println(self, text):
-        self.view.set_read_only(False)
+        try:
+            from .Preferences import Preferences
+        except:
+            from libs.Preferences import Preferences
 
+        # Preferences to auto-scroll
+        auto_scroll = Preferences().get('auto_scroll', False)
+
+        self.view.set_read_only(False)
+        pos = self.view.size()
+        
         if python_version < 3:
-            edit = self.view.begin_edit()
-            pos = self.view.size()
+            edit = self.view.begin_edit()           
             self.view.insert(edit, pos, text)
             self.view.end_edit(edit)
         else:
+            if(auto_scroll):
+                self.view.show(pos)
             self.view.run_command("append", {"characters": text})
         self.view.set_read_only(True)
 

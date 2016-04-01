@@ -102,6 +102,9 @@ msgstr "Iniciar"
 msgid "menu_send"
 msgstr "Enviar"
 
+msgid "menu_auto_scroll"
+msgstr "Scroll Automático"
+
 msgid "menu_baudrate"
 msgstr "Velocidad de Transmisión (baudrate)"
 
