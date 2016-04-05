@@ -46,14 +46,10 @@ class I18n(object):
         self.ids_lang.sort(key=lambda _id: self.lang_params.get(_id)[1])
 
     def changeLang(self, lang_id):
-        if lang_id in self.id_path_dict:
-            self.id_lang = lang_id
-            lang_file_path = self.id_path_dict[lang_id]
-            lang_file = LanguageFile(lang_file_path)
-            self.trans_dict = lang_file.getTransDict()
-        else:
-            self.id_lang = 'en'
-            self.trans_dict = {}
+        self.id_lang = lang_id if(lang_id in self.id_path_dict) else 'en'
+        lang_file_path = self.id_path_dict[self.id_lang]
+        lang_file = LanguageFile(lang_file_path)
+        self.trans_dict = lang_file.getTransDict()
         self.Preferences.set('id_lang', self.id_lang)
 
     def translate(self, text, *params):

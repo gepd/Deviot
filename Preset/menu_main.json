@@ -17,7 +17,6 @@
                 "children":[]
             },{
                 "caption": "menu_select_env",
-                "command": "main_environment",
                 "id": "environment",
                 "children":[]
             },

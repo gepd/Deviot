@@ -448,6 +448,21 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
             self.window.run_command('send_message_serial')
 
 
+class AutoScrollMonitorCommand(sublime_plugin.WindowCommand):
+    """
+    The scroll goes automatically to the last line when this option is activated.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        keep = Preferences().get('auto_scroll', False)
+        Preferences().set('auto_scroll', not keep)
+
+    def is_checked(self):
+        return Preferences().get('auto_scroll', False)
+
+
 class ChooseBaudrateItemCommand(sublime_plugin.WindowCommand):
     """
     Stores the baudrate selected for the user and save it in

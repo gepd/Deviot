@@ -175,8 +175,6 @@ class PlatformioCLI(CommandsPy):
             return
         # Empy menu if it's not a IoT file
         if(not self.is_iot):
-            if(Tools.getPythonVersion() > 2):
-                self.Menu.createEnvironmentMenu(empty=True)
             return
 
         ini_path = Paths.getFullIniPath(self.dir)
@@ -473,7 +471,7 @@ class PlatformioCLI(CommandsPy):
 
         return boards
 
-    def saveAPIBoards(self, update_method=False):
+    def saveAPIBoards(self, update_method=False, install=False):
         '''
         Save the JSON object in a specific JSON file
         '''
@@ -487,15 +485,19 @@ class PlatformioCLI(CommandsPy):
         Tools.setStatus(view, _('updating_board_list'))
 
         # console
-        console_name = 'Deviot|GetBoards' + str(time.time())
-        console = Console(window, name=console_name)
+        if (not install):
+            console_name = 'Deviot|GetBoards' + str(time.time())
+            console = Console(window, name=console_name)
+            new_console = True
 
-        # Queue for the user console
-        message_queue = MessageQueue(console)
-        message_queue.startPrint()
-        message_queue.put("[Deviot {0}]\n", version)
+            # Queue for the user console
+            message_queue = MessageQueue(console)
+            message_queue.startPrint()
+            
+            message_queue.put("[Deviot {0}]\n", version)
+
+            message_queue.put("download_board_list")
         
-        message_queue.put("download_board_list")        
         boards = self.getAPIBoards()
 
         self.Menu.saveTemplateMenu(
@@ -503,7 +505,8 @@ class PlatformioCLI(CommandsPy):
         self.saveEnvironmentFile()
 
         Menu().createMainMenu()
-        message_queue.put("list_updated")
+        if(not install):
+            message_queue.put("list_updated")
 
     def saveEnvironmentFile(self):
         '''
@@ -542,13 +545,12 @@ class PlatformioCLI(CommandsPy):
             boards_list, 'env_boards.json', user_path=True)
 
 
-def generateFiles():
+def generateFiles(install=False):
     # Creates new menu
     api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
                                            user_path=True)
     # create main files
-    if(not os.path.exists(api_boards)):
-        PlatformioCLI().saveAPIBoards()
+    PlatformioCLI().saveAPIBoards(install=install)
     Menu().createMainMenu()
 
     Tools.createCompletions()

@@ -101,6 +101,9 @@ msgstr "Run"
 msgid "menu_send"
 msgstr "Send"
 
+msgid "menu_auto_scroll"
+msgstr "Auto-Scroll"
+
 msgid "menu_baudrate"
 msgstr "Baudrate"
 
