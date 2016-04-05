@@ -1,5 +1,5 @@
 # Deviot Release Notes
-### Version 1.1.7 | 
+### Version 1.1.7 | 04 Apr 2016
 * New option to automatically scroll the monitor serial view to the last received message
 * Added missing templates to create a new sketch
 * Fixed bug showing the default language when the machine run with an unsupported language (https://github.com/gepd/Deviot/issues/8)
