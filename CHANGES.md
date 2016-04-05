@@ -1,4 +1,11 @@
 # Deviot Release Notes
+### Version 1.1.7 | 
+* New option to automatically scroll the monitor serial view to the last received message
+* Added missing templates to create a new sketch
+* Fixed bug showing the default language when the machine run with an unsupported language (https://github.com/gepd/Deviot/issues/8)
+* Fixed feedback messages after install Deviot
+* Fix bug showing the environment menu list in Linux Mint (https://github.com/gepd/Deviot/issues/16)
+
 ### Version 1.1.6 | 31 Mar 2016
 * Added compatibility to old libraries (PR https://github.com/gepd/Deviot/pull/11)
 * Added feedback while board list are updating
