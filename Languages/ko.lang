@@ -1,0 +1,332 @@
+# LANGUAGE: Korean (Korean)
+# Korean translations for Deviot Plugin.
+# Copyright (C) 2015-2016
+# This file is distributed under the same license as the Deviot Plugin.
+# Translator: gro
+# 
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot이 동작하려면 Python 2.7이 필요합니다, 다운로드 해서 설치해주세요"
+
+msgid "button_download_python"
+msgstr "Python 다운로드하기"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] 설정\n"
+
+msgid "pio_is_installed{0}"
+msgstr "{0} PlatformIO가 설치되었습니다, 이제 Deviot을 사용하실 수 있어요!"
+
+msgid "pio_isn_installed{0}"
+msgstr "{0} PlatformIO가 설치되지 않았습니다\n설치 준비중입니다, 시간이 좀 걸릴 수 있으니 조금 기다려 주세요.\n"
+
+msgid "downloading_files{0}"
+msgstr "{0} 필요한 파일들을 다운로드합니다...\n"
+
+msgid "error_downloading_files{0}"
+msgstr "{0} 필요한 파일들을 다운로드 중에 오류가 발생했습니다...\n"
+
+msgid "error_saving_files{0}"
+msgstr "{0} 필요한 파일들을 저장하는 중에 오류가 발생했습니다...\n"
+
+msgid "extracting_files{0}"
+msgstr "{0} 압축 해제 중입니다...\n"
+
+msgid "installing_pio{0}"
+msgstr "{0} PlatformIO를 설치합니다...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} 설치가 끝났습니다, 이제 Deviot을 사용하실 수 있어요!"
+
+msgid "searching_pio_updates"
+msgstr "PlatformIO 업그레이드를 확인합니다...\n\n"
+
+# Menu
+
+msgid "menu_new_sketch"
+msgstr "새로운 스케치"
+
+msgid "menu_select_boards"
+msgstr "보드 선택"
+
+msgid "menu_select_env"
+msgstr "환경 선택"
+
+msgid "menu_search_lib"
+msgstr "라이브러리 찾기"
+
+msgid "menu_remove_lib"
+msgstr "라이브러리 삭제하기"
+
+msgid "menu_import_library"
+msgstr "라이브러리 가져오기"
+
+msgid "menu_library_examples"
+msgstr "예제"
+
+msgid "menu_option_lib"
+msgstr "라이브러리 설정"
+
+msgid "menu_open_lib_folder"
+msgstr "라이브러리 폴더 열기"
+
+msgid "menu_change_user_lib_path"
+msgstr "사용자 라이브러리 폴더 경로 바꾸기"
+
+msgid "menu_build"
+msgstr "빌드"
+
+msgid "menu_upload"
+msgstr "업로드"
+
+msgid "menu_clean"
+msgstr "클린"
+
+msgid "menu_hide_console"
+msgstr "Deviot 콘솔 숨김"
+
+msgid "menu_serial_ports"
+msgstr "시리얼 포트"
+
+msgid "menu_add_ip"
+msgstr "IP 추가하기"
+
+msgid "menu_monitor_serial"
+msgstr "시리얼 모니터"
+
+msgid "menu_run"
+msgstr "실행하기"
+
+msgid "menu_send"
+msgstr "전송하기"
+
+msgid "menu_baudrate"
+msgstr "통신 속도"
+
+msgid "menu_line_ending"
+msgstr "줄넘김"
+
+msgid "menu_none"
+msgstr "없음"
+
+msgid "menu_nline"
+msgstr "New Line"
+
+msgid "menu_cr"
+msgstr "Carriage Return"
+
+msgid "menu_nl_cr"
+msgstr "NL & CR 모두"
+
+msgid "menu_display_mode"
+msgstr "표시 형식"
+
+msgid "menu_text"
+msgstr "Text"
+
+msgid "menu_option"
+msgstr "환경설정"
+
+msgid "menu_upgrade_pio"
+msgstr "PlatformIO 업그레이드"
+
+msgid "menu_update_board_list"
+msgstr "보드 목록 업데이트"
+
+msgid "menu_show_verbose"
+msgstr "빌드 시 모든 메시지 보임"
+
+msgid "menu_remove_user_files"
+msgstr "유저 선택 설정 파일 삭제"
+
+msgid "menu_keep_temp_files"
+msgstr "Temp 파일 유지"
+
+msgid "menu_open_build_folder"
+msgstr "빌드 폴더 열기"
+
+msgid "menu_change_build_folder"
+msgstr "빌드 폴더 변경하기"
+
+msgid "menu_use_cpp_new"
+msgstr "Use CPP File on New File(새 파일을 CPP File 사용)"
+
+msgid "menu_languages"
+msgstr "언어"
+
+msgid "menu_donate_deviot"
+msgstr "❤ 기부하기"
+
+msgid "menu_about"
+msgstr "도움말"
+
+msgid "menu_about_deviot"
+msgstr "Deviot에 관하여"
+
+msgid "menu_about_pio"
+msgstr "PlatformIO에 관하여"
+
+
+# Mensajes y errores
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "checking_pio_updates"
+msgstr "PlatformIO 업데이트 확인중...\n"
+
+msgid "error_pio_updates"
+msgstr "PlatformIO를 업데이트하는 중 오류가 발생했습니다\n"
+
+msgid "pio_up_date{0}"
+msgstr "PlatformIO가 최신 버젼이네요 ({0})\n"
+
+msgid "pio_new_updated_installed{0}"
+msgstr "새 버젼을 찾아서 설치했습니다 ({0})\n"
+
+msgid "caption_new_sketch"
+msgstr "새 스케치에 이름을 지어주세요:"
+
+msgid "updating_board_list"
+msgstr "보드 목록 업데이트"
+
+msgid "not_empty_sketch_{0}"
+msgstr "{0} 빈 스케치라서 업로드할 수 없네요\n"
+
+msgid "invalid_file_{0}"
+msgstr "{0} 파일은 업로드할 수 없습니다\n"
+
+msgid "not_iot_{0}{1}"
+msgstr "{0} {1}은(는) IoT 파일이 아닙니다\n"
+
+msgid "none_board_sel_{0}"
+msgstr "{0} 보드가 선택되지 않았어요\n"
+
+msgid "init_project_{0}"
+msgstr "{0} 프로젝트를 초기화합니다 | "
+
+msgid "built_project_{0}"
+msgstr "{0} 프로젝트를 빌드합니다 | 진행중...\n"
+
+msgid "none_port_select_{0}"
+msgstr "{0} 시리얼 포트가 선택되지 않았어요\n"
+
+msgid "none_env_select_{0}"
+msgstr "{0} 환경이 선택되지 않았어요\n"
+
+msgid "error_installing_env_{0}"
+msgstr "{0} virtualenv 설치 오류\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} virtualenv 생성 오류\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} PlatformIO 설치 오류\n"
+
+msgid "uploading_firmware_{0}"
+msgstr "{0} 펌웨어 업로드중 | "
+
+msgid "clean_built_files__{0}"
+msgstr "{0} 빌드 파일 청소중 | "
+
+msgid "success_took_{1}"
+msgstr "SUCCESS | {1}초 걸렸어요\n"
+
+msgid "success_took_{0}{1}"
+msgstr "{0} SUCCESS | {1}초 걸렸어요\n"
+
+msgid "success_warnings_took__{0}{1}"
+msgstr "{0} SUCCESS 되었지만 WARNING이 있어요 | {1}초 걸렸어요\n"
+
+msgid "error_took_{0}{1}"
+msgstr "{0} ERROR | {1}초 걸렸어요\n"
+
+msgid "continue"
+msgstr "Continue"
+
+msgid "confirm_del_pref"
+msgstr "이 후에, Sublime Text를 재시작해야 합니다. 계속 하시겠습니다?"
+
+msgid "success"
+msgstr "성공"
+
+msgid "error"
+msgstr "실패"
+
+msgid "success_warnings"
+msgstr "Success with warning(s)"
+
+msgid "processing"
+msgstr "Processing"
+
+msgid "done"
+msgstr "완료"
+
+
+# Libraries
+
+
+msgid "search_query"
+msgstr "찾을 쿼리:"
+
+msgid "add_ip_caption"
+msgstr "Write the IP Address:"
+
+msgid "select_cur_dir_{0}"
+msgstr "Select Current Dir ({0})"
+
+msgid "installing_lib_{0}{1}"
+msgstr "{0} 라이브러리 {1} 설치중 | "
+
+msgid "uninstalling_lib_{0}{1}"
+msgstr "{0} 라이브러리 {1} 삭제중 | "
+
+msgid "download_lib"
+msgstr "다운로드중...\n"
+
+msgid "searching"
+msgstr "검색중"
+
+msgid "installing"
+msgstr "설치중"
+
+msgid "install_package_{0}"
+msgstr "\n{0} package 설치중: "
+
+msgid "already_installed{0}"
+msgstr "{0}이(가) 이미 설치되어있네요\n"
+
+msgid "downloading_package{0}"
+msgstr "Downloading package {0}\n\n시간이 좀 걸릴 수 있으니, 조금 기다려 주세요.\n"
+
+msgid "unpacking"
+msgstr "Unpacking...\n"
+
+msgid "download_dependece"
+msgstr "Downloading dependence\n"
+
+msgid "preparing_list"
+msgstr "Preparing List"
+
+msgid "removing"
+msgstr "삭제중"
+
+msgid "none_lib_found"
+msgstr "라이브러리를 찾을 수 없습니다"
+
+msgid "none_lib_installed"
+msgstr "라이브러리가 설치되지 않았습니다"
+
+
+# Serial Monitor
+
+msgid "serial_port_used_{0}"
+msgstr "시리얼 포트 {0}이(가) 이미 점유되어 있습니다. 해당 포트를 점유하고 있는 프로그램을 종료해 보세요.\n"
+
+msgid "send"
+msgstr "전송:"
+
+msgid "sended_{0}"
+msgstr "\n[전송완료] {0}\n"
