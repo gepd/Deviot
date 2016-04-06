@@ -88,6 +88,11 @@
                         "command": "send_message_serial"
                     },
                     {
+                        "caption": "menu_auto_scroll",
+                        "id": "auto_scroll_monitor",
+                        "command": "auto_scroll_monitor"
+                    },
+                    {
                         "caption": "menu_baudrate",
                         "id": "baudrate_item",
                         "children":
