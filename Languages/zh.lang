@@ -1,0 +1,344 @@
+# LANGUAGE: 中文(简体) (Chinese(Simplified))
+# translations for Deviot Plugin.
+# Copyright (C) 2015-2016
+# This file is distributed under the same license as the Deviot Plugin.
+# Translator: Steve Chekblain
+# 
+# Use this file to create your own language file, once you do it
+# save it in the ISO 639-1 format (two letters) and with the extension .lang
+
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot 依赖于 Python, 请安装 Python 2.7"
+
+msgid "button_download_python"
+msgstr "下载 Python"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] 初始化\n"
+
+msgid "pio_is_installed{0}"
+msgstr "{0} PlatformIO 已安装在您的系统, 您现在已可以开始使用 Deviot!"
+
+msgid "pio_isn_installed{0}"
+msgstr "{0} PlatformIO 未安装\n正在安装, 请稍候...\n"
+
+msgid "downloading_files{0}"
+msgstr "{0} 正在下载必要文件...\n"
+
+msgid "error_downloading_files{0}"
+msgstr "{0} 下载出错!\n"
+
+msgid "error_saving_files{0}"
+msgstr "{0} 文件无法保存\n"
+
+msgid "extracting_files{0}"
+msgstr "{0} 正在解压缩文件...\n"
+
+msgid "installing_pio{0}"
+msgstr "{0} 正在安装 PlatformIO...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} 安装完成, 您现在已可以开始使用 Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "查找 PlatformIO 更新...\n\n"
+
+# Menu
+
+msgid "menu_new_sketch"
+msgstr "新建工程"
+
+msgid "menu_select_boards"
+msgstr "选择开发板"
+
+msgid "menu_select_env"
+msgstr "选择开发环境"
+
+msgid "menu_search_lib"
+msgstr "查找库"
+
+msgid "menu_remove_lib"
+msgstr "移除库"
+
+msgid "menu_import_library"
+msgstr "导入库"
+
+msgid "menu_library_examples"
+msgstr "示例"
+
+msgid "menu_option_lib"
+msgstr "库选项"
+
+msgid "menu_open_lib_folder"
+msgstr "打开库文件夹"
+
+msgid "menu_change_user_lib_path"
+msgstr "更改库文件目录"
+
+msgid "menu_build"
+msgstr "生成"
+
+msgid "menu_upload"
+msgstr "上传"
+
+msgid "menu_clean"
+msgstr "清理生成文件"
+
+msgid "menu_hide_console"
+msgstr "隐藏 Deviot 控制台"
+
+msgid "menu_serial_ports"
+msgstr "选择串口"
+
+msgid "menu_add_ip"
+msgstr "手动添加"
+
+msgid "menu_monitor_serial"
+msgstr "串口监视器"
+
+msgid "menu_run"
+msgstr "运行"
+
+msgid "menu_send"
+msgstr "发送"
+
+msgid "menu_auto_scroll"
+msgstr "自动滚屏"
+
+msgid "menu_baudrate"
+msgstr "波特率"
+
+msgid "menu_line_ending"
+msgstr "结尾字符"
+
+msgid "menu_none"
+msgstr "无"
+
+msgid "menu_new_line"
+msgstr "行结束符"
+
+msgid "menu_cr"
+msgstr "回车"
+
+msgid "menu_nl_cr"
+msgstr "NL & CR"
+
+msgid "menu_display_mode"
+msgstr "显示模式"
+
+msgid "menu_text"
+msgstr "文本"
+
+msgid "menu_option"
+msgstr "选项"
+
+msgid "menu_upgrade_pio"
+msgstr "升级 PlatformIO"
+
+msgid "menu_update_board_list"
+msgstr "升级开发板列表"
+
+msgid "menu_show_verbose"
+msgstr "显示详细编译器输出"
+
+msgid "menu_remove_user_files"
+msgstr "移除参数文件"
+
+msgid "menu_keep_temp_files"
+msgstr "保留临时文件"
+
+msgid "menu_open_build_folder"
+msgstr "打开生成文件夹"
+
+msgid "menu_change_build_folder"
+msgstr "更改生成文件夹"
+
+msgid "menu_use_cpp_new"
+msgstr "为新文件使用C++格式"
+
+msgid "menu_languages"
+msgstr "语言 (Languages)"
+
+msgid "menu_donate_deviot"
+msgstr "❤ 捐赠"
+
+msgid "menu_about"
+msgstr "关于"
+
+msgid "menu_about_deviot"
+msgstr "关于 Deviot"
+
+msgid "menu_about_pio"
+msgstr "关于 PlatformIO"
+
+
+# Mensajes y errores
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "checking_pio_updates"
+msgstr "查找 PlatformIO 更新...\n"
+
+msgid "error_pio_updates"
+msgstr "PlatformIO 更新失败\n"
+
+msgid "pio_up_date{0}"
+msgstr "PlatformIO 已是最新版本 ({0})\n"
+
+msgid "pio_new_updated_installed{0}"
+msgstr "新版本已安装 ({0})\n"
+
+msgid "download_board_list"
+msgstr "下载开发板列表\n"
+
+msgid "list_updated"
+msgstr "开发板列表已更新!\n"
+
+msgid "caption_new_sketch"
+msgstr "新工程名:"
+
+msgid "updating_board_list"
+msgstr "正在更新开发板列表"
+
+msgid "not_empty_sketch_{0}"
+msgstr "{0} 无法上传空工程\n"
+
+msgid "invalid_file_{0}"
+msgstr "{0} 无效上传文件\n"
+
+msgid "not_iot_{0}{1}"
+msgstr "{0} {1} 不是 IoT 项目\n"
+
+msgid "none_board_sel_{0}"
+msgstr "{0} 未选择开发板\n"
+
+msgid "init_project_{0}"
+msgstr "{0} 初始化项目 | "
+
+msgid "built_project_{0}"
+msgstr "{0} 生成项目 | 正在处理...\n"
+
+msgid "none_port_select_{0}"
+msgstr "{0} 未选择串口\n"
+
+msgid "none_env_select_{0}"
+msgstr "{0} 未选择开发环境\n"
+
+msgid "error_installing_env_{0}"
+msgstr "{0} virtualenv 安装错误\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} virtualenv 创建错误\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} PlatformIO 安装错误\n"
+
+msgid "uploading_firmware_{0}"
+msgstr "{0} 上传固件 | "
+
+msgid "clean_built_files__{0}"
+msgstr "{0} 清理生成文件 | "
+
+msgid "success_took_{1}"
+msgstr "成功 | 总时间 {1}s\n"
+
+msgid "success_took_{0}{1}"
+msgstr "{0} 成功 | 总时间 {1}s\n"
+
+msgid "success_warnings_took__{0}{1}"
+msgstr "{0} 成功(有警告) | 总时间 {1}s\n"
+
+msgid "error_took_{0}{1}"
+msgstr "{0} 错误 | 总时间 {1}s\n"
+
+msgid "continue"
+msgstr "继续"
+
+msgid "confirm_del_pref"
+msgstr "将重启 Sublime Text. 确定吗?"
+
+msgid "success"
+msgstr "成功"
+
+msgid "error"
+msgstr "错误"
+
+msgid "success_warnings"
+msgstr "成功(有警告)"
+
+msgid "processing"
+msgstr "处理中"
+
+msgid "done"
+msgstr "完毕"
+
+
+# Libraries
+
+
+msgid "search_query"
+msgstr "查找主题:"
+
+msgid "add_ip_caption"
+msgstr "IP 地址:"
+
+msgid "select_cur_dir_{0}"
+msgstr "选择当前目录 ({0})"
+
+msgid "installing_lib_{0}{1}"
+msgstr "{0} 安装库 {1} | "
+
+msgid "uninstalling_lib_{0}{1}"
+msgstr "{0} 卸载库 {1} | "
+
+msgid "download_lib"
+msgstr "下载中...\n"
+
+msgid "searching"
+msgstr "查找中"
+
+msgid "installing"
+msgstr "安装中"
+
+msgid "install_package_{0}"
+msgstr "\n安装 {0} 扩展包: "
+
+msgid "already_installed{0}"
+msgstr "{0} 已安装\n"
+
+msgid "downloading_package{0}"
+msgstr "正在下载扩展包 {0}\n\n请稍候...\n"
+
+msgid "unpacking"
+msgstr "正在解压缩文件...\n"
+
+msgid "download_dependece"
+msgstr "下载依赖文件\n"
+
+msgid "preparing_list"
+msgstr "准备列表"
+
+msgid "removing"
+msgstr "正在移除"
+
+msgid "none_lib_found"
+msgstr "找不到库"
+
+msgid "none_lib_installed"
+msgstr "未安装任何库"
+
+
+# Serial Monitor
+
+msgid "serial_port_used_{0}"
+msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+
+msgid "send"
+msgstr "Send:"
+
+msgid "sended_{0}"
+msgstr "\n[SENDED] {0}\n"
