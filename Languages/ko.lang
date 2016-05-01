@@ -1,9 +1,8 @@
 # LANGUAGE: Korean (Korean)
 # Korean translations for Deviot Plugin.
-# Copyright (C) 2015-2016
+# Copyright (C) 2015-2016 GEPD
 # This file is distributed under the same license as the Deviot Plugin.
 # Translator: gro
-# 
 
 # Setup Process
 
@@ -52,10 +51,10 @@ msgid "menu_select_boards"
 msgstr "보드 선택"
 
 msgid "menu_select_env"
-msgstr "환경 선택"
+msgstr "프로세서 선택"
 
 msgid "menu_search_lib"
-msgstr "라이브러리 찾기"
+msgstr "라이브러리 검색하기"
 
 msgid "menu_remove_lib"
 msgstr "라이브러리 삭제하기"
@@ -102,6 +101,9 @@ msgstr "실행하기"
 msgid "menu_send"
 msgstr "전송하기"
 
+msgid "menu_auto_scroll"
+msgstr "자동-스크롤"
+
 msgid "menu_baudrate"
 msgstr "통신 속도"
 
@@ -111,7 +113,7 @@ msgstr "줄넘김"
 msgid "menu_none"
 msgstr "없음"
 
-msgid "menu_nline"
+msgid "menu_new_line"
 msgstr "New Line"
 
 msgid "menu_cr"
@@ -151,7 +153,7 @@ msgid "menu_change_build_folder"
 msgstr "빌드 폴더 변경하기"
 
 msgid "menu_use_cpp_new"
-msgstr "Use CPP File on New File(새 파일을 CPP File 사용)"
+msgstr "새 스케치를 CPP File로 생성"
 
 msgid "menu_languages"
 msgstr "언어"
@@ -185,6 +187,12 @@ msgstr "PlatformIO가 최신 버젼이네요 ({0})\n"
 
 msgid "pio_new_updated_installed{0}"
 msgstr "새 버젼을 찾아서 설치했습니다 ({0})\n"
+
+msgid "download_board_list"
+msgstr "보드 목록 다운로드중\n"
+
+msgid "list_updated"
+msgstr "목록 갱신 완료!\n"
 
 msgid "caption_new_sketch"
 msgstr "새 스케치에 이름을 지어주세요:"
@@ -299,7 +307,7 @@ msgid "already_installed{0}"
 msgstr "{0}이(가) 이미 설치되어있네요\n"
 
 msgid "downloading_package{0}"
-msgstr "Downloading package {0}\n\n시간이 좀 걸릴 수 있으니, 조금 기다려 주세요.\n"
+msgstr "package {0}을(를) 다운로드중\n\n시간이 좀 걸릴 수 있으니, 조금 기다려 주세요.\n"
 
 msgid "unpacking"
 msgstr "Unpacking...\n"
