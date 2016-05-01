@@ -1,0 +1,10 @@
+<snippet>
+	<content><![CDATA[void setup()
+{
+	$1
+}
+]]></content>
+	<tabTrigger>setup</tabTrigger>
+	<scope>source.iot</scope>
+	<description>Deviot setup</description>
+</snippet>

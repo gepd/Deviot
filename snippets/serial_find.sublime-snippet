@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.find(${1:target});
+]]></content>
+    <tabTrigger>sfind</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.find()</description>
+</snippet>

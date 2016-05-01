@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+if(${1}){
+    ${2}
+}
+]]></content>
+    <tabTrigger>if</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot if</description>
+</snippet>

@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.readBytes(${1:buffer}, ${2:length});
+]]></content>
+    <tabTrigger>sreadBytes</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.readBytes()</description>
+</snippet>

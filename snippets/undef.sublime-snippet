@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+undef ${1:constant-expression}
+]]></content>
+    <tabTrigger>undef</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Macro undef</description>
+</snippet>

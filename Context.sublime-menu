@@ -1,0 +1,22 @@
+[
+	{
+		"caption": "-",
+	},
+	{
+	    "caption": "Build", 
+	    "command": "build_sketch"
+	}, 
+	{
+	    "caption": "Upload", 
+	    "command": "upload_sketch"
+	},
+	{
+        "caption": "Run Serial Monitor", 
+        "checkbox": true, 
+        "command": "serial_monitor_run"
+    },
+    {
+	    "caption": "Send Serial Text", 
+	    "command": "send_message_serial"
+	}
+]

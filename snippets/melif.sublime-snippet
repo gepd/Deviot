@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+elif ${1:constant-expression}
+]]></content>
+    <tabTrigger>elif</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Macro elif</description>
+</snippet>

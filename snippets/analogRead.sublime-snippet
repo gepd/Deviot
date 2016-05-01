@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+analogRead(${1:pin});
+]]></content>
+    <tabTrigger>analogRead</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot analogRead</description>
+</snippet>

@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+char(${1:x});
+]]></content>
+    <tabTrigger>char</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot char()</description>
+</snippet>

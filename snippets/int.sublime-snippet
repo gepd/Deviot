@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+int(${1:x});
+]]></content>
+    <tabTrigger>int</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot int()</description>
+</snippet>

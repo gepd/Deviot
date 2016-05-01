@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.peek();
+]]></content>
+    <tabTrigger>speek</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.peek()</description>
+</snippet>

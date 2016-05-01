@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+ifndef ${1:constant-expression}
+]]></content>
+    <tabTrigger>ifndef</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Macro ifndef</description>
+</snippet>

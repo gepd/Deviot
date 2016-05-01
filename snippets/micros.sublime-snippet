@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+micros();
+]]></content>
+    <tabTrigger>micros</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot micros()</description>
+</snippet>
