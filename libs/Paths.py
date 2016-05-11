@@ -323,7 +323,10 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         sel_path = paths[0].split('(')[1][:-1]
         if func:
             if key:
-                Preferences().set('last_path', [sel_path, index, level])
+                save_path = [sel_path, index, level]
+                if(key == 'default_path'):
+                    sel_path = save_path
+                Preferences().set('last_path', save_path)
                 func(key, sel_path)
         return
 
@@ -333,12 +336,14 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         elif index > 1:
             level += 1
 
-        last_path = Preferences().get('last_path', False)
+        default_path = Preferences().get('default_path', False)
+        if(not default_path):
+            default_path = Preferences().get('last_path', False)
 
-        if(index == -2 and last_path):
-            paths = [last_path[0]]
-            index = last_path[1]
-            level = last_path[2]
+        if(index == -2 and default_path):
+            paths = [default_path[0]]
+            index = default_path[1]
+            level = default_path[2]
 
         if level <= 0:
             level = 0
