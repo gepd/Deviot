@@ -116,7 +116,7 @@ class DeviotListener(sublime_plugin.EventListener):
                 monitor_module.serials_in_use.remove(serial_port)
 
         # Remove cache
-        keep_cache = Preferences().get('keep_cache', False)
+        keep_cache = Preferences().get('keep_cache', True)
         if(keep_cache):
             return
 
@@ -566,11 +566,11 @@ class KeepTempFilesCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        keep = Preferences().get('keep_cache', False)
+        keep = Preferences().get('keep_cache', True)
         Preferences().set('keep_cache', not keep)
 
     def is_checked(self):
-        return Preferences().get('keep_cache', False)
+        return Preferences().get('keep_cache', True)
 
 
 class OpenBuildFolderCommand(sublime_plugin.TextCommand):
