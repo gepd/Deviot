@@ -195,6 +195,7 @@ def getSystemLang():
         sys_language = sys_language.lower()
     return sys_language[:2]
 
+
 def createSketch(sketch_name, path):
     try:
         from . import Paths
@@ -230,6 +231,7 @@ def createSketch(sketch_name, path):
         src_file.write(src_code)
 
     # open new file
+    views = []
     window = sublime.active_window()
     view = window.open_file(src_file_path)
     views.append(view)
