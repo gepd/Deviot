@@ -35,7 +35,7 @@ except:
     from libs.Messages import Console
     from libs.Messages import MessageQueue
     from libs.OrderedDict import OrderedDict
-    from libs.Commands import CommandsPy    
+    from libs.Commands import CommandsPy
     from libs.Serial import SerialListener
     from libs.Serial import listSerialPorts
     from libs.Preferences import Preferences
@@ -147,7 +147,7 @@ class PlatformioCLI(CommandsPy):
 
             # set native paths
             if(not self.is_native):
-                build_dir = self.Preferences.get('build_dir', False)
+                build_dir = Paths.getBuildPath(temp_name)
                 if(not build_dir):
                     build_dir = Paths.getTempPath(temp_name)
                 self.src = current_dir
@@ -413,7 +413,8 @@ class PlatformioCLI(CommandsPy):
             action_thread = threading.Thread(target=PioInstall().checkUpdate)
             action_thread.start()
         elif(type == 'update_boards'):
-            action_thread = threading.Thread(target=PlatformioCLI().saveAPIBoards)
+            action_thread = threading.Thread(
+                target=PlatformioCLI().saveAPIBoards)
             action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
@@ -493,11 +494,11 @@ class PlatformioCLI(CommandsPy):
             # Queue for the user console
             message_queue = MessageQueue(console)
             message_queue.startPrint()
-            
+
             message_queue.put("[Deviot {0}]\n", version)
 
             message_queue.put("download_board_list")
-        
+
         boards = self.getAPIBoards()
 
         self.Menu.saveTemplateMenu(

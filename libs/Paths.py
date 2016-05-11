@@ -283,6 +283,27 @@ def getTempPath(file_name=False):
     return tmp_path
 
 
+def getBuildPath(file_name):
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+
+    build_dir = Preferences().get('build_dir', False)
+
+    if(build_dir):
+        build_dir = os.path.join(build_dir, file_name)
+
+        try:
+            os.makedirs(build_dir)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise exc
+            pass
+
+    return build_dir
+
+
 def getOpenFolderPath(path):
     url = 'file://' + path
     return url
