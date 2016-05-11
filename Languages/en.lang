@@ -74,6 +74,9 @@ msgstr "Open Libraries Folder"
 msgid "menu_change_user_lib_path"
 msgstr "Change Folder Library Path"
 
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
 msgid "menu_build"
 msgstr "Build"
 
@@ -155,10 +158,10 @@ msgstr "Change Build Folder"
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
 
-msgid "change_default_path"
+msgid "menu_change_default_path"
 msgstr "Change Default Path"
 
-msgid "remove_default_path"
+msgid "menu_remove_default_path"
 msgstr "Remove Default Path"
 
 msgid "menu_languages"

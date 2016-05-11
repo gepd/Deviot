@@ -155,10 +155,10 @@ msgstr "빌드 폴더 변경하기"
 msgid "menu_use_cpp_new"
 msgstr "새 스케치를 CPP File로 생성"
 
-msgid "change_default_path"
+msgid "menu_change_default_path"
 msgstr "Change Default Path"
 
-msgid "remove_default_path"
+msgid "menu_remove_default_path"
 msgstr "Remove Default Path"
 
 msgid "menu_languages"
