@@ -49,6 +49,10 @@
             },
             {"caption": "-"},
             {
+                "caption": "menu_open_ini_file",
+                "id": "open_ini_file",
+                "command": "open_ini_file"
+            },{
                 "caption": "menu_build",
                 "id": "build_sketch",
                 "command": "build_sketch"

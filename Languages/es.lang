@@ -75,6 +75,9 @@ msgstr "Abrir Carpeta con Librerías"
 msgid "menu_change_user_lib_path"
 msgstr "Cambiar Ruta de Carpeta"
 
+msgid "menu_open_ini_file"
+msgstr "Abrir Archivo Para Compilación"
+
 msgid "menu_build"
 msgstr "Compilar"
 

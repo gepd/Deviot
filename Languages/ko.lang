@@ -74,6 +74,9 @@ msgstr "라이브러리 폴더 열기"
 msgid "menu_change_user_lib_path"
 msgstr "사용자 라이브러리 폴더 경로 바꾸기"
 
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
 msgid "menu_build"
 msgstr "빌드"
 
