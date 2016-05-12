@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+include <${1:lib.h}>
+]]></content>
+    <tabTrigger>include</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot include syslib</description>
+</snippet>

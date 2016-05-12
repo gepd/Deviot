@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+random(${1:min}, ${2:max});
+]]></content>
+    <tabTrigger>random</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot random()</description>
+</snippet>

@@ -13,7 +13,7 @@ import sublime
 import subprocess
 import platform
 from shutil import rmtree, copy
-from re import match
+from re import match, sub
 
 try:
     from urllib.request import Request
@@ -39,6 +39,7 @@ except:
     from libs.I18n import I18n
 
 _ = I18n().translate
+
 
 class PioInstall(object):
 
@@ -68,8 +69,10 @@ class PioInstall(object):
         cmd = ['python', '--version']
         out = childProcess(cmd)
 
+        py_version = sub(r'\D', '', out[1])
+
         # show error and link to download
-        if(out[0] > 0):
+        if(out[0] > 0 or int(py_version) >= 300):
             current_time = time.strftime('%H:%M:%S')
             go_to = sublime.ok_cancel_dialog(
                 _("deviot_need_python"), _("button_download_python"))
@@ -177,7 +180,8 @@ class PioInstall(object):
         # install pio
         if(self.os == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'pip', 'install', '-U', 'platformio']
+            cmd = ['"%s"' % (executable), '-m', 'pip',
+                   'install', '-U', 'platformio']
         else:
             executable = os.path.join(self.env_bin_dir, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
@@ -247,8 +251,9 @@ class PioInstall(object):
         if(sys_os == 'windows'):
             if(platform.release() == '7'):
                 src_path = os.path.join(preset_path, 'Main.sublime-menu.w7')
-            else:    
-                src_path = os.path.join(preset_path, 'Main.sublime-menu.windows')
+            else:
+                src_path = os.path.join(
+                    preset_path, 'Main.sublime-menu.windows')
             copy(src_path, dst)
         elif(sys_os == 'osx'):
             src_path = os.path.join(preset_path, 'Main.sublime-menu.osx')
@@ -275,11 +280,12 @@ class PioInstall(object):
         self.message_queue.startPrint()
         self.message_queue.put('_deviot_{0}', version)
         self.message_queue.put('checking_pio_updates')
-        
+
         # try to update
         if(self.os == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'pip', 'install', '-U', 'platformio']
+            cmd = ['"%s"' % (executable), '-m', 'pip',
+                   'install', '-U', 'platformio']
         else:
             executable = os.path.join(self.env_bin_dir, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']

@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+digitalWrite(${1:pin}, ${2:value});
+]]></content>
+    <tabTrigger>digitalWrite</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot digitalWrite</description>
+</snippet>

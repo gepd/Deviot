@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+delay(${1:ms});
+]]></content>
+    <tabTrigger>delay</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot delay()</description>
+</snippet>

@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+randomSeed(${1:seed});
+]]></content>
+    <tabTrigger>randomSeed</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot randomSeed()</description>
+</snippet>

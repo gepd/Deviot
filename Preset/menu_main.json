@@ -31,12 +31,10 @@
                 "command": "remove_library"
             },{
                 "caption": "menu_import_library",
-                "id": "import_library",
-                "command": "import_library"
+                "id": "import_library"
             },{
                 "caption": "menu_library_examples",
-                "id": "library_examples",
-                "command": "library_examples"
+                "id": "library_examples"
             },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
@@ -90,6 +88,11 @@
                         "caption": "menu_send",
                         "id": "send_message_serial",
                         "command": "send_message_serial"
+                    },
+                    {
+                        "caption": "menu_auto_scroll",
+                        "id": "auto_scroll_monitor",
+                        "command": "auto_scroll_monitor"
                     },
                     {
                         "caption": "menu_baudrate",

@@ -1,0 +1,10 @@
+<snippet>
+	<content><![CDATA[void loop()
+{
+	$1
+}
+]]></content>
+	<tabTrigger>loop</tabTrigger>
+	<scope>source.iot</scope>
+	<description>Deviot loop</description>
+</snippet>
