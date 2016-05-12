@@ -1,4 +1,17 @@
 # Deviot Release Notes
+## Version 1.1.8 | 12 May
+* New Snippets
+* New Korean Language (Thanks to gro)
+* New auto scroll option in deviot menu
+* New support to comment and uncomment option (https://github.com/gepd/Deviot/issues/25)
+* New Serial Option "Not used" to avoid the error "None serial port selected" when a serial port is not necessary (https://github.com/gepd/Deviot/issues/29)
+* New option to save the last path when the file chooser is used
+* New option to open the ini config file (related https://github.com/gepd/Deviot/issues/26)
+* New options to set and remove default path when the file chooser is used (https://github.com/gepd/Deviot/issues/19)
+* Changed "Keep temp files" option selected as default
+* Fixed bug not showing an error when Python3 is installed (https://github.com/gepd/Deviot/issues/27)
+Fixed "Change build folder" bug (https://github.com/gepd/Deviot/issues/22)
+
 ### Version 1.1.7 | 04 Apr 2016
 * New option to automatically scroll the monitor serial view to the last received message
 * Added missing templates to create a new sketch
