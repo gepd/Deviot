@@ -241,7 +241,8 @@ class Menu(object):
 
         menu_preset = self.getTemplateMenu(file_name='serial.json')
         menu_ports = [
-            {"caption": _("menu_add_ip"), "command": "add_serial_ip"}]
+            {"caption": _("menu_add_ip"), "command": "add_serial_ip"},
+            {"caption": "menu_not_used_port", "command": "select_port", "checkbox": True, "args": {"id_port": "none"}}]
 
         for port in port_list:
             temp_info = {}

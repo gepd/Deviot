@@ -96,6 +96,9 @@ msgstr "Puerto(s) Serial"
 msgid "menu_add_ip"
 msgstr "Agregar IP Manualmente"
 
+msgid "menu_not_used_port"
+msgstr "No usado"
+
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 

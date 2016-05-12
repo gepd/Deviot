@@ -335,7 +335,7 @@ class PlatformioCLI(CommandsPy):
         id_port = self.Preferences.get('id_port', '')
         current_ports = listSerialPorts()
 
-        if(id_port not in current_ports):
+        if(id_port not in current_ports and id_port != 'none'):
             id_port = False
 
         # check port selected
@@ -360,8 +360,12 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
-        command = ['run', '-t upload --upload-port %s -e %s' %
-                   (id_port, choosen_env)]
+        up_port = '--upload-port %s' % id_port
+        if(id_port == 'none'):
+            up_port = ''
+
+        command = ['run', '-t upload %s -e %s' %
+                   (up_port, choosen_env)]
 
         self.Commands.runCommand(command)
         if(not self.Commands.error_running):

@@ -95,6 +95,9 @@ msgstr "시리얼 포트"
 msgid "menu_add_ip"
 msgstr "IP 추가하기"
 
+msgid "menu_not_used_port"
+msgstr "Not Used"
+
 msgid "menu_monitor_serial"
 msgstr "시리얼 모니터"
 
