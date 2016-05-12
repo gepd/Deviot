@@ -1,4 +1,4 @@
-VERSION = (1, 1, 8)
+VERSION = (1, 1, 9)
 __version__ = ".".join([str(s) for s in VERSION])
 
 __title__ = "Deviot"
