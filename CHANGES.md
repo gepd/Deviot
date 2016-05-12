@@ -1,4 +1,8 @@
 # Deviot Release Notes
+## Version 1.1.9 | 12 May
+* Fixed bug checking the current version of python
+* Removed not used context menu options
+
 ## Version 1.1.8 | 12 May
 * New Snippets
 * New Korean Language (Thanks to gro)

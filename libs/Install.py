@@ -72,7 +72,7 @@ class PioInstall(object):
         py_version = sub(r'\D', '', out[1])
 
         # show error and link to download
-        if(out[0] > 0 or int(py_version) >= 300):
+        if(out[0] > 0 or int(py_version[0]) == 3):
             current_time = time.strftime('%H:%M:%S')
             go_to = sublime.ok_cancel_dialog(
                 _("deviot_need_python"), _("button_download_python"))
