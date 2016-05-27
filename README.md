@@ -23,18 +23,19 @@ English | [Español](https://github.com/gepd/Deviot/blob/master/Docs/README-es.m
 3. Build or upload your code
 4. Done!
 
-##### Shortcuts Bar (Only in Windows)
-![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
-
-1. Build
-2. Upload
-3. Start Monitor Serial
-4. Send Text Through the Port Serial
-5. Hide Message Console
 
 ##### Other Features
 * [Libraries](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md)
 
+##### Snippets
+| Trigger | Function |
+|---------|----------|
+|abs| abs()|
+|analogRead|analogRead()|
+|analogWrite|analogWrite()|
+|attachInterrupt|attachInterrupt()|
+
+[See the full table with all the snippets availables](https://github.com/gepd/Deviot/blob/master/Docs/snippets.md)
 
 ## Languages 
 At this moment **Deviot** is available in english and spanish. If you want to contribute and translate it to your language use [this template](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt) and any other language file as reference. 

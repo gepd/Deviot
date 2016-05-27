@@ -23,18 +23,18 @@ Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para 
 3. Compila o carga tu código
 4. ¡Hecho!
 
-##### Barra de Shortcuts (Sólo en Windows)
-![shortcuts](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_bar.png?raw=true)
-
-1. Compilar
-2. Cargar
-3. Iniciar Monitor Serial
-4. Enviar Texto a Través del Puerto Serial
-5. Ocultar Consola de Mensajes
-
 ##### Otras Funciones
 * [Librerías](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library-es.md)
 
+##### Plantillas (Snippets)
+| Secuencia | Función |
+|---------|----------|
+|abs| abs()|
+|analogRead|analogRead()|
+|analogWrite|analogWrite()|
+|attachInterrupt|attachInterrupt()|
+
+[Ir a la tabla con la lista de todas las plantillas](https://github.com/gepd/Deviot/blob/master/Docs/snippets.md)
 
 ## Idiomas
 En este momento **Deviot** está disponible en inglés y español. Si deseas ayudar y traducir el plugin a tu idioma, usa [esta pantilla](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt) y cualquier otro archivo de idioma como referencia. 
