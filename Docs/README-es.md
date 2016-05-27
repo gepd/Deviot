@@ -34,7 +34,7 @@ Deviot es un plugin basado en [stino](https://github.com/Robot-Will/Stino) para 
 |analogWrite|analogWrite()|
 |attachInterrupt|attachInterrupt()|
 
-[Ir a la tabla con la lista de todas las plantillas](https://github.com/gepd/Deviot/blob/master/Docs/snippets.md)
+[Ir a la tabla con la lista de todas las plantillas](https://github.com/gepd/Deviot/blob/master/Docs/snippets-es.md)
 
 ## Idiomas
 En este momento **Deviot** está disponible en inglés y español. Si deseas ayudar y traducir el plugin a tu idioma, usa [esta pantilla](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt) y cualquier otro archivo de idioma como referencia. 
