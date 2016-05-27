@@ -71,6 +71,4 @@
 
 #### How to write my own snippet(s)?
 
-Follow [this guide ](http://sublimetext.info/docs/en/extensibility/snippets.html)
-
-If you want to share your(s) snippet(s) with others Deviot users, please paste the `.sublime-snippet` file in `Deviot\snippets` folder and push a PR
+Follow [this guide ](http://sublimetext.info/docs/en/extensibility/snippets.html), if you want to share your(s) snippet(s) with others Deviot users, please paste the `.sublime-snippet` file in `Deviot\snippets` folder and push a PR

@@ -71,8 +71,4 @@
 
 #### ¿Cómo escribir mis propias plantillas?
 
-Sigue [esta guía](http://sublimetext.info/docs/es/extensibility/snippets.html)
-
-Si quieres compartir tu(s) plantilla(s) con otros usuarios de Deviot, por favor pega el archivo `.sublime-snippet` en la carpeta `Deviot\snippets` y solicita una PR
-
-If you want to share your(s) snippet(s) with others Deviot users, please paste the `.sublime-snippet` file in `Deviot\snippets` folder and push a PR
+Sigue [esta guía](http://sublimetext.info/docs/es/extensibility/snippets.html), si quieres compartir tu(s) plantilla(s) con otros usuarios de Deviot, por favor pega el archivo `.sublime-snippet` en la carpeta `Deviot\snippets` y solicita una PR
