@@ -655,7 +655,7 @@ class DonateDeviotCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        sublime.run_command('open_url', {'url': 'https://goo.gl/LqdDrC'})
+        sublime.run_command('open_url', {'url': 'https://goo.gl/K0EpFU'})
 
 
 class AboutDeviotCommand(sublime_plugin.WindowCommand):
