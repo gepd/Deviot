@@ -309,12 +309,12 @@ class PioInstall(object):
         pio_new_ver = match(r"\w+\W \w+ (.+)", out[1]).group(1)
 
         # pio up to date
-        if(pio_new_ver == pio_old_ver):
+        if(int(sub(r'\D', '', pio_new_ver)) == int(sub(r'\D', '', pio_old_ver))):
             self.message_queue.put('pio_up_date{0}', pio_new_ver)
             self.Preferences.set('pio_version', pio_new_ver)
             return
         # pio update installed
-        elif(pio_new_ver > pio_old_ver):
+        elif(int(sub(r'\D', '', pio_new_ver)) > int(sub(r'\D', '', pio_old_ver))):
             self.message_queue.put('pio_new_updated_installed{0}', pio_new_ver)
             self.Preferences.set('pio_version', pio_new_ver)
             return
