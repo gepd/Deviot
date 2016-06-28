@@ -1,4 +1,7 @@
 # Deviot Release Notes
+## Version 1.1.10 | 28 Jun
+* Fix bug saving the platformio version after update it
+
 ## Version 1.1.9 | 12 May
 * Fixed bug checking the current version of python
 * Removed not used context menu options
