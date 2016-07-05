@@ -410,7 +410,9 @@ class PlatformioCLI(CommandsPy):
             action_thread = threading.Thread(target=self.uploadSketchProject)
             action_thread.start()
         elif(type == 'upgrade'):
-            action_thread = threading.Thread(target=PioInstall().checkUpdate)
+            feedback = True
+            action_thread = threading.Thread(
+                target=PioInstall().checkPio, args=(feedback,))
             action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)

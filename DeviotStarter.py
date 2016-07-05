@@ -12,7 +12,6 @@ import time
 import sublime
 import sublime_plugin
 import threading
-import json
 from shutil import rmtree
 
 try:
@@ -40,7 +39,6 @@ except:
     from libs.I18n import I18n
     from libs import Serial
     from libs import Messages
-    from libs.Progress import ThreadProgress
     from libs.Install import PioInstall
 
 _ = I18n().translate
@@ -49,22 +47,11 @@ package_name = 'Deviot'
 
 
 def plugin_loaded():
-    protected = Preferences().get('protected')
-    if(not protected):
-        thread = threading.Thread(target=PioInstall().checkPio)
-        thread.start()
-        ThreadProgress(thread, _('processing'), _('done'))
-    else:
-        # creating files
-        Tools.createCompletions()
-        Tools.createSyntaxFile()
-        Menu().createMainMenu()
-        Menu().createLibraryImportMenu()
-        Menu().createLibraryExamplesMenu()
+    thread = threading.Thread(target=PioInstall().checkPio)
+    thread.start()
 
-        # Run serial port listener
-        Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
-        Serial_Lib.start()
+    Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
+    Serial_Lib.start()
 
 
 def plugin_unloaded():

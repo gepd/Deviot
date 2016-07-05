@@ -8,11 +8,11 @@ from __future__ import unicode_literals
 
 import os
 import time
+import json
 import tempfile
 import sublime
 import subprocess
-import platform
-from shutil import rmtree, copy
+from shutil import rmtree
 from re import match, sub
 
 try:
@@ -61,142 +61,219 @@ class PioInstall(object):
         # Queue for the user console
         self.message_queue = Messages.MessageQueue(console)
 
-    def checkPio(self):
-        # defining default env paths
-        os.environ['PATH'] = self.getEnvPaths()
-
-        # checking python
-        cmd = ['python', '--version']
-        out = childProcess(cmd)
-
-        py_version = sub(r'\D', '', out[1])
-
-        # show error and link to download
-        if(out[0] > 0 or int(py_version[0]) == 3):
-            current_time = time.strftime('%H:%M:%S')
-            go_to = sublime.ok_cancel_dialog(
-                _("deviot_need_python"), _("button_download_python"))
-            if(go_to):
-                sublime.run_command(
-                    'open_url', {'url': 'https://www.python.org/downloads/'})
-            return
-
-        # check if pio is installed
-        self.message_queue.startPrint()
-        self.message_queue.put("deviot_setup{0}", version)
-        current_time = time.strftime('%H:%M:%S')
-
-        # get pio version
+    def checkPio(self, feedback=False):
+        # check platformio
         if(self.os == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
             cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
         else:
             executable = os.path.join(self.env_bin_dir, 'pio')
             cmd = ['"%s"' % (executable), '--version']
+
         out = childProcess(cmd)
+        headers = Tools.getHeaders()
 
         if(out[0] == 0):
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put("pio_is_installed{0}", current_time)
+            if(feedback):
+                self.message_queue.startPrint()
+                self.message_queue.put('_deviot_{0}', version)
+                self.message_queue.put('checking_pio_updates')
 
-            self.endSetup()
+            url = 'https://pypi.python.org/pypi/platformio/json'
+            req = Request(url, headers=headers)
+            response = urlopen(req)
+            list = json.loads(response.read().decode())
+            pio_current_ver = int(
+                sub(r'\D', '', self.Preferences.get('pio_version', 0)))
+            pio_cloud_ver = list['info']['version']
+
+            if(int(sub(r'\D', '', pio_cloud_ver)) != pio_current_ver):
+                update = True
+                if(not feedback):
+                    update = sublime.ok_cancel_dialog(
+                        'New Version!', 'Update!')
+
+                if(update):
+                    # try to update
+                    if(self.os == 'osx'):
+                        executable = os.path.join(self.env_bin_dir, 'python')
+                        cmd = ['"%s"' % (executable), '-m', 'pip',
+                               'install', '-U', 'platformio']
+                    else:
+                        executable = os.path.join(self.env_bin_dir, 'pip')
+                        cmd = ['"%s"' % (executable), 'install',
+                               '-U', 'platformio']
+                    out = childProcess(cmd)
+
+                    # error updating
+                    if(out[0] > 0):
+                        self.message_queue.put('error_pio_updates')
+                        return
+
+                    # get version
+                    if(self.os == 'osx'):
+                        executable = os.path.join(self.env_bin_dir, 'python')
+                        cmd = ['"%s"' % (executable), '-m',
+                               'platformio', '--version']
+                    else:
+                        executable = os.path.join(self.env_bin_dir, 'pio')
+                        cmd = ['"%s"' % (executable), '--version']
+                    out = childProcess(cmd)
+
+                    pio_new_ver = match(r"\w+\W \w+ (.+)", out[1]).group(1)
+
+                    # pio update installed
+                    self.message_queue.put(
+                        'pio_new_updated_installed{0}', pio_new_ver)
+                    self.Preferences.set('pio_version', pio_new_ver)
+                    return
+            else:
+                # creating files (menu, completions, syntax)
+                sublime.set_timeout(self.generateFilesCall, 0)
+                if(feedback):
+                    self.message_queue.put('pio_up_date{0}', pio_cloud_ver)
+                    self.Preferences.set('pio_version', pio_cloud_ver)
             return
+        else:
+            # defining default env paths
+            os.environ['PATH'] = self.getEnvPaths()
 
-        current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("pio_isn_installed{0}", current_time)
+            # checking python
+            cmd = ['python', '--version']
+            out = childProcess(cmd)
 
-        # check if virtualenv file is cached
-        if(os.path.exists(self.env_file)):
-            self.cached_file = True
+            py_version = sub(r'\D', '', out[1])
 
-        # download virtualenv
-        if(not self.cached_file):
-            current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put("downloading_files{0}", current_time)
-            headers = Tools.getHeaders()
-            url_file = 'https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.1.tar.gz'
-
-            try:
-                file_request = Request(url_file, headers=headers)
-                file_open = urlopen(file_request)
-                file = file_open.read()
-            except:
+            # show error and link to download
+            if(out[0] > 0 or int(py_version[0]) == 3):
                 current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    "error_downloading_files{0}", current_time)
-                print("There was an error downloading virtualenv")
-                return
-            # save file
-            try:
-                output = open(self.env_file, 'wb')
-                output.write(bytearray(file))
-                output.close()
-            except:
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put("error_saving_files{0}", current_time)
-                print("There was an error saving the virtualenv file")
+                go_to = sublime.ok_cancel_dialog(
+                    _("deviot_need_python"), _("button_download_python"))
+                if(go_to):
+                    sublime.run_command(
+                        'open_url', {'url': 'https://www.python.org/downloads/'})
                 return
 
-        # extract file
-        current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("extracting_files{0}", current_time)
-        tmp = tempfile.mkdtemp()
-        Tools.extractTar(self.env_file, tmp)
-
-        # install virtualenv in a temp dir
-        current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("installing_pio{0}", current_time)
-
-        temp_env = os.path.join(tmp, 'env-root')
-        cwd = os.path.join(tmp, 'virtualenv-14.0.1')
-        cmd = ['python', 'setup.py', 'install', '--root', temp_env]
-        out = childProcess(cmd, cwd)
-
-        # error
-        if(out[0] > 0):
+            # check if pio is installed
+            self.message_queue.startPrint()
+            self.message_queue.put("deviot_setup{0}", version)
             current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put("error_installing_env_{0}", current_time)
-            return
 
-        # make vitualenv
-        for root, dirs, files in os.walk(tmp):
-            for file in files:
-                if(file == 'virtualenv.py'):
-                    cwd = root
+            # get pio version
+            if(self.os == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pio')
+                cmd = ['"%s"' % (executable), '--version']
+            out = childProcess(cmd)
 
-        if(os.path.exists(cwd)):
-            cmd = ['python', 'virtualenv.py', '"%s"' % (self.env_dir)]
+            if(out[0] == 0):
+                current_time = time.strftime('%H:%M:%S')
+                self.message_queue.put("pio_is_installed{0}", current_time)
+
+                self.endSetup()
+                return
+
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("pio_isn_installed{0}", current_time)
+
+            # check if virtualenv file is cached
+            if(os.path.exists(self.env_file)):
+                self.cached_file = True
+
+            # download virtualenv
+            if(not self.cached_file):
+                current_time = time.strftime('%H:%M:%S')
+                self.message_queue.put("downloading_files{0}", current_time)
+
+                url_file = 'https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.1.tar.gz'
+
+                try:
+                    file_request = Request(url_file, headers=headers)
+                    file_open = urlopen(file_request)
+                    file = file_open.read()
+                except:
+                    current_time = time.strftime('%H:%M:%S')
+                    self.message_queue.put(
+                        "error_downloading_files{0}", current_time)
+                    print("There was an error downloading virtualenv")
+                    return
+                # save file
+                try:
+                    output = open(self.env_file, 'wb')
+                    output.write(bytearray(file))
+                    output.close()
+                except:
+                    current_time = time.strftime('%H:%M:%S')
+                    self.message_queue.put(
+                        "error_saving_files{0}", current_time)
+                    print("There was an error saving the virtualenv file")
+                    return
+
+            # extract file
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("extracting_files{0}", current_time)
+            tmp = tempfile.mkdtemp()
+            Tools.extractTar(self.env_file, tmp)
+
+            # install virtualenv in a temp dir
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put("installing_pio{0}", current_time)
+
+            temp_env = os.path.join(tmp, 'env-root')
+            cwd = os.path.join(tmp, 'virtualenv-14.0.1')
+            cmd = ['python', 'setup.py', 'install', '--root', temp_env]
             out = childProcess(cmd, cwd)
 
             # error
             if(out[0] > 0):
                 current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put("error_making_env_{0}", current_time)
+                self.message_queue.put(
+                    "error_installing_env_{0}", current_time)
                 return
 
-        # remove temp dir
-        rmtree(tmp)
+            # make vitualenv
+            for root, dirs, files in os.walk(tmp):
+                for file in files:
+                    if(file == 'virtualenv.py'):
+                        cwd = root
 
-        # install pio
-        if(self.os == 'osx'):
-            executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'pip',
-                   'install', '-U', 'platformio']
-        else:
-            executable = os.path.join(self.env_bin_dir, 'pip')
-            cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
-        out = childProcess(cmd)
+            if(os.path.exists(cwd)):
+                cmd = ['python', 'virtualenv.py', '"%s"' % (self.env_dir)]
+                out = childProcess(cmd, cwd)
 
-        # error
-        if(out[0] > 0):
+                # error
+                if(out[0] > 0):
+                    current_time = time.strftime('%H:%M:%S')
+                    self.message_queue.put(
+                        "error_making_env_{0}", current_time)
+                    return
+
+            # remove temp dir
+            rmtree(tmp)
+
+            # install pio
+            if(self.os == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m', 'pip',
+                       'install', '-U', 'platformio']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pip')
+                cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
+            out = childProcess(cmd)
+
+            # error
+            if(out[0] > 0):
+                current_time = time.strftime('%H:%M:%S')
+                self.message_queue.put(
+                    "error_installing_pio_{0}", current_time)
+                return
+
+            self.endSetup()
+
             current_time = time.strftime('%H:%M:%S')
-            self.message_queue.put("error_installing_pio_{0}", current_time)
-            return
-
-        self.endSetup()
-
-        current_time = time.strftime('%H:%M:%S')
-        self.message_queue.put("setup_finished{0}", current_time)
+            self.message_queue.put("setup_finished{0}", current_time)
 
     def getEnvPaths(self):
         # default paths
@@ -255,49 +332,6 @@ class PioInstall(object):
             from libs.PlatformioCLI import generateFiles
 
         generateFiles(install=True)
-
-    def checkUpdate(self):
-        self.message_queue.startPrint()
-        self.message_queue.put('_deviot_{0}', version)
-        self.message_queue.put('checking_pio_updates')
-
-        # try to update
-        if(self.os == 'osx'):
-            executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'pip',
-                   'install', '-U', 'platformio']
-        else:
-            executable = os.path.join(self.env_bin_dir, 'pip')
-            cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
-        out = childProcess(cmd)
-
-        # error updating
-        if(out[0] > 0):
-            self.message_queue.put('error_pio_updates')
-            return
-
-        # get version
-        if(self.os == 'osx'):
-            executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
-        else:
-            executable = os.path.join(self.env_bin_dir, 'pio')
-            cmd = ['"%s"' % (executable), '--version']
-        out = childProcess(cmd)
-
-        pio_old_ver = self.Preferences.get('pio_version', 0)
-        pio_new_ver = match(r"\w+\W \w+ (.+)", out[1]).group(1)
-
-        # pio up to date
-        if(int(sub(r'\D', '', pio_new_ver)) == int(sub(r'\D', '', pio_old_ver))):
-            self.message_queue.put('pio_up_date{0}', pio_new_ver)
-            self.Preferences.set('pio_version', pio_new_ver)
-            return
-        # pio update installed
-        elif(int(sub(r'\D', '', pio_new_ver)) > int(sub(r'\D', '', pio_old_ver))):
-            self.message_queue.put('pio_new_updated_installed{0}', pio_new_ver)
-            self.Preferences.set('pio_version', pio_new_ver)
-            return
 
 
 def childProcess(command, cwd=None):
