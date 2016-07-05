@@ -91,10 +91,7 @@ class Libraries:
 
         # request parameters
         url = 'http://api.platformio.org/lib/search?'
-        user_agent = 'Deviot/' + str(version) + \
-            ' (Sublime-Text/' + str(sublime.version()) + ')'
-        headers = {'User-Agent': user_agent}
-        req = Request(url + query, headers=headers)
+        req = Request(url + query, headers=Tools.getHeaders())
 
         # receive first page
         response = urlopen(req)
@@ -109,7 +106,7 @@ class Libraries:
                 # building query of next pages
                 request['page'] = page
                 query = urlencode(request)
-                req = Request(url + query, headers=headers)
+                req = Request(url + query, headers=Tools.getHeaders())
                 # receive first page
                 response = urlopen(req)
                 page_next = json.loads(response.read().decode())
