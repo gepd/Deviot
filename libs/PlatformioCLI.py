@@ -35,7 +35,7 @@ except:
     from libs.Messages import Console
     from libs.Messages import MessageQueue
     from libs.OrderedDict import OrderedDict
-    from libs.Commands import CommandsPy    
+    from libs.Commands import CommandsPy
     from libs.Serial import SerialListener
     from libs.Serial import listSerialPorts
     from libs.Preferences import Preferences
@@ -412,9 +412,6 @@ class PlatformioCLI(CommandsPy):
         elif(type == 'upgrade'):
             action_thread = threading.Thread(target=PioInstall().checkUpdate)
             action_thread.start()
-        elif(type == 'update_boards'):
-            action_thread = threading.Thread(target=PlatformioCLI().saveAPIBoards)
-            action_thread.start()
         else:
             action_thread = threading.Thread(target=self.cleanSketchProject)
             action_thread.start()
@@ -469,44 +466,9 @@ class PlatformioCLI(CommandsPy):
 
         Tools.setStatus(view, _('Done'), erase_time=4000)
 
-        return boards
-
-    def saveAPIBoards(self, update_method=False, install=False):
-        '''
-        Save the JSON object in a specific JSON file
-        '''
-        try:
-            from .Menu import Menu
-        except:
-            from libs.Menu import Menu
-
-        window = sublime.active_window()
-        view = window.active_view()
-        Tools.setStatus(view, _('updating_board_list'))
-
-        # console
-        if (not install):
-            console_name = 'Deviot|GetBoards' + str(time.time())
-            console = Console(window, name=console_name)
-            new_console = True
-
-            # Queue for the user console
-            message_queue = MessageQueue(console)
-            message_queue.startPrint()
-            
-            message_queue.put("[Deviot {0}]\n", version)
-
-            message_queue.put("download_board_list")
-        
-        boards = self.getAPIBoards()
-
         self.Menu.saveTemplateMenu(
             data=boards, file_name='platformio_boards.json', user_path=True)
         self.saveEnvironmentFile()
-
-        Menu().createMainMenu()
-        if(not install):
-            message_queue.put("list_updated")
 
     def saveEnvironmentFile(self):
         '''
@@ -547,10 +509,9 @@ class PlatformioCLI(CommandsPy):
 
 def generateFiles(install=False):
     # Creates new menu
-    api_boards = Paths.getTemplateMenuPath('platformio_boards.json',
-                                           user_path=True)
+    Paths.getTemplateMenuPath('platformio_boards.json',
+                              user_path=True)
     # create main files
-    PlatformioCLI().saveAPIBoards(install=install)
     Menu().createMainMenu()
 
     Tools.createCompletions()

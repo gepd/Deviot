@@ -195,6 +195,7 @@ def getSystemLang():
         sys_language = sys_language.lower()
     return sys_language[:2]
 
+
 def createSketch(sketch_name, path):
     try:
         from . import Paths
@@ -230,6 +231,7 @@ def createSketch(sketch_name, path):
         src_file.write(src_code)
 
     # open new file
+    views = []
     window = sublime.active_window()
     view = window.open_file(src_file_path)
     views.append(view)
@@ -542,8 +544,12 @@ def openExample(path, window):
         path {string} -- example folder
         window {object} -- window st object to open the new sketch
     """
+    if path.endswith('.ino'):
+        window.open_file(path)
+
     files = os.path.join(path, '*')
     files = glob.glob(files)
+
     for file in files:
         if '.ino' in file:
             window.open_file(file)

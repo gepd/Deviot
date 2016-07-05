@@ -10,5 +10,5 @@ quick_panel_active = False
 quick_panel_id = 0
 
 
-def quickPanel(w, items, callback, flags=0):
-    w.show_quick_panel(items, callback, flags)
+def quickPanel(w, items, callback, flags=0, index=0):
+    w.show_quick_panel(items, callback, flags, index)

@@ -45,37 +45,28 @@ class Menu(object):
 
         Returns: {json array} -- list of all boards to show in the menu
         '''
-        vendors = {}
         boards = []
-
-        platformio_data = self.getTemplateMenu(
+        is_native = Preferences().get('native', False)
+        type = 'board_id' if not is_native else 'found_ini'
+        list_env = Preferences().get(type, '')
+        data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
 
-        if(not platformio_data):
+        if(not data):
             return
 
-        platformio_data = json.loads(platformio_data)
+        platformio_data = json.loads(data)
 
         # searching data
         for datakey, datavalue in platformio_data.items():
-            for infokey, infovalue in datavalue.items():
-                vendor = datavalue['vendor']
-                if('name' in infokey):
-                    temp_info = {}
-                    temp_info['caption'] = infovalue
-                    temp_info['command'] = 'deviot_select_board'
-                    temp_info['checkbox'] = True
-                    temp_info['args'] = {'board_id': datakey}
-                    children = vendors.setdefault(vendor, [])
-                    children.append(temp_info)
+            caption = "+ " + datavalue['name']
+            for env in list_env:
+                if(datakey == env):
+                    caption = "- " + datavalue['name']
+            vendor = datavalue['vendor'] + " | " + datakey
+            boards.append([caption, vendor])
 
-        # reorganizing data
-        for vendor, children in vendors.items():
-            children = sorted(children, key=lambda x: x['caption'])
-            boards.append({'caption': vendor,
-                           'children': children})
-
-        boards = sorted(boards, key=lambda x: x['caption'])
+        print("createBoardsMenu")
 
         return boards
 
@@ -86,31 +77,32 @@ class Menu(object):
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
+        selected_index = 0
         environments = []
+        index = 0
+
         if(not empty):
             is_native = Preferences().get('native', False)
             type = 'board_id' if not is_native else 'found_ini'
-            env_selecs = Preferences().get(type, '')
-            env_boards = self.getTemplateMenu(
-                'env_boards.json', user_path=True)
+            list_env = Preferences().get(type, '')
+            env_selected = Preferences().get('env_selected', 0)
 
-            if(not env_boards):
-                return
+            env_data = self.getTemplateMenu(
+                file_name='platformio_boards.json', user_path=True)
+            env_data = json.loads(env_data)
 
-            # search
-            for board in env_boards:
-                for selected in env_selecs:
-                    try:
-                        environments.append(board[selected]['children'][0])
-                    except:
-                        pass
+            for env in env_data:
+                for selected in list_env:
+                    if(selected == env):
+                        caption = env_data[env]['name']
+                        vendor = env_data[env]['vendor'] + " | " + env
+                        environments.append([caption, vendor])
 
-        # save
-        env_menu = self.getTemplateMenu(file_name='environment.json')
-        env_menu[0]['children'][0]['children'] = environments
-        self.saveSublimeMenu(data=env_menu,
-                             sub_folder='environment',
-                             user_path=True)
+                        if(selected == env_selected):
+                            selected_index = index
+                        index += 1
+
+        return [environments, selected_index]
 
     def createLibraryImportMenu(self):
         """
@@ -262,10 +254,6 @@ class Menu(object):
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
-        boards = self.createBoardsMenu()
-
-        if(not boards):
-            return False
 
         menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
@@ -274,9 +262,6 @@ class Menu(object):
             for second_menu in menu_data[0][first_menu]:
                 if 'caption' in second_menu:
                     second_menu['caption'] = _(second_menu['caption'])
-                if 'children' in second_menu:
-                    if(second_menu['id'] == 'select_board'):
-                        second_menu['children'] = boards
 
         # sub menu translation (avoiding the boards menu)
         for third_menu in menu_data[0]['children']:

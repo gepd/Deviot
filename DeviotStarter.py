@@ -12,6 +12,7 @@ import time
 import sublime
 import sublime_plugin
 import threading
+import json
 from shutil import rmtree
 
 try:
@@ -156,22 +157,16 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, board_id):
-        native = Preferences().get('native', False)
-        remove = Preferences().boardSelected(board_id)
-        if(remove):
-            PlatformioCLI().removeEnvFromFile(board_id)
-        if(native and not remove):
-            view = self.window.active_view()
-            console_name = 'Deviot|Init' + str(time.time())
-            console = Console(view.window(), name=console_name)
-            Preferences().set('init_queue', board_id)
-            PlatformioCLI(view, console).openInThread('init', chosen=board_id)
-        Menu().createEnvironmentMenu()
+    def run(self):
+        choose = Menu().createBoardsMenu()
+        quickPanel(self.window, choose, self.on_done)
 
-    def is_checked(self, board_id):
-        check = Preferences().checkBoard(board_id)
-        return check
+    def on_done(self, selected):
+        if(selected != -1):
+            choose = Menu().createBoardsMenu()
+            board_id = choose[selected][1].split(' | ')[1]
+            Preferences().boardSelected(board_id)
+            Menu().createEnvironmentMenu()
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -185,25 +180,15 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, board_id):
-        native = Preferences().get('native', False)
+    def run(self):
+        choose = Menu().createEnvironmentMenu()
+        quickPanel(self.window, choose[0], self.on_done, index=choose[1])
 
-        key = 'env_selected'
-        if(native):
-            key = 'native_env_selected'
-
-        Preferences().set(key, board_id)
-        Tools.userPreferencesStatus(self.window.active_view())
-
-    def is_checked(self, board_id):
-        native = Preferences().get('native', False)
-
-        key = 'env_selected'
-        if(native):
-            key = 'native_env_selected'
-
-        check = Preferences().get(key, False)
-        return board_id == check
+    def on_done(self, selected):
+        if(selected != -1):
+            choose = Menu().createEnvironmentMenu()
+            env = choose[0][selected][1].split(' | ')[1]
+            Preferences().set('env_selected', env)
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -518,18 +503,6 @@ class UpgradePioCommand(sublime_plugin.TextCommand):
         console_name = 'Deviot|Upgrade' + str(time.time())
         console = Console(view.window(), name=console_name)
         PlatformioCLI(view, console, install=True).openInThread('upgrade')
-
-
-class UpdateBoardListCommand(sublime_plugin.WindowCommand):
-    """
-    Update the board list, extracting the info from platformIO
-    ecosystem
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        PlatformioCLI(install=True).openInThread('update_boards')
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
