@@ -66,8 +66,6 @@ class Menu(object):
             vendor = datavalue['vendor'] + " | " + datakey
             boards.append([caption, vendor])
 
-        print("createBoardsMenu")
-
         return boards
 
     def createEnvironmentMenu(self, empty=False):
