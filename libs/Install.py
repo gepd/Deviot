@@ -242,26 +242,6 @@ class PioInstall(object):
         pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
         self.Preferences.set('pio_version', pio_version)
 
-        # copy menu
-        sys_os = Tools.getOsName()
-        preset_path = Paths.getPresetPath()
-        plg_path = Paths.getPluginPath()
-        dst = os.path.join(plg_path, 'Settings-Default', 'Main.sublime-menu')
-
-        if(sys_os == 'windows'):
-            if(platform.release() == '7'):
-                src_path = os.path.join(preset_path, 'Main.sublime-menu.w7')
-            else:
-                src_path = os.path.join(
-                    preset_path, 'Main.sublime-menu.windows')
-            copy(src_path, dst)
-        elif(sys_os == 'osx'):
-            src_path = os.path.join(preset_path, 'Main.sublime-menu.osx')
-            copy(src_path, dst)
-        else:
-            src_path = os.path.join(preset_path, 'Main.sublime-menu.linux')
-            copy(src_path, dst)
-
         # creating files (menu, completions, syntax)
         sublime.set_timeout(self.generateFilesCall, 0)
 
