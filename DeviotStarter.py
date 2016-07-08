@@ -25,7 +25,6 @@ try:
     from .libs.I18n import I18n
     from .libs import Serial
     from .libs import Messages
-    from .libs.Progress import ThreadProgress
     from .libs.Install import PioInstall
 except:
     from libs import Paths
@@ -82,8 +81,8 @@ class DeviotListener(sublime_plugin.EventListener):
         Arguments: view {ST object} -- Sublime Text Object
         """
         PlatformioCLI(view, command=False).checkInitFile()
-        Tools.setStatus(view)
-        Tools.userPreferencesStatus(view)
+        Tools.setStatus()
+        Tools.userPreferencesStatus()
 
     def on_close(self, view):
         """
@@ -175,7 +174,8 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
         if(selected != -1):
             choose = Menu().createEnvironmentMenu()
             env = choose[0][selected][1].split(' | ')[1]
-            Preferences().set('env_selected', env)
+            Tools.saveEnvironment(env)
+            Tools.userPreferencesStatus()
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -613,4 +613,4 @@ class AddStatusCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit, text, erase_time):
-        Tools.setStatus(self.view, text, erase_time)
+        Tools.setStatus(text, erase_time)

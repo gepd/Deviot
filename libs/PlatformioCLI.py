@@ -456,9 +456,7 @@ class PlatformioCLI(CommandsPy):
 
         Returns: {json object} -- list with all boards in a JSON format
         '''
-        window = sublime.active_window()
-        view = window.active_view()
-        Tools.setStatus(view, _('updating_board_list'))
+        Tools.setStatus(_('updating_board_list'))
 
         boards = []
         Run = CommandsPy()
@@ -466,7 +464,7 @@ class PlatformioCLI(CommandsPy):
         command = ['boards', '--json-output']
         boards = Run.runCommand(command, setReturn=True)
 
-        Tools.setStatus(view, _('Done'), erase_time=4000)
+        Tools.setStatus(_('Done'), erase_time=4000)
 
         self.Menu.saveTemplateMenu(
             data=boards, file_name='platformio_boards.json', user_path=True)

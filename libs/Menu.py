@@ -75,6 +75,11 @@ class Menu(object):
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
+        try:
+            from . import Tools
+        except:
+            from libs import Tools
+
         selected_index = 0
         environments = []
         index = 0
@@ -83,8 +88,8 @@ class Menu(object):
             is_native = Preferences().get('native', False)
             type = 'board_id' if not is_native else 'found_ini'
             list_env = Preferences().get(type, '')
-            env_selected = Preferences().get('env_selected', 0)
 
+            env_selected = Tools.getEnvironment()
             env_data = self.getTemplateMenu(
                 file_name='platformio_boards.json', user_path=True)
             env_data = json.loads(env_data)

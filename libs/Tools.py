@@ -81,16 +81,15 @@ def isIOTFile(view):
     return False
 
 
-def setStatus(view, text=False, erase_time=0, key=False):
+def setStatus(text=False, erase_time=0, key=False):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
 
     Arguments: view {st object} -- stores many info related with ST
     '''
-
-    if(not view):
-        return
+    window = sublime.active_window()
+    view = window.active_view()
 
     is_iot = isIOTFile(view)
 
@@ -119,7 +118,7 @@ def setStatus(view, text=False, erase_time=0, key=False):
         sublime.set_timeout(cleanStatus, erase_time)
 
 
-def userPreferencesStatus(view):
+def userPreferencesStatus():
     '''
     Shows the COM port and the environment selected for the user
 
@@ -138,12 +137,12 @@ def userPreferencesStatus(view):
     else:
         env = Preferences().get('env_selected', False)
     if env:
-        setStatus(view, env.upper(), key='_deviot_env')
+        setStatus(env.upper(), key='_deviot_env')
 
     # check for port
     env = Preferences().get('id_port', False)
     if env:
-        setStatus(view, env, key='_deviot_port')
+        setStatus(env, key='_deviot_port')
 
 
 def singleton(cls):
@@ -581,3 +580,35 @@ def removePreferences():
     rmtree(user_path, ignore_errors=False)
     os.remove(main_menu)
     os.remove(dst)
+
+
+def getEnvironment():
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+
+    # Get the environment based in the current file
+    native = Preferences().get('native', False)
+
+    if native:
+        environment = Preferences().get('native_env_selected', False)
+    else:
+        environment = Preferences().get('env_selected', False)
+
+    return environment
+
+
+def saveEnvironment(data):
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+
+    # Save data
+    native = Preferences().get('native', False)
+
+    if native:
+        Preferences().set('native_env_selected', data)
+    else:
+        Preferences().set('env_selected', data)
