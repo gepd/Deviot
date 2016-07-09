@@ -145,7 +145,7 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         choose = Menu().createBoardsMenu()
-        quickPanel(self.window, choose, self.on_done)
+        quickPanel(choose, self.on_done)
 
     def on_done(self, selected):
         if(selected != -1):
@@ -168,7 +168,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         choose = Menu().createEnvironmentMenu()
-        quickPanel(self.window, choose[0], self.on_done, index=choose[1])
+        quickPanel(choose[0], self.on_done, index=choose[1])
 
     def on_done(self, selected):
         if(selected != -1):
@@ -206,7 +206,7 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         choose = Libraries.Libraries().getList()
-        quickPanel(self.window, choose, self.on_done)
+        quickPanel(choose, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
@@ -233,7 +233,7 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         choose = Libraries.Libraries(self.window).installedList()
-        quickPanel(self.window, choose, self.on_done)
+        quickPanel(choose, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
