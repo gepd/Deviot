@@ -79,9 +79,9 @@ class Console:
     Creates the user console to show different messages.
     """
 
-    def __init__(self, window, name='deviot_console'):
+    def __init__(self, name='deviot_console'):
         self.name = name
-        self.window = window
+        self.window = sublime.active_window()
 
         if python_version < 3:
             self.panel = self.window.get_output_panel(self.name)
@@ -137,9 +137,9 @@ class MonitorView:
 
         self.view.set_read_only(False)
         pos = self.view.size()
-        
+
         if python_version < 3:
-            edit = self.view.begin_edit()           
+            edit = self.view.begin_edit()
             self.view.insert(edit, pos, text)
             self.view.end_edit(edit)
         else:

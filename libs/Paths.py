@@ -100,7 +100,7 @@ def getEnvDir():
 def getEnvBinDir():
     env_dir = getEnvDir()
     env_bin_dir = os.path.join(
-        env_dir, 'Scripts' if 'windows' in Tools.getOsName() else 'bin')
+        env_dir, 'Scripts' if 'windows' in sublime.platform() else 'bin')
 
     try:
         os.makedirs(env_bin_dir)
@@ -251,7 +251,7 @@ def getCWD(file_path):
     return folder_path
 
 
-def getParentCWD(file_path):
+def getParentPath(file_path):
     folder_path = os.path.dirname(file_path)
     parent = os.path.dirname(folder_path)
     return parent
@@ -264,7 +264,7 @@ def getFullIniPath(path):
 
 def getTempPath(file_name=False):
     tmp_path = '/tmp'
-    os_name = Tools.getOsName()
+    os_name = sublime.platform()
     if os_name == 'windows':
         tmp_path = os.environ['tmp']
 
@@ -299,7 +299,7 @@ def listWinVolume():
 
 def listRootPath():
     root_list = []
-    os_name = Tools.getOsName()
+    os_name = sublime.platform()
     if os_name == 'windows':
         root_list = listWinVolume()
     else:

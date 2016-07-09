@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 import time
 import glob
 import threading
+import sublime
 
 try:
     from . import Tools
@@ -20,7 +21,7 @@ except:
     from libs import Messages
     from libs.Preferences import Preferences
 
-if Tools.getOsName() == 'windows':
+if sublime.platform() == 'windows':
     if Tools.getPythonVersion() < 3:
         import _winreg as winreg
     else:
@@ -202,7 +203,7 @@ def listSerialPorts():
     """
     List all the serial ports availables in the diffents O.S
     """
-    os_name = Tools.getOsName()
+    os_name = sublime.platform()
     if os_name == "windows":
         serial_ports = listWinSerialPorts()
     elif os_name == 'osx':

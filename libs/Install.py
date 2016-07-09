@@ -51,19 +51,17 @@ class PioInstall(object):
         self.cache_dir = Paths.getCacheDir()
         self.env_file = Paths.getEnvFile()
         self.cached_file = False
-        self.os = Tools.getOsName()
 
         # console
-        window = sublime.active_window()
         console_name = 'Deviot|Pio_Install' + str(time.time())
-        console = Messages.Console(window, name=console_name)
+        console = Messages.Console(name=console_name)
 
         # Queue for the user console
         self.message_queue = Messages.MessageQueue(console)
 
     def checkPio(self, feedback=False):
         # check platformio
-        if(self.os == 'osx'):
+        if(sublime.platform() == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
             cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
         else:
@@ -95,7 +93,7 @@ class PioInstall(object):
 
                 if(update):
                     # try to update
-                    if(self.os == 'osx'):
+                    if(sublime.platform() == 'osx'):
                         executable = os.path.join(self.env_bin_dir, 'python')
                         cmd = ['"%s"' % (executable), '-m', 'pip',
                                'install', '-U', 'platformio']
@@ -111,7 +109,7 @@ class PioInstall(object):
                         return
 
                     # get version
-                    if(self.os == 'osx'):
+                    if(sublime.platform() == 'osx'):
                         executable = os.path.join(self.env_bin_dir, 'python')
                         cmd = ['"%s"' % (executable), '-m',
                                'platformio', '--version']
@@ -160,7 +158,7 @@ class PioInstall(object):
             current_time = time.strftime('%H:%M:%S')
 
             # get pio version
-            if(self.os == 'osx'):
+            if(sublime.platform() == 'osx'):
                 executable = os.path.join(self.env_bin_dir, 'python')
                 cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
             else:
@@ -254,7 +252,7 @@ class PioInstall(object):
             rmtree(tmp)
 
             # install pio
-            if(self.os == 'osx'):
+            if(sublime.platform() == 'osx'):
                 executable = os.path.join(self.env_bin_dir, 'python')
                 cmd = ['"%s"' % (executable), '-m', 'pip',
                        'install', '-U', 'platformio']
@@ -303,12 +301,12 @@ class PioInstall(object):
 
     def endSetup(self):
         # save env paths
-        if(self.os != 'osx'):
+        if(sublime.platform() != 'osx'):
             env_path = [self.env_bin_dir]
             self.saveEnvPaths(env_path)
 
         # get pio version
-        if(self.os == 'osx'):
+        if(sublime.platform() == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
             cmd = ['"%s"' % (executable), '-m', 'platformio', '--version']
         else:

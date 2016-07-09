@@ -66,7 +66,7 @@ class Libraries:
 
         # console
         console_name = 'Deviot|Library' + str(time.time())
-        console = Messages.Console(self.window, name=console_name)
+        console = Messages.Console(name=console_name)
 
         # Queue for the user console
         self.message_queue = MessageQueue(console)

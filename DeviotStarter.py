@@ -80,7 +80,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(view, command=False).checkInitFile()
+        PlatformioCLI(feedback=False).checkInitFile()
         Tools.setStatus()
         Tools.userPreferencesStatus()
 
@@ -488,7 +488,7 @@ class UpgradePioCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         console_name = 'Deviot|Upgrade' + str(time.time())
-        console = Console(view.window(), name=console_name)
+        console = Console(name=console_name)
         PlatformioCLI(view, console, install=True).openInThread('upgrade')
 
 
