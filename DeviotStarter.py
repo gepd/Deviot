@@ -178,7 +178,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             Tools.userPreferencesStatus()
 
     def is_enabled(self):
-        return Preferences().get('enable_menu', False)
+        return Tools.checkBoards()
 
 
 class SearchLibraryCommand(sublime_plugin.WindowCommand):
@@ -285,10 +285,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Build' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('build')
+        PlatformioCLI().beforeProcess('build')
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -304,10 +301,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Upload' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('upload')
+        PlatformioCLI().beforeProcess('upload')
 
     def is_enabled(self):
         return Preferences().get('enable_menu')

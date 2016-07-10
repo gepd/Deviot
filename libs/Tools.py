@@ -65,18 +65,14 @@ def getFileNameFromPath(path, ext=True):
     return file_name
 
 
-def isIOTFile(view):
+def isIOTFile(path):
     '''
     Check if the file in the current view of ST is an allowed
     IoT file, the files are specified in the exts variable.
-
-    Arguments:  view {st object} -- stores many info related with ST
     '''
     exts = ['ino', 'pde', 'cpp', 'c', '.S']
 
-    file_path = getPathFromView(view)
-
-    if file_path and file_path.split('.')[-1] in exts:
+    if path and path.split('.')[-1] in exts:
         return True
     return False
 
@@ -91,7 +87,7 @@ def setStatus(text=False, erase_time=0, key=False):
     window = sublime.active_window()
     view = window.active_view()
 
-    is_iot = isIOTFile(view)
+    is_iot = isIOTFile(view.file_name())
 
     if(key and is_iot):
         view.set_status(key, text)
@@ -140,9 +136,9 @@ def userPreferencesStatus():
         setStatus(env.upper(), key='_deviot_env')
 
     # check for port
-    env = Preferences().get('id_port', False)
-    if env:
-        setStatus(env, key='_deviot_port')
+    port = Preferences().get('id_port', False)
+    if port:
+        setStatus(port, key='_deviot_port')
 
 
 def singleton(cls):
@@ -156,23 +152,6 @@ def singleton(cls):
             instances[cls] = cls(*args, **kw)
         return instances[cls]
     return _singleton
-
-
-def getOsName():
-    """
-    Gets the name of the S.O running in the system
-    """
-    name = sys.platform
-
-    if name == 'win32':
-        os_name = 'windows'
-    elif name == 'darwin':
-        os_name = 'osx'
-    elif 'linux' in name:
-        os_name = 'linux'
-    else:
-        os_name = 'other'
-    return os_name
 
 
 def getPythonVersion():
@@ -239,7 +218,7 @@ def createSketch(sketch_name, path):
 
 
 def getDefaultPaths():
-    if(getOsName() == 'windows'):
+    if(sublime.platform() == 'windows'):
         default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
     else:
         default_path = ["/usr/bin", "/usr/local/bin"]
@@ -605,10 +584,54 @@ def saveEnvironment(data):
     except:
         from libs.Preferences import Preferences
 
-    # Save data
-    native = Preferences().get('native', False)
+    settings = Preferences()
 
-    if native:
-        Preferences().set('native_env_selected', data)
+    # Save data
+    native = settings.get('native', False)
+
+    if(native):
+        settings.set('native_env_selected', data)
     else:
-        Preferences().set('env_selected', data)
+        settings.set('env_selected', data)
+
+
+def checkBoards():
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+
+    settings = Preferences()
+
+    enabled = settings.get('enable_menu', False)
+    if(enabled):
+        native = settings.get('native', False)
+        if(native):
+            env = settings.get('found_ini', False)
+            enabled = True if env else False
+        else:
+            env = settings.get('board_id', False)
+            enabled = True if env else False
+
+    return enabled
+
+
+def checkEnvironments():
+    try:
+        from .Preferences import Preferences
+    except:
+        from libs.Preferences import Preferences
+
+    settings = Preferences()
+
+    enabled = settings.get('enable_menu', False)
+    if(enabled):
+        native = settings.get('native', False)
+        if(native):
+            env = settings.get('native_env_selected', False)
+            enabled = True if env else False
+        else:
+            env = settings.get('env_selected', False)
+            enabled = True if env else False
+
+    return enabled
