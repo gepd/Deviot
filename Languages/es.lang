@@ -156,10 +156,10 @@ msgstr "Cambiar Carpeta de Compilación"
 msgid "menu_use_cpp_new"
 msgstr "Usar CPP con Nuevo Archivo"
 
-msgid "change_default_path"
+msgid "menu_change_default_path"
 msgstr "Cambiar Directorio por Defecto"
 
-msgid "remove_default_path"
+msgid "menu_remove_default_path"
 msgstr "Eliminar Directorio por Defecto"
 
 msgid "menu_languages"

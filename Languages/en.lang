@@ -155,10 +155,10 @@ msgstr "Change Build Folder"
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
 
-msgid "change_default_path"
+msgid "menu_change_default_path"
 msgstr "Change Default Path"
 
-msgid "remove_default_path"
+msgid "menu_remove_default_path"
 msgstr "Remove Default Path"
 
 msgid "menu_languages"

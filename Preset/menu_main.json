@@ -280,11 +280,11 @@
                                 },
                                 {"caption": "-"},
                                 {
-                                    "caption":"change_default_path",
+                                    "caption":"menu_change_default_path",
                                     "command":"change_default_path"
                                 },
                                 {
-                                    "caption":"remove_default_path",
+                                    "caption":"menu_remove_default_path",
                                     "command":"remove_default_path"
                                 }
                             ]
