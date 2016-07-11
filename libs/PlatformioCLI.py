@@ -315,6 +315,13 @@ class PlatformioCLI(CommandsPy):
                 Preferences().set('autorun_monitor', False)
         self.message_queue.stopPrint()
 
+    def clean(self):
+        if(not self.is_iot):
+            return
+
+        command = ['run', '-t clean']
+        self.Commands.runCommand(command, "clean_built_files__{0}")
+
     def openInThread(self, type, process=True):
         """
         Opens each action; build/upload/clean in a new thread

@@ -315,17 +315,13 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Clean' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('clean')
+        PlatformioCLI().openInThread('clean')
 
     def is_enabled(self):
-        is_enabled = Preferences().get('builded_sketch')
-
-        if(not Preferences().get('enable_menu', False)):
-            is_enabled = False
-
+        is_enabled = Preferences().get('enable_menu', False)
+        if(is_enabled):
+            view = sublime.active_window().active_view()
+            is_enabled = Tools.isIOTFile(view.file_name())
         return is_enabled
 
 
