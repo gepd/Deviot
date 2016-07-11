@@ -353,6 +353,59 @@ class PioInstall(object):
 
         generateFiles()
 
+    def developer(self):
+        developer = Preferences().get('developer', False)
+
+        # remove stable version
+        if(sublime.platform() == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'pip',
+                   'uninstall', '--yes', 'platformio']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pip')
+            cmd = ['"%s"' % (executable), 'uninstall', '--yes', 'platformio']
+        childProcess(cmd)
+
+        if(not developer):
+            # install developer version
+            if(sublime.platform() == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m', 'pip',
+                       'install', '-U', 'https://github.com/platformio/platformio/archive/develop.zip']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pip')
+                cmd = ['"%s"' % (executable), 'install', '-U',
+                       'https://github.com/platformio/platformio/archive/develop.zip']
+            out = childProcess(cmd)
+        else:
+            # install stable version
+            if(sublime.platform() == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m', 'pip',
+                       'install', '-U', 'platformio']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pip')
+                cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
+            out = childProcess(cmd)
+
+        # show status in deviot console
+        if(out[0] > 0):
+            pass
+        else:
+            # get pio version
+            if(sublime.platform() == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m',
+                       'platformio', '--version']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pio')
+                cmd = ['"%s"' % (executable), '--version']
+            out = childProcess(cmd)
+            pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
+            self.Preferences.set('pio_version', pio_version)
+            self.Preferences.set('developer', not developer)
+            Tools.setStatus()
+
 
 def childProcess(command, cwd=None):
     command.append("2>&1")

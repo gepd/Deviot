@@ -140,6 +140,9 @@ msgstr "PlatformIO 업그레이드"
 msgid "menu_update_board_list"
 msgstr "보드 목록 업데이트"
 
+msgid "menu_developer_pio"
+msgstr "Use Development Pio Version"
+
 msgid "menu_show_verbose"
 msgstr "빌드 시 모든 메시지 보임"
 

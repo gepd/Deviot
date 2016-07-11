@@ -254,6 +254,11 @@
                                     "caption":"menu_upgrade_pio",
                                     "command":"upgrade_pio"
                                 },
+                                {
+                                    "caption":"menu_developer_pio",
+                                    "checkbox":true,
+                                    "command":"developer_pio"
+                                },
                                 {"caption": "-"},
                                 {
                                     "caption":"menu_show_verbose",

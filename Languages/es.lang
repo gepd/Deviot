@@ -138,6 +138,9 @@ msgstr "Opciones"
 msgid "menu_upgrade_pio"
 msgstr "Actualizar PlatformIO"
 
+msgid "menu_developer_pio"
+msgstr "Usar Version en Desarrollo de Pio"
+
 msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"
 

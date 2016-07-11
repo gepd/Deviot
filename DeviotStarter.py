@@ -53,6 +53,8 @@ def plugin_loaded():
     thread = threading.Thread(target=PioInstall().checkPio)
     thread.start()
     ThreadProgress(thread, _('processing'), _('done'))
+    Tools.setStatus()
+    Tools.userPreferencesStatus()
 
 
 def plugin_unloaded():
@@ -83,8 +85,6 @@ class DeviotListener(sublime_plugin.EventListener):
         Arguments: view {ST object} -- Sublime Text Object
         """
         PlatformioCLI(feedback=False).checkInitFile()
-        Tools.setStatus()
-        Tools.userPreferencesStatus()
 
     def on_close(self, view):
         """
@@ -502,6 +502,17 @@ class UpgradePioCommand(sublime_plugin.TextCommand):
         console_name = 'Deviot|Upgrade' + str(time.time())
         console = Console(name=console_name)
         PlatformioCLI(view, console, install=True).openInThread('upgrade')
+
+
+class DeveloperPioCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        thread = threading.Thread(target=PioInstall().developer)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
+
+    def is_checked(self):
+        return Preferences().get('developer', False)
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):

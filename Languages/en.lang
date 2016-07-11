@@ -137,6 +137,9 @@ msgstr "Options"
 msgid "menu_upgrade_pio"
 msgstr "Upgrade PlatformIO"
 
+msgid "menu_developer_pio"
+msgstr "Use Development Pio Version"
+
 msgid "menu_update_board_list"
 msgstr "Update Board List"
 
