@@ -127,7 +127,7 @@ class PlatformioCLI(CommandsPy):
 
         # set not native paths
         if(not self.is_native):
-            self.project_dir = Preferences().get('build_dir', False)
+            self.project_dir = Paths.getBuildPath(temp_name)
             if(not self.project_dir):
                 self.project_dir = Paths.getTempPath(temp_name)
             type_env = 'env_selected'
