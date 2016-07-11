@@ -277,6 +277,15 @@
                                 {
                                     "caption":"menu_use_cpp_new",
                                     "command":"use_cpp_template"
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"change_default_path",
+                                    "command":"change_default_path"
+                                },
+                                {
+                                    "caption":"remove_default_path",
+                                    "command":"remove_default_path"
                                 }
                             ]
             },{

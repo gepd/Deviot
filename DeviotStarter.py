@@ -551,6 +551,29 @@ class UseCppTemplate(sublime_plugin.WindowCommand):
         return Preferences().get('use_cpp', False)
 
 
+class ChangeDefaultPathCommand(sublime_plugin.WindowCommand):
+    """
+    Set the default path when the "change folder" option is used
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        Paths.selectDir(self.window, key='default_path',
+                        func=Preferences().set)
+
+
+class RemoveDefaultPathCommand(sublime_plugin.WindowCommand):
+    """
+    Remove the default path when the "change folder" option is used
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        Preferences().set('default_path', False)
+
+
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
     def run(self, id_lang):

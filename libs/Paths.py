@@ -310,6 +310,13 @@ def listRootPath():
 
 
 def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=None):
+    try:
+        from .Preferences import Preferences
+        from .I18n import I18n
+    except:
+        from libs.Preferences import Preferences
+        from libs.I18n import I18n
+
     if index == -1:
         return ''
 
@@ -317,6 +324,10 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         sel_path = paths[0].split('(')[1][:-1]
         if func:
             if key:
+                save_path = [sel_path, index, level]
+                if(key == 'default_path'):
+                    sel_path = save_path
+                Preferences().set('last_path', save_path)
                 func(key, sel_path)
         return
 
@@ -325,6 +336,15 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             level -= 1
         elif index > 1:
             level += 1
+
+        default_path = Preferences().get('default_path', False)
+        if(not default_path):
+            default_path = Preferences().get('last_path', False)
+
+        if(index == -2 and default_path):
+            paths = [default_path[0]]
+            index = default_path[1]
+            level = default_path[2]
 
         if level <= 0:
             level = 0
@@ -343,11 +363,6 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             cur_dir = Dir(dir_path)
             sub_dirs = cur_dir.listDirs()
             paths = [d.getPath() for d in sub_dirs]
-
-        try:
-            from .I18n import I18n
-        except:
-            from libs.I18n import I18n
 
         _ = I18n().translate
 
