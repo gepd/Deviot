@@ -246,7 +246,7 @@ class PioInstall(object):
             py_version = sub(r'\D', '', out[1])
 
             # error
-            if(out[0] > 0 or int(py_version) >= 300):
+            if(out[0] > 0 or int(py_version) == 300):
 
                 current_time = time.strftime('%H:%M:%S')
                 self.message_queue.put(
