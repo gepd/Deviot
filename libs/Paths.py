@@ -158,6 +158,7 @@ def getPioLibrary():
 
     try:
         os.makedirs(pio_lib)
+        os.chmod(pio_lib, 0o777)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
