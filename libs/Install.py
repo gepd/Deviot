@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 import time
+import datetime
 import json
 import tempfile
 import sublime
@@ -60,6 +61,24 @@ class PioInstall(object):
         self.message_queue = Messages.MessageQueue(console)
 
     def checkPio(self, feedback=False):
+        # check update once a day
+        date_now = datetime.datetime.now()
+        date_update = self.Preferences.get('check_update', False)
+
+        try:
+            date_update = datetime.datetime.strptime(
+                date_update, '%Y-%m-%d %H:%M:%S.%f')
+
+            if(date_now < date_update):
+                sublime.set_timeout(self.generateFilesCall, 0)
+                return
+        except:
+            pass
+
+        if(not date_update or date_now > date_update):
+            date_update = datetime.datetime.now() + datetime.timedelta(1, 0)
+            self.Preferences.set('check_update', str(date_update))
+
         # check platformio
         if(sublime.platform() == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
@@ -329,7 +348,7 @@ class PioInstall(object):
         except:
             from libs.PlatformioCLI import generateFiles
 
-        generateFiles(install=True)
+        generateFiles()
 
 
 def childProcess(command, cwd=None):
