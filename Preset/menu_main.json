@@ -67,7 +67,7 @@
             {
                 "caption": "menu_serial_ports",
                 "id": "serial_ports",
-                "children":[]
+                "command": "select_port"
             },
             {
                 "caption": "menu_monitor_serial",

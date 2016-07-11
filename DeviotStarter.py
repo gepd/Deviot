@@ -49,9 +49,6 @@ def plugin_loaded():
     thread = threading.Thread(target=PioInstall().checkPio)
     thread.start()
 
-    Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
-    Serial_Lib.start()
-
 
 def plugin_unloaded():
     try:
@@ -120,9 +117,6 @@ class DeviotListener(sublime_plugin.EventListener):
                 tmp_path = os.path.join(tmp_path, content)
                 rmtree(tmp_path, ignore_errors=False)
                 Preferences().set('builded_sketch', False)
-
-        # Empty enviroment menu
-        Menu().createEnvironmentMenu(empty=True)
 
 
 class DeviotNewSketchCommand(sublime_plugin.WindowCommand):
@@ -349,12 +343,8 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, id_port):
-        Preferences().set('id_port', id_port)
-
-    def is_checked(self, id_port):
-        saved_id_port = Preferences().get('id_port')
-        return saved_id_port == id_port
+    def run(self):
+        PlatformioCLI(feedback=False).openInThread('ports')
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):

@@ -224,40 +224,11 @@ class Menu(object):
                              sub_folder='library_example',
                              user_path=True)
 
-    def createSerialPortsMenu(self):
-        '''
-        Creates a menu list with all serial ports available
-        '''
-        port_list = Serial.listSerialPorts()
-        ip_port = Preferences().get('ip_port', '')
-
-        if(ip_port):
-            port_list.insert(0, ip_port)
-
-        menu_preset = self.getTemplateMenu(file_name='serial.json')
-        menu_ports = [
-            {"caption": _("menu_add_ip"), "command": "add_serial_ip"}]
-
-        for port in port_list:
-            temp_info = {}
-            temp_info['caption'] = port
-            temp_info['command'] = 'select_port'
-            temp_info['checkbox'] = True
-            temp_info['args'] = {'id_port': port}
-            menu_ports.append(temp_info)
-
-        menu_preset[0]['children'][0]['children'] = menu_ports
-
-        self.saveSublimeMenu(data=menu_preset,
-                             sub_folder='serial',
-                             user_path=True)
-
     def createMainMenu(self):
         '''
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
-
         menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
         # Main Menu
@@ -281,13 +252,6 @@ class Menu(object):
                 pass
 
         self.saveSublimeMenu(data=menu_data)
-
-        env_path = Paths.getSublimeMenuPath(
-            'environment', user_path=True)
-
-        if(os.path.isfile(env_path)):
-            self.createEnvironmentMenu()
-
         self.createLanguageMenu()
 
     def createLanguageMenu(self):
