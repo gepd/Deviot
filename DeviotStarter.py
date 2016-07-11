@@ -7,10 +7,12 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import sys
 import glob
 import time
 import sublime
 import sublime_plugin
+import subprocess
 import threading
 from shutil import rmtree
 
@@ -26,6 +28,7 @@ try:
     from .libs import Serial
     from .libs import Messages
     from .libs.Install import PioInstall
+    from .libs.Progress import ThreadProgress
 except:
     from libs import Paths
     from libs import Tools
@@ -39,6 +42,7 @@ except:
     from libs import Serial
     from libs import Messages
     from libs.Install import PioInstall
+    from libs.Progress import ThreadProgress
 
 _ = I18n().translate
 
@@ -48,6 +52,7 @@ package_name = 'Deviot'
 def plugin_loaded():
     thread = threading.Thread(target=PioInstall().checkPio)
     thread.start()
+    ThreadProgress(thread, _('processing'), _('done'))
 
 
 def plugin_unloaded():
@@ -146,7 +151,6 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
             choose = Menu().createBoardsMenu()
             board_id = choose[selected][1].split(' | ')[1]
             Preferences().boardSelected(board_id)
-            Menu().createEnvironmentMenu()
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -161,13 +165,14 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        choose = Menu().createEnvironmentMenu()
-        quickPanel(choose[0], self.on_done, index=choose[1])
+        list = Menu().getEnvironments()
+        quickPanel(list[0],
+                   self.on_done, index=list[1])
 
     def on_done(self, selected):
+        list = Menu().getEnvironments()
         if(selected != -1):
-            choose = Menu().createEnvironmentMenu()
-            env = choose[0][selected][1].split(' | ')[1]
+            env = list[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
 
@@ -344,7 +349,7 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI(feedback=False).openInThread('ports')
+        PlatformioCLI(feedback=False).openInThread('ports', process=False)
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
