@@ -243,8 +243,11 @@ class PioInstall(object):
             cmd = ['python', 'setup.py', 'install', '--root', temp_env]
             out = childProcess(cmd, cwd)
 
+            py_version = sub(r'\D', '', out[1])
+
             # error
-            if(out[0] > 0):
+            if(out[0] > 0 or int(py_version) >= 300):
+
                 current_time = time.strftime('%H:%M:%S')
                 self.message_queue.put(
                     "error_installing_env_{0}", current_time)
