@@ -213,10 +213,19 @@ msgid "not_empty_sketch_{0}"
 msgstr "{0} Isn't possible to upload an empty sketch\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} File not valid to upload\n"
+msgstr "{0} File not valid to process\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} is not a IoT File\n"
+
+msgid "select_board_list"
+msgstr "Select a Board From The List"
+
+msgid "select_env_list"
+msgstr "Select an Environment From The List"
+
+msgid "select_port_list"
+msgstr "Select a Port From The List"
 
 msgid "none_board_sel_{0}"
 msgstr "{0} None board Selected\n"

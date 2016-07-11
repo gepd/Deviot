@@ -214,7 +214,7 @@ msgid "not_empty_sketch_{0}"
 msgstr "{0} No es posible cargar un sketch vacío\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} Archivo no válido para cargar\n"
+msgstr "{0} Archivo no válido para procesar\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} No es un archivo IoT\n"
