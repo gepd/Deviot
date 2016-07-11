@@ -332,6 +332,12 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
 class OpenIniFileCommand(sublime_plugin.WindowCommand):
 
     def run(self):
+        view = self.window.active_view()
+        is_iot = Tools.isIOTFile(view.file_name())
+
+        if(not is_iot):
+            return
+
         views = []
         path = Preferences().get('ini_path', False)
         path = os.path.join(path, 'platformio.ini')
@@ -339,6 +345,11 @@ class OpenIniFileCommand(sublime_plugin.WindowCommand):
         views.append(view)
         if views:
             self.window.focus_view(views[0])
+
+    def is_enabled(self):
+        view = self.window.active_view()
+        is_iot = Tools.isIOTFile(view.file_name())
+        return is_iot
 
 
 class HideConsoleCommand(sublime_plugin.WindowCommand):
