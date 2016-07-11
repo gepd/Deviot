@@ -58,6 +58,7 @@ class PlatformioCLI(CommandsPy):
         self.window = sublime.active_window()
         self.ports_list = []
         self.built = False
+        self.process = True
         console = Console(name='Deviot|%s' % (str(time.time())))
         current_time = time.strftime('%H:%M:%S')
         view = self.window.active_view()
@@ -186,24 +187,24 @@ class PlatformioCLI(CommandsPy):
 
         # if none environment is selected show a quick panel list
         if(not Tools.checkEnvironments()):
-            choose = Menu().createEnvironmentMenu()
-            quickPanel(choose[0], self.saveEnvironmet, index=choose[1])
+            list = Menu().getEnvironments()
+            quickPanel(list[0], self.saveEnvironmet, index=list[1])
             return
 
         # check if the port is available
-        if(next == 'upload' and not Preferences().get('id_port', '')):
+        id_port = Preferences().get('id_port', '')
+        if(next == 'upload' and not any(id_port in port for port in self.ports_list)):
             self.openInThread('ports')
             return
 
         self.openInThread(next)
 
-    def selectPort(self):
-        id_port = Preferences().get('id_port', '')
+    def selectPort(self, process=True):
+        self.process = process
         self.ports_list = self.listSerialPorts()
 
-        if(not any(id_port in port for port in self.ports_list)):
-            list = self.ports_list
-            quickPanel(list, self.savePort)
+        list = self.ports_list
+        quickPanel(list, self.savePort)
 
     def saveBoard(self, selected):
         if(selected != -1):
@@ -217,8 +218,8 @@ class PlatformioCLI(CommandsPy):
 
     def saveEnvironmet(self, selected):
         if(selected != -1):
-            choose = Menu().createEnvironmentMenu()
-            env = choose[0][selected][1].split(' | ')[1]
+            list = Menu().getEnvironments()
+            env = list[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
             self.environment = env
@@ -231,8 +232,9 @@ class PlatformioCLI(CommandsPy):
             id_port = choose[selected][0]
             self.port = id_port
             Preferences().set('id_port', id_port)
-            next = Preferences().get('next')
-            self.beforeProcess(next)
+            if(self.process):
+                next = Preferences().get('next')
+                self.beforeProcess(next)
 
     def initProject(self):
         # check if it was already initialized
@@ -313,7 +315,7 @@ class PlatformioCLI(CommandsPy):
                 Preferences().set('autorun_monitor', False)
         self.message_queue.stopPrint()
 
-    def openInThread(self, type):
+    def openInThread(self, type, process=True):
         """
         Opens each action; build/upload/clean in a new thread
 
@@ -332,7 +334,8 @@ class PlatformioCLI(CommandsPy):
                 target=PioInstall().checkPio, args=(feedback,))
             action_thread.start()
         elif(type == 'ports'):
-            action_thread = threading.Thread(target=self.selectPort)
+            action_thread = threading.Thread(
+                target=self.selectPort, args=(process,))
             action_thread.start()
         else:
             action_thread = threading.Thread(target=self.clean)
@@ -402,14 +405,11 @@ class PlatformioCLI(CommandsPy):
 
         Menu().saveTemplateMenu(
             data=boards, file_name='platformio_boards.json', user_path=True)
-        self.saveEnvironmentFile()
 
 
-def generateFiles(install=False):
-    # Creates new menu
-    Paths.getTemplateMenuPath('platformio_boards.json',
-                              user_path=True)
+def generateFiles():
     # create main files
+    PlatformioCLI(feedback=False).getAPIBoards()
     Menu().createMainMenu()
 
     Tools.createCompletions()

@@ -12,14 +12,14 @@ import glob
 from re import search
 
 try:
-    from . import Serial, Paths
+    from . import Paths
     from .Preferences import Preferences
     from .JSONFile import JSONFile
     from .I18n import I18n
 except:
     from libs.Preferences import Preferences
     from libs.JSONFile import JSONFile
-    from libs import Serial, Paths
+    from libs import Paths
     from libs.I18n import I18n
 
 _ = I18n().translate
@@ -45,7 +45,8 @@ class Menu(object):
 
         Returns: {json array} -- list of all boards to show in the menu
         '''
-        boards = []
+
+        boards = [[_("select_board_list")]]
         is_native = Preferences().get('native', False)
         type = 'board_id' if not is_native else 'found_ini'
         list_env = Preferences().get(type, '')
@@ -68,42 +69,42 @@ class Menu(object):
 
         return boards
 
-    def createEnvironmentMenu(self, empty=False):
+    def getEnvironments(self):
         '''
         Get all the boards selected by the user and creates a JSON
         file with the list of all environment selected by the user.
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
+
         try:
             from . import Tools
         except:
             from libs import Tools
 
         selected_index = 0
-        environments = []
+        environments = [[_("select_env_list")]]
         index = 0
 
-        if(not empty):
-            is_native = Preferences().get('native', False)
-            type = 'board_id' if not is_native else 'found_ini'
-            list_env = Preferences().get(type, '')
+        is_native = Preferences().get('native', False)
+        type = 'board_id' if not is_native else 'found_ini'
+        list_env = Preferences().get(type, '')
 
-            env_selected = Tools.getEnvironment()
-            env_data = self.getTemplateMenu(
-                file_name='platformio_boards.json', user_path=True)
-            env_data = json.loads(env_data)
+        env_selected = Tools.getEnvironment()
+        env_data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+        env_data = json.loads(env_data)
 
-            for env in env_data:
-                for selected in list_env:
-                    if(selected == env):
-                        caption = env_data[env]['name']
-                        vendor = env_data[env]['vendor'] + " | " + env
-                        environments.append([caption, vendor])
+        for env in env_data:
+            for selected in list_env:
+                if(selected == env):
+                    caption = env_data[env]['name']
+                    vendor = env_data[env]['vendor'] + " | " + env
+                    environments.append([caption, vendor])
 
-                        if(selected == env_selected):
-                            selected_index = index
-                        index += 1
+                    if(selected == env_selected):
+                        selected_index = index
+                    index += 1
 
         return [environments, selected_index]
 
