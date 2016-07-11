@@ -329,6 +329,18 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
         return is_enabled
 
 
+class OpenIniFileCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        views = []
+        path = Preferences().get('ini_path', False)
+        path = os.path.join(path, 'platformio.ini')
+        view = self.window.open_file(path)
+        views.append(view)
+        if views:
+            self.window.focus_view(views[0])
+
+
 class HideConsoleCommand(sublime_plugin.WindowCommand):
     """
     Hide the deviot console

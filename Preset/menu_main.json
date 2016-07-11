@@ -59,6 +59,10 @@
                 "id": "clean_sketch",
                 "command": "clean_sketch"
             },{
+                "caption": "menu_open_ini_file",
+                "id": "open_ini_file",
+                "command": "open_ini_file"
+            },{
                 "caption": "menu_hide_console",
                 "id": "hide_console",
                 "command": "hide_console"

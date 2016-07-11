@@ -83,6 +83,9 @@ msgstr "업로드"
 msgid "menu_clean"
 msgstr "클린"
 
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
 msgid "menu_hide_console"
 msgstr "Deviot 콘솔 숨김"
 

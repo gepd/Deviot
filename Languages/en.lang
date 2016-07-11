@@ -83,6 +83,9 @@ msgstr "Upload"
 msgid "menu_clean"
 msgstr "Clean"
 
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
 msgid "menu_hide_console"
 msgstr "Hide Deviot Console"
 
