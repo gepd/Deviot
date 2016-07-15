@@ -103,7 +103,7 @@ class Menu(object):
                     environments.append([caption, vendor])
 
                     if(selected == env_selected):
-                        selected_index = index
+                        selected_index = index + 1
                     index += 1
 
         return [environments, selected_index]

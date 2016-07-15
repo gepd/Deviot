@@ -17,6 +17,9 @@ except:
     from libs import Messages
     from libs.Preferences import Preferences
 
+serials_in_use = []
+serial_monitor_dict = {}
+
 
 class SerialMonitor(object):
     """

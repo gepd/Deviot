@@ -59,6 +59,7 @@ class PlatformioCLI(CommandsPy):
         self.ports_list = []
         self.built = False
         self.process = True
+        self.once = False
         console = Console(name='Deviot|%s' % (str(time.time())))
         current_time = time.strftime('%H:%M:%S')
         view = self.window.active_view()
@@ -191,20 +192,26 @@ class PlatformioCLI(CommandsPy):
             quickPanel(list[0], self.saveEnvironmet, index=list[1])
             return
 
+        if(not self.once):
+            self.openInThread('get_ports')
+            self.once = True
+
         # check if the port is available
-        id_port = Preferences().get('id_port', '')
-        if(next == 'upload' and not any(id_port in port for port in self.ports_list)):
-            self.openInThread('ports')
+        self.port = Preferences().get('id_port', '')
+        if(next == 'upload' and not any(self.port in port for port in self.ports_list)):
+            self.openInThread('ports', next)
             return
 
         self.openInThread(next)
 
-    def selectPort(self, process=True):
-        self.process = process
+    def listPorts(self):
         self.ports_list = self.listSerialPorts()
 
-        list = self.ports_list
-        quickPanel(list, self.savePort)
+    def selectPort(self, process=True):
+        self.process = process
+        if(not process):
+            self.openInThread('get_ports')
+        quickPanel(self.ports_list, self.savePort)
 
     def saveBoard(self, selected):
         if(selected != -1):
@@ -410,6 +417,10 @@ class PlatformioCLI(CommandsPy):
             action_thread = threading.Thread(
                 target=PioInstall().checkPio, args=(feedback,))
             action_thread.start()
+        elif(type == 'get_ports'):
+            action_thread = threading.Thread(target=self.listPorts)
+            action_thread.start()
+            action_thread.join()
         elif(type == 'ports'):
             action_thread = threading.Thread(
                 target=self.selectPort, args=(process,))
