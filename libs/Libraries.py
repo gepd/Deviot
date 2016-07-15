@@ -170,7 +170,8 @@ class Libraries:
 
         # Install Library with CLI
         command = ['lib', 'install', lib_id]
-        self.Commands.runCommand(command, extra_message=lib_name)
+        self.Commands.runCommand(
+            command, 'installing_lib_{0}{1}', extra_message=lib_name)
 
         # update list of libraries installed in the preference file
         self.getInstalledList(ids=True)
@@ -242,7 +243,8 @@ class Libraries:
 
         # uninstall Library with CLI
         command = ['lib', 'uninstall', lib_id]
-        self.Commands.runCommand(command, extra_message=lib_name)
+        self.Commands.runCommand(
+            command, 'uninstalling_lib_{0}{1}', extra_message=lib_name)
 
         # remove from preferences
         if (not self.Commands.error_running):
