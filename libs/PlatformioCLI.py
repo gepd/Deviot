@@ -269,6 +269,68 @@ class PlatformioCLI(CommandsPy):
                     new_file.write("\n%s\n" % header)
                     new_file.write("src_dir=%s\n" % self.current_path)
 
+    def programmer(self, programmer):
+        # list of programmers
+        if(programmer == "avr"):  # AVR ISP
+            programmer_string = \
+                "#\nupload_protocol = stk500v1\n" \
+                "upload_flags = -P$UPLOAD_PORT\n\n" \
+                "upload_port = %s\n#\n" % (self.port)
+        elif(programmer == "avrmkii"):  # AVRISP mkII
+            programmer_string = \
+                "#\nupload_protocol = stk500v2\n"\
+                "upload_flags = -Pusb\n#\n"
+        elif(programmer == "usbtyni"):  # USBtinyISP
+            programmer_string = "#\nupload_protocol = usbtiny\n#\n"
+        elif(programmer == "arduinoisp"):  # ArduinoISP
+            programmer_string = "#\nupload_protocol = arduinoisp\n#\n"
+        elif(programmer == "usbasp"):  # USBasp
+            programmer_string = "#\nupload_protocol = usbasp\n" \
+                "upload_flags = -Pusb\n#\n"
+        elif(programmer == "parallel"):  # Parallel Programmer
+            programmer_string = "#\nupload_protocol = dapa\n" \
+                "upload_flags = -F\n#\n"
+        elif(programmer == "arduinoasisp"):  # Arduino as ISP
+            programmer_string = "#\nupload_protocol = stk500v1\n" \
+                "upload_flags = -P$UPLOAD_PORT -b$UPLOAD_SPEED\n" \
+                "upload_speed = 19200\n" \
+                "upload_port = %s\n#\n" % (self.port)
+        else:
+            programmer_string = False
+
+        found = False
+        pound = False
+        clean = True
+        header_env = str.encode("[env:%s]" % self.environment)
+        temp = os.path.join(self.project_dir, "temp")
+
+        # searching programmer lines
+        if(programmer_string):
+            with open(self.ini_path, 'r') as file:
+                if 'upload_protocol =' in file.read():
+                    clean = False
+
+        # writing lines
+        with open(self.ini_path, 'rb') as file, open(temp, 'wb') as new_file:
+            for line in file:
+                if(pound and b'#' in line):
+                    pound = -1
+                if(header_env in line):
+                    found = True
+                if(found and pound != -1 and b'#' in line):
+                    pound = True
+                if(programmer_string and pound == -1 and b'\n' == line):
+                    new_file.write(str.encode(programmer_string))
+                    found = False
+                if(found and clean and programmer_string and line == b'\n'):
+                    new_file.write(str.encode(programmer_string))
+                if(not pound or pound == -1 and b'#' not in line):
+                    new_file.write(line)
+
+        if(sublime.platform() == 'windows'):
+            os.remove(self.ini_path)  # For windows only
+        os.rename(temp, self.ini_path)  # Rename the new file
+
     def build(self):
         if(not self.is_iot):
             return
@@ -302,9 +364,17 @@ class PlatformioCLI(CommandsPy):
             self.message_queue.stopPrint()
             return
 
+        # check programmer
+        programmer = Preferences().get("programmer", False)
+        if(not programmer):
+            command = ['run', '-t', 'upload', '--upload-port %s -e %s' %
+                       (self.port, self.environment)]
+        else:
+            command = ['run', '-t', 'program']
+
+        self.programmer(programmer)
+
         # run command
-        command = ['run', '-t upload --upload-port %s -e %s' %
-                   (self.port, self.environment)]
         self.Commands.runCommand(command, "uploading_firmware_{0}")
 
         # start the monitor serial if was running previously

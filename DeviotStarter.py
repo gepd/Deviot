@@ -371,6 +371,86 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         PlatformioCLI(feedback=False).openInThread('ports', process=False)
 
 
+class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
     """
     Add a IP to the list of COM ports
