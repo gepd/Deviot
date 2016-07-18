@@ -64,9 +64,8 @@ class Libraries:
             self.window = sublime.active_window()
         self.view = self.window.active_view()
 
-        # console
-        console_name = 'Deviot|Library' + str(time.time())
-        console = Messages.Console(name=console_name)
+        # console)
+        console = Messages.Console()
 
         # Queue for the user console
         self.message_queue = MessageQueue(console)

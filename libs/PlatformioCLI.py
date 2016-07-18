@@ -60,7 +60,7 @@ class PlatformioCLI(CommandsPy):
         self.built = False
         self.process = True
         self.once = False
-        console = Console(name='Deviot|%s' % (str(time.time())))
+        console = Console()
         current_time = time.strftime('%H:%M:%S')
         view = self.window.active_view()
         view_name = view.name()

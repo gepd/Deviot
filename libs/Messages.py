@@ -79,31 +79,18 @@ class Console:
     Creates the user console to show different messages.
     """
 
-    def __init__(self, name='deviot_console'):
-        self.name = name
+    def __init__(self):
         self.window = sublime.active_window()
-
-        if python_version < 3:
-            self.panel = self.window.get_output_panel(self.name)
-        else:
-            self.panel = self.window.create_output_panel(self.name)
-
-        self.panel.set_name(self.name)
+        self.panel = self.window.get_output_panel('exec')
 
     def printScreen(self, text):
         sublime.set_timeout(lambda: self.println(text), 0)
 
     def println(self, text):
         if(len(text)):
-            panel_name = 'output.' + self.name
-            self.window.run_command("show_panel", {"panel": panel_name})
+            self.window.run_command("show_panel", {"panel": "output.exec"})
             self.panel.set_read_only(False)
-            if(python_version < 3):
-                edit = self.panel.begin_edit()
-                self.panel.insert(edit, self.panel.size(), text)
-                self.panel.end_edit(edit)
-            else:
-                self.panel.run_command("append", {"characters": text})
+            self.panel.run_command("append", {"characters": text})
             self.panel.set_read_only(True)
 
 

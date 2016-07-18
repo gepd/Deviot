@@ -54,8 +54,7 @@ class PioInstall(object):
         self.cached_file = False
 
         # console
-        console_name = 'Deviot|Pio_Install' + str(time.time())
-        console = Messages.Console(name=console_name)
+        console = Messages.Console()
 
         # Queue for the user console
         self.message_queue = Messages.MessageQueue(console)
