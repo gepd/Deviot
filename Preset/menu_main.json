@@ -66,6 +66,10 @@
                 "caption": "menu_hide_console",
                 "id": "hide_console",
                 "command": "hide_console"
+            },{
+                "caption": "menu_show_console",
+                "id": "show_console",
+                "command": "show_console"
             },
             {"caption": "-"},
             {

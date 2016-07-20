@@ -534,13 +534,14 @@ def openExample(path, window):
 
 
 def updateMenuLibs():
-    try:
-        from .Menu import Menu
-    except:
-        from libs.Menu import Menu
+    from . import Paths
+    from .Menu import Menu
+    from .checksumdir import dirhash
+    from .Preferences import Preferences
 
     Menu().createLibraryImportMenu()
     Menu().createLibraryExamplesMenu()
+    Preferences().set('library_hash', dirhash(Paths.getPioLibrary()))
 
 
 def removePreferences():

@@ -36,11 +36,26 @@ msgstr "{0} 압축 해제 중입니다...\n"
 msgid "installing_pio{0}"
 msgstr "{0} PlatformIO를 설치합니다...\n"
 
+msgid "uninstall_old_pio{0}"
+msgstr "{0} Uninstalling current version...\n"
+
+msgid "installing_dev_pio{0}"
+msgstr "{0} Installing 'develop' PlatformIO version...\n"
+
+msgid "installing_stable_pio{0}"
+msgstr "{0} Installing 'stable' PlatformIO version...\n"
+
 msgid "setup_finished{0}"
 msgstr "{0} 설치가 끝났습니다, 이제 Deviot을 사용하실 수 있어요!"
 
 msgid "searching_pio_updates"
 msgstr "PlatformIO 업그레이드를 확인합니다...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+
+msgid "update_button"
+msgstr "Update Now"
 
 # Menu
 
@@ -88,6 +103,9 @@ msgstr "Open Build Config File"
 
 msgid "menu_hide_console"
 msgstr "Deviot 콘솔 숨김"
+
+msgid "menu_show_console"
+msgstr "Show Deviot Console"
 
 msgid "menu_serial_ports"
 msgstr "시리얼 포트"

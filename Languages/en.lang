@@ -36,11 +36,26 @@ msgstr "{0} Extracting files...\n"
 msgid "installing_pio{0}"
 msgstr "{0} Installing PlatformIO...\n"
 
+msgid "uninstall_old_pio{0}"
+msgstr "{0} Uninstalling current version...\n"
+
+msgid "installing_dev_pio{0}"
+msgstr "{0} Installing 'develop' PlatformIO version...\n"
+
+msgid "installing_stable_pio{0}"
+msgstr "{0} Installing 'stable' PlatformIO version...\n"
+
 msgid "setup_finished{0}"
 msgstr "{0} Installation finished, now you can enjoy Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Searching PlatformIO Upgrades...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+
+msgid "update_button"
+msgstr "Update Now"
 
 # Menu
 
@@ -88,6 +103,9 @@ msgstr "Open Build Config File"
 
 msgid "menu_hide_console"
 msgstr "Hide Deviot Console"
+
+msgid "menu_show_console"
+msgstr "Show Deviot Console"
 
 msgid "menu_serial_ports"
 msgstr "Serial Port(s)"
