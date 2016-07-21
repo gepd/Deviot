@@ -698,7 +698,12 @@ class RemoveDefaultPathCommand(sublime_plugin.WindowCommand):
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
     def run(self, id_lang):
-        Preferences().set('id_lang', id_lang)
+        restart = sublime.ok_cancel_dialog(_('restart_deviot'),
+                                           _('continue_button'))
+
+        if(restart):
+            Preferences().set('id_lang', id_lang)
+            self.window.run_command('sublime_restart')
 
     def is_checked(self, id_lang):
         saved_id_lang = Preferences().get('id_lang')
@@ -752,24 +757,21 @@ class AddStatusCommand(sublime_plugin.TextCommand):
 class SublimeRestartCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        if sys.platform == 'win32':
+        if(sublime.platform() == 'windows'):
             if sublime.version()[:1] == '3':
                 subprocess.call('taskkill /im sublime_text.exe /f && cmd /C "' +
                                 os.path.join(os.getcwd(), 'sublime_text.exe') + '"', shell=True)
             else:
                 os.execl(sys.executable, ' ')
-        elif sys.platform == 'darwin':
-            # Restarting ST3 on mac
+        elif(sublime.platform() == 'osx'):
             if sublime.version()[:1] == '3':
                 subprocess.call("pkill subl && " +
                                 os.path.join(os.getcwd(), 'subl'), shell=True)
             else:
                 os.execl(os.path.join(os.getcwd(), 'subl'))
         else:
-            # Restarting ST3 on linux
             if sublime.version()[:1] == '3':
                 subprocess.call("pkill 'sublime_text' && " +
                                 os.path.join(os.getcwd(), 'sublime_text'), shell=True)
-
             else:
                 os.execl(os.path.join(os.getcwd(), 'sublime_text'))

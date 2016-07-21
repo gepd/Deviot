@@ -314,6 +314,12 @@ msgstr "Processing"
 msgid "done"
 msgstr "완료"
 
+msgid "restart_deviot"
+msgstr "This action required to restart Sublime Text. Do you want to continue?"
+
+msgid "continue_button"
+msgstr "Continue"
+
 
 # Libraries
 

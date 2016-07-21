@@ -315,6 +315,12 @@ msgstr "Procesando"
 msgid "done"
 msgstr "Listo"
 
+msgid "restart_deviot"
+msgstr "Esta acción requiere de reiniciar Sublime Text. ¿Deseas continuar?"
+
+msgid "continue_button"
+msgstr "Continuar"
+
 
 # Librerías
 
