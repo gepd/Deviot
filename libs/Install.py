@@ -8,8 +8,9 @@ from __future__ import unicode_literals
 
 import os
 import time
-import datetime
 import json
+import datetime
+import threading
 import tempfile
 import sublime
 import subprocess
@@ -22,10 +23,11 @@ from collections import OrderedDict
 from . import Paths
 from . import Tools
 from . import Messages
+from .I18n import I18n
 from . import __version__ as version
 from .Preferences import Preferences
+from .Progress import ThreadProgress
 from .checksumdir import dirhash
-from .I18n import I18n
 
 _ = I18n().translate
 
@@ -37,7 +39,7 @@ class PioInstall(object):
     to stable and developer version
     '''
 
-    def __init__(self):
+    def __init__(self, window=False, feedback=False):
         self.Preferences = Preferences()
         self.base_dir = Paths.getDeviotUserPath()
         self.env_dir = Paths.getEnvDir()
@@ -45,18 +47,35 @@ class PioInstall(object):
         self.cache_dir = Paths.getCacheDir()
         self.env_file = Paths.getEnvFile()
         self.pio_current_ver = self.Preferences.get('pio_version', 0)
+        self.feedback = feedback
         self.cached_file = False
         self.pio_version = None
         self.pio_cloud_ver = None
 
         # console
-        window = sublime.active_window()
+        if(not window):
+            window = sublime.active_window()
         console = Messages.Console(window)
 
         # Queue for the user console
         self.message_queue = Messages.MessageQueue(console)
 
-    def checkPio(self, feedback=False):
+        if(not self.pio_current_ver):
+            self.message_queue.startPrint()
+
+        if(self.feedback):
+            self.message_queue.startPrint()
+            self.message_queue.put("_deviot_{0}", version)
+
+    def checkPio(self):
+        from .PlatformioCLI import PlatformioCLI, generateFiles
+        generateFiles()
+
+        thread = threading.Thread(target=self.threadcheckPio)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
+
+    def threadcheckPio(self):
         '''Check PlatformIO
 
         Check if platformIO is currently installed or if a
@@ -65,36 +84,35 @@ class PioInstall(object):
         Keyword Arguments:
             feedback {bool} -- avoids any message in console (default: {False})
         '''
-
-        self.feedback = feedback
         self.headers = Tools.getHeaders()
 
-        # Check library folder
-        library_hash = self.Preferences.get('library_hash', False)
-        current_hash = dirhash(Paths.getPioLibrary())
+        if(not self.feedback):
+            # Check library folder
+            library_hash = self.Preferences.get('library_hash', False)
+            current_hash = dirhash(Paths.getPioLibrary())
 
-        if(not library_hash or library_hash != current_hash):
-            Tools.updateMenuLibs()
-            self.Preferences.set('library_hash', current_hash)
+            if(not library_hash or library_hash != current_hash):
+                Tools.updateMenuLibs()
+                self.Preferences.set('library_hash', current_hash)
 
-        # check update once each five
-        date_now = datetime.datetime.now()
-        date_update = self.Preferences.get('check_update', False)
+            # check update once each five
+            date_now = datetime.datetime.now()
+            date_update = self.Preferences.get('check_update', False)
 
-        # compare the dates for check updates
-        try:
-            date_update = datetime.datetime.strptime(
-                date_update, '%Y-%m-%d %H:%M:%S.%f')
+            # compare the dates for check updates
+            try:
+                date_update = datetime.datetime.strptime(
+                    date_update, '%Y-%m-%d %H:%M:%S.%f')
 
-            if(not feedback and date_now < date_update):
-                return
-        except:
-            pass
+                if(not self.feedback and date_now < date_update):
+                    return
+            except:
+                pass
 
-        # saves the date in the preferences for next check
-        if(not date_update or date_now > date_update):
-            date_update = datetime.datetime.now() + datetime.timedelta(5, 0)
-            self.Preferences.set('check_update', str(date_update))
+            # saves the date in the preferences for next check
+            if(not date_update or date_now > date_update):
+                date_update = datetime.datetime.now() + datetime.timedelta(5, 0)
+                self.Preferences.set('check_update', str(date_update))
 
         # check platformio
         if(sublime.platform() == 'osx'):
@@ -124,8 +142,7 @@ class PioInstall(object):
                not self.pio_current_ver):
 
                 self.Preferences.set('pio_version', self.pio_version)
-                self.message_queue.startPrint()
-                self.message_queue.put("deviot_setup{0}", self.pio_version)
+                self.message_queue.put("deviot_setup{0}", version)
                 current_time = time.strftime('%H:%M:%S')
                 self.message_queue.put("pio_is_installed{0}", current_time)
                 self.endSetup()
@@ -163,9 +180,8 @@ class PioInstall(object):
                     'open_url', {'url': 'https://www.python.org/downloads/'})
             return
 
-        # pio not installed
-        self.message_queue.startPrint()
-        self.message_queue.put("deviot_setup{0}", "")
+        # pio not installe
+        self.message_queue.put("deviot_setup{0}", version)
         current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("pio_isn_installed{0}", current_time)
 
@@ -276,8 +292,6 @@ class PioInstall(object):
         it is necessary.
         '''
         if(self.feedback):
-            self.message_queue.startPrint()
-            self.message_queue.put('_deviot_{0}', version)
             self.message_queue.put('checking_pio_updates')
 
         # check version installed and last released
@@ -413,9 +427,6 @@ class PioInstall(object):
         '''
         developer = self.Preferences.get('developer', False)
 
-        self.message_queue.startPrint()
-        self.message_queue.put("deviot_setup{0}", "")
-
         # Uninstall current version
         if(sublime.platform() == 'osx'):
             executable = os.path.join(self.env_bin_dir, 'python')
@@ -506,3 +517,16 @@ class PioInstall(object):
             print(stdout)
 
         return (return_code, stdout)
+
+    def openInThread(self, func, join=False):
+        """
+        Opens each action; build/upload/clean in a new thread
+
+        Arguments: type {string} -- type of action.
+                   Valid values: build/upload/clean
+        """
+        thread = threading.Thread(target=func)
+        thread.start()
+        if(join):
+            thread.join()
+        ThreadProgress(thread, _('processing'), _('done'))

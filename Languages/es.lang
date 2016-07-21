@@ -44,7 +44,7 @@ msgid "installing_dev_pio{0}"
 msgstr "{0} Instalando versión 'develop' de PlatformIO...\n"
 
 msgid "installing_stable_pio{0}"
-msgstr "{0} Instalando versión 'stable' de PlatformIO...\n"
+msgstr "{0} Instalando versión 'estable' de PlatformIO...\n"
 
 msgid "setup_finished{0}"
 msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
@@ -242,6 +242,15 @@ msgstr "{0} Archivo no válido para procesar\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} No es un archivo IoT\n"
+
+msgid "select_board_list"
+msgstr "Seleciona una Placa de la Lista"
+
+msgid "select_env_list"
+msgstr "Selecciona un Entorno de Desarrollo de la Lista"
+
+msgid "select_port_list"
+msgstr "Selecciona un Puerto de la Lista"
 
 msgid "none_board_sel_{0}"
 msgstr "{0} Ninguna placa ha sido seleccionada"

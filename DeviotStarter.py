@@ -50,7 +50,8 @@ package_name = 'Deviot'
 
 
 def plugin_loaded():
-    thread = threading.Thread(target=PioInstall().checkPio)
+    window = sublime.active_window()
+    thread = threading.Thread(target=PioInstall(window).checkPio)
     thread.start()
     ThreadProgress(thread, _('processing'), _('done'))
     Tools.setStatus()
@@ -574,16 +575,16 @@ class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
 class UpgradePioCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Upgrade' + str(time.time())
-        console = Console(name=console_name)
-        PlatformioCLI(view, console, install=True).openInThread('upgrade')
+        window = sublime.active_window()
+        thread = threading.Thread(target=PioInstall(window, True).checkPio)
+        thread.start()
 
 
 class DeveloperPioCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        thread = threading.Thread(target=PioInstall().developer)
+        window = sublime.active_window()
+        thread = threading.Thread(target=PioInstall(window, True).developer)
         thread.start()
         ThreadProgress(thread, _('processing'), _('done'))
 
