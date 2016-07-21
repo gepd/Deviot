@@ -85,7 +85,9 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(feedback=False).checkInitFile()
+        PlatformioCLI(feedback=False, console=False).checkInitFile()
+        Tools.setStatus()
+        Tools.userPreferencesStatus()
 
     def on_close(self, view):
         """
@@ -358,6 +360,17 @@ class HideConsoleCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         self.window.run_command("hide_panel", {"panel": "output.exec"})
+
+
+class ShowConsoleCommand(sublime_plugin.WindowCommand):
+    """
+    Hide the deviot console
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.run_command("show_panel", {"panel": "output.exec"})
 
 
 class SelectPortCommand(sublime_plugin.WindowCommand):
