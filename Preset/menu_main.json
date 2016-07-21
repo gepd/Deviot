@@ -340,6 +340,10 @@
                                     "caption":"menu_use_cpp_new",
                                     "command":"use_cpp_template"
                                 },
+                                {
+                                    "caption":"menu_always_native",
+                                    "command":"use_always_native"
+                                },
                                 {"caption": "-"},
                                 {
                                     "caption":"menu_change_default_path",

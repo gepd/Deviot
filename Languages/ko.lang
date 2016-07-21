@@ -179,6 +179,9 @@ msgstr "빌드 폴더 변경하기"
 msgid "menu_use_cpp_new"
 msgstr "새 스케치를 CPP File로 생성"
 
+msgid "menu_always_native"
+msgstr "Use PlatformIO Structure"
+
 msgid "menu_change_default_path"
 msgstr "Change Default Path"
 

@@ -180,6 +180,9 @@ msgstr "Cambiar Carpeta de Compilación"
 msgid "menu_use_cpp_new"
 msgstr "Usar CPP con Nuevo Archivo"
 
+msgid "menu_always_native"
+msgstr "Usar Estructura de PlatformIO"
+
 msgid "menu_change_default_path"
 msgstr "Cambiar Directorio por Defecto"
 

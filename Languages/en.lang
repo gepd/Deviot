@@ -179,6 +179,9 @@ msgstr "Change Build Folder"
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
 
+msgid "menu_always_native"
+msgstr "Use PlatformIO Structure"
+
 msgid "menu_change_default_path"
 msgstr "Change Default Path"
 
