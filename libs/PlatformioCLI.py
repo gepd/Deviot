@@ -54,96 +54,118 @@ class PlatformioCLI(CommandsPy):
     Extends: CommandsPy
     '''
 
-    def __init__(self, feedback=True):
+    def __init__(self, feedback=True, console=True):
         self.window = sublime.active_window()
+        self.view = self.window.active_view()
+        self.file_path = self.view.file_name()
+        self.sketch_size = self.view.size()
+        self.view_name = self.view.name()
+        if(console):
+            self.console = Console(self.window)
+        self.temp_name = Tools.getFileNameFromPath(self.file_path, ext=False)
+        self.file_name = Tools.getFileNameFromPath(self.file_path)
+        self.is_iot = Tools.isIOTFile(self.file_path)
+        self.current_time = time.strftime('%H:%M:%S')
+        self.port = Preferences().get('id_port', False)
+        self.project_dir = None
+        self.environment = None
+        self.feedback = feedback
+        self.callback = None
         self.ports_list = []
         self.built = False
-        self.process = True
         self.once = False
-        console = Console()
-        current_time = time.strftime('%H:%M:%S')
-        view = self.window.active_view()
-        view_name = view.name()
-        sketch_size = view.size()
-        file_path = view.file_name()
-        temp_name = Tools.getFileNameFromPath(file_path, ext=False)
-        file_name = Tools.getFileNameFromPath(file_path)
-        self.is_iot = Tools.isIOTFile(file_path)
 
+    def loadData(self):
+        """File info
+
+        Get and process data from the current file, if the file is
+        being processing, shows errors or information in the user console
+        """
         # cancel feedback if quick panel will be used
         if(self.is_iot):
             if(not Tools.checkBoards() or
                not Tools.checkEnvironments() or
                not Preferences().get('id_port', False)):
-                feedback = False
-
-        # header for deviot
-        if(feedback):
-            if(not file_name):
-                file_name = ""
-            self.message_queue = MessageQueue(console)
-            self.message_queue.startPrint()
-            self.message_queue.put('[ Deviot {0} ] {1}\\n', version, file_name)
+                self.feedback = False
 
         # avoid to do anything with a monitor view
-        if(feedback and not file_path and 'monitor' in view_name.lower()):
-            self.message_queue.put('invalid_file_{0}', current_time)
+        if(self.feedback and not self.file_path and 'monitor' in self.view_name.lower()):
+            self.message_queue = MessageQueue(self.console)
+            self.message_queue.startPrint()
+            self.message_queue.put('_deviot_{0}', version)
+            self.message_queue.put('invalid_file_{0}', self.current_time)
             return
 
-        # unsaved file
-        if(feedback and not sketch_size):
-            self.message_queue.put('not_empty_sketch_{0}', current_time)
+        # empty sketch
+        if(self.feedback and not self.sketch_size):
+            self.message_queue = MessageQueue(self.console)
+            self.message_queue.startPrint()
+            self.message_queue.put('_deviot_{0}', version)
+            self.message_queue.put('not_empty_sketch_{0}', self.current_time)
             self.built = False
             return
 
         # stop if nothing to process and show
-        if(not feedback and not self.is_iot):
+        if(not self.feedback and not self.is_iot):
+            return
+
+        # save file not empty
+        if(not self.file_path and self.sketch_size > 0):
+            saved_file = self.saveCodeInFile(self.view)
+            self.view = saved_file[1]
+            self.file_path = Tools.getPathFromView(self.view)
+            self.is_iot = Tools.isIOTFile(self.file_path)
+
+        # check if file is iot
+        if(self.feedback and not self.is_iot):
+            self.message_queue = MessageQueue(self.console)
+            self.message_queue.startPrint()
+            self.message_queue.put(
+                'not_iot_{0}{1}', self.current_time, self.file_name)
             return
 
         # unsaved changes
-        if (view.is_dirty()):
-            view.run_command('save')
+        if (self.view.is_dirty()):
+            self.view.run_command('save')
 
-        # save file not empty
-        if(not file_path and sketch_size > 0):
-            saved_file = self.saveCodeInFile(view)
-            view = saved_file[1]
-            file_path = Tools.getPathFromView(view)
-
-        self.current_path = Paths.getCWD(file_path)
-        parent_path = Paths.getParentPath(file_path)
-
-        # check if file is iot
-        if(feedback and not self.is_iot):
-            self.message_queue.put('not_iot_{0}{1}', current_time, file_name)
-            return
+        self.current_path = Paths.getCWD(self.file_path)
+        parent_path = Paths.getParentPath(self.file_path)
 
         # Check native project
         self.is_native = False
         for file in os.listdir(parent_path):
             if(file.endswith('platformio.ini')):
                 self.is_native = True
-                self.project_dir = parent_path
                 break
+
+        self.is_native = Preferences().get('always_native', False)
+        Preferences().set('native', self.is_native)
 
         # set not native paths
         if(not self.is_native):
-            self.project_dir = Paths.getBuildPath(temp_name)
+            self.project_dir = Paths.getBuildPath(self.temp_name)
             if(not self.project_dir):
-                self.project_dir = Paths.getTempPath(temp_name)
+                self.project_dir = Paths.getTempPath(self.temp_name)
             type_env = 'env_selected'
         else:
+            self.project_dir = self.current_path
             type_env = 'native_env_selected'
 
         self.ini_path = os.path.join(self.project_dir, 'platformio.ini')
         self.environment = Preferences().get(type_env, False)
-        self.Commands = CommandsPy(console=console, cwd=self.project_dir)
+        try:
+            self.Commands = CommandsPy(
+                console=self.console, cwd=self.project_dir)
+        except:
+            pass
 
     def checkInitFile(self):
         """
         Check each platformio.ini file and loads the environments already
         initialized.
         """
+        self.loadData()
+
         protected = Preferences().get('protected', False)
         if(not protected):
             return
@@ -160,6 +182,9 @@ class PlatformioCLI(CommandsPy):
             Preferences().set('native', True)
             Preferences().set('ini_path', self.project_dir)
 
+        if(not self.ini_path):
+            return
+
         # get data from platformio.ini file
         ini_list = []
         with open(self.ini_path, 'r') as file:
@@ -172,175 +197,93 @@ class PlatformioCLI(CommandsPy):
 
         # save preferences, update menu data
         type = 'board_id' if not self.is_native else 'found_ini'
+
+        if(self.is_native):
+            current = Preferences().get(type, ini_list)
+            ini_list.extend(current)
+            ini_list = list(set(ini_list))
+
         Preferences().set(type, ini_list)
 
     def beforeProcess(self, next):
-        if(not self.is_iot):
-            return
+        """Requierements
 
-        if(next):
-            Preferences().set('next', next)
+        Check if all the requirements are met based in the type of command. If
+        it's necessary shows the quick panel to choose an option
+
+        Arguments:
+            next {str} -- name of the next method to call
+        """
+        self.loadData()
+
+        if(not self.callback):
+            self.callback = next
         # if none board is selected show a quick panel list
         if(not Tools.checkBoards()):
             choose = Menu().createBoardsMenu()
-            quickPanel(choose, self.saveBoard)
+            quickPanel(choose, self.saveBoardCallback)
             return
 
         # if none environment is selected show a quick panel list
         if(not Tools.checkEnvironments()):
             list = Menu().getEnvironments()
-            quickPanel(list[0], self.saveEnvironmet, index=list[1])
+            quickPanel(list[0], self.saveEnvironmetCallback, index=list[1])
             return
 
-        if(not self.once):
-            self.openInThread('get_ports')
+        if(not self.once and next == 'ports' or next == 'upload'):
+            self.openInThread(self.listPorts, join=True)
             self.once = True
 
         # check if the port is available
-        self.port = Preferences().get('id_port', '')
         if(next == 'upload' and not any(self.port in port for port in self.ports_list)):
-            self.openInThread('ports', next)
+            self.openInThread(self.selectPort)
             return
 
-        self.openInThread(next)
+        if(self.callback):
+            callback = getattr(self, self.callback)
 
-    def listPorts(self):
-        self.ports_list = self.listSerialPorts()
-
-    def selectPort(self, process=True):
-        self.process = process
-        if(not process):
-            self.openInThread('get_ports')
-        quickPanel(self.ports_list, self.savePort)
-
-    def saveBoard(self, selected):
-        if(selected != -1):
-            choose = Menu().createBoardsMenu()
-            board_id = choose[selected][1].split(' | ')[1]
-            Preferences().boardSelected(board_id)
-            Tools.saveEnvironment(board_id)
-            Tools.userPreferencesStatus()
-            next = Preferences().get('next')
-            self.beforeProcess(next)
-
-    def saveEnvironmet(self, selected):
-        if(selected != -1):
-            list = Menu().getEnvironments()
-            env = list[0][selected][1].split(' | ')[1]
-            Tools.saveEnvironment(env)
-            Tools.userPreferencesStatus()
-            self.environment = env
-            next = Preferences().get('next')
-            self.beforeProcess(next)
-
-    def savePort(self, selected):
-        if(selected != -1):
-            choose = self.ports_list
-            id_port = choose[selected][0]
-            self.port = id_port
-            Preferences().set('id_port', id_port)
-            if(self.process):
-                next = Preferences().get('next')
-                self.beforeProcess(next)
+            action_thread = threading.Thread(target=callback)
+            action_thread.start()
+            ThreadProgress(action_thread, _('processing'), _('done'))
 
     def initProject(self):
-        # check if it was already initialized
+        """Initializes
+
+        Initializes the PlatformIO project with selected environment
+        """
+        # check if it was already initialized (stop execution if it was)
         if(os.path.isfile(self.ini_path)):
             with open(self.ini_path) as file:
                 if(self.environment in file.read()):
                     return
 
-        command = ['init', '--board=%s' % (self.environment)]
-
+        # Run Command
+        command = ['init', '-b %s' % (self.environment)]
         self.Commands.runCommand(command, "init_project_{0}")
 
         if(not self.Commands.error_running):
             if(self.is_native):
+                self.window.run_command('close_file')
+                new_path = os.path.join(self.project_dir, 'src', self.file_name)
+                move(self.file_path, new_path)
+                self.window.open_file(new_path)
                 Preferences().set('init_queue', '')
             if(not self.is_native):
                 self.overrideSrc()
 
-    def overrideSrc(self):
-        """
-        Append in the platformio.ini file, the src_dir option
-        to override the source folder where the sketch is stored
-
-        Arguments:
-            ini_path {string} -- path of the platformio.ini file
-            src_dir {string} -- path where source folder the is located
-        """
-        header = '[platformio]'
-        with open(self.ini_path) as file:
-            if header not in file.read():
-                with open(self.ini_path, 'a+') as new_file:
-                    new_file.write("\n%s\n" % header)
-                    new_file.write("src_dir=%s\n" % self.current_path)
-
-    def programmer(self, programmer):
-        # list of programmers
-        if(programmer == "avr"):  # AVR ISP
-            programmer_string = \
-                "#\nupload_protocol = stk500v1\n" \
-                "upload_flags = -P$UPLOAD_PORT\n\n" \
-                "upload_port = %s\n#\n" % (self.port)
-        elif(programmer == "avrmkii"):  # AVRISP mkII
-            programmer_string = \
-                "#\nupload_protocol = stk500v2\n"\
-                "upload_flags = -Pusb\n#\n"
-        elif(programmer == "usbtyni"):  # USBtinyISP
-            programmer_string = "#\nupload_protocol = usbtiny\n#\n"
-        elif(programmer == "arduinoisp"):  # ArduinoISP
-            programmer_string = "#\nupload_protocol = arduinoisp\n#\n"
-        elif(programmer == "usbasp"):  # USBasp
-            programmer_string = "#\nupload_protocol = usbasp\n" \
-                "upload_flags = -Pusb\n#\n"
-        elif(programmer == "parallel"):  # Parallel Programmer
-            programmer_string = "#\nupload_protocol = dapa\n" \
-                "upload_flags = -F\n#\n"
-        elif(programmer == "arduinoasisp"):  # Arduino as ISP
-            programmer_string = "#\nupload_protocol = stk500v1\n" \
-                "upload_flags = -P$UPLOAD_PORT -b$UPLOAD_SPEED\n" \
-                "upload_speed = 19200\n" \
-                "upload_port = %s\n#\n" % (self.port)
-        else:
-            programmer_string = False
-
-        found = False
-        pound = False
-        clean = True
-        header_env = str.encode("[env:%s]" % self.environment)
-        temp = os.path.join(self.project_dir, "temp")
-
-        # searching programmer lines
-        if(programmer_string):
-            with open(self.ini_path, 'r') as file:
-                if 'upload_protocol =' in file.read():
-                    clean = False
-
-        # writing lines
-        with open(self.ini_path, 'rb') as file, open(temp, 'wb') as new_file:
-            for line in file:
-                if(pound and b'#' in line):
-                    pound = -1
-                if(header_env in line):
-                    found = True
-                if(found and pound != -1 and b'#' in line):
-                    pound = True
-                if(programmer_string and pound == -1 and b'\n' == line):
-                    new_file.write(str.encode(programmer_string))
-                    found = False
-                if(found and clean and programmer_string and line == b'\n'):
-                    new_file.write(str.encode(programmer_string))
-                if(not pound or pound == -1 and b'#' not in line):
-                    new_file.write(line)
-
-        if(sublime.platform() == 'windows'):
-            os.remove(self.ini_path)  # For windows only
-        os.rename(temp, self.ini_path)  # Rename the new file
-
     def build(self):
+        """build
+
+        Build the file in the current view using PlatformIO CLI. It first
+        checks if the current environment was previously initialized
+        """
         if(not self.is_iot):
             return
+
+        self.message_queue = MessageQueue(self.console)
+        self.message_queue.startPrint()
+        self.message_queue.put(
+            '[ Deviot {0} ] {1}\\n', version, self.file_name)
 
         # initialize the sketch
         self.initProject()
@@ -357,19 +300,23 @@ class PlatformioCLI(CommandsPy):
             self.built = False
 
     def upload(self):
+        """Upload
+
+        Upload the current file to the select hardware, it checks if any
+        programmer option was previously selected
+        """
         if(not self.is_iot):
             return
 
         # Stop serial monitor
         Tools.closeSerialMonitors(Preferences())
 
-        # Compile code
-        self.build()
+        self.message_queue = MessageQueue(self.console)
+        self.message_queue.startPrint()
+        self.message_queue.put('[ Deviot {0} ] {1}\\n', version, self.file_name)
 
-        # stop if there is an error
-        if(self.Commands.error_running):
-            self.message_queue.stopPrint()
-            return
+        # initialize the sketch
+        self.initProject()
 
         # check programmer
         programmer = Preferences().get("programmer", False)
@@ -377,8 +324,7 @@ class PlatformioCLI(CommandsPy):
             command = ['run', '-t', 'upload', '--upload-port %s -e %s' %
                        (self.port, self.environment)]
         else:
-            command = ['run', '-t', 'program']
-
+            command = ['run', '-t', 'program', '-e', '%s' % (self.environment)]
         self.programmer(programmer)
 
         # run command
@@ -393,42 +339,201 @@ class PlatformioCLI(CommandsPy):
         self.message_queue.stopPrint()
 
     def clean(self):
+        """Clean
+
+        Remove the cached compiled files for the chosen environment
+        """
         if(not self.is_iot):
             return
 
-        command = ['run', '-t clean']
+        command = ['run', '-t', 'clean', '-e', '%s' % (self.environment)]
         self.Commands.runCommand(command, "clean_built_files__{0}")
 
-    def openInThread(self, type, process=True):
-        """
-        Opens each action; build/upload/clean in a new thread
+    def listPorts(self):
+        """Ports
 
-        Arguments: type {string} -- type of action.
-                   Valid values: build/upload/clean
+        Get the list with all ports currently available
         """
-        if(type == 'build'):
-            action_thread = threading.Thread(target=self.build)
-            action_thread.start()
-        elif (type == 'upload'):
-            action_thread = threading.Thread(target=self.upload)
-            action_thread.start()
-        elif(type == 'upgrade'):
-            feedback = False
-            action_thread = threading.Thread(
-                target=PioInstall().checkPio, args=(feedback,))
-            action_thread.start()
-        elif(type == 'get_ports'):
-            action_thread = threading.Thread(target=self.listPorts)
-            action_thread.start()
-            action_thread.join()
-        elif(type == 'ports'):
-            action_thread = threading.Thread(
-                target=self.selectPort, args=(process,))
-            action_thread.start()
+        self.ports_list = self.listSerialPorts()
+
+    def selectPort(self):
+        """Port
+
+        Shows the quick panel with the list of all ports currently available
+
+        """
+        if(not self.feedback):
+            self.openInThread(self.listPorts, join=True)
+        quickPanel(self.ports_list, self.savePortCallback)
+
+    def saveBoardCallback(self, selected):
+        """Chosen Board
+
+        Callback to save the chosen option by the user in the preferences file
+
+        Arguments:
+            selected {[int]} -- index with the choosen option
+        """
+        if(selected != -1):
+            choose = Menu().createBoardsMenu()
+            board_id = choose[selected][1].split(' | ')[1]
+            Preferences().boardSelected(board_id)
+            Tools.saveEnvironment(board_id)
+            Tools.userPreferencesStatus()
+            self.beforeProcess(self.callback)
+
+    def saveEnvironmetCallback(self, selected):
+        """Chosen Environment
+
+        Callback to save the chosen option by the user in the preferences file
+
+        Arguments:
+            selected {[int]} -- index with the choosen option
+        """
+        if(selected != -1):
+            list = Menu().getEnvironments()
+            env = list[0][selected][1].split(' | ')[1]
+            Tools.saveEnvironment(env)
+            Tools.userPreferencesStatus()
+            self.environment = env
+            self.beforeProcess(self.callback)
+
+    def savePortCallback(self, selected):
+        """Chosen Port
+
+        Callback to save the chosen option by the user in the preferences file
+
+        Arguments:
+            selected {[int]} -- index with the choosen option
+        """
+        if(selected != -1):
+            choose = self.ports_list
+            id_port = choose[selected][0]
+            self.port = id_port
+            Preferences().set('id_port', id_port)
+
+            if(self.callback):
+                callback = getattr(self, self.callback)
+                self.openInThread(callback)
+
+    def overrideSrc(self):
+        """
+        Append in the platformio.ini file, the src_dir option
+        to override the source folder where the sketch is stored
+        (when the file haven't PlatformIO structure)
+
+        Arguments:
+            ini_path {string} -- path of the platformio.ini file
+            src_dir {string} -- path where source folder the is located
+        """
+        header = '[platformio]'
+        with open(self.ini_path) as file:
+            if header not in file.read():
+                with open(self.ini_path, 'a+') as new_file:
+                    new_file.write("\n%s\n" % header)
+                    new_file.write("src_dir=%s\n" % self.current_path)
+
+    def programmer(self, programmer):
+        """Programmer
+
+        Adds the programmer strings in the platformio.ini file, it considerate
+        environment and programmer selected
+
+        Arguments:
+            programmer {[str]} -- id of chosen option
+        """
+        # list of programmers
+        if(programmer == "avr"):  # AVR ISP
+            programmer_string = \
+                "upload_protocol = stk500v1\n" \
+                "upload_flags = -P$UPLOAD_PORT\n" \
+                "upload_port = %s\r\n" % (self.port)
+        elif(programmer == "avrmkii"):  # AVRISP mkII
+            programmer_string = \
+                "upload_protocol = stk500v2\n"\
+                "upload_flags = -Pusb\r\n"
+        elif(programmer == "usbtyni"):  # USBtinyISP
+            programmer_string = "upload_protocol = usbtiny\r\n"
+        elif(programmer == "arduinoisp"):  # ArduinoISP
+            programmer_string = "upload_protocol = arduinoisp\r\n"
+        elif(programmer == "usbasp"):  # USBasp
+            programmer_string = "upload_protocol = usbasp\n" \
+                "upload_flags = -Pusb\r\n"
+        elif(programmer == "parallel"):  # Parallel Programmer
+            programmer_string = "upload_protocol = dapa\n" \
+                "upload_flags = -F\r\n"
+        elif(programmer == "arduinoasisp"):  # Arduino as ISP
+            programmer_string = "upload_protocol = stk500v1\n" \
+                "upload_flags = -P$UPLOAD_PORT -b$UPLOAD_SPEED\n" \
+                "upload_speed = 19200\n" \
+                "upload_port = %s\r\n" % (self.port)
         else:
-            action_thread = threading.Thread(target=self.clean)
-            action_thread.start()
-        ThreadProgress(action_thread, _('processing'), _('done'))
+            programmer_string = False
+
+        # Vars and Flags to process the file
+        header_env = str.encode("[env:%s]" % self.environment)
+        temp = os.path.join(self.project_dir, "temp")
+        previous_prog = False
+        writed = False
+        found = False
+        EOF = False
+
+        # writing lines
+        with open(self.ini_path, 'rb') as file, open(temp, 'wb') as new_file:
+            while(True):
+                line = file.readline()
+                # End of File
+                if(not line):
+                    EOF = True
+                # Search ENV
+                if(header_env in line):
+                    found = True
+                # If previous programmer
+                if(found and b'upload_protocol' in line and not previous_prog):
+                    previous_prog = True
+                # Not more previous programmer
+                if(previous_prog and line == b'\r\n'):
+                    previous_prog = -1
+                # ENV Found
+                if(found and line == b'\r\n' or previous_prog == -1 or EOF):
+                    if(not writed and programmer_string):
+                        new_file.write(str.encode(programmer_string))
+                        writed = True
+                # Write in the new file
+                if(not previous_prog or previous_prog == -1):
+                    new_file.write(line)
+                # Stop Loop
+                if(EOF):
+                    break
+
+        # rename temp file
+        if(sublime.platform() == 'windows'):
+            os.remove(self.ini_path)  # For windows only
+        os.rename(temp, self.ini_path)  # Rename the new file
+
+    def openInThread(self, func, join=False):
+        """Thread
+
+        Function to open function/methods like build/upload/clean/ports and
+        others in a new thread.
+
+
+        Arguments:
+            func {[str/obj]} -- If It's string, it calls beforeProcess first.
+                                when isn't call the object directly
+
+        Keyword Arguments:
+            join {bool} -- use thread.join when it's True (default: {False})
+        """
+        if(type(func) is str):
+            thread = threading.Thread(target=self.beforeProcess, args=(func,))
+            thread.start()
+        else:
+            thread = threading.Thread(target=func)
+            thread.start()
+            if(join):
+                thread.join()
+        ThreadProgress(thread, _('processing'), _('done'))
 
     def saveCodeInFile(self, view):
         """
@@ -441,12 +546,12 @@ class PlatformioCLI(CommandsPy):
 
         tmp_path = Paths.getTempPath()
         file_name = str(time.time()).split('.')[0]
-        file_path = os.path.join(tmp_path, file_name)
-        file_path = os.path.join(file_path, 'src')
-        os.makedirs(file_path)
+        self.file_path = os.path.join(tmp_path, file_name)
+        self.file_path = os.path.join(self.file_path, 'src')
+        os.makedirs(self.file_path)
 
         full_path = file_name + ext
-        full_path = os.path.join(file_path, full_path)
+        full_path = os.path.join(self.file_path, full_path)
 
         region = sublime.Region(0, view.size())
         text = view.substr(region)
@@ -461,6 +566,13 @@ class PlatformioCLI(CommandsPy):
         return (True, view)
 
     def listSerialPorts(self):
+        """List
+
+        Get the list of port currently available from PlatformIO CLI
+
+        Returns:
+            [list] -- all ports available
+        """
         Run = CommandsPy()
 
         list = [[_('select_port_list')]]
@@ -496,11 +608,12 @@ class PlatformioCLI(CommandsPy):
 
 
 def generateFiles():
-    # create main files
-    PlatformioCLI(feedback=False).getAPIBoards()
-    Menu().createMainMenu()
+    """Generate Files
 
+    It calls the functions and methods to create the main menu, completions
+    and syntax file
+    """
+    # create main files
+    Menu().createMainMenu()
     Tools.createCompletions()
     Tools.createSyntaxFile()
-    Menu().createLibraryImportMenu()
-    Menu().createLibraryExamplesMenu()

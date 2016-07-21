@@ -287,7 +287,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().beforeProcess('build')
+        PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -382,7 +382,7 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI(feedback=False).openInThread('ports', process=False)
+        PlatformioCLI(feedback=False).selectPort(process=False)
 
 
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
@@ -491,11 +491,18 @@ class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
+        if(not Preferences().get('id_port', False)):
+            PlatformioCLI(feedback=False, callback=self.on_done).openInThread(
+                'ports', process=False)
+            return
+        self.on_done()
+
+    def on_done(self):
         Tools.toggleSerialMonitor(self.window)
 
     def is_checked(self):
-        monitor_module = Serial
         state = False
+        monitor_module = Serial
         serial_port = Preferences().get('id_port', '')
         if serial_port in monitor_module.serials_in_use:
             serial_monitor = monitor_module.serial_monitor_dict.get(
