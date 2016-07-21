@@ -35,19 +35,17 @@ class CommandsPy(object):
     the web site: www.platformio.org
     """
 
-    def __init__(self, env_path=False, console=False, cwd=None):
+    def __init__(self, console=False, env_path=False, cwd=None):
         super(CommandsPy, self).__init__()
+        env_bin_dir = getEnvBinDir()
+        self.python = os.path.join(env_bin_dir, 'python')
         self.Preferences = Preferences()
-        self.message_queue = Messages.MessageQueue(console)
-        self.message_queue.startPrint()
         self.error_running = False
         self.console = console
         self.cwd = cwd
-        env_bin_dir = getEnvBinDir()
-        self.python = os.path.join(env_bin_dir, 'python')
 
         # not use env vars in osx
-        if(getOsName() == 'osx'):
+        if(sublime.platform() == 'osx'):
             return
 
         # env_path from preferences
@@ -58,35 +56,53 @@ class CommandsPy(object):
         if(env_path):
             os.environ['PATH'] = env_path
 
-    def runCommand(self, commands, setReturn=False, extra_message=None, verbose=False):
-        """
-        Runs a CLI command to  do/get the differents options from platformIO
+    def runCommand(self, commands, feedback=False, setReturn=False, extra_message=None, verbose=False):
+        """Command
+
+        Runs a CLI command to do/get the differents options from platformIO
+
+        Arguments:
+            commands {list} -- command to run
+
+        Keyword Arguments:
+            feedback {bool} -- if it's true shows the output in console (default: {False})
+            setReturn {bool} -- if it's true return stdout (default: {False})
+            extra_message {[str]} -- Push a text in the user console (default: {None})
+            verbose {bool} -- When is true show full output in console (default: {False})
+
+        Returns:
+            str -- return the stdout of the command execution
         """
         real_time = True
         self.show_warning = False
         self.show_error = False
         self.previous = ''
         self.down_string = False
+        self.verbose = verbose
+
+        self.feedback = feedback
+        if(feedback):
+            self.message_queue = Messages.MessageQueue(self.console)
+            self.message_queue.startPrint()
 
         if(not commands):
             return False
 
         # get verbose from preferences
-        if(not verbose):
-            verbose = self.Preferences.get('verbose_output', False)
+        if(not self.verbose):
+            self.verbose = self.Preferences.get('verbose_output', False)
 
         # get command
         self.type_build = False
-        command = self.createCommand(commands, verbose)
+        command = self.createCommand(commands)
 
         # time info
         current_time = time.strftime('%H:%M:%S')
         self.start_time = time.time()
 
         # Console message
-        cmd_type = self.getTypeAction(command)
-        if(cmd_type):
-            self.message_queue.put(cmd_type, current_time, extra_message)
+        if(feedback):
+            self.message_queue.put(feedback, current_time, extra_message)
 
         # run command
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
@@ -107,24 +123,59 @@ class CommandsPy(object):
                 if output == '' and process.poll() is not None:
                     break
 
-                self.outputFilter(output, command, verbose)
+                self.outputFilter(output, command)
 
                 if(output.strip()):
                     self.previous = output.lower()
 
         # results
         return_code = process.returncode
-        self.resultsOutput(return_code, verbose)
-
+        self.resultsOutput(return_code)
         # return output
         if(setReturn):
             if(return_code > 0):
                 print(stderr)
             return stdout
 
-    def outputFilter(self, output, command, verbose):
+    def createCommand(self, commands):
+        """
+        Create the full CLI command based in the verbose mode
+
+        Arguments:
+            command {list} -- actions command to run in platformIO
+        """
+        options = commands[0]
+
+        try:
+            args = " ".join(commands[1:])
+        except:
+            args = ''
+
+        # full verbose mode
+        if(self.verbose and 'run' in options and '-e' in args and 'upload' not in args):
+            args += ' -vvv'
+
+        if(sublime.platform() == 'osx'):
+            command = '"%s" -m platformio -f -c sublimetext %s %s 2>&1' % (
+                self.python, options, args)
+        else:
+            command = "platformio -f -c sublimetext %s %s 2>&1" % (
+                options, args)
+
+        return command
+
+    def outputFilter(self, output, command):
+        """Filter
+
+        catch the output of Popen in real time and filter it
+        showing minimun information
+
+        Arguments:
+            output {[str]} -- text from Popen
+            command {[str]} -- current command running
+        """
         # show full output
-        if(verbose):
+        if(self.verbose):
             self.message_queue.put(output)
             return
 
@@ -168,7 +219,15 @@ class CommandsPy(object):
                 outputif.replace(" ", "") != self.previous):
             self.message_queue.put('unpacking')
 
-    def resultsOutput(self, return_code, verbose):
+    def resultsOutput(self, return_code):
+        """Results
+
+        Shows information with the result of processing the file. If the
+        verbose mode is true the output is shown as it (not filtered)
+
+        Arguments:
+            return_code {[int]} -- 0 if wasn't an error 1 if there was an error
+        """
         # set error
         if(return_code > 0):
             self.error_running = True
@@ -179,7 +238,7 @@ class CommandsPy(object):
         self.status_bar = ""
 
         # Print success status
-        if(self.console and not verbose and
+        if(self.feedback and not self.verbose and
                 return_code == 0 and not self.show_warning):
             if(self.type_build):
                 message = 'success_took_{0}{1}'
@@ -205,60 +264,11 @@ class CommandsPy(object):
             self.status_erase_time = 5000
             sublime.set_timeout(self.setStatus, 0)
 
-    def getTypeAction(self, command):
-        """
-        Get the type of action, to get the header
-        and print it in the user console
-
-        Arguments:
-            command {string} -- CLI command
-        """
-        if 'init' in command:
-            return 'init_project_{0}'
-        elif '-e' in command and 'upload' not in command:
-            self.type_build = True
-            return 'built_project_{0}'
-        elif '--upload-port' in command:
-            return 'uploading_firmware_{0}'
-        elif '-t clean' in command:
-            return 'clean_built_files__{0}'
-        elif 'lib install' in command:
-            return'installing_lib_{0}{1}'
-        elif 'lib uninstall' in command:
-            return'uninstalling_lib_{0}{1}'
-        else:
-            return None
-
-    def createCommand(self, commands, verbose):
-        """
-        Create the full CLI command based in the verbose mode
-
-        Arguments:
-            command {list} -- actions command to run in platformIO
-            verbose {bool} -- verbose mode user preference
-        """
-        options = commands[0]
-
-        try:
-            args = " ".join(commands[1:])
-        except:
-            args = ''
-
-        # output errors only
-        if(not verbose and 'run' in options and
-                '-e' in args and 'upload' not in args):
-            args += ' -v --verbose'
-
-        if(getOsName() == 'osx'):
-            command = '"%s" -m platformio -f -c sublimetext %s %s 2>&1' % (
-                self.python, options, args)
-        else:
-            command = "platformio -f -c sublimetext %s %s 2>&1" % (
-                options, args)
-
-        return command
-
     def setStatus(self):
+        """Status Bar
+
+        Display the result of the process in the status bar
+        """
         window = sublime.active_window()
         view = window.active_view()
 
