@@ -665,7 +665,7 @@ class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
         Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
 
 
-class UseCppTemplate(sublime_plugin.WindowCommand):
+class UseCppTemplateCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         keep = Preferences().get('use_cpp', False)
