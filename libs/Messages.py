@@ -79,16 +79,19 @@ class Console:
     Creates the user console to show different messages.
     """
 
-    def __init__(self):
-        self.window = sublime.active_window()
-        self.panel = self.window.get_output_panel('exec')
+    def __init__(self, window=False):
+        self.window = window
+        if(not window):
+            self.window = sublime.active_window()
+        self.panel = self.window.create_output_panel('exec')
+        self.panel.set_name('exec')
 
     def printScreen(self, text):
+        self.window.run_command("show_panel", {"panel": "output.exec"})
         sublime.set_timeout(lambda: self.println(text), 0)
 
     def println(self, text):
         if(len(text)):
-            self.window.run_command("show_panel", {"panel": "output.exec"})
             self.panel.set_read_only(False)
             self.panel.run_command("append", {"characters": text})
             self.panel.set_read_only(True)
