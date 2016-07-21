@@ -123,19 +123,12 @@ class MonitorView:
             from libs.Preferences import Preferences
 
         # Preferences to auto-scroll
-        auto_scroll = Preferences().get('auto_scroll', False)
+        auto_scroll = Preferences().get('auto_scroll', True)
 
         self.view.set_read_only(False)
-        pos = self.view.size()
-
-        if python_version < 3:
-            edit = self.view.begin_edit()
-            self.view.insert(edit, pos, text)
-            self.view.end_edit(edit)
-        else:
-            if(auto_scroll):
-                self.view.show(pos)
-            self.view.run_command("append", {"characters": text})
+        self.view.run_command("append", {"characters": text})
+        if(auto_scroll):
+            self.view.run_command("move_to", {"extend": False, "to": "eof"})
         self.view.set_read_only(True)
 
 
