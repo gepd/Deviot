@@ -234,7 +234,8 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        choose = Libraries.Libraries(self.window).installedList()
+        choose = Libraries.Libraries(
+            self.window, feedback=False).installedList()
         quickPanel(choose, self.on_done)
 
     def on_done(self, result):

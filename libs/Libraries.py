@@ -54,7 +54,7 @@ class Libraries:
     More info: http://docs.platformio.org/en/latest/librarymanager/index.html
     """
 
-    def __init__(self, window=None, view=None):
+    def __init__(self, window=None, view=None, feedback=True):
         self.view = view
         self.window = window
         self.Preferences = Preferences()
@@ -64,14 +64,15 @@ class Libraries:
             self.window = sublime.active_window()
         self.view = self.window.active_view()
 
-        # console)
-        console = Messages.Console()
+        if(feedback):
+            # console)
+            console = Messages.Console()
 
-        # Queue for the user console
-        self.message_queue = MessageQueue(console)
+            # Queue for the user console
+            self.message_queue = MessageQueue(console)
 
-        # CLI
-        self.Commands = CommandsPy(console=console)
+            # CLI
+            self.Commands = CommandsPy(console=console)
 
     def downloadList(self, keyword):
         """
@@ -100,7 +101,7 @@ class Libraries:
         nloop = list['total'] / list['perpage']
         if(nloop > 1):
             # next pages
-            nloop = int(nloop) + 1 if nloop > int(nloop) else nloop
+            nloop = int(nloop) + 1 if nloop > int(nloop) else int(nloop)
             for page in range(2, nloop + 1):
                 # building query of next pages
                 request['page'] = page
@@ -314,7 +315,8 @@ def openInThread(type, window=None, keyword=None):
         thread.start()
         ThreadProgress(thread, _('installing'), _('done'))
     elif(type == 'list'):
-        thread = threading.Thread(target=Libraries().getInstalledList)
+        thread = threading.Thread(target=Libraries(
+            feedback=False).getInstalledList)
         thread.start()
         ThreadProgress(thread, _('preparing_list'), _('done'))
     elif(type == 'remove'):
