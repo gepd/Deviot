@@ -196,6 +196,18 @@ class CommandsPy(object):
         if('error:' in outputif):
             self.show_error = True
 
+        if(': programmer' in outputif):
+            output = re.sub(r"[^\: ][\w\s+]+$",
+                            "El programador no responde", output)
+            self.message_queue.put('\n' + output)
+
+        if(' attempt ' in outputif):
+            dic = {'attempt': 'intento',
+                   'of': 'de',
+                   'not in sync': 'no sincronizado'}
+            output = multiwordReplace(output, dic)
+            self.message_queue.put('\n' + output)
+
         # realtime output for build command
         if('run' in command and '-e' in command and not 'upload'):
             if('installing' in outputif):
@@ -254,7 +266,7 @@ class CommandsPy(object):
             self.message_queue.put(message, current_time, diff_time)
 
         # output error
-        if(self.show_error):
+        if(self.show_error or self.error_running):
             self.status_bar = _('error')
             message = 'error_took_{0}{1}'
             self.message_queue.put(message, current_time, diff_time)
@@ -275,3 +287,15 @@ class CommandsPy(object):
         view.run_command(
             'add_status', {'text': self.status_bar,
                            'erase_time': self.status_erase_time})
+
+
+def multiwordReplace(text, wordDic):
+    """
+    take a text and replace words that match a key in a dictionary with
+    the associated value, return the changed text
+    """
+    rc = re.compile('|'.join(map(re.escape, wordDic)))
+
+    def translate(match):
+        return wordDic[match.group(0)]
+    return rc.sub(translate, text)
