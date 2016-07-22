@@ -12,38 +12,20 @@ import time
 import sublime
 import threading
 
-try:
+from urllib.parse import urlencode
+from urllib.request import Request
+from urllib.request import urlopen
 
-    from . import Paths
-    from . import Tools
-    from . import Messages
-    from . import __version__ as version
-    from .JSONFile import JSONFile
-    from .Preferences import Preferences
-    from .Progress import ThreadProgress
-    from .Commands import CommandsPy
-    from .Messages import MessageQueue
-    from .I18n import I18n
-except:
-    import libs.Paths as Paths
-    import libs.Tools as Tools
-    from libs import Messages
-    from libs import __version__ as version
-    from libs.JSONFile import JSONFile
-    from libs.Preferences import Preferences
-    from libs.Progress import ThreadProgress
-    from libs.Commands import CommandsPy
-    from libs.Messages import MessageQueue
-    from libs.I18n import I18n
-
-if(Tools.getPythonVersion() < 3):
-    from urllib import urlencode
-    from urllib2 import Request
-    from urllib2 import urlopen
-else:
-    from urllib.parse import urlencode
-    from urllib.request import Request
-    from urllib.request import urlopen
+from . import Paths
+from . import Tools
+from . import Messages
+from . import __version__ as version
+from .JSONFile import JSONFile
+from .Preferences import Preferences
+from .Progress import ThreadProgress
+from .Commands import CommandsPy
+from .Messages import MessageQueue
+from .I18n import I18n
 
 _ = I18n().translate
 

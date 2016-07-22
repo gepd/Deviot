@@ -12,35 +12,20 @@ import json
 import threading
 import sublime
 from re import compile, match
+from shutil import move
 
-try:
-    from .Commands import CommandsPy
-    from . import Paths
-    from . import Tools
-    from .Messages import Console
-    from .Messages import MessageQueue
-    from .Preferences import Preferences
-    from .JSONFile import JSONFile
-    from .Menu import Menu
-    from .I18n import I18n
-    from .Progress import ThreadProgress
-    from . import __version__ as version
-    from .Install import PioInstall
-    from .QuickPanel import quickPanel
-except:
-    import libs.Paths as Paths
-    import libs.Tools as Tools
-    from libs.Messages import Console
-    from libs.Messages import MessageQueue
-    from libs.Commands import CommandsPy
-    from libs.Preferences import Preferences
-    from libs.JSONFile import JSONFile
-    from libs.Menu import Menu
-    from libs.I18n import I18n
-    from libs.Progress import ThreadProgress
-    from libs import __version__ as version
-    from libs.Install import PioInstall
-    from libs.QuickPanel import quickPanel
+from .Commands import CommandsPy
+from . import Paths
+from . import Tools
+from .Messages import Console
+from .Messages import MessageQueue
+from .Preferences import Preferences
+from .JSONFile import JSONFile
+from .Menu import Menu
+from .I18n import I18n
+from .Progress import ThreadProgress
+from . import __version__ as version
+from .QuickPanel import quickPanel
 
 _ = I18n().translate
 

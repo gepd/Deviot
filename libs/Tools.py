@@ -12,11 +12,7 @@ import glob
 import locale
 import sublime
 
-try:
-    from . import __version__, __title__
-except:
-    import __version__
-    import __title__
+from . import __version__, __title__
 
 H_EXTS = ['.h']
 include = r'^\s*#include\s*[<"](\S+)[">]'
@@ -95,10 +91,7 @@ def setStatus(text=False, erase_time=0, key=False):
     info = []
     if(is_iot and not erase_time):
 
-        try:
-            from .Preferences import Preferences
-        except:
-            from libs.Preferences import Preferences
+        from .Preferences import Preferences
 
         pio_version = Preferences().get('pio_version', 0)
 
@@ -120,11 +113,8 @@ def userPreferencesStatus():
 
     Arguments: view {st object} -- stores many info related with ST
     '''
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
-    pass
+    from .Preferences import Preferences
+
     native = Preferences().get('native', False)
 
     # Check for environment
@@ -175,12 +165,8 @@ def getSystemLang():
 
 
 def createSketch(sketch_name, path):
-    try:
-        from . import Paths
-        from .Preferences import Preferences
-    except:
-        from libs import Paths
-        from libs.Preferences import Preferences
+    from . import Paths
+    from .Preferences import Preferences
 
     # file path
     sketch_path = os.path.join(path, sketch_name)
@@ -248,22 +234,15 @@ def toggleSerialMonitor(window=None):
             windows to call or close the serial monitor
 
     """
-    try:
-        from .Serial import SerialMonitor
-        from . import Serial
-        from .Preferences import Preferences
-        from .Messages import MonitorView
-    except:
-        from libs.Serial import SerialMonitor
-        from libs import Serial
-        from libs.Preferences import Preferences
-        from libs.Messages import MonitorView
+    from .Serial import SerialMonitor
+    from . import Serial
+    from .Preferences import Preferences
+    from .Messages import MonitorView
 
     monitor_module = Serial
     serial_monitor = None
 
-    preferences = Preferences()
-    serial_port = preferences.get('id_port', '')
+    serial_port = Preferences().get('id_port', '')
     serial_ports = Serial.listSerialPorts()
 
     # create window and view if not exists
@@ -297,12 +276,8 @@ def sendSerialMessage(text):
         text {string}
             Text to send
     """
-    try:
-        from . import Serial
-        from .Preferences import Preferences
-    except:
-        from libs import Serial
-        from libs.Preferences import Preferences
+    from . import Serial
+    from .Preferences import Preferences
 
     monitor_module = Serial
 
@@ -322,10 +297,8 @@ def closeSerialMonitors():
     Arguments:
         preferences {object} -- User preferences instance
     """
-    try:
-        from . import Serial
-    except:
-        from libs import Serial
+    from . import Serial
+    from .Preferences import Preferences
 
     monitor_module = Serial
     in_use = monitor_module.serials_in_use
@@ -340,12 +313,6 @@ def closeSerialMonitors():
             monitor_module.serials_in_use.remove(port)
 
 
-try:
-    from . import Keywords
-except:
-    from libs import Keywords
-
-
 def getKeywords():
     """
     Gets the keywords from the installed libraries
@@ -353,10 +320,8 @@ def getKeywords():
     Returns:
         [list] -- list of object with the keywords
     """
-    try:
-        from . import Paths
-    except:
-        from libs import Paths
+    from . import Paths
+    from . import Keywords
 
     keywords = []
     keywords_dirs = Paths.getLibraryFolders()
@@ -374,12 +339,8 @@ def createCompletions():
     """
     Generate the completions file
     """
-    try:
-        from . import Paths
-        from .JSONFile import JSONFile
-    except:
-        from libs import Paths
-        from libs.JSONFile import JSONFile
+    from . import Paths
+    from .JSONFile import JSONFile
 
     keywords = getKeywords()
     keyword_ids = []
@@ -407,12 +368,8 @@ def createSyntaxFile():
     """
     Generate the syntax file based in the installed libraries
     """
-    try:
-        from . import Paths
-        from .JSONFile import JSONFile
-    except:
-        from libs import Paths
-        from libs.JSONFile import JSONFile
+    from . import Paths
+    from .JSONFile import JSONFile
 
     keywords = getKeywords()
 
@@ -546,10 +503,7 @@ def updateMenuLibs():
 
 def removePreferences():
     from shutil import rmtree
-    try:
-        from . import Paths
-    except:
-        from libs import Paths
+    from . import Paths
 
     plug_path = Paths.getPluginPath()
     dst = os.path.join(plug_path, 'Settings-Default', 'Main.sublime-menu')
@@ -563,10 +517,7 @@ def removePreferences():
 
 
 def getEnvironment():
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
+    from .Preferences import Preferences
 
     # Get the environment based in the current file
     native = Preferences().get('native', False)
@@ -580,10 +531,7 @@ def getEnvironment():
 
 
 def saveEnvironment(data):
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
+    from .Preferences import Preferences
 
     settings = Preferences()
 
@@ -597,10 +545,7 @@ def saveEnvironment(data):
 
 
 def checkBoards():
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
+    from .Preferences import Preferences
 
     settings = Preferences()
 
@@ -618,10 +563,7 @@ def checkBoards():
 
 
 def checkEnvironments():
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
+    from .Preferences import Preferences
 
     settings = Preferences()
 

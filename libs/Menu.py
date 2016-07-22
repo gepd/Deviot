@@ -11,16 +11,11 @@ import json
 import glob
 from re import search
 
-try:
-    from . import Paths
-    from .Preferences import Preferences
-    from .JSONFile import JSONFile
-    from .I18n import I18n
-except:
-    from libs.Preferences import Preferences
-    from libs.JSONFile import JSONFile
-    from libs import Paths
-    from libs.I18n import I18n
+from . import Paths
+from .Preferences import Preferences
+from .JSONFile import JSONFile
+from .I18n import I18n
+
 
 _ = I18n().translate
 

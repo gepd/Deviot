@@ -6,12 +6,8 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-try:
-    from .JSONFile import JSONFile
-    from . import Paths
-except:
-    import Paths
-    from libs.JSONFile import JSONFile
+from .JSONFile import JSONFile
+from . import Paths
 
 
 class Preferences(JSONFile):

@@ -12,18 +12,10 @@ import re
 import time
 import sublime
 
-try:
-    from . import Messages
-    from .Preferences import Preferences
-    from .I18n import I18n
-    from .Paths import getEnvBinDir
-    from .Tools import getOsName
-except:
-    from Libs import Messages
-    from Libs.Preferences import Preferences
-    from libs.I18n import I18n
-    from libs.Paths import getEnvBinDir
-    from libs.Tools import getOsName
+from . import Messages
+from .Preferences import Preferences
+from .I18n import I18n
+from .Paths import getEnvBinDir
 
 _ = I18n().translate
 

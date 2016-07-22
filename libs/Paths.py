@@ -12,12 +12,8 @@ import errno
 import inspect
 import sublime
 
-try:
-    from . import Tools
-    from .Dir import Dir
-except:
-    from libs import Tools
-    from libs.Dir import Dir
+from .Dir import Dir
+
 
 ROOT_PATH = 'System Root(/)'
 
@@ -285,10 +281,7 @@ def getTempPath(file_name=False):
 
 
 def getBuildPath(file_name):
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
+    from .Preferences import Preferences
 
     build_dir = Preferences().get('build_dir', False)
 
@@ -331,12 +324,8 @@ def listRootPath():
 
 
 def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=None):
-    try:
-        from .Preferences import Preferences
-        from .I18n import I18n
-    except:
-        from libs.Preferences import Preferences
-        from libs.I18n import I18n
+    from .Preferences import Preferences
+    from .I18n import I18n
 
     if index == -1:
         return ''

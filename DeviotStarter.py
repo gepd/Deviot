@@ -9,40 +9,23 @@ from __future__ import unicode_literals
 import os
 import sys
 import glob
-import time
 import sublime
 import sublime_plugin
 import subprocess
 import threading
 from shutil import rmtree
 
-try:
-    from .libs import Paths, Tools
-    from .libs.Menu import Menu
-    from .libs.Messages import Console
-    from .libs.PlatformioCLI import PlatformioCLI
-    from .libs.Preferences import Preferences
-    from .libs.QuickPanel import quickPanel
-    from .libs import Libraries
-    from .libs.I18n import I18n
-    from .libs import Serial
-    from .libs import Messages
-    from .libs.Install import PioInstall
-    from .libs.Progress import ThreadProgress
-except:
-    from libs import Paths
-    from libs import Tools
-    from libs.Menu import Menu
-    from libs.Messages import Console
-    from libs.PlatformioCLI import PlatformioCLI
-    from libs.Preferences import Preferences
-    from libs.QuickPanel import quickPanel
-    from libs import Libraries
-    from libs.I18n import I18n
-    from libs import Serial
-    from libs import Messages
-    from libs.Install import PioInstall
-    from libs.Progress import ThreadProgress
+from .libs import Paths, Tools
+from .libs.Menu import Menu
+from .libs.PlatformioCLI import PlatformioCLI
+from .libs.Preferences import Preferences
+from .libs.QuickPanel import quickPanel
+from .libs import Libraries
+from .libs.I18n import I18n
+from .libs import Serial
+from .libs import Messages
+from .libs.Install import PioInstall
+from .libs.Progress import ThreadProgress
 
 _ = I18n().translate
 

@@ -9,20 +9,10 @@ from __future__ import unicode_literals
 import threading
 import sublime
 import time
+import queue
 
-try:
-    from . import Tools
-    from .I18n import I18n
-except:
-    from libs import Tools
-    from libs.I18n import I18n
+from .I18n import I18n
 
-python_version = Tools.getPythonVersion()
-
-if python_version < 3:
-    import Queue as queue
-else:
-    import queue
 
 _ = I18n().translate
 
