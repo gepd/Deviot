@@ -46,7 +46,7 @@ class PioInstall(object):
         self.env_bin_dir = Paths.getEnvBinDir()
         self.cache_dir = Paths.getCacheDir()
         self.env_file = Paths.getEnvFile()
-        self.pio_current_ver = self.Preferences.get('pio_version', 0)
+        self.pio_current_ver = Preferences().get('pio_version', 0)
         self.feedback = feedback
         self.cached_file = False
         self.pio_version = None
@@ -68,9 +68,6 @@ class PioInstall(object):
             self.message_queue.put("_deviot_{0}", version)
 
     def checkPio(self):
-        from .PlatformioCLI import PlatformioCLI, generateFiles
-        generateFiles()
-
         thread = threading.Thread(target=self.threadcheckPio)
         thread.start()
         ThreadProgress(thread, _('processing'), _('done'))
@@ -86,7 +83,15 @@ class PioInstall(object):
         '''
         self.headers = Tools.getHeaders()
 
-        if(not self.feedback):
+        if(self.pio_current_ver):
+            # Check main menu
+            updt_menu = self.Preferences.get('updt_menu', False)
+            if(updt_menu):
+                from .PlatformioCLI import generateFiles
+                generateFiles()
+                Tools.updateMenuLibs()
+                self.Preferences.set('updt_menu', False)
+
             # Check library folder
             library_hash = self.Preferences.get('library_hash', False)
             current_hash = dirhash(Paths.getPioLibrary())

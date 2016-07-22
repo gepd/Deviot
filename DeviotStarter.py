@@ -723,6 +723,7 @@ class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
         if(restart):
             Preferences().set('id_lang', id_lang)
+            Preferences().set('updt_menu', True)
             self.window.run_command('sublime_restart')
 
     def is_checked(self, id_lang):
