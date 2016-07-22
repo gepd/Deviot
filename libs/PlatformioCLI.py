@@ -114,6 +114,7 @@ class PlatformioCLI(CommandsPy):
             saved_file = self.saveCodeInFile(self.view)
             self.view = saved_file[1]
             self.file_path = Tools.getPathFromView(self.view)
+            self.file_name = Tools.getFileNameFromPath(self.file_path)
             self.is_iot = Tools.isIOTFile(self.file_path)
 
         # check if file is iot
