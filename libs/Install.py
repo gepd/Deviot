@@ -418,7 +418,7 @@ class PioInstall(object):
 
         # creating files (menu, completions, syntax)
         from .PlatformioCLI import PlatformioCLI, generateFiles
-        PlatformioCLI(feedback=False).getAPIBoards()
+        PlatformioCLI(feedback=False, console=False).getAPIBoards()
         Tools.updateMenuLibs()
         generateFiles()
 
