@@ -122,10 +122,6 @@ class Menu(object):
 
         for library_dir in library_paths:
             # add separator
-            if 'arduinoteensy' not in library_dir:
-                temp_info = {}
-                temp_info['caption'] = '-'
-                children.append(temp_info)
             sub_path = glob.glob(library_dir)
 
             # search in sub path
@@ -175,6 +171,9 @@ class Menu(object):
                     children.append(temp_info)
                     added_lib.append(caption)
 
+        if(not children):
+            children = [{'caption': _('menu_not_libraries')}]
+
         # save file
         menu_import_lib[0]['children'][0]['children'] = children
         self.saveSublimeMenu(data=menu_import_lib,
@@ -214,7 +213,10 @@ class Menu(object):
                         temp_info['children'] = children
                         examples.append(temp_info)
                         children = []
-            examples.append({'caption': '-'})
+            if(examples):
+                examples.append({'caption': '-'})
+            else:
+                examples = [{'caption': _('menu_not_examples')}]
 
         # get preset
         menu_lib_example = self.getTemplateMenu(file_name='examples.json')

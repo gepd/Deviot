@@ -78,8 +78,14 @@ msgstr "Eliminar Librería"
 msgid "menu_import_library"
 msgstr "Importar Librería"
 
+msgid "menu_not_libraries"
+msgstr "No Hay Librerias Disponibles"
+
 msgid "menu_library_examples"
 msgstr "Ejemplos"
+
+msgid "menu_not_examples"
+msgstr "No Hay Ejemplos Disponibles"
 
 msgid "menu_option_lib"
 msgstr "Opciones de Librerías"

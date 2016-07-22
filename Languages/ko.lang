@@ -77,8 +77,14 @@ msgstr "라이브러리 삭제하기"
 msgid "menu_import_library"
 msgstr "라이브러리 가져오기"
 
+msgid "menu_not_libraries"
+msgstr "Not Libraries Availables"
+
 msgid "menu_library_examples"
 msgstr "예제"
+
+msgid "menu_not_examples"
+msgstr "Not Examples Availables"
 
 msgid "menu_option_lib"
 msgstr "라이브러리 설정"
