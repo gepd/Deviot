@@ -309,7 +309,7 @@ class PlatformioCLI(CommandsPy):
             return
 
         # Stop serial monitor
-        Tools.closeSerialMonitors(Preferences())
+        Tools.closeSerialMonitors()
 
         self.message_queue = MessageQueue(self.console)
         self.message_queue.startPrint()

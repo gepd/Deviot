@@ -383,7 +383,7 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI(feedback=False).selectPort(process=False)
+        PlatformioCLI(feedback=False).selectPort()
 
 
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):

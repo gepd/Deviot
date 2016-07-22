@@ -315,7 +315,7 @@ def sendSerialMessage(text):
             serial_monitor.send(text)
 
 
-def closeSerialMonitors(preferences):
+def closeSerialMonitors():
     """
     Closes all the serial monitor running
 
@@ -335,7 +335,7 @@ def closeSerialMonitors(preferences):
             cur_serial_monitor = monitor_module.serial_monitor_dict.get(
                 port, None)
             if cur_serial_monitor:
-                preferences.set('autorun_monitor', True)
+                Preferences().set('autorun_monitor', True)
                 cur_serial_monitor.stop()
             monitor_module.serials_in_use.remove(port)
 
