@@ -95,6 +95,7 @@ class Console:
             self.window.run_command("show_panel", {"panel": "output.exec"})
             self.panel.set_read_only(False)
             self.panel.run_command("append", {"characters": text})
+            self.panel.run_command("move_to", {"extend": False, "to": "eof"})
             self.panel.set_read_only(True)
 
 
