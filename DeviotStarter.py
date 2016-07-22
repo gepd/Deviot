@@ -304,7 +304,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().beforeProcess('upload')
+        PlatformioCLI().openInThread('upload')
 
     def is_enabled(self):
         return Preferences().get('enable_menu')
