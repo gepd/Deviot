@@ -127,6 +127,7 @@ class PlatformioCLI(CommandsPy):
 
         if("Temp" in self.file_path):
             self.is_native = True
+            Preferences().set('native', True)
         else:
             # Check native project
             self.is_native = False
@@ -175,6 +176,10 @@ class PlatformioCLI(CommandsPy):
             Preferences().set('ini_path', self.project_dir)
 
         if(not self.ini_path):
+            return
+
+        # check if ini file exists
+        if(not os.path.isfile(self.ini_path)):
             return
 
         # get data from platformio.ini file
