@@ -137,6 +137,8 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
             choose = Menu().createBoardsMenu()
             board_id = choose[selected][1].split(' | ')[1]
             Preferences().boardSelected(board_id)
+            Tools.saveEnvironment(board_id)
+            Tools.userPreferencesStatus()
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
