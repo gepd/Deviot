@@ -369,6 +369,26 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         PlatformioCLI(feedback=False).selectPort()
 
 
+class AuthChangeCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the password to use in OTA Upload
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.show_input_panel(_("pass_caption"), '',
+                                     self.on_done,
+                                     None,
+                                     None)
+
+    def on_done(self, password):
+        Preferences().set('auth', password)
+
+    def is_enabled(self):
+        return PlatformioCLI(console=False).mDNSCheck()
+
+
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):

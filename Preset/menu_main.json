@@ -127,6 +127,11 @@
                 "command": "select_port"
             },
             {
+                "caption": "menu_auth_change",
+                "id": "auth_change",
+                "command": "auth_change"
+            },
+            {
                 "caption": "menu_monitor_serial",
                 "id": "serial_monitor",
                 "children":

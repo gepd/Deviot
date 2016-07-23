@@ -116,6 +116,12 @@ msgstr "Show Deviot Console"
 msgid "menu_serial_ports"
 msgstr "Serial Port(s)"
 
+msgid "menu_auth_change"
+msgstr "Change OTA Password"
+
+msgid "menu_none_serial_mdns"
+msgstr "None serial port or mDNS service available"
+
 msgid "menu_add_ip"
 msgstr "Add IP Manually"
 
@@ -326,6 +332,9 @@ msgstr "This action required to restart Sublime Text. Do you want to continue?"
 msgid "continue_button"
 msgstr "Continue"
 
+msgid "ota_error_platform"
+msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
+
 
 # Libraries
 
@@ -392,3 +401,7 @@ msgstr "Send:"
 
 msgid "sended_{0}"
 msgstr "\n[SENDED] {0}\n"
+
+# Auth OTA
+msgid "pass_caption"
+msgstr "Password:"

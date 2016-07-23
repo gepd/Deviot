@@ -100,6 +100,8 @@ class PlatformioCLI(CommandsPy):
             self.view = saved_file[1]
             self.file_path = Tools.getPathFromView(self.view)
             self.file_name = Tools.getFileNameFromPath(self.file_path)
+            self.temp_name = Tools.getFileNameFromPath(
+                self.file_path, ext=False)
             self.is_iot = Tools.isIOTFile(self.file_path)
 
         # check if file is iot
@@ -225,6 +227,15 @@ class PlatformioCLI(CommandsPy):
             self.openInThread(self.selectPort)
             return
 
+        # check if auth is required to mdns
+        auth = Preferences().get('auth', False)
+        if(not auth and self.mDNSCheck() and self.port[0] == '+'):
+            self.window.show_input_panel(_("pass_caption"), '',
+                                         self.saveAuthPassword,
+                                         None,
+                                         None)
+            return
+
         if(self.callback):
             callback = getattr(self, self.callback)
 
@@ -294,6 +305,11 @@ class PlatformioCLI(CommandsPy):
         if(not self.is_iot):
             return
 
+        # check ota only for Espressif
+        mdns = self.mDNSCheck()
+        if(not mdns):
+            return
+
         # Stop serial monitor
         Tools.closeSerialMonitors()
 
@@ -303,6 +319,10 @@ class PlatformioCLI(CommandsPy):
 
         # initialize the sketch
         self.initProject()
+
+        # remove auth sign in mdns service
+        if("-" in self.port or "+" in self.port):
+            self.port = self.port[1:].lower()
 
         # check programmer
         programmer = Preferences().get("programmer", False)
@@ -395,6 +415,8 @@ class PlatformioCLI(CommandsPy):
         if(selected != -1):
             choose = self.ports_list
             id_port = choose[selected][0]
+            if("COM" not in id_port):
+                id_port = id_port
             self.port = id_port
             Preferences().set('id_port', id_port)
 
@@ -497,6 +519,97 @@ class PlatformioCLI(CommandsPy):
             os.remove(self.ini_path)  # For windows only
         os.rename(temp, self.ini_path)  # Rename the new file
 
+    def authOTA(self):
+        """OTA Authentication
+
+        Adds OTA authentication (password) in the platformio.ini file
+        based in the current environment chosen
+
+        Arguments:
+            password {[str]} -- password
+        """
+        password = Preferences().get('auth')
+        header_env = str.encode("[env:%s]" % self.environment)
+        auth_string = "upload_flags = --auth=%s" % password
+        temp = os.path.join(self.project_dir, "temp")
+        previous_auth = False
+        writed = False
+        found = False
+        EOF = False
+
+        # writing lines
+        with open(self.ini_path, 'rb') as file, open(temp, 'wb') as new_file:
+            while(True):
+                line = file.readline()
+                # End of File
+                if(not line):
+                    EOF = True
+                # Search ENV
+                if(header_env in line):
+                    found = True
+                # If previous auth
+                if(found and b'--auth=' in line and not previous_auth):
+                    previous_auth = True
+                # Not more previous auth
+                if(previous_auth and line == b'\r\n'):
+                    previous_auth = -1
+                # ENV Found
+                if(found and line == b'\r\n' or previous_auth == -1 or EOF):
+                    if(not writed and auth_string):
+                        new_file.write(str.encode(auth_string))
+                        writed = True
+                # Write in the new file
+                if(not previous_auth or previous_auth == -1):
+                    new_file.write(line)
+                # Stop Loop
+                if(EOF):
+                    break
+
+        # rename temp file
+        if(sublime.platform() == 'windows'):
+            os.remove(self.ini_path)  # For windows only
+        os.rename(temp, self.ini_path)  # Rename the new file
+
+    def mDNSCheck(self):
+        """mDNS Available
+
+        When a mDNS service is selected, allows to upload only espressif
+        platforms, it's the only type of platform available to to OTA upload
+
+        Returns:
+            bool -- True if is possible to upload, False if isn't
+        """
+        from .Menu import Menu
+
+        is_native = Preferences().get('native')
+        type_env = "env_selected" if not is_native else "native_env_selected"
+        environment = Preferences().get(type_env, False)
+        port = Preferences().get('id_port', False)
+
+        if(not environment or not port):
+            return False
+
+        env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
+                                          user_path=True)
+        env_data = json.loads(env_data)
+        selected = env_data[environment]['build']['mcu']
+
+        if("COM" not in port and "esp" not in selected):
+            sublime.message_dialog(_("ota_error_platform"))
+            return False
+        return True
+
+    def saveAuthPassword(self, password):
+        """Password
+
+        Saves the password in the preferences file to OTA uploads
+
+        Arguments:
+            password {[str]} -- password
+        """
+        Preferences().set('auth', password)
+        self.beforeProcess('upload')
+
     def openInThread(self, func, join=False):
         """Thread
 
@@ -559,18 +672,41 @@ class PlatformioCLI(CommandsPy):
         Returns:
             [list] -- all ports available
         """
-        Run = CommandsPy()
+        from . import Serial
 
-        list = [[_('select_port_list')]]
-        command = ['serialports', 'list', '--json-output']
+        lista = [[_('select_port_list'), ""]]
 
-        serial = Run.runCommand(command, setReturn=True)
-        serial = json.loads(serial)
+        # serial ports
+        serial = Serial.listSerialPorts()
+        if(serial):
+            for port in serial:
+                lista.append([port, ""])
 
-        for port in serial:
-            list.append([port['port']])
+        # mdns services
+        mdns = Serial.listMdnsServices()
+        if(mdns):
+            for service in mdns:
+                try:
+                    service = json.loads(service)
+                    try:
+                        if(service["properties"]["auth_upload"] == 'yes'):
+                            one = "+%s" % service["server"]
+                        else:
+                            one = "-%s" % service["server"]
+                    except:
+                        one = "%s" % service["server"]
+                    two = service["properties"]["board"]
 
-        return list
+                    lista.append([
+                        one[:-1].upper(),
+                        two.lower()
+                    ])
+                except:
+                    pass
+            if(len(lista) == 1):
+                lista = [_('menu_none_serial_mdns')]
+
+        return lista
 
     def getAPIBoards(self):
         '''

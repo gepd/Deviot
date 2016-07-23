@@ -126,7 +126,7 @@ class PioInstall(object):
         else:
             executable = os.path.join(self.env_bin_dir, 'pio')
             cmd = ['"%s"' % (executable), '--version']
-        out = self.runCommand(cmd)
+        out = Tools.runCommand(cmd)
 
         # try to get the current version installed
         try:
@@ -171,7 +171,7 @@ class PioInstall(object):
 
         # checking python
         cmd = ['python', '--version']
-        out = self.runCommand(cmd)
+        out = Tools.runCommand(cmd)
 
         py_version = sub(r'\D', '', out[1])
 
@@ -236,7 +236,7 @@ class PioInstall(object):
         temp_env = os.path.join(tmp, 'env-root')
         cwd = os.path.join(tmp, 'virtualenv-14.0.1')
         cmd = ['python', 'setup.py', 'install', '--root', temp_env]
-        out = self.runCommand(cmd, cwd)
+        out = Tools.runCommand(cmd, cwd)
 
         py_version = sub(r'\D', '', out[1])
 
@@ -256,7 +256,7 @@ class PioInstall(object):
 
         if(os.path.exists(cwd)):
             cmd = ['python', 'virtualenv.py', '"%s"' % (self.env_dir)]
-            out = self.runCommand(cmd, cwd)
+            out = Tools.runCommand(cmd, cwd)
 
             # error
             if(out[0] > 0):
@@ -276,7 +276,17 @@ class PioInstall(object):
         else:
             executable = os.path.join(self.env_bin_dir, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
-        out = self.runCommand(cmd)
+        out = Tools.runCommand(cmd)
+
+        # Install zeroconf
+        if(sublime.platform() == 'osx'):
+            executable = os.path.join(self.env_bin_dir, 'python')
+            cmd = ['"%s"' % (executable), '-m', 'pip',
+                   'install', '-U', 'zeroconf']
+        else:
+            executable = os.path.join(self.env_bin_dir, 'pip')
+            cmd = ['"%s"' % (executable), 'install', '-U', 'zeroconf']
+        out = Tools.runCommand(cmd)
 
         # Error
         if(out[0] > 0):
@@ -319,7 +329,7 @@ class PioInstall(object):
                     executable = os.path.join(self.env_bin_dir, 'pip')
                     cmd = ['"%s"' % (executable), 'install',
                            '-U', 'platformio']
-                out = self.runCommand(cmd)
+                out = Tools.runCommand(cmd)
 
                 # error updating
                 if(out[0] > 0):
@@ -334,7 +344,7 @@ class PioInstall(object):
                 else:
                     executable = os.path.join(self.env_bin_dir, 'pio')
                     cmd = ['"%s"' % (executable), '--version']
-                out = self.runCommand(cmd)
+                out = Tools.runCommand(cmd)
 
                 pio_new_ver = match(r"\w+\W \w+ (.+)", out[1]).group(1)
 
@@ -411,7 +421,7 @@ class PioInstall(object):
         else:
             executable = os.path.join(self.env_bin_dir, 'pio')
             cmd = ['"%s"' % (executable), '--version']
-        out = self.runCommand(cmd)
+        out = Tools.runCommand(cmd)
 
         pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
         self.Preferences.set('pio_version', pio_version)
@@ -442,7 +452,7 @@ class PioInstall(object):
             cmd = ['"%s"' % (executable), 'uninstall', '--yes', 'platformio']
         current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("uninstall_old_pio{0}", current_time)
-        out = self.runCommand(cmd)
+        out = Tools.runCommand(cmd)
 
         if(not developer):
             # install developer version
@@ -456,7 +466,7 @@ class PioInstall(object):
                        'https://github.com/platformio/platformio/archive/develop.zip']
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("installing_dev_pio{0}", current_time)
-            out = self.runCommand(cmd)
+            out = Tools.runCommand(cmd)
 
         else:
             # install stable version
@@ -469,7 +479,7 @@ class PioInstall(object):
                 cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("installing_stable_pio{0}", current_time)
-            out = self.runCommand(cmd)
+            out = Tools.runCommand(cmd)
         # show status in deviot console
         if(out[0] > 0):
             self.message_queue.put('error_pio_updates')
@@ -482,7 +492,7 @@ class PioInstall(object):
             else:
                 executable = os.path.join(self.env_bin_dir, 'pio')
                 cmd = ['"%s"' % (executable), '--version']
-            out = self.runCommand(cmd)
+            out = Tools.runCommand(cmd)
 
             # Storing pio version and developer state
             pio_version = match(r"\w+\W \w+ (.+)", out[1]).group(1)
@@ -493,35 +503,6 @@ class PioInstall(object):
             Tools.setStatus()
             current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("setup_finished{0}", current_time)
-
-    def runCommand(self, command, cwd=None):
-        '''Commands
-
-        Run all the commands to install the plugin
-
-        Arguments:
-            command {[list]} -- [list of commands]
-
-        Keyword Arguments:
-            cwd {[str]} -- [current working dir] (default: {None})
-
-        Returns:
-            [list] -- list[0]: return code list[1]: command output
-        '''
-        command.append("2>&1")
-        command = ' '.join(command)
-        process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, cwd=cwd,
-                                   universal_newlines=True, shell=True)
-
-        output = process.communicate()
-        stdout = output[0]
-        return_code = process.returncode
-
-        if(return_code > 0):
-            print(stdout)
-
-        return (return_code, stdout)
 
     def openInThread(self, func, join=False):
         """

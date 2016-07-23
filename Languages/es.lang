@@ -117,6 +117,12 @@ msgstr "Mostrar Consola Deviot"
 msgid "menu_serial_ports"
 msgstr "Puerto(s) Serial"
 
+msgid "menu_auth_change"
+msgstr "Cambiar Contraseña OTA"
+
+msgid "menu_none_serial_mdns"
+msgstr Ningún puerto serial o servicio mDNS disponible"
+
 msgid "menu_add_ip"
 msgstr "Agregar IP Manualmente"
 
@@ -327,6 +333,9 @@ msgstr "Esta acción requiere de reiniciar Sublime Text. ¿Deseas continuar?"
 msgid "continue_button"
 msgstr "Continuar"
 
+msgid "ota_error_platform"
+msgstr "Cargas vía OTA sólo están disponibles para plataformas Espressif (ESP8266) actualmente"
+
 
 # Librerías
 
@@ -393,3 +402,8 @@ msgstr "Enviar:"
 
 msgid "sended_{0}"
 msgstr "\n[ENVIADO] {0}\n"
+
+
+# Auth OTA
+msgid "pass_caption"
+msgstr "Contraseña:"

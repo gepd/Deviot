@@ -5,17 +5,19 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+import glob
 import time
+import sublime
 import threading
 
-try:
-    from . import pyserial
-    from . import Messages
-    from .Preferences import Preferences
-except:
-    from libs import pyserial
-    from libs import Messages
-    from libs.Preferences import Preferences
+from . import pyserial
+from . import Messages
+from . import Tools
+from .Preferences import Preferences
+
+if(sublime.platform() == 'windows'):
+    import winreg
+
 
 serials_in_use = []
 serial_monitor_dict = {}
@@ -155,3 +157,82 @@ def isSerialAvailable(serial_port):
             state = True
             serial.close()
     return state
+
+
+@Tools.singleton
+def listSerialPorts():
+    """
+    List all the serial ports availables in the diffents O.S
+    """
+    os_name = sublime.platform()
+    if (os_name == "windows"):
+        serial_ports = listWinSerialPorts()
+    elif (os_name == 'osx'):
+        serial_ports = listOsxSerialPorts()
+    else:
+        serial_ports = listLinuxSerialPorts()
+    serial_ports.sort()
+    return serial_ports
+
+
+def listWinSerialPorts():
+    """
+    List all the serial ports availables in Windows
+    """
+    serial_ports = []
+    has_ports = False
+    path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
+    try:
+        reg = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path,)
+        has_ports = True
+    except WindowsError:
+        pass
+    if has_ports:
+        for i in range(128):
+            try:
+                name, value, type = winreg.EnumValue(reg, i)
+            except WindowsError:
+                pass
+            else:
+                serial_ports.append(value)
+    return serial_ports
+
+
+def listOsxSerialPorts():
+    """
+    List all the serial ports availables in OS X
+    """
+    serial_ports = []
+    dev_path = '/dev/'
+    dev_names = ['tty.*', 'cu.*']
+    for dev_name in dev_names:
+        pattern = dev_path + dev_name
+        serial_ports += glob.glob(pattern)
+    return serial_ports
+
+
+def listLinuxSerialPorts():
+    """
+    List all the serial ports availables in Linux
+    """
+    serial_ports = []
+    dev_path = '/dev/'
+    dev_names = ['ttyACM*', 'ttyUSB*']
+    for dev_name in dev_names:
+        pattern = dev_path + dev_name
+        serial_ports += glob.glob(pattern)
+    return serial_ports
+
+
+def listMdnsServices():
+    import os
+    from . import Paths
+
+    executable = os.path.join(Paths.getEnvBinDir(), 'python')
+    mdns = os.path.join(Paths.getPluginPath(), 'libs', 'mDNS.py')
+
+    cmd = ['"%s"' % executable, '"%s"' % mdns]
+    out = Tools.runCommand(cmd)
+    out = out[1].replace("'", "\"")
+    out = out.split('\n')
+    return out

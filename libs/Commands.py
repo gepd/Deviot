@@ -200,6 +200,18 @@ class CommandsPy(object):
             output = multiwordReplace(output, dic)
             self.message_queue.put('\n' + output)
 
+        if('[info]:' in outputif):
+            dic = {'Starting on': 'Iniciando en',
+                   'Upload size': 'Tamaño de Carga',
+                   'Sending invitation to': 'Enviando invitación a',
+                   'Waiting for device': 'Esperando dispositivo',
+                   'Waiting for result': 'Esperado resultado',
+                   'Result': 'Resultado'}
+            if("Starting" in output):
+                output = '\n' + output
+            output = multiwordReplace(output, dic)
+            self.message_queue.put(output)
+
         # realtime output for build command
         if('run' in command and '-e' in command and not 'upload'):
             if('installing' in outputif):

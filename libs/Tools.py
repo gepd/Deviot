@@ -578,3 +578,35 @@ def checkEnvironments():
             enabled = True if env else False
 
     return enabled
+
+
+def runCommand(command, cwd=None):
+    '''Commands
+
+    Run all the commands to install the plugin
+
+    Arguments:
+        command {[list]} -- [list of commands]
+
+    Keyword Arguments:
+        cwd {[str]} -- [current working dir] (default: {None})
+
+    Returns:
+        [list] -- list[0]: return code list[1]: command output
+    '''
+    import subprocess
+
+    command.append("2>&1")
+    command = ' '.join(command)
+    process = subprocess.Popen(command, stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE, cwd=cwd,
+                               universal_newlines=True, shell=True)
+
+    output = process.communicate()
+    stdout = output[0]
+    return_code = process.returncode
+
+    if(return_code > 0):
+        print(stdout)
+
+    return (return_code, stdout)
