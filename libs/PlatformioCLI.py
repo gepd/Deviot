@@ -76,7 +76,8 @@ class PlatformioCLI(CommandsPy):
 
         # avoid to do anything with a monitor view
         if(self.feedback and not self.file_path and 'monitor' in self.view_name.lower()):
-            self.message_queue = MessageQueue(self.console)
+            console = Console(self.window)
+            self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('_deviot_{0}', version)
             self.message_queue.put('invalid_file_{0}', self.current_time)
@@ -84,7 +85,8 @@ class PlatformioCLI(CommandsPy):
 
         # empty sketch
         if(self.feedback and not self.sketch_size):
-            self.message_queue = MessageQueue(self.console)
+            console = Console(self.window)
+            self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('_deviot_{0}', version)
             self.message_queue.put('not_empty_sketch_{0}', self.current_time)
@@ -101,16 +103,19 @@ class PlatformioCLI(CommandsPy):
             self.view = saved_file[1]
             self.file_path = Tools.getPathFromView(self.view)
             self.file_name = Tools.getFileNameFromPath(self.file_path)
-            self.temp_name = Tools.getFileNameFromPath(
-                self.file_path, ext=False)
+            self.temp_name = Tools.getFileNameFromPath(self.file_path,
+                                                       ext=False)
             self.is_iot = Tools.isIOTFile(self.file_path)
 
         # check if file is iot
         if(self.feedback and not self.is_iot):
-            self.message_queue = MessageQueue(self.console)
+            console = Console(self.window)
+            self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
-            self.message_queue.put(
-                'not_iot_{0}{1}', self.current_time, self.file_name)
+            self.message_queue.put('_deviot_{0}', version)
+            self.message_queue.put('not_iot_{0}{1}',
+                                   self.current_time,
+                                   self.file_name)
             return
 
         # unsaved changes
@@ -120,14 +125,17 @@ class PlatformioCLI(CommandsPy):
         self.current_path = Paths.getCWD(self.file_path)
         parent_path = Paths.getParentPath(self.file_path)
 
-        # Check native project
-        self.is_native = False
-        for file in os.listdir(parent_path):
-            if(file.endswith('platformio.ini')):
-                self.is_native = True
-                break
+        if("Temp" in self.file_path):
+            self.is_native = True
+        else:
+            # Check native project
+            self.is_native = False
+            for file in os.listdir(parent_path):
+                if(file.endswith('platformio.ini')):
+                    self.is_native = True
+                    break
 
-        self.is_native = Preferences().get('always_native', False)
+        # self.is_native = Preferences().get('always_native', False)
         Preferences().set('native', self.is_native)
 
         # set not native paths
@@ -137,7 +145,7 @@ class PlatformioCLI(CommandsPy):
                 self.project_dir = Paths.getTempPath(self.temp_name)
             type_env = 'env_selected'
         else:
-            self.project_dir = self.current_path
+            self.project_dir = parent_path
             type_env = 'native_env_selected'
 
         self.ini_path = os.path.join(self.project_dir, 'platformio.ini')
@@ -218,33 +226,34 @@ class PlatformioCLI(CommandsPy):
             self.openInThread(self.listPorts, join=True)
             self.once = True
 
-        # check if the port is available
-        if(next == 'upload' and not any(self.port in port for port in self.ports_list)):
-            self.openInThread(self.selectPort)
-            return
+        if(next == 'upload'):
+            # check if the port is available
+            if(not any(self.port in port for port in self.ports_list)):
+                self.openInThread(self.selectPort)
+                return
 
-        # check if auth is required to mdns
-        from . import Serial
-        saved_auth = Preferences().get('auth', False)
-        mdns = Serial.listMdnsServices()
+            # check if auth is required to mdns
+            from . import Serial
+            saved_auth = Preferences().get('auth', False)
+            mdns = Serial.listMdnsServices()
 
-        for service in mdns:
-            try:
-                service = json.loads(service)
-                server = service['server']
-                if(server[:-1].upper() == self.port):
-                    auth = service["properties"]["auth_upload"]
-                    self.auth = True if auth == 'yes' else False
-            except:
-                pass
+            for service in mdns:
+                try:
+                    service = json.loads(service)
+                    server = service['server']
+                    if(server[:-1].upper() == self.port):
+                        auth = service["properties"]["auth_upload"]
+                        self.auth = True if auth == 'yes' else False
+                except:
+                    pass
 
-        #
-        if(self.auth and not saved_auth or saved_auth == '0' and self.mDNSCheck()):
-            self.window.show_input_panel(_("pass_caption"), '',
-                                         self.saveAuthPassword,
-                                         None,
-                                         None)
-            return
+            # check if auth is required
+            if(self.auth and not saved_auth or saved_auth == '0' and self.mDNSCheck()):
+                self.window.show_input_panel(_("pass_caption"), '',
+                                             self.saveAuthPassword,
+                                             None,
+                                             None)
+                return
 
         try:
             if(self.console):
@@ -279,7 +288,9 @@ class PlatformioCLI(CommandsPy):
         if(not self.Commands.error_running):
             if(self.is_native):
                 self.window.run_command('close_file')
-                new_path = os.path.join(self.project_dir, 'src', self.file_name)
+                new_path = os.path.join(self.project_dir,
+                                        'src',
+                                        self.file_name)
                 move(self.file_path, new_path)
                 self.window.open_file(new_path)
                 Preferences().set('init_queue', '')
