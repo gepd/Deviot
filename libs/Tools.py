@@ -562,6 +562,17 @@ def checkBoards():
     return enabled
 
 
+def getJSONBoards(force=False):
+    from . import Paths
+    # check if json file is saved
+    data_file = Paths.getTemplateMenuPath('platformio_boards.json',
+                                          user_path=True)
+
+    if(not os.path.isfile(data_file) or force):
+        from .PlatformioCLI import PlatformioCLI
+        PlatformioCLI(feedback=False, console=False).getAPIBoards()
+
+
 def checkEnvironments():
     from .Preferences import Preferences
 

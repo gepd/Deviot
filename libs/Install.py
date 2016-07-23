@@ -84,6 +84,7 @@ class PioInstall(object):
 
         if(self.pio_current_ver):
             # Check main menu
+            Tools.getJSONBoards()
             updt_menu = self.Preferences.get('updt_menu', False)
             if(updt_menu):
                 from .PlatformioCLI import generateFiles
@@ -335,6 +336,9 @@ class PioInstall(object):
                     self.message_queue.put('error_pio_updates')
                     return
 
+                # overwrites platformio_boards.json
+                Tools.getJSONBoards(force=True)
+
                 # get version
                 if(sublime.platform() == 'osx'):
                     executable = os.path.join(self.env_bin_dir, 'python')
@@ -426,8 +430,7 @@ class PioInstall(object):
         self.Preferences.set('pio_version', pio_version)
 
         # creating files (menu, completions, syntax)
-        from .PlatformioCLI import PlatformioCLI, generateFiles
-        PlatformioCLI(feedback=False, console=False).getAPIBoards()
+        from .PlatformioCLI import generateFiles
         Tools.updateMenuLibs()
         generateFiles()
 

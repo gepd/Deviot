@@ -72,10 +72,7 @@ class Menu(object):
         Packages/User/Deviot/environment/environment.json
         '''
 
-        try:
-            from . import Tools
-        except:
-            from libs import Tools
+        from . import Tools
 
         selected_index = 0
         environments = [[_("select_env_list")]]
@@ -227,6 +224,9 @@ class Menu(object):
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
+        from .Tools import getJSONBoards
+
+        getJSONBoards()
         menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
         # Main Menu
