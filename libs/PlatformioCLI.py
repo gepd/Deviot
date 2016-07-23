@@ -222,16 +222,17 @@ class PlatformioCLI(CommandsPy):
             quickPanel(list[0], self.saveEnvironmetCallback, index=list[1])
             return
 
-        if(not self.once and next == 'ports' or next == 'upload'):
+        if(next == 'upload' or next == 'ports' and not self.once):
             self.openInThread(self.listPorts, join=True)
             self.once = True
 
-        if(next == 'upload'):
-            # check if the port is available
-            if(not any(self.port in port for port in self.ports_list)):
-                self.openInThread(self.selectPort)
-                return
+        # check if the port is available
+        if(next == 'upload' and not any(self.port in port for port in self.ports_list)):
+            self.openInThread(self.selectPort)
+            return
 
+        mcu = self.getMCU()
+        if(next == 'upload' and "esp" in mcu and not "COM" in self.port):
             # check if auth is required to mdns
             from . import Serial
             saved_auth = Preferences().get('auth', False)
@@ -360,7 +361,9 @@ class PlatformioCLI(CommandsPy):
 
         # check programmer
         programmer = Preferences().get("programmer", False)
-        if(not programmer):
+        if("teensy" in self.environment):
+            command = ['run', '-t', 'upload', '-e', '%s' % (self.environment)]
+        elif(not programmer):
             command = ['run', '-t', 'upload', '--upload-port %s -e %s' %
                        (self.port, self.environment)]
         else:
@@ -553,6 +556,23 @@ class PlatformioCLI(CommandsPy):
             os.remove(self.ini_path)  # For windows only
         os.rename(temp, self.ini_path)  # Rename the new file
 
+    def getMCU(self):
+        """MCU
+
+        Give the MCU for the current board selected
+        Returns:
+            [str] -- MCU type/name
+        """
+        # get data from user preference file
+        is_native = Preferences().get('native')
+        type_env = "env_selected" if not is_native else "native_env_selected"
+        environment = Preferences().get(type_env, False)
+        env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
+                                          user_path=True)
+        env_data = json.loads(env_data)
+        selected = env_data[environment]['build']['mcu']
+        return selected
+
     def authOTA(self):
         """OTA Authentication
 
@@ -613,8 +633,6 @@ class PlatformioCLI(CommandsPy):
         Returns:
             bool -- True if is possible to upload, False if isn't
         """
-        from .Menu import Menu
-
         is_native = Preferences().get('native')
         type_env = "env_selected" if not is_native else "native_env_selected"
         environment = Preferences().get(type_env, False)
@@ -623,12 +641,9 @@ class PlatformioCLI(CommandsPy):
         if(not environment or not port):
             return False
 
-        env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
-                                          user_path=True)
-        env_data = json.loads(env_data)
-        selected = env_data[environment]['build']['mcu']
+        mcu = self.getMCU()
 
-        if("COM" not in port and "esp" not in selected):
+        if("COM" not in port and "esp" not in mcu):
             sublime.message_dialog(_("ota_error_platform"))
             return False
         return True
