@@ -368,7 +368,8 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI(feedback=False).selectPort()
+        PlatformioCLI(feedback=False, console=False).openInThread(
+            'listSerialPorts')
 
 
 class AuthChangeCommand(sublime_plugin.WindowCommand):
@@ -388,7 +389,7 @@ class AuthChangeCommand(sublime_plugin.WindowCommand):
         Preferences().set('auth', password)
 
     def is_enabled(self):
-        return PlatformioCLI(console=False).mDNSCheck()
+        return PlatformioCLI(console=False).mDNSCheck(feedback=False)
 
 
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):

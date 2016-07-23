@@ -120,7 +120,7 @@ msgid "menu_auth_change"
 msgstr "Change OTA Password"
 
 msgid "menu_none_serial_mdns"
-msgstr "None serial port or mDNS service available"
+msgstr "None serial port or mDNS services available"
 
 msgid "menu_add_ip"
 msgstr "Add IP Manually"

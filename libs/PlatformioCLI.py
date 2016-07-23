@@ -50,11 +50,12 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = Tools.isIOTFile(self.file_path)
         self.current_time = time.strftime('%H:%M:%S')
         self.port = Preferences().get('id_port', False)
+        self.feedback = feedback
         self.project_dir = None
         self.environment = None
-        self.Commands = None
-        self.feedback = feedback
         self.console = console
+        self.init_path = None
+        self.Commands = None
         self.callback = None
         self.ports_list = []
         self.built = False
@@ -113,8 +114,7 @@ class PlatformioCLI(CommandsPy):
             self.message_queue = MessageQueue(console)
             self.message_queue.startPrint()
             self.message_queue.put('_deviot_{0}', version)
-            self.message_queue.put('not_iot_{0}{1}',
-                                   self.current_time,
+            self.message_queue.put('not_iot_{0}{1}', self.current_time,
                                    self.file_name)
             return
 
@@ -123,21 +123,17 @@ class PlatformioCLI(CommandsPy):
             self.view.run_command('save')
 
         self.current_path = Paths.getCWD(self.file_path)
-        parent_path = Paths.getParentPath(self.file_path)
+        self.parent_path = Paths.getParentPath(self.file_path)
 
-        if("Temp" in self.file_path):
+        if("Temp" in self.file_path or "tmp" in self.file_path):
             self.is_native = True
-            Preferences().set('native', True)
         else:
             # Check native project
             self.is_native = False
-            for file in os.listdir(parent_path):
+            for file in os.listdir(self.parent_path):
                 if(file.endswith('platformio.ini')):
                     self.is_native = True
                     break
-
-        # self.is_native = Preferences().get('always_native', False)
-        Preferences().set('native', self.is_native)
 
         # set not native paths
         if(not self.is_native):
@@ -145,9 +141,15 @@ class PlatformioCLI(CommandsPy):
             if(not self.project_dir):
                 self.project_dir = Paths.getTempPath(self.temp_name)
             type_env = 'env_selected'
+            # save in preferences
+            Preferences().set('ini_path', self.project_dir)
+            Preferences().set('native', False)
         else:
-            self.project_dir = parent_path
+            self.project_dir = self.parent_path
             type_env = 'native_env_selected'
+            # save in preferences
+            Preferences().set('ini_path', self.project_dir)
+            Preferences().set('native', True)
 
         self.ini_path = os.path.join(self.project_dir, 'platformio.ini')
         self.environment = Preferences().get(type_env, False)
@@ -162,19 +164,16 @@ class PlatformioCLI(CommandsPy):
         protected = Preferences().get('protected', False)
         if(not protected):
             return
-        # Empy menu if it's not a IoT file
+        # stop if it's not a IoT file
         if(not self.is_iot):
             return
 
-        # show non native data
-        if(not self.is_native):
-            Preferences().set('native', False)
-            Preferences().set('ini_path', self.project_dir)
-            return
-        else:
+        # force to create native projects
+        if(Preferences().get('always_native', False)):
+            self.is_native = True
             Preferences().set('native', True)
-            Preferences().set('ini_path', self.project_dir)
 
+        # only if platformio.ini exist
         if(not self.ini_path):
             return
 
@@ -256,9 +255,7 @@ class PlatformioCLI(CommandsPy):
             # check if auth is required
             if(self.auth and not saved_auth or saved_auth == '0' and self.mDNSCheck()):
                 self.window.show_input_panel(_("pass_caption"), '',
-                                             self.saveAuthPassword,
-                                             None,
-                                             None)
+                                             self.saveAuthPassword, None, None)
                 return
 
         try:
@@ -293,6 +290,7 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.Commands.error_running):
             if(self.is_native):
+                return
                 self.window.run_command('close_file')
                 new_path = os.path.join(self.project_dir,
                                         'src',
@@ -410,9 +408,17 @@ class PlatformioCLI(CommandsPy):
         Shows the quick panel with the list of all ports currently available
 
         """
+        """
         if(not self.feedback):
             self.openInThread(self.listPorts, join=True)
-        quickPanel(self.ports_list, self.savePortCallback)
+        """
+        from .JSONFile import JSONFile
+        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
+        serial = JSONFile(quick_path)
+
+        self.port_list = serial.data
+
+        quickPanel(self.port_list, self.savePortCallback)
 
     def saveBoardCallback(self, selected):
         """Chosen Board
@@ -629,7 +635,7 @@ class PlatformioCLI(CommandsPy):
             os.remove(self.ini_path)  # For windows only
         os.rename(temp, self.ini_path)  # Rename the new file
 
-    def mDNSCheck(self):
+    def mDNSCheck(self, feedback=True):
         """mDNS Available
 
         When a mDNS service is selected, allows to upload only espressif
@@ -648,8 +654,9 @@ class PlatformioCLI(CommandsPy):
 
         mcu = self.getMCU()
 
-        if("COM" not in port and "esp" not in mcu):
-            sublime.message_dialog(_("ota_error_platform"))
+        if(port and "COM" not in port and "esp" not in mcu):
+            if(feedback):
+                sublime.message_dialog(_("ota_error_platform"))
             return False
         return True
 
@@ -754,7 +761,19 @@ class PlatformioCLI(CommandsPy):
             if(len(lista) == 1):
                 lista = [_('menu_none_serial_mdns')]
 
-        return lista
+        # save ports
+        from .JSONFile import JSONFile
+        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
+        serial = JSONFile(quick_path)
+        serial.setData(lista)
+        serial.saveData()
+
+        self.ports_list = lista
+        if(not self.feedback):
+            self.selectPort()
+            return
+
+        self.selectPort(self.callback)
 
     def getAPIBoards(self):
         '''
