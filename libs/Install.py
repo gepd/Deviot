@@ -13,7 +13,6 @@ import datetime
 import threading
 import tempfile
 import sublime
-import subprocess
 from shutil import rmtree
 from re import match, sub
 from urllib.request import Request

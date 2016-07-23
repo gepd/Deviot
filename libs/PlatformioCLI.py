@@ -45,8 +45,6 @@ class PlatformioCLI(CommandsPy):
         self.file_path = self.view.file_name()
         self.sketch_size = self.view.size()
         self.view_name = self.view.name()
-        if(console):
-            self.console = Console(self.window)
         self.temp_name = Tools.getFileNameFromPath(self.file_path, ext=False)
         self.file_name = Tools.getFileNameFromPath(self.file_path)
         self.is_iot = Tools.isIOTFile(self.file_path)
@@ -54,11 +52,14 @@ class PlatformioCLI(CommandsPy):
         self.port = Preferences().get('id_port', False)
         self.project_dir = None
         self.environment = None
+        self.Commands = None
         self.feedback = feedback
+        self.console = console
         self.callback = None
         self.ports_list = []
         self.built = False
         self.once = False
+        self.auth = False
 
     def loadData(self):
         """File info
@@ -141,11 +142,6 @@ class PlatformioCLI(CommandsPy):
 
         self.ini_path = os.path.join(self.project_dir, 'platformio.ini')
         self.environment = Preferences().get(type_env, False)
-        try:
-            self.Commands = CommandsPy(
-                console=self.console, cwd=self.project_dir)
-        except:
-            pass
 
     def checkInitFile(self):
         """
@@ -228,13 +224,35 @@ class PlatformioCLI(CommandsPy):
             return
 
         # check if auth is required to mdns
-        auth = Preferences().get('auth', False)
-        if(not auth and self.mDNSCheck() and self.port[0] == '+'):
+        from . import Serial
+        saved_auth = Preferences().get('auth', False)
+        mdns = Serial.listMdnsServices()
+
+        for service in mdns:
+            try:
+                service = json.loads(service)
+                server = service['server']
+                if(server[:-1].upper() == self.port):
+                    auth = service["properties"]["auth_upload"]
+                    self.auth = True if auth == 'yes' else False
+            except:
+                pass
+
+        #
+        if(self.auth and not saved_auth or saved_auth == '0' and self.mDNSCheck()):
             self.window.show_input_panel(_("pass_caption"), '',
                                          self.saveAuthPassword,
                                          None,
                                          None)
             return
+
+        try:
+            if(self.console):
+                self.console = Console(self.window)
+            self.Commands = CommandsPy(console=self.console,
+                                       cwd=self.project_dir)
+        except:
+            pass
 
         if(self.callback):
             callback = getattr(self, self.callback)
@@ -320,9 +338,14 @@ class PlatformioCLI(CommandsPy):
         # initialize the sketch
         self.initProject()
 
+        # add ota auth
+        if(not self.auth):
+            Preferences().set('auth', '0')
+        self.authOTA()
+
         # remove auth sign in mdns service
-        if("-" in self.port or "+" in self.port):
-            self.port = self.port[1:].lower()
+        if("COM" not in self.port):
+            self.port = self.port.lower()
 
         # check programmer
         programmer = Preferences().get("programmer", False)
@@ -530,7 +553,7 @@ class PlatformioCLI(CommandsPy):
         """
         password = Preferences().get('auth')
         header_env = str.encode("[env:%s]" % self.environment)
-        auth_string = "upload_flags = --auth=%s" % password
+        auth_string = "upload_flags = --auth=%s\r\n" % password
         temp = os.path.join(self.project_dir, "temp")
         previous_auth = False
         writed = False
@@ -555,7 +578,7 @@ class PlatformioCLI(CommandsPy):
                     previous_auth = -1
                 # ENV Found
                 if(found and line == b'\r\n' or previous_auth == -1 or EOF):
-                    if(not writed and auth_string):
+                    if(not writed and password != '0'):
                         new_file.write(str.encode(auth_string))
                         writed = True
                 # Write in the new file
@@ -608,7 +631,7 @@ class PlatformioCLI(CommandsPy):
             password {[str]} -- password
         """
         Preferences().set('auth', password)
-        self.beforeProcess('upload')
+        self.openInThread('upload')
 
     def openInThread(self, func, join=False):
         """Thread
@@ -688,13 +711,7 @@ class PlatformioCLI(CommandsPy):
             for service in mdns:
                 try:
                     service = json.loads(service)
-                    try:
-                        if(service["properties"]["auth_upload"] == 'yes'):
-                            one = "+%s" % service["server"]
-                        else:
-                            one = "-%s" % service["server"]
-                    except:
-                        one = "%s" % service["server"]
+                    one = "%s" % service["server"]
                     two = service["properties"]["board"]
 
                     lista.append([
