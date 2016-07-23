@@ -200,13 +200,15 @@ class CommandsPy(object):
             output = multiwordReplace(output, dic)
             self.message_queue.put('\n' + output)
 
-        if('[info]:' in outputif):
+        if('[info]:' in outputif or '[error]:' in outputif):
             dic = {'Starting on': 'Iniciando en',
                    'Upload size': 'Tamaño de Carga',
                    'Sending invitation to': 'Enviando invitación a',
                    'Waiting for device': 'Esperando dispositivo',
                    'Waiting for result': 'Esperado resultado',
-                   'Result': 'Resultado'}
+                   'Result': 'Resultado',
+                   'Authentication': 'Autentificación',
+                   'Failed': 'Fallida'}
             if("Starting" in output):
                 output = '\n' + output
             output = multiwordReplace(output, dic)
