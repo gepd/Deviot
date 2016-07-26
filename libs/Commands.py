@@ -141,7 +141,7 @@ class CommandsPy(object):
         try:
             args = " ".join(commands[1:])
         except:
-            args = ''
+            args = ' -v'
 
         # full verbose mode
         if(self.verbose and 'run' in options and '-e' in args and 'upload' not in args):
@@ -175,7 +175,8 @@ class CommandsPy(object):
 
         # warning and errors
         if('warning:' in outputif and 'cygwin' not in outputif or
-                'in function' in outputif or 'in file' in outputif or
+                'in function' in outputif or
+                'reference' in outputif or 'in file' in outputif or
                 'error:' in outputif or '^' in outputif):
 
             if('^' in outputif):
