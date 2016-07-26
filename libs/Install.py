@@ -82,6 +82,17 @@ class PioInstall(object):
         '''
         self.headers = Tools.getHeaders()
 
+        # remove old menu files
+        user_path = Paths.getDeviotUserPath()
+
+        serial = os.path.join(user_path, 'serial')
+        if(os.path.isdir(serial)):
+            rmtree(serial)
+
+        environment = os.path.join(user_path, 'environment')
+        if(os.path.isdir(environment)):
+            rmtree(environment)
+
         if(self.pio_current_ver):
             # Check main menu
             Tools.getJSONBoards()
