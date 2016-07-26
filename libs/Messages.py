@@ -70,11 +70,13 @@ class Console:
     """
 
     def __init__(self, window=False):
+        from .Preferences import Preferences
         self.window = window
         if(not window):
             self.window = sublime.active_window()
         self.panel = self.window.create_output_panel('exec')
-        self.panel.set_syntax_file("Packages/Deviot/Arduino.tmLanguage")
+        if(not Preferences().get('verbose_output', False)):
+            self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
         self.panel.set_name('exec')
 
     def printScreen(self, text):
