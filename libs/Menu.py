@@ -251,6 +251,25 @@ class Menu(object):
 
         self.saveSublimeMenu(data=menu_data)
         self.createLanguageMenu()
+        self.translateContextMenu()
+
+    def translateContextMenu(self):
+        """
+        Translate the context menu getting the preset file from context.json
+        """
+        contex_file = self.getTemplateMenu(file_name='context.json')
+
+        for contex in contex_file:
+            try:
+                contex['caption'] = _(contex['caption'])
+            except:
+                pass
+
+        plugin = Paths.getPluginPath()
+        context_path = os.path.join(plugin, 'Context.sublime-menu')
+        preset_file = JSONFile(context_path)
+        preset_file.setData(contex_file)
+        preset_file.saveData()
 
     def createLanguageMenu(self):
         """
