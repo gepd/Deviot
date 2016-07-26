@@ -405,5 +405,41 @@ msgstr "\n[ENVIADO] {0}\n"
 
 
 # Auth OTA
+
 msgid "pass_caption"
 msgstr "Contraseña:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Iniciando en"
+
+msgid "upload_size"
+msgstr "Tamaño de Carga"
+
+msgid "sending_invitation_to"
+msgstr "Enviando invitación a"
+
+msgid "waiting_device"
+msgstr "Esperado dispositivo"
+
+msgid "waiting_result"
+msgstr "Esperando resultado"
+
+msgid "result"
+msgstr "Resultado"
+
+msgid "authentication"
+msgstr "Autentificación"
+
+msgid "failed"
+msgstr "Fallido"
+
+msgid "attempt"
+msgstr "intento"
+
+msgid "of"
+msgstr "de"
+
+msgid "not_in_sync"
+msgstr "No sincronizado"

@@ -402,5 +402,41 @@ msgid "sended_{0}"
 msgstr "\n[전송완료] {0}\n"
 
 # Auth OTA
+
 msgid "pass_caption"
 msgstr "Password:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Starting on"
+
+msgid "upload_size"
+msgstr "Upload size"
+
+msgid "sending_invitation"
+msgstr "Sending invitation to"
+
+msgid "waiting_device"
+msgstr "Waiting for device"
+
+msgid "waiting_result"
+msgstr "Waiting for result"
+
+msgid "result"
+msgstr "Result"
+
+msgid "authentication"
+msgstr "Authentication"
+
+msgid "failed"
+msgstr "Failed"
+
+msgid "attempt"
+msgstr "attempt"
+
+msgid "of"
+msgstr "of"
+
+msgid "not_in_sync"
+msgstr "not in sync"
