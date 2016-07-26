@@ -468,7 +468,7 @@ class PlatformioCLI(CommandsPy):
             self.port = id_port
             Preferences().set('id_port', id_port)
 
-            if(self.callback):
+            if(self.callback and self.feedback):
                 callback = getattr(self, self.callback)
                 self.openInThread(callback)
 
