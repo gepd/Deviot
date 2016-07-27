@@ -98,7 +98,7 @@ class Console:
 
             # Preferences to auto-scroll
             auto_scroll = True if not self.monitor else Preferences().get('auto_scroll', True)
-            if(view.size() > 50 and auto_scroll):
+            if(view.size() > 80 and auto_scroll):
                 self.panel.run_command(
                     "move_to", {"extend": False, "to": "eof"})
             self.panel.set_read_only(True)
