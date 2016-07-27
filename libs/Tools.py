@@ -237,7 +237,6 @@ def toggleSerialMonitor(window=None):
     from .Serial import SerialMonitor
     from . import Serial
     from .Preferences import Preferences
-    from .Messages import MonitorView
 
     monitor_module = Serial
     serial_monitor = None
@@ -254,8 +253,16 @@ def toggleSerialMonitor(window=None):
             serial_monitor = monitor_module.serial_monitor_dict.get(
                 serial_port, None)
         if not serial_monitor:
-            monitor_view = MonitorView(window, serial_port)
-            serial_monitor = SerialMonitor(serial_port, monitor_view)
+            output_view = Preferences().get('deviot_output', False)
+            if(not output_view):
+                from .Messages import MonitorView
+                monitor_view = MonitorView(window, serial_port)
+                header = False
+            else:
+                from .Messages import Console
+                monitor_view = Console(window, color=False, monitor=True)
+                header = True
+            serial_monitor = SerialMonitor(serial_port, monitor_view, header)
 
         if not serial_monitor.isRunning():
             serial_monitor.start()

@@ -528,12 +528,36 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         caption = _('send')
-        self.window.show_input_panel(caption, '', self.on_done, None, None)
+        self.window.show_input_panel(
+            caption, '', self.on_done, None, self.on_cancel)
 
     def on_done(self, text):
         if(text):
             Tools.sendSerialMessage(text)
             self.window.run_command('send_message_serial')
+
+    def on_cancel(self):
+        view = self.window.find_output_panel('exec')
+        region = sublime.Region(0, view.size())
+        src_text = view.substr(region)
+        if("Serial Monitor" in src_text):
+            self.window.run_command("show_panel", {"panel": "output.exec"})
+
+
+class DeviotOutputCommand(sublime_plugin.WindowCommand):
+    """
+    Select between use the deviot console as monitor serial or
+    a normal window.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        output = Preferences().get('deviot_output', False)
+        Preferences().set('deviot_output', not output)
+
+    def is_checked(self):
+        return Preferences().get('deviot_output', False)
 
 
 class AutoScrollMonitorCommand(sublime_plugin.WindowCommand):

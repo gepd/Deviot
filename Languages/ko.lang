@@ -134,6 +134,9 @@ msgstr "실행하기"
 msgid "menu_send"
 msgstr "전송하기"
 
+msgid "menu_deviot_output"
+msgstr "Output in Deviot Console"
+
 msgid "menu_auto_scroll"
 msgstr "자동-스크롤"
 

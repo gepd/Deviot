@@ -134,6 +134,9 @@ msgstr "Run"
 msgid "menu_send"
 msgstr "Send"
 
+msgid "menu_deviot_output"
+msgstr "Output in Deviot Console"
+
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
 

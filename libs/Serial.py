@@ -28,12 +28,15 @@ class SerialMonitor(object):
     Handle the messages sended and received from/to the serial monitor
     """
 
-    def __init__(self, serial_port, console=None):
+    def __init__(self, serial_port, console=None, header=False):
         super(SerialMonitor, self).__init__()
         self.port = serial_port
         self.serial = pyserial.Serial()
         self.serial.port = serial_port
         self.queue = Messages.MessageQueue(console)
+        self.queue.startPrint()
+        if(header):
+            self.queue.put("Serial Monitor - %s\n\n" % serial_port)
         self.Preferences = Preferences()
         self.is_alive = False
 
@@ -41,7 +44,6 @@ class SerialMonitor(object):
         return self.is_alive
 
     def start(self):
-        self.queue.startPrint()
         if not self.is_alive:
             baudrate = self.Preferences.get('baudrate', 9600)
             self.serial.baudrate = baudrate

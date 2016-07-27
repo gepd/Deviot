@@ -69,13 +69,18 @@ class Console:
     Creates the user console to show different messages.
     """
 
-    def __init__(self, window=False):
+    def __init__(self, window=False, color=True, monitor=False):
         from .Preferences import Preferences
         self.window = window
+        self.monitor = monitor
         if(not window):
             self.window = sublime.active_window()
         self.panel = self.window.create_output_panel('exec')
         if(not Preferences().get('verbose_output', False)):
+            if(not color):
+                self.panel.set_syntax_file(
+                    "Packages/Deviot/Preset/Plain text.tmLanguage")
+                return
             self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
         self.panel.set_name('exec')
 
@@ -84,10 +89,18 @@ class Console:
 
     def println(self, text):
         if(len(text)):
-            self.window.run_command("show_panel", {"panel": "output.exec"})
+            from .Preferences import Preferences
+            view = self.window.find_output_panel('exec')
+            if(view.size() < 1):
+                self.window.run_command("show_panel", {"panel": "output.exec"})
             self.panel.set_read_only(False)
             self.panel.run_command("append", {"characters": text})
-            self.panel.run_command("move_to", {"extend": False, "to": "eof"})
+
+            # Preferences to auto-scroll
+            auto_scroll = True if not self.monitor else Preferences().get('auto_scroll', True)
+            if(view.size() > 50 and auto_scroll):
+                self.panel.run_command(
+                    "move_to", {"extend": False, "to": "eof"})
             self.panel.set_read_only(True)
 
 
@@ -118,7 +131,6 @@ class MonitorView:
 
         # Preferences to auto-scroll
         auto_scroll = Preferences().get('auto_scroll', True)
-
         self.view.set_read_only(False)
         self.view.run_command("append", {"characters": text})
         if(auto_scroll):

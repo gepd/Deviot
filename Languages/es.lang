@@ -135,6 +135,9 @@ msgstr "Iniciar"
 msgid "menu_send"
 msgstr "Enviar"
 
+msgid "menu_deviot_output"
+msgstr "Salida en Consola Deviot"
+
 msgid "menu_auto_scroll"
 msgstr "Scroll Automático"
 

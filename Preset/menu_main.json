@@ -148,6 +148,11 @@
                         "command": "send_message_serial"
                     },
                     {
+                        "caption": "menu_deviot_output",
+                        "id": "deviot_output",
+                        "command": "deviot_output"
+                    },
+                    {
                         "caption": "menu_auto_scroll",
                         "id": "auto_scroll_monitor",
                         "command": "auto_scroll_monitor"
