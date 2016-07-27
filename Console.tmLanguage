@@ -4,10 +4,7 @@
 <dict>
     <key>fileTypes</key>
     <array>
-        <string>ino</string>
-        <string>pde</string>
-        <string>c</string>
-        <string>cpp</string>
+        <string>text</string>
     </array>
     <key>foldingStartMarker</key>
     <string>/\*\*|\{\s*$</string>

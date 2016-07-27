@@ -79,7 +79,7 @@ class Console:
         if(not Preferences().get('verbose_output', False)):
             if(not color):
                 self.panel.set_syntax_file(
-                    "Packages/Deviot/Preset/Plain text.tmLanguage")
+                    "Packages/Text/Plain text.tmLanguage")
                 return
             self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
         self.panel.set_name('exec')
