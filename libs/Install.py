@@ -146,10 +146,13 @@ class PioInstall(object):
             self.pio_version = 0
 
         if(out[0] == 0):
-            url = 'https://pypi.python.org/pypi/platformio/json'
-            req = Request(url, headers=self.headers)
-            response = urlopen(req)
-            list = json.loads(response.read().decode())
+            try:
+                url = 'https://pypi.python.org/pypi/platformio/json'
+                req = Request(url, headers=self.headers)
+                response = urlopen(req)
+                list = json.loads(response.read().decode())
+            except:
+                return
 
             self.pio_cloud_ver = list['info']['version']
 
