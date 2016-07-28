@@ -161,7 +161,6 @@ def isSerialAvailable(serial_port):
     return state
 
 
-@Tools.singleton
 def listSerialPorts():
     """
     List all the serial ports availables in the diffents O.S
