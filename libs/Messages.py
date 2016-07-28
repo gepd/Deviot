@@ -76,12 +76,12 @@ class Console:
         if(not window):
             self.window = sublime.active_window()
         self.panel = self.window.create_output_panel('exec')
-        if(not Preferences().get('verbose_output', False)):
-            if(not color):
-                self.panel.set_syntax_file(
-                    "Packages/Text/Plain text.tmLanguage")
-                return
-            self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
+
+        if(not color or Preferences().get('verbose_output', False) or monitor):
+            self.panel.set_syntax_file(
+                "Packages/Text/Plain text.tmLanguage")
+            return
+        self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
         self.panel.set_name('exec')
 
     def printScreen(self, text):
