@@ -211,6 +211,9 @@ class PlatformioCLI(CommandsPy):
         """
         self.loadData()
 
+        if(not self.is_iot):
+            return
+
         if(not self.callback):
             self.callback = next
         # if none board is selected show a quick panel list
