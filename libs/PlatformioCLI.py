@@ -253,9 +253,10 @@ class PlatformioCLI(CommandsPy):
                     pass
 
             # check if auth is required
-            if(self.auth and not saved_auth or saved_auth == '0' and self.mDNSCheck()):
-                self.window.show_input_panel(_("pass_caption"), '',
-                                             self.saveAuthPassword, None, None)
+            if(self.auth):
+                if(not saved_auth or saved_auth == '0' and self.mDNSCheck()):
+                    self.window.show_input_panel(_("pass_caption"), '',
+                                                 self.saveAuthPassword, None, None)
                 return
 
         try:
