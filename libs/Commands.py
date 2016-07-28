@@ -194,11 +194,16 @@ class CommandsPy(object):
                             "El programador no responde", output)
             self.message_queue.put('\n' + output)
 
-        if(' attempt ' in outputif):
+        if(' attempt ' in outputif or re.search(r"\[ \d+% \]", outputif) is not None):
             dic = {'attempt': _('attempt'),
                    'of': _('of'),
                    'not in sync': _('not_in_sync')}
             output = multiwordReplace(output, dic)
+            # remove dots ands white spaces in load
+            if(re.search(r"\[ \d+% \]", outputif) is not None):
+                output = output.replace('.', '').strip().rstrip()
+                if("100%" in output):
+                    output = output + '\n'
             self.message_queue.put('\n' + output)
 
         if('[info]:' in outputif or '[error]:' in outputif):
