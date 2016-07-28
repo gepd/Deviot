@@ -368,8 +368,9 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        PlatformioCLI(feedback=False, console=False).openInThread(
-            'listSerialPorts')
+        thread = threading.Thread(target=PlatformioCLI(
+            console=False).listSerialPorts)
+        thread.start()
 
 
 class AuthChangeCommand(sublime_plugin.WindowCommand):

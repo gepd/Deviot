@@ -49,7 +49,7 @@ class PlatformioCLI(CommandsPy):
         self.file_name = Tools.getFileNameFromPath(self.file_path)
         self.is_iot = Tools.isIOTFile(self.file_path)
         self.current_time = time.strftime('%H:%M:%S')
-        self.port = Preferences().get('id_port', False)
+        self.port = Preferences().get('id_port', '')
         self.feedback = feedback
         self.project_dir = None
         self.environment = None
@@ -57,7 +57,6 @@ class PlatformioCLI(CommandsPy):
         self.init_path = None
         self.Commands = None
         self.callback = None
-        self.ports_list = []
         self.built = False
         self.once = False
         self.auth = False
@@ -227,16 +226,17 @@ class PlatformioCLI(CommandsPy):
             return
 
         if(next == 'upload' or next == 'ports' and not self.once):
-            self.openInThread(self.listPorts, join=True)
+            self.feedback = False
+            self.openInThread(self.listSerialPorts, join=True)
             self.once = True
 
         # check if the port is available
-        if(next == 'upload' and not any(self.port in port for port in self.ports_list)):
+        if(next == 'upload' and not any(x in self.port for x in self.ports_list[0]) or self.port == ''):
             self.openInThread(self.selectPort)
             return
 
         mcu = self.getMCU()
-        if(next == 'upload' and "esp" in mcu and not "COM" in self.port):
+        if(next == 'upload' and "esp" in mcu and "COM" not in self.port):
             # check if auth is required to mdns
             from . import Serial
             saved_auth = Preferences().get('auth', False)
@@ -395,30 +395,18 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-t', 'clean', '-e', '%s' % (self.environment)]
         self.Commands.runCommand(command, "clean_built_files__{0}")
 
-    def listPorts(self):
-        """Ports
-
-        Get the list with all ports currently available
-        """
-        self.ports_list = self.listSerialPorts()
-
     def selectPort(self):
         """Port
 
         Shows the quick panel with the list of all ports currently available
 
         """
-        """
-        if(not self.feedback):
-            self.openInThread(self.listPorts, join=True)
-        """
+
         from .JSONFile import JSONFile
         quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
         serial = JSONFile(quick_path)
 
-        self.port_list = serial.data
-
-        quickPanel(self.port_list, self.savePortCallback)
+        quickPanel(serial.data, self.savePortCallback)
 
     def saveBoardCallback(self, selected):
         """Chosen Board
@@ -461,16 +449,22 @@ class PlatformioCLI(CommandsPy):
             selected {[int]} -- index with the choosen option
         """
         if(selected != -1):
+            from .JSONFile import JSONFile
+            quick_path = Paths.getTemplateMenuPath(
+                'serial.json', user_path=True)
+            serial = JSONFile(quick_path)
+            self.ports_list = serial.data
             choose = self.ports_list
             id_port = choose[selected][0]
             if("COM" not in id_port):
                 id_port = id_port
             self.port = id_port
             Preferences().set('id_port', id_port)
+            Tools.userPreferencesStatus()
 
             if(self.callback and self.feedback):
                 callback = getattr(self, self.callback)
-                self.openInThread(callback)
+                self.beforeProcess(callback)
 
     def overrideSrc(self):
         """
@@ -769,11 +763,8 @@ class PlatformioCLI(CommandsPy):
         serial.saveData()
 
         self.ports_list = lista
-        if(not self.feedback):
+        if(self.feedback):
             self.selectPort()
-            return
-
-        self.selectPort(self.callback)
 
     def getAPIBoards(self):
         '''
