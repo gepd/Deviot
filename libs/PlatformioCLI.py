@@ -524,6 +524,10 @@ class PlatformioCLI(CommandsPy):
         else:
             programmer_string = False
 
+        with open(self.ini_path, 'r') as file:
+            if(programmer_string.split('\n')[0] in file.read()):
+                return
+
         # Vars and Flags to process the file
         header_env = str.encode("[env:%s]" % self.environment)
         temp = os.path.join(self.project_dir, "temp")
