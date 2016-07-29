@@ -525,7 +525,7 @@ class PlatformioCLI(CommandsPy):
             programmer_string = False
 
         with open(self.ini_path, 'r') as file:
-            if(programmer_string.split('\n')[0] in file.read()):
+            if(programmer_string and programmer_string.split('\n')[0] in file.read()):
                 return
 
         # Vars and Flags to process the file
