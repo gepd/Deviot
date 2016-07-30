@@ -88,10 +88,12 @@ class PioInstall(object):
         serial = os.path.join(user_path, 'serial')
         if(os.path.isdir(serial)):
             rmtree(serial)
+            self.Preferences.set('updt_menu', True)
 
         environment = os.path.join(user_path, 'environment')
         if(os.path.isdir(environment)):
             rmtree(environment)
+            self.Preferences.set('updt_menu', True)
 
         if(self.pio_current_ver):
             # Check main menu
