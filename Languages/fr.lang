@@ -1,0 +1,352 @@
+# LANGUAGE: Français (Français)
+# Spanish translations for Deviot Plugin.
+# Copyright (C) 2015-2016 GEPD
+# This file is distributed under the same license as the Deviot Plugin.
+#
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot requiert Python 2.7 !"
+
+msgid "button_download_python"
+msgstr "Telecharger Python"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Setup\n"
+
+msgid "pio_is_installed{0}"	
+msgstr "{0} PlatformIO est installé, profitez de  Deviot !"
+
+msgid "pio_isn_installed{0}"
+msgstr "{0} PlatformIO n’est pas installé\Installation en cours, veuillez patienter.\n"
+
+msgid "downloading_files{0}"
+msgstr "{0} Téléchargement des fichiers...\n"
+
+msgid "error_downloading_files{0}"
+msgstr "{0} Erreur au téléchargement des fichiers...\n"
+
+msgid "error_saving_files{0}"
+msgstr "{0} Erreur lors de la sauvegarde des fichiers...\n"
+
+msgid "extracting_files{0}"
+msgstr "{0} Extraction des fichiers...\n"
+
+msgid "installing_pio{0}"
+msgstr "{0} Installation de PlatformIO...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} Installation terminée, profitez de Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Recherche des mise à jour de  PlatformIO...\n\n"
+
+# Menu
+
+msgid "menu_new_sketch"
+msgstr "Nouveau Sketch"
+
+msgid "menu_select_boards"
+msgstr "Sélection de la carte(s)"
+
+msgid "menu_select_env"
+msgstr "Sélection Environement"
+
+msgid "menu_search_lib"
+msgstr "Recherche librairie"
+
+msgid "menu_remove_lib"
+msgstr "Effacer librairie"
+
+msgid "menu_import_library"
+msgstr "Importer Librairie"
+
+msgid "menu_library_examples"
+msgstr "Exemples"
+
+msgid "menu_option_lib"
+msgstr "Option de Librairie "
+
+msgid "menu_open_lib_folder"
+msgstr "Ouvrir dossier des Librairies"
+
+msgid "menu_change_user_lib_path"
+msgstr "Changer destination des librairies"
+
+msgid "menu_open_ini_file"
+msgstr "Ouvrir Config de compilation"
+
+msgid "menu_build"
+msgstr "Compilation"
+
+msgid "menu_upload"
+msgstr "Chargement"
+
+msgid "menu_clean"
+msgstr "Nettoyage"
+
+msgid "menu_hide_console"
+msgstr "Cacher la console Deviot"
+
+msgid "menu_serial_ports"
+msgstr "Port(s) serie(s)"
+
+msgid "menu_add_ip"
+msgstr " Ajouter IP Manuelle"
+
+msgid "menu_not_used_port"
+msgstr "Not Used"
+
+msgid "menu_monitor_serial"
+msgstr "Moniteur Serie"
+
+msgid "menu_run"
+msgstr "Commencer"
+
+msgid "menu_send"
+msgstr "Envoyer"
+
+msgid "menu_auto_scroll"
+msgstr "Défilement automatique"
+
+msgid "menu_baudrate"
+msgstr "Baudrate"
+
+msgid "menu_line_ending"
+msgstr "Fin de ligne"
+
+msgid "menu_none"
+msgstr "Aucun"
+
+msgid "menu_new_line"
+msgstr "Nouvelle ligne"
+
+msgid "menu_cr"
+msgstr "Retour chariot"
+
+msgid "menu_nl_cr"
+msgstr " NL & Rc"
+
+msgid "menu_display_mode"
+msgstr "Mode d’affichage"
+
+msgid "menu_text"
+msgstr "Texte"
+
+msgid "menu_option"
+msgstr "Options"
+
+msgid "menu_upgrade_pio"
+msgstr "MAJ PlatformIO"
+
+msgid "menu_update_board_list"
+msgstr "MAJ Liste de Cartes"
+
+msgid "menu_show_verbose"
+msgstr "Affichage complet lors de la compilation"
+
+msgid "menu_remove_user_files"
+msgstr "Effacer les fichiers de personnalisations"
+
+msgid "menu_keep_temp_files"
+msgstr "Garder les fichiers temporaires"
+
+msgid "menu_open_build_folder"
+msgstr "Ouvrir le dossier de compilation"
+
+msgid "menu_change_build_folder"
+msgstr "Changer le dossier de compilation"
+
+msgid "menu_use_cpp_new"
+msgstr "Use CPP File on New File"
+
+msgid "menu_change_default_path"
+msgstr "Changer le dossier par défaut"
+
+msgid "menu_remove_default_path"
+msgstr "Effcer le dossier par défaut"
+
+msgid "menu_languages"
+msgstr "Langue"
+
+msgid "menu_donate_deviot"
+msgstr "❤ Soutenir"
+
+msgid "menu_about"
+msgstr "A propos"
+
+msgid "menu_about_deviot"
+msgstr "de  Deviot"
+
+msgid "menu_about_pio"
+msgstr "de PlatformIO"
+
+
+# Mensajes y errores
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "checking_pio_updates"
+msgstr "Verifications MAJ PlatformIO...\n"
+
+msgid "error_pio_updates"
+msgstr "Erreur lors de la MAJ PlatformIO\n"
+
+msgid "pio_up_date{0}"
+msgstr "PlatformIO est à jour ({0})\n"
+
+msgid "pio_new_updated_installed{0}"
+msgstr "Une nouvelle version est disponible, et installée ({0})\n"
+
+msgid "download_board_list"
+msgstr "Téléchargement de la liste des cartes\n"
+
+msgid "list_updated"
+msgstr "Liste à jour !\n"
+
+msgid "caption_new_sketch"
+msgstr "Nom pour le nouveau Sketch:"
+
+msgid "updating_board_list"
+msgstr "MAJ liste des Cartes"
+
+msgid "not_empty_sketch_{0}"
+msgstr "{0} Impossible de charger un sketch vide\n"
+
+msgid "invalid_file_{0}"
+msgstr "{0} Fichier invalide pour le chargement\n"
+
+msgid "not_iot_{0}{1}"
+msgstr "{0} {1} is not a IoT File\n"
+
+msgid "none_board_sel_{0}"
+msgstr "{0} Aucune carte sélectionné\n"
+
+msgid "init_project_{0}"
+msgstr "{0} Initialisation du projet | "
+
+msgid "built_project_{0}"
+msgstr "{0} Construction du projet | En cours...\n"
+
+msgid "none_port_select_{0}"
+msgstr "{0} Aucun port série sélectionné\n"
+
+msgid "none_env_select_{0}"
+msgstr "{0} Aucun environnement sélectionné\n"
+
+msgid "error_installing_env_{0}"
+msgstr "{0} Erreur d’installation virtualenv\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} Erreur Création virtualenv\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} Erreur Installation PlatformIO\n"
+
+msgid "uploading_firmware_{0}"
+msgstr "{0} Chargement du firmware | "
+
+msgid "clean_built_files__{0}"
+msgstr "{0} Nettoyage des fichiers  | "
+
+msgid "success_took_{1}"
+msgstr "REUSSI | Temps : {1}s\n"
+
+msgid "success_took_{0}{1}"
+msgstr "{0} REUSSI | Temps : {1}s\n"
+
+msgid "success_warnings_took__{0}{1}"
+msgstr "{0} REUSSI avec des  ERREUR(s) | Temps : {1}s\n"
+
+msgid "error_took_{0}{1}"
+msgstr "{0} ERREUR | Temps : {1}s\n"
+
+msgid "continue"
+msgstr "Continuer"
+
+msgid "confirm_del_pref"
+msgstr "Apres ceci, vous devrais redémarrer Sublime Text. Voulez-vous continuer?"
+
+msgid "success"
+msgstr "Succès"
+
+msgid "error"
+msgstr "Erreur"
+
+msgid "success_warnings"
+msgstr "Succès avec erreur(s)"
+
+msgid "processing"
+msgstr "En cours"
+
+msgid "done"
+msgstr "Exécuté"
+
+
+# Libraries
+
+
+msgid "search_query"
+msgstr "Search Query:"
+
+msgid "add_ip_caption"
+msgstr "Write the IP Address:"
+
+msgid "select_cur_dir_{0}"
+msgstr "Select Current Dir ({0})"
+
+msgid "installing_lib_{0}{1}"
+msgstr "{0} Installing Library {1} | "
+
+msgid "uninstalling_lib_{0}{1}"
+msgstr "{0} Uninstalling Library {1} | "
+
+msgid "download_lib"
+msgstr "Downloading...\n"
+
+msgid "searching"
+msgstr "Searching"
+
+msgid "installing"
+msgstr "Installing"
+
+msgid "install_package_{0}"
+msgstr "\nInstalling {0} package: "
+
+msgid "already_installed{0}"
+msgstr "{0} already installed\n"
+
+msgid "downloading_package{0}"
+msgstr "Downloading package {0}\n\nIt may take a while, please be patient.\n"
+
+msgid "unpacking"
+msgstr "Unpacking...\n"
+
+msgid "download_dependece"
+msgstr "Downloading dependence\n"
+
+msgid "preparing_list"
+msgstr "Preparing List"
+
+msgid "removing"
+msgstr "Removing"
+
+msgid "none_lib_found"
+msgstr "None Library Found"
+
+msgid "none_lib_installed"
+msgstr "None library installed"
+
+
+# Serial Monitor
+
+msgid "serial_port_used_{0}"
+msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+
+msgid "send"
+msgstr "Send:"
+
+msgid "sended_{0}"
+msgstr "\n[SENDED] {0}\n"
