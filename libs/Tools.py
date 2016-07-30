@@ -128,7 +128,7 @@ def userPreferencesStatus():
     # check for port
     port = Preferences().get('id_port', False)
     if port:
-        setStatus(port, key='_deviot_port')
+        setStatus(port.upper(), key='_deviot_port')
 
 
 def singleton(cls):

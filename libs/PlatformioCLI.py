@@ -249,7 +249,7 @@ class PlatformioCLI(CommandsPy):
                 try:
                     service = json.loads(service)
                     server = service['server']
-                    if(server[:-1].upper() == self.port):
+                    if(server[:-1] == self.port):
                         auth = service["properties"]["auth_upload"]
                         self.auth = True if auth == 'yes' else False
                 except:
@@ -364,10 +364,6 @@ class PlatformioCLI(CommandsPy):
         if(not self.auth):
             Preferences().set('auth', '0')
         self.authOTA()
-
-        # remove auth sign in mdns service
-        if("COM" not in self.port):
-            self.port = self.port.lower()
 
         # check programmer
         programmer = Preferences().get("programmer", False)
@@ -754,13 +750,10 @@ class PlatformioCLI(CommandsPy):
             for service in mdns:
                 try:
                     service = json.loads(service)
-                    one = "%s" % service["server"]
+                    one = service["server"][:-1]
                     two = service["properties"]["board"]
 
-                    lista.append([
-                        one[:-1].upper(),
-                        two.lower()
-                    ])
+                    lista.append([one, two])
                 except:
                     pass
         if(len(lista) == 2):
