@@ -231,8 +231,7 @@ class PlatformioCLI(CommandsPy):
             return
 
         if(next == 'upload' and not self.ports_list):
-            self.openInThread(self.listSerialPorts)
-            return
+            self.openInThread(self.listSerialPorts, join=True)
 
         # check if the port is available
         if(next == 'upload' and not any(x in self.port for x in self.ports_list[0]) or self.port == ''):
@@ -774,7 +773,8 @@ class PlatformioCLI(CommandsPy):
         serial.saveData()
 
         self.ports_list = lista
-        self.selectPort()
+        if(self.callback is not 'upload'):
+            self.selectPort()
 
     def getAPIBoards(self):
         '''
