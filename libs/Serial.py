@@ -236,4 +236,10 @@ def listMdnsServices():
     out = Tools.runCommand(cmd)
     out = out[1].replace("'", "\"")
     out = out.split('\n')
+
+    if('ImportError: No module named zeroconf' in out):
+        from .Install import PioInstall
+        PioInstall().installDependencies('zeroconf')
+        out = listMdnsServices()
+
     return out

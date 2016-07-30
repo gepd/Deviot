@@ -452,7 +452,9 @@ class PlatformioCLI(CommandsPy):
         Arguments:
             selected {[int]} -- index with the choosen option
         """
-        if(selected != -1):
+        if(selected > 0):
+            if(selected == 1):
+                self.window.run_command('add_serial_ip')
             from .JSONFile import JSONFile
             quick_path = Paths.getTemplateMenuPath(
                 'serial.json', user_path=True)
@@ -728,16 +730,14 @@ class PlatformioCLI(CommandsPy):
         return (True, view)
 
     def listSerialPorts(self):
-        """List
-
+        """
         Get the list of port currently available from PlatformIO CLI
-
         Returns:
             [list] -- all ports available
         """
         from . import Serial
 
-        lista = [[_('select_port_list'), ""]]
+        lista = [[_('select_port_list'), ""], [_('menu_add_ip'), ""]]
 
         # serial ports
         serial = Serial.listSerialPorts()
@@ -760,8 +760,19 @@ class PlatformioCLI(CommandsPy):
                     ])
                 except:
                     pass
-            if(len(lista) == 1):
-                lista = [_('menu_none_serial_mdns')]
+        if(len(lista) == 2):
+            lista = [[_('menu_none_serial_mdns'), ""], [_('menu_add_ip'), ""]]
+
+        # save ports
+        from .JSONFile import JSONFile
+        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
+        serial = JSONFile(quick_path)
+        serial.setData(lista)
+        serial.saveData()
+
+        self.ports_list = lista
+        if(self.feedback):
+            self.selectPort()
 
         # save ports
         from .JSONFile import JSONFile

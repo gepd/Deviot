@@ -371,6 +371,7 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
         thread = threading.Thread(target=PlatformioCLI(
             console=False).listSerialPorts)
         thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
 
 
 class AuthChangeCommand(sublime_plugin.WindowCommand):
@@ -487,7 +488,7 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
     def on_done(self, result):
         if(result != -1):
             result = (result if result != 0 else '')
-            Preferences().set('ip_port', result)
+            Preferences().set('id_port', result)
             Menu().createSerialPortsMenu()
 
 

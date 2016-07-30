@@ -294,15 +294,8 @@ class PioInstall(object):
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
         out = Tools.runCommand(cmd)
 
-        # Install zeroconf
-        if(sublime.platform() == 'osx'):
-            executable = os.path.join(self.env_bin_dir, 'python')
-            cmd = ['"%s"' % (executable), '-m', 'pip',
-                   'install', '-U', 'zeroconf']
-        else:
-            executable = os.path.join(self.env_bin_dir, 'pip')
-            cmd = ['"%s"' % (executable), 'install', '-U', 'zeroconf']
-        out = Tools.runCommand(cmd)
+        # Install dependecies
+        self.installDependencies()
 
         # Error
         if(out[0] > 0):
@@ -534,3 +527,16 @@ class PioInstall(object):
         if(join):
             thread.join()
         ThreadProgress(thread, _('processing'), _('done'))
+
+    def installDependencies(self, dependency='all'):
+
+        if(dependency == 'zeroconf' or dependency == 'all'):
+            # Install zeroconf
+            if(sublime.platform() == 'osx'):
+                executable = os.path.join(self.env_bin_dir, 'python')
+                cmd = ['"%s"' % (executable), '-m', 'pip',
+                       'install', '-U', 'zeroconf']
+            else:
+                executable = os.path.join(self.env_bin_dir, 'pip')
+                cmd = ['"%s"' % (executable), 'install', '-U', 'zeroconf']
+            Tools.runCommand(cmd)

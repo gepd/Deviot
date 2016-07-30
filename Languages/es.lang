@@ -121,7 +121,7 @@ msgid "menu_auth_change"
 msgstr "Cambiar Contraseña OTA"
 
 msgid "menu_none_serial_mdns"
-msgstr Ningún puerto serial o servicio mDNS disponible"
+msgstr "Ningún puerto serial o servicio mDNS disponible"
 
 msgid "menu_add_ip"
 msgstr "Agregar IP Manualmente"
