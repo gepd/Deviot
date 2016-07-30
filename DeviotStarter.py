@@ -369,7 +369,7 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         thread = threading.Thread(target=PlatformioCLI(
-            console=False).listSerialPorts)
+            console=False, feedback=False).listSerialPorts)
         thread.start()
         ThreadProgress(thread, _('processing'), _('done'))
 

@@ -50,6 +50,7 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = Tools.isIOTFile(self.file_path)
         self.current_time = time.strftime('%H:%M:%S')
         self.port = Preferences().get('id_port', '')
+        self.ports_list = []
         self.feedback = feedback
         self.project_dir = None
         self.environment = None
@@ -58,7 +59,6 @@ class PlatformioCLI(CommandsPy):
         self.Commands = None
         self.callback = None
         self.built = False
-        self.once = False
         self.auth = False
 
     def loadData(self):
@@ -216,6 +216,7 @@ class PlatformioCLI(CommandsPy):
 
         if(not self.callback):
             self.callback = next
+
         # if none board is selected show a quick panel list
         if(not Tools.checkBoards()):
             choose = Menu().createBoardsMenu()
@@ -228,10 +229,9 @@ class PlatformioCLI(CommandsPy):
             quickPanel(list[0], self.saveEnvironmetCallback, index=list[1])
             return
 
-        if(next == 'upload' or next == 'ports' and not self.once):
-            self.feedback = False
-            self.openInThread(self.listSerialPorts, join=True)
-            self.once = True
+        if(next == 'upload' and not self.ports_list):
+            self.openInThread(self.listSerialPorts)
+            return
 
         # check if the port is available
         if(next == 'upload' and not any(x in self.port for x in self.ports_list[0]) or self.port == ''):
@@ -269,6 +269,9 @@ class PlatformioCLI(CommandsPy):
                                        cwd=self.project_dir)
         except:
             pass
+
+        print("=====")
+        self.callback
 
         if(self.callback):
             callback = getattr(self, self.callback)
@@ -468,7 +471,7 @@ class PlatformioCLI(CommandsPy):
             Preferences().set('id_port', id_port)
             Tools.userPreferencesStatus()
 
-            if(self.callback and self.feedback):
+            if(self.callback == 'upload'):
                 callback = getattr(self, self.callback)
                 self.beforeProcess(callback)
 
@@ -771,19 +774,7 @@ class PlatformioCLI(CommandsPy):
         serial.saveData()
 
         self.ports_list = lista
-        if(self.feedback):
-            self.selectPort()
-
-        # save ports
-        from .JSONFile import JSONFile
-        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
-        serial = JSONFile(quick_path)
-        serial.setData(lista)
-        serial.saveData()
-
-        self.ports_list = lista
-        if(self.feedback):
-            self.selectPort()
+        self.selectPort()
 
     def getAPIBoards(self):
         '''
