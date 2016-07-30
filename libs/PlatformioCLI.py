@@ -50,7 +50,6 @@ class PlatformioCLI(CommandsPy):
         self.is_iot = Tools.isIOTFile(self.file_path)
         self.current_time = time.strftime('%H:%M:%S')
         self.port = Preferences().get('id_port', '')
-        self.ports_list = []
         self.feedback = feedback
         self.project_dir = None
         self.environment = None
@@ -58,6 +57,8 @@ class PlatformioCLI(CommandsPy):
         self.init_path = None
         self.Commands = None
         self.callback = None
+        self.ports_list = []
+        self.sel_index = 0
         self.built = False
         self.auth = False
 
@@ -270,9 +271,6 @@ class PlatformioCLI(CommandsPy):
         except:
             pass
 
-        print("=====")
-        self.callback
-
         if(self.callback):
             callback = getattr(self, self.callback)
 
@@ -409,7 +407,7 @@ class PlatformioCLI(CommandsPy):
         quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
         serial = JSONFile(quick_path)
 
-        quickPanel(serial.data, self.savePortCallback)
+        quickPanel(serial.data, self.savePortCallback, index=self.sel_index)
 
     def saveBoardCallback(self, selected):
         """Chosen Board
@@ -738,20 +736,29 @@ class PlatformioCLI(CommandsPy):
 
         lista = [[_('select_port_list'), ""], [_('menu_add_ip'), ""]]
 
+        index = 1
+        current_port = Preferences().get('id_port', False)
+
         # serial ports
         serial = Serial.listSerialPorts()
         if(serial):
             for port in serial:
+                index += 1
                 lista.append([port, ""])
+                if(current_port and current_port == port):
+                    self.sel_index = index
 
         # mdns services
         mdns = Serial.listMdnsServices()
         if(mdns):
             for service in mdns:
+                index += 1
                 try:
                     service = json.loads(service)
                     one = service["server"][:-1]
                     two = service["properties"]["board"]
+                    if(current_port and current_port == one):
+                        self.sel_index = index
 
                     lista.append([one, two])
                 except:
