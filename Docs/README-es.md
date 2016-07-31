@@ -66,7 +66,7 @@ Recuerda seleccionar `Add python.exe to Path` cuando instales python en Windows.
 ## - Idiomas
 Deviot está disponible en **Inglés**, **Español**, **Francés**, **Koreano**(Incompleto), **Chino**(Incompleto)
 
- Si deseas ayudar y traducir el plugin a tu idioma, usa [esta pantilla](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt) y cualquier otro archivo de idioma como referencia. 
+ Si deseas ayudar y traducir el plugin a tu idioma, usa [esta pantilla](https://github.com/gepd/Deviot/blob/master/Languages/es.lang) y cualquier otro archivo de idioma como referencia. ([Idiomas disponibles](https://github.com/gepd/Deviot/tree/master/Languages))
 
 Debes dejar la cadena `msgid` como está, y pegar tu palabra/oración traducido/a en `msgstr`. Cuando finalices, envía el nuevo archivo con un **pull request**. El archivo debe ser nombrado en el formato [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (dos letras) y con la extensión `.lang`
 

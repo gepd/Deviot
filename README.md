@@ -68,7 +68,7 @@ Remember to choose `Add python.exe to Path` when you install it in Windows.
 ## - Languages 
 Deviot is available in **English**, **Spanish**, **French**, **Korean**(Incomplete), **Chinese**(Incomplete)
 
-If you want to contribute and translate it to your language use [this template](https://github.com/gepd/Deviot/blob/master/Languages/preset.txt) or any other language file as reference. 
+If you want to contribute and translate it to your language use [this template](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) or any other language file as reference. ([Languages availables](https://github.com/gepd/Deviot/tree/master/Languages))
 
 You should let the `msgid` as is, and paste your translated string in `msgstr`. When you finish it **pull a request** with the new file. The file should be called in the [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format (two letters) and with the extension `.lang`
 
