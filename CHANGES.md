@@ -1,4 +1,32 @@
 # Deviot Release Notes
+## Version 1.2.0 |
+* Support for mDNS autodiscover and upload with mDNS port (OTA)
+* New Programmer menu option
+* New colors in Deviot Console
+* New checks for pio updates automatically and warns to the user
+* New `Select Board`, `Select Environment`, `Serial Port` menu options are shown with quick panel instead of menu list
+* New Asks for board, environment or serial port instead of show an error
+* New context menu options (shortcuts)
+* New Deviot parle Français
+* New Deviot 說中國
+* New menu option to install platformio 'develop' branch (Deviot Menu > Options > Use Develop...)
+* New menu option to use always PlatformIO structure (Deviot Menu > Options > Use PlatformIO Structure)
+* New menu option to re-open deviot console (Deviot Menu > Show Deviot Console) (issue https://github.com/gepd/Deviot/issues/44)
+* New menu option to display the Serial Monitor in console (Deviot Menu > Monitor Serial > Output in Deviot Console) (Issue https://github.com/gepd/Deviot/issues/32)
+* New Ask to restart Sublime Text after change the language
+* New Always scrolls to the last line text in Deviot console
+* Set the same environment as the last chosen board
+* Shows s a warn when the libraries and examples menu are empty
+* Shows attempts of error in deviot console when programmer not respond
+* Improved status bar information
+* Improved plugin time load 
+* Fixed minor bugs updating the status bar information after upgrade the plugin or pio
+* Fixed auto scroll feature (issue https://github.com/gepd/Deviot/issues/43)
+* Fixed issue not showing the right error in not verbose mode (issue https://github.com/gepd/Deviot/issues/39)
+* Removed Toolbar
+* Removed Support for ST2
+* Others minor bugs fixed
+
 ## Version 1.1.10 | 28 Jun
 * Fix bug saving the platformio version after update it
 
