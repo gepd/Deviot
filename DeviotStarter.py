@@ -155,7 +155,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         self.MENU_LIST = Menu().getEnvironments()
-        quickPanel(self.MENU_LIST[0], self.on_done, index=list[1])
+        quickPanel(self.MENU_LIST[0], self.on_done, index=self.MENU_LIST[1])
 
     def on_done(self, selected):
         if(selected != -1):
