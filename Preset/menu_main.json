@@ -31,7 +31,8 @@
                 "command": "remove_library"
             },{
                 "caption": "menu_import_library",
-                "id": "import_library"
+                "id": "import_library",
+                "command": "import_library"
             },{
                 "caption": "menu_library_examples",
                 "id": "library_examples"

@@ -45,8 +45,7 @@ class Menu(object):
         is_native = Preferences().get('native', False)
         type = 'board_id' if not is_native else 'found_ini'
         list_env = Preferences().get(type, '')
-        data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
 
         if(not data):
             return
@@ -59,9 +58,8 @@ class Menu(object):
             for env in list_env:
                 if(datakey == env):
                     caption = "- " + datavalue['name']
-            vendor = datavalue['vendor'] + " | " + datakey
+            vendor = "%s | %s" % (datavalue['vendor'], datakey)
             boards.append([caption, vendor])
-
         return boards
 
     def getEnvironments(self):
@@ -83,15 +81,14 @@ class Menu(object):
         list_env = Preferences().get(type, '')
 
         env_selected = Tools.getEnvironment()
-        env_data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        env_data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
         env_data = json.loads(env_data)
 
         for env in env_data:
             for selected in list_env:
                 if(selected == env):
                     caption = env_data[env]['name']
-                    vendor = env_data[env]['vendor'] + " | " + env
+                    vendor = "%s | %s" % (env_data[env]['vendor'], env)
                     environments.append([caption, vendor])
 
                     if(selected == env_selected):
@@ -105,20 +102,24 @@ class Menu(object):
         Creates the import library menu
         this method search in the user and core libraries
         """
-        library_paths = Paths.getLibraryFolders()
-        added_lib = []
-        children = []
+        
+        is_native = Preferences().get('native', False)
+        type = 'env_selected' if not is_native else 'native_env_selected'
+        sel_env = Preferences().get(type, '')
+
+        data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
+        data = json.loads(data)
+        platform = data[sel_env]['platform'].lower()
+
+        library_paths = Paths.getLibraryFolders(platform)
+        added_lib = [["Import Library"]]
 
         # get preset
-        menu_import_lib = self.getTemplateMenu(file_name='import_library.json')
-
         for library_dir in library_paths:
             # add separator
             sub_path = glob.glob(library_dir)
-
             # search in sub path
             for library in sub_path:
-
                 # Add core libraries
                 if '__cores__' in library:
                     core_subs = os.path.join(library, '*')
@@ -128,13 +129,7 @@ class Menu(object):
                         core_sub_subs = glob.glob(core_sub_subs)
                         for core_lib in core_sub_subs:
                             caption = os.path.basename(core_lib)
-                            if caption not in added_lib:
-                                temp_info = {}
-                                temp_info['caption'] = caption
-                                temp_info['command'] = 'add_library'
-                                temp_info['args'] = {'library_path': library}
-                                children.append(temp_info)
-                                added_lib.append(caption)
+                            added_lib.append([caption, library])
 
                 # the rest of the libraries
                 caption = os.path.basename(library)
@@ -142,35 +137,21 @@ class Menu(object):
                 # get library name from json file
                 pio_libs = os.path.join('platformio', 'lib')
                 if pio_libs in library:
-
                     # get library json details
-                    library_json = os.path.join(library, 'library.json')
-                    if (not os.path.exists(library_json)):
-                        library_json = os.path.join(
-                            library, 'library.properties')
+                    json_file = os.path.join(library, 'library.json')
+                    if (not os.path.exists(json_file)):
+                        json_file = os.path.join(library, 'library.properties')
 
                     # when there´s json content, read it
-                    json = JSONFile(library_json)
-                    json = json.getData()
-                    if (json != {}):
-                        caption = json['name']
+                    data = JSONFile(json_file)
+                    data = data.getData()
+                    if (data != {}):
+                        caption = data['name']
 
                 if caption not in added_lib and '__cores__' not in caption:
-                    temp_info = {}
-                    temp_info['caption'] = caption
-                    temp_info['command'] = 'add_library'
-                    temp_info['args'] = {'library_path': library}
-                    children.append(temp_info)
-                    added_lib.append(caption)
+                    added_lib.append([caption, library])
 
-        if(not children):
-            children = [{'caption': _('menu_not_libraries')}]
-
-        # save file
-        menu_import_lib[0]['children'][0]['children'] = children
-        self.saveSublimeMenu(data=menu_import_lib,
-                             sub_folder='import_library',
-                             user_path=True)
+        return added_lib
 
     def createLibraryExamplesMenu(self):
         """

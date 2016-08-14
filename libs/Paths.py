@@ -384,7 +384,7 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             window, index, level, paths, key, func)), 5)
 
 
-def getLibraryFolders():
+def getLibraryFolders(platform):
 
     # Platformio Libraries
     pio_lib_path = getPioLibrary()
@@ -397,13 +397,14 @@ def getLibraryFolders():
     pio_packages = os.path.join(pio_packages, '*')
     sub_dirs = glob.glob(pio_packages)
     for path in sub_dirs:
-        sub_paths = glob.glob(path)
-        for sub_path in sub_paths:
-            sub_path = os.path.join(sub_path, '*')
-            sub_path = glob.glob(sub_path)
-            for core_lib in sub_path:
-                if 'libraries' in core_lib:
-                    lib = os.path.join(core_lib, '*')
-                    library_folders.append(lib)
+        if(platform in path):
+            sub_paths = glob.glob(path)
+            for sub_path in sub_paths:
+                sub_path = os.path.join(sub_path, '*')
+                sub_path = glob.glob(sub_path)
+                for core_lib in sub_path:
+                    if 'libraries' in core_lib:
+                        lib = os.path.join(core_lib, '*')
+                        library_folders.append(lib)
 
     return library_folders

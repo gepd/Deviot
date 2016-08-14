@@ -158,8 +158,8 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
                    self.on_done, index=list[1])
 
     def on_done(self, selected):
-        list = Menu().getEnvironments()
         if(selected != -1):
+            list = Menu().getEnvironments()
             env = list[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
@@ -226,6 +226,22 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
     def on_done(self, result):
         if(result != -1):
             Libraries.openInThread('remove', self.window, result)
+
+class ImportLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Shows the list with the availables libraries in deviot using the quick panel
+
+    Extends: sublime_plugin.WindowCommand
+    """
+    def run(self):
+        menu_list = Menu().createLibraryImportMenu()
+        quickPanel(menu_list, self.on_done)
+
+    def on_done(self, selection):
+        if(selection != -1):
+            menu_list = Menu().createLibraryImportMenu()
+            menu_list = menu_list[selection][1]
+            self.window.run_command('add_library', {'library_path': menu_list})
 
 
 class AddLibraryCommand(sublime_plugin.TextCommand):
