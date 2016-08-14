@@ -127,15 +127,15 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
 
     def run(self):
-        choose = Menu().createBoardsMenu()
-        quickPanel(choose, self.on_done)
+        self.MENU_LIST = Menu().createBoardsMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selected):
         if(selected != -1):
-            choose = Menu().createBoardsMenu()
-            board_id = choose[selected][1].split(' | ')[1]
+            board_id = self.MENU_LIST[selected][1].split(' | ')[1]
             Preferences().boardSelected(board_id)
             Tools.saveEnvironment(board_id)
             Tools.userPreferencesStatus()
@@ -151,16 +151,15 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
 
     def run(self):
-        list = Menu().getEnvironments()
-        quickPanel(list[0],
-                   self.on_done, index=list[1])
+        self.MENU_LIST = Menu().getEnvironments()
+        quickPanel(self.MENU_LIST[0], self.on_done, index=list[1])
 
     def on_done(self, selected):
         if(selected != -1):
-            list = Menu().getEnvironments()
-            env = list[0][selected][1].split(' | ')[1]
+            env = self.MENU_LIST[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
 
@@ -192,8 +191,8 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        choose = Libraries.Libraries().getList()
-        quickPanel(choose, self.on_done)
+        MENU_LIST = Libraries.Libraries().getList()
+        quickPanel(MENU_LIST, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
@@ -220,28 +219,31 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         choose = Libraries.Libraries(
-            self.window, feedback=False).installedList()
+            self.window,
+            feedback=False).installedList()
         quickPanel(choose, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
             Libraries.openInThread('remove', self.window, result)
 
+
 class ImportLibraryCommand(sublime_plugin.WindowCommand):
     """
-    Shows the list with the availables libraries in deviot using the quick panel
+    Shows the list with the availables libraries in deviot using quick panel
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
+
     def run(self):
-        menu_list = Menu().createLibraryImportMenu()
-        quickPanel(menu_list, self.on_done)
+        self.MENU_LIST = Menu().createLibraryImportMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selection):
         if(selection != -1):
-            menu_list = Menu().createLibraryImportMenu()
-            menu_list = menu_list[selection][1]
-            self.window.run_command('add_library', {'library_path': menu_list})
+            path = self.MENU_LIST[selection][1]
+            self.window.run_command('add_library', {'path': path})
 
 
 class AddLibraryCommand(sublime_plugin.TextCommand):
@@ -614,7 +616,7 @@ class DeviotOutputCommand(sublime_plugin.WindowCommand):
 
 class AutoScrollMonitorCommand(sublime_plugin.WindowCommand):
     """
-    The scroll goes automatically to the last line when this option is activated.
+    The scroll goes automatically to the last line when this option.
 
     Extends: sublime_plugin.WindowCommand
     """
@@ -863,19 +865,22 @@ class SublimeRestartCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         if(sublime.platform() == 'windows'):
             if sublime.version()[:1] == '3':
-                subprocess.call('taskkill /im sublime_text.exe /f && cmd /C "' +
-                                os.path.join(os.getcwd(), 'sublime_text.exe') + '"', shell=True)
+                exec = os.path.join(os.getcwd(), 'sublime_text.exe')
+                cmd = 'taskkill /im sublime_text.exe /f && cmd /C "%s"' % exec
+                subprocess.call(cmd, shell=True)
             else:
                 os.execl(sys.executable, ' ')
         elif(sublime.platform() == 'osx'):
             if sublime.version()[:1] == '3':
-                subprocess.call("pkill subl && " +
-                                os.path.join(os.getcwd(), 'subl'), shell=True)
+                exec = os.path.join(os.getcwd(), 'subl')
+                cmd = 'pkill subl && "%s"' % exec
+                subprocess.call(cmd, shell=True)
             else:
                 os.execl(os.path.join(os.getcwd(), 'subl'))
         else:
             if sublime.version()[:1] == '3':
-                subprocess.call("pkill 'sublime_text' && " +
-                                os.path.join(os.getcwd(), 'sublime_text'), shell=True)
+                exec = os.path.join(os.getcwd(), 'sublime_text')
+                cmd = 'pkill  \'sublime_text\' && "%s"' % exec
+                subprocess.call(cmd, shell=True)
             else:
                 os.execl(os.path.join(os.getcwd(), 'sublime_text'))
