@@ -251,19 +251,53 @@ class AddLibraryCommand(sublime_plugin.TextCommand):
     Extends: sublime_plugin.TextCommand
     """
 
-    def run(self, edit, library_path):
-        Tools.addLibraryToSketch(self.view, edit, library_path)
+    def run(self, edit, path):
+        Tools.addLibraryToSketch(self.view, edit, path)
 
 
-class OpenExampleCommand(sublime_plugin.WindowCommand):
+class ListLibraryExamplesCommand(sublime_plugin.WindowCommand):
     """
-    Open the selected example from the deviot menu
+    Shows the list with examples of the availables libraries in
+    deviot using quick panel
+
+    Extends: sublime_plugin.WindowCommand
+    """
+    MENU_LIST = []
+
+    def run(self):
+        self.MENU_LIST = Menu().createLibraryExamplesMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
+
+    def on_done(self, selection):
+        if(selection != -1):
+            path = self.MENU_LIST[selection][1]
+            self.window.run_command('list_examples', {'path': path})
+
+
+class ListExamplesCommand(sublime_plugin.WindowCommand):
+    """
+    Shows the list with the available examples in the library
 
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, example_path):
-        Tools.openExample(example_path, self.window)
+    MENU_LIST = []
+
+    def run(self, path):
+
+        file_examples = os.path.join(path, '*')
+        file_examples = glob.glob(file_examples)
+
+        for file in file_examples:
+            caption = os.path.basename(file)
+            self.MENU_LIST.append([caption, file])
+
+        quickPanel(self.MENU_LIST, self.on_done)
+
+    def on_done(self, selection):
+        if(selection != -1):
+            path = self.MENU_LIST[selection][1]
+            Tools.openExample(path, self.window)
 
 
 class OpenLibraryFolderCommand(sublime_plugin.TextCommand):

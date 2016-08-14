@@ -486,14 +486,14 @@ def openExample(path, window):
         path {string} -- example folder
         window {object} -- window st object to open the new sketch
     """
-    if path.endswith(('.ino','.pde')):
+    if path.endswith(('.ino', '.pde')):
         window.open_file(path)
 
     files = os.path.join(path, '*')
     files = glob.glob(files)
 
     for file in files:
-        if file.endswith(('.ino','.pde')):
+        if file.endswith(('.ino', '.pde')):
             window.open_file(file)
 
 

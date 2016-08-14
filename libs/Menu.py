@@ -45,7 +45,8 @@ class Menu(object):
         is_native = Preferences().get('native', False)
         type = 'board_id' if not is_native else 'found_ini'
         list_env = Preferences().get(type, '')
-        data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
+        data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
 
         if(not data):
             return
@@ -81,7 +82,8 @@ class Menu(object):
         list_env = Preferences().get(type, '')
 
         env_selected = Tools.getEnvironment()
-        env_data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
+        env_data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
         env_data = json.loads(env_data)
 
         for env in env_data:
@@ -102,12 +104,13 @@ class Menu(object):
         Creates the import library menu
         this method search in the user and core libraries
         """
-        
+
         is_native = Preferences().get('native', False)
         type = 'env_selected' if not is_native else 'native_env_selected'
         sel_env = Preferences().get(type, '')
 
-        data = self.getTemplateMenu(file_name='platformio_boards.json', user_path=True)
+        data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
         data = json.loads(data)
         platform = data[sel_env]['platform'].lower()
 
@@ -157,10 +160,20 @@ class Menu(object):
         """
         Shows the examples of the library in a menu
         """
+        is_native = Preferences().get('native', False)
+        type = 'env_selected' if not is_native else 'native_env_selected'
+        sel_env = Preferences().get(type, '')
+
+        data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+        data = json.loads(data)
+        platform = data[sel_env]['platform'].lower()
+
         examples = []
         children = []
 
-        library_paths = Paths.getLibraryFolders()
+        library_paths = Paths.getLibraryFolders(platform)
+
         for path in library_paths:
             sub_paths = glob.glob(path)
             for sub in sub_paths:
@@ -171,34 +184,10 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if os.path.isdir(lib) and os.listdir(lib) and 'examples' in lib:
-                        file_examples = os.path.join(lib, '*')
-                        file_examples = glob.glob(file_examples)
-                        for file in file_examples:
-                            caption_example = os.path.basename(file)
-                            temp_info = {}
-                            temp_info['caption'] = caption_example
-                            temp_info['command'] = 'open_example'
-                            temp_info['args'] = {'example_path': file}
-                            children.append(temp_info)
-                        temp_info = {}
-                        temp_info['caption'] = caption
-                        temp_info['children'] = children
-                        examples.append(temp_info)
-                        children = []
-            if(examples):
-                examples.append({'caption': '-'})
-            else:
-                examples = [{'caption': _('menu_not_examples')}]
+                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib):
+                        examples.append([caption, lib])
 
-        # get preset
-        menu_lib_example = self.getTemplateMenu(file_name='examples.json')
-
-        # save file
-        menu_lib_example[0]['children'][0]['children'] = examples
-        self.saveSublimeMenu(data=menu_lib_example,
-                             sub_folder='library_example',
-                             user_path=True)
+        return examples
 
     def createMainMenu(self):
         '''
