@@ -112,10 +112,16 @@ class Menu(object):
         data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
         data = json.loads(data)
-        platform = data[sel_env]['platform'].lower()
+
+        # check current platform
+        try:
+            platform = data[sel_env]['platform'].lower()
+        except:
+            platform = 'all'
 
         library_paths = Paths.getLibraryFolders(platform)
         added_lib = [[_("select_library")]]
+        check_list = []
 
         # get preset
         for library_dir in library_paths:
@@ -131,8 +137,10 @@ class Menu(object):
                         core_sub_subs = os.path.join(core_sub, '*')
                         core_sub_subs = glob.glob(core_sub_subs)
                         for core_lib in core_sub_subs:
-                            caption = os.path.basename(core_lib)
-                            added_lib.append([caption, library])
+                            if caption not in check_list:
+                                caption = os.path.basename(core_lib)
+                                added_lib.append([caption, library])
+                                check_list.append(caption)
 
                 # the rest of the libraries
                 caption = os.path.basename(library)
@@ -142,7 +150,7 @@ class Menu(object):
                 if pio_libs in library:
                     # get library json details
                     json_file = os.path.join(library, 'library.json')
-                    if (not os.path.exists(json_file)):
+                    if not os.path.exists(json_file):
                         json_file = os.path.join(library, 'library.properties')
 
                     # when there´s json content, read it
@@ -151,8 +159,9 @@ class Menu(object):
                     if (data != {}):
                         caption = data['name']
 
-                if caption not in added_lib and '__cores__' not in caption:
+                if caption not in added_lib and '__cores__' not in caption and caption not in check_list:
                     added_lib.append([caption, library])
+                    check_list.append(caption)
 
         if(len(added_lib) <= 1):
             added_lib = [[_("menu_not_libraries")]]
@@ -170,9 +179,15 @@ class Menu(object):
         data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
         data = json.loads(data)
-        platform = data[sel_env]['platform'].lower()
+
+        # check current platform
+        try:
+            platform = data[sel_env]['platform'].lower()
+        except:
+            platform = 'all'
 
         examples = [[_("select_library")]]
+        check_list = []
 
         library_paths = Paths.getLibraryFolders(platform)
 
@@ -186,8 +201,9 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib):
+                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib) and caption not in check_list:
                         examples.append([caption, lib])
+                        check_list.append(caption)
 
         if(len(examples) <= 1):
             added_lib = [[_("menu_not_libraries")]]

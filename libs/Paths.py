@@ -396,6 +396,10 @@ def getLibraryFolders(platform='all'):
     pio_packages = getPioPackages()
     pio_packages = os.path.join(pio_packages, '*')
     sub_dirs = glob.glob(pio_packages)
+
+    if(platform == 'atmelavr'):
+        platform = 'avr'
+
     for path in sub_dirs:
         if(platform in path or platform == 'all'):
             sub_paths = glob.glob(path)
