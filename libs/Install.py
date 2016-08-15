@@ -84,15 +84,14 @@ class PioInstall(object):
         # remove old menu files
         user_path = Paths.getDeviotUserPath()
 
-        serial = os.path.join(user_path, 'serial')
-        if(os.path.isdir(serial)):
-            rmtree(serial)
-            self.Preferences.set('updt_menu', True)
+        folders = ['serial', 'environment',
+                   'library_example', 'import_library']
 
-        environment = os.path.join(user_path, 'environment')
-        if(os.path.isdir(environment)):
-            rmtree(environment)
-            self.Preferences.set('updt_menu', True)
+        for folder in folders:
+            remove = os.path.join(user_path, folder)
+            if(os.path.isdir(remove)):
+                rmtree(remove)
+                self.Preferences.set('updt_menu', True)
 
         if(self.pio_current_ver):
             # Check main menu
