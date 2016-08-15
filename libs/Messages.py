@@ -77,7 +77,7 @@ class Console:
             self.window = sublime.active_window()
         self.panel = self.window.create_output_panel('exec')
 
-        if(not color or Preferences().get('verbose_output', False) or monitor):
+        if(not color or monitor):
             self.panel.set_syntax_file(
                 "Packages/Text/Plain text.tmLanguage")
             return
