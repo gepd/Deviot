@@ -532,7 +532,7 @@ def saveEnvironment(data):
     settings = Preferences()
 
     # Save data
-    native = settings.get('native', False)
+    native = settings.get('native', True)
 
     if(native):
         settings.set('native_env_selected', data)
