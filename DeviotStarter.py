@@ -241,7 +241,7 @@ class ImportLibraryCommand(sublime_plugin.WindowCommand):
         quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selection):
-        if(selection != -1):
+        if(selection > 0):
             path = self.MENU_LIST[selection][1]
             self.window.run_command('add_library', {'path': path})
 
@@ -271,7 +271,7 @@ class ListLibraryExamplesCommand(sublime_plugin.WindowCommand):
         quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selection):
-        if(selection != -1):
+        if(selection > 0):
             path = self.MENU_LIST[selection][1]
             self.window.run_command('list_examples', {'path': path})
 
@@ -282,10 +282,11 @@ class ListExamplesCommand(sublime_plugin.WindowCommand):
 
     Extends: sublime_plugin.WindowCommand
     """
-
     MENU_LIST = []
 
     def run(self, path):
+
+        self.MENU_LIST = [[_("select_example")]]
 
         file_examples = os.path.join(path, '*')
         file_examples = glob.glob(file_examples)
@@ -297,7 +298,7 @@ class ListExamplesCommand(sublime_plugin.WindowCommand):
         quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selection):
-        if(selection != -1):
+        if(selection > 0):
             path = self.MENU_LIST[selection][1]
             Tools.openExample(path, self.window)
 

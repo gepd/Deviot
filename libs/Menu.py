@@ -115,7 +115,7 @@ class Menu(object):
         platform = data[sel_env]['platform'].lower()
 
         library_paths = Paths.getLibraryFolders(platform)
-        added_lib = [["Import Library"]]
+        added_lib = [[_("select_library")]]
 
         # get preset
         for library_dir in library_paths:
@@ -154,6 +154,9 @@ class Menu(object):
                 if caption not in added_lib and '__cores__' not in caption:
                     added_lib.append([caption, library])
 
+        if(len(added_lib) <= 1):
+            added_lib = [[_("menu_not_libraries")]]
+
         return added_lib
 
     def createLibraryExamplesMenu(self):
@@ -169,8 +172,7 @@ class Menu(object):
         data = json.loads(data)
         platform = data[sel_env]['platform'].lower()
 
-        examples = []
-        children = []
+        examples = [[_("select_library")]]
 
         library_paths = Paths.getLibraryFolders(platform)
 
@@ -186,6 +188,9 @@ class Menu(object):
                         caption = new_caption.group(1)
                     if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib):
                         examples.append([caption, lib])
+
+        if(len(examples) <= 1):
+            added_lib = [[_("menu_not_libraries")]]
 
         return examples
 
