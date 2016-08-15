@@ -26,7 +26,6 @@ from .I18n import I18n
 from . import __version__ as version
 from .Preferences import Preferences
 from .Progress import ThreadProgress
-from .checksumdir import dirhash
 
 _ = I18n().translate
 
@@ -358,7 +357,6 @@ class PioInstall(object):
                 return
         else:
             # creating files (menu, completions, syntax)
-            Tools.updateMenuLibs()
             if(self.feedback):
                 self.message_queue.put('pio_up_date{0}', self.pio_cloud_ver)
                 self.Preferences.set('pio_version', self.pio_cloud_ver)
