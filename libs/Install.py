@@ -102,16 +102,7 @@ class PioInstall(object):
             if(updt_menu):
                 from .PlatformioCLI import generateFiles
                 generateFiles()
-                Tools.updateMenuLibs()
                 self.Preferences.set('updt_menu', False)
-
-            # Check library folder
-            library_hash = self.Preferences.get('library_hash', False)
-            current_hash = dirhash(Paths.getPioLibrary())
-
-            if(not library_hash or library_hash != current_hash):
-                Tools.updateMenuLibs()
-                self.Preferences.set('library_hash', current_hash)
 
             # check update once each five
             date_now = datetime.datetime.now()

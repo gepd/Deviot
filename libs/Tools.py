@@ -497,17 +497,6 @@ def openExample(path, window):
             window.open_file(file)
 
 
-def updateMenuLibs():
-    from . import Paths
-    from .Menu import Menu
-    from .checksumdir import dirhash
-    from .Preferences import Preferences
-
-    Menu().createLibraryImportMenu()
-    Menu().createLibraryExamplesMenu()
-    Preferences().set('library_hash', dirhash(Paths.getPioLibrary()))
-
-
 def removePreferences():
     from shutil import rmtree
     from . import Paths
