@@ -352,7 +352,8 @@ class PlatformioCLI(CommandsPy):
 
         self.message_queue = MessageQueue(self.console)
         self.message_queue.startPrint()
-        self.message_queue.put('[ Deviot {0} ] {1}\\n', version, self.file_name)
+        self.message_queue.put(
+            '[ Deviot {0} ] {1}\\n', version, self.file_name)
 
         # initialize the sketch
         self.initProject()
@@ -656,7 +657,12 @@ class PlatformioCLI(CommandsPy):
 
         if(port and "COM" not in port and "esp" not in mcu):
             if(feedback):
-                sublime.message_dialog(_("ota_error_platform"))
+                self.message_queue = MessageQueue(self.console)
+                self.message_queue.startPrint()
+                self.message_queue.put('[ Deviot {0} ] {1}\\n',
+                                       version,
+                                       self.file_name)
+                self.message_queue.put('ota_error_platform')
             return False
         return True
 
