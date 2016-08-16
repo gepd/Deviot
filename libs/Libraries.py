@@ -12,38 +12,20 @@ import time
 import sublime
 import threading
 
-try:
+from urllib.parse import urlencode
+from urllib.request import Request
+from urllib.request import urlopen
 
-    from . import Paths
-    from . import Tools
-    from . import Messages
-    from . import __version__ as version
-    from .JSONFile import JSONFile
-    from .Preferences import Preferences
-    from .Progress import ThreadProgress
-    from .Commands import CommandsPy
-    from .Messages import MessageQueue
-    from .I18n import I18n
-except:
-    import libs.Paths as Paths
-    import libs.Tools as Tools
-    from libs import Messages
-    from libs import __version__ as version
-    from libs.JSONFile import JSONFile
-    from libs.Preferences import Preferences
-    from libs.Progress import ThreadProgress
-    from libs.Commands import CommandsPy
-    from libs.Messages import MessageQueue
-    from libs.I18n import I18n
-
-if(Tools.getPythonVersion() < 3):
-    from urllib import urlencode
-    from urllib2 import Request
-    from urllib2 import urlopen
-else:
-    from urllib.parse import urlencode
-    from urllib.request import Request
-    from urllib.request import urlopen
+from . import Paths
+from . import Tools
+from . import Messages
+from . import __version__ as version
+from .JSONFile import JSONFile
+from .Preferences import Preferences
+from .Progress import ThreadProgress
+from .Commands import CommandsPy
+from .Messages import MessageQueue
+from .I18n import I18n
 
 _ = I18n().translate
 
@@ -54,7 +36,7 @@ class Libraries:
     More info: http://docs.platformio.org/en/latest/librarymanager/index.html
     """
 
-    def __init__(self, window=None, view=None):
+    def __init__(self, window=None, view=None, feedback=True):
         self.view = view
         self.window = window
         self.Preferences = Preferences()
@@ -64,15 +46,15 @@ class Libraries:
             self.window = sublime.active_window()
         self.view = self.window.active_view()
 
-        # console
-        console_name = 'Deviot|Library' + str(time.time())
-        console = Messages.Console(self.window, name=console_name)
+        if(feedback):
+            # console)
+            console = Messages.Console()
 
-        # Queue for the user console
-        self.message_queue = MessageQueue(console)
+            # Queue for the user console
+            self.message_queue = MessageQueue(console)
 
-        # CLI
-        self.Commands = CommandsPy(console=console)
+            # CLI
+            self.Commands = CommandsPy(console=console)
 
     def downloadList(self, keyword):
         """
@@ -91,10 +73,7 @@ class Libraries:
 
         # request parameters
         url = 'http://api.platformio.org/lib/search?'
-        user_agent = 'Deviot/' + str(version) + \
-            ' (Sublime-Text/' + str(sublime.version()) + ')'
-        headers = {'User-Agent': user_agent}
-        req = Request(url + query, headers=headers)
+        req = Request(url + query, headers=Tools.getHeaders())
 
         # receive first page
         response = urlopen(req)
@@ -104,12 +83,12 @@ class Libraries:
         nloop = list['total'] / list['perpage']
         if(nloop > 1):
             # next pages
-            nloop = int(nloop) + 1 if nloop > int(nloop) else nloop
+            nloop = int(nloop) + 1 if nloop > int(nloop) else int(nloop)
             for page in range(2, nloop + 1):
                 # building query of next pages
                 request['page'] = page
                 query = urlencode(request)
-                req = Request(url + query, headers=headers)
+                req = Request(url + query, headers=Tools.getHeaders())
                 # receive first page
                 response = urlopen(req)
                 page_next = json.loads(response.read().decode())
@@ -173,7 +152,8 @@ class Libraries:
 
         # Install Library with CLI
         command = ['lib', 'install', lib_id]
-        self.Commands.runCommand(command, extra_message=lib_name)
+        self.Commands.runCommand(
+            command, 'installing_lib_{0}{1}', extra_message=lib_name)
 
         # update list of libraries installed in the preference file
         self.getInstalledList(ids=True)
@@ -245,7 +225,8 @@ class Libraries:
 
         # uninstall Library with CLI
         command = ['lib', 'uninstall', lib_id]
-        self.Commands.runCommand(command, extra_message=lib_name)
+        self.Commands.runCommand(
+            command, 'uninstalling_lib_{0}{1}', extra_message=lib_name)
 
         # remove from preferences
         if (not self.Commands.error_running):
@@ -316,7 +297,8 @@ def openInThread(type, window=None, keyword=None):
         thread.start()
         ThreadProgress(thread, _('installing'), _('done'))
     elif(type == 'list'):
-        thread = threading.Thread(target=Libraries().getInstalledList)
+        thread = threading.Thread(target=Libraries(
+            feedback=False).getInstalledList)
         thread.start()
         ThreadProgress(thread, _('preparing_list'), _('done'))
     elif(type == 'remove'):

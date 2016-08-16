@@ -37,11 +37,26 @@ msgstr "{0} Extrayendo archivos...\n"
 msgid "installing_pio{0}"
 msgstr "{0} Instalando PlatformIO...\n"
 
+msgid "uninstall_old_pio{0}"
+msgstr "{0} Desinstalando versión actual...\n"
+
+msgid "installing_dev_pio{0}"
+msgstr "{0} Instalando versión 'develop' de PlatformIO...\n"
+
+msgid "installing_stable_pio{0}"
+msgstr "{0} Instalando versión 'estable' de PlatformIO...\n"
+
 msgid "setup_finished{0}"
 msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Buscando Actualizaciones de PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "La nueva versión {0} de PlatformIO está disponible, tu versión actual es {1} ¿Deseas actualizarla?"
+
+msgid "update_button"
+msgstr "Actualizar Ahora"
 
 # Menu
 
@@ -49,7 +64,7 @@ msgid "menu_new_sketch"
 msgstr "Nuevo Sketch"
 
 msgid "menu_select_boards"
-msgstr "Selecciona Una/Multiples Placa(s)"
+msgstr "Selecciona Una Placa"
 
 msgid "menu_select_env"
 msgstr "Selecciona Un Entorno de Desarrollo"
@@ -63,8 +78,14 @@ msgstr "Eliminar Librería"
 msgid "menu_import_library"
 msgstr "Importar Librería"
 
+msgid "menu_not_libraries"
+msgstr "No Hay Librerias Disponibles"
+
 msgid "menu_library_examples"
 msgstr "Ejemplos"
+
+msgid "menu_not_examples"
+msgstr "No Hay Ejemplos Disponibles"
 
 msgid "menu_option_lib"
 msgstr "Opciones de Librerías"
@@ -84,11 +105,23 @@ msgstr "Cargar"
 msgid "menu_clean"
 msgstr "Limpiar"
 
+msgid "menu_open_ini_file"
+msgstr "Abrir Archivo Para Compilación"
+
 msgid "menu_hide_console"
 msgstr "Ocultar Consola Deviot"
 
+msgid "menu_show_console"
+msgstr "Mostrar Consola Deviot"
+
 msgid "menu_serial_ports"
 msgstr "Puerto(s) Serial"
+
+msgid "menu_auth_change"
+msgstr "Cambiar Contraseña OTA"
+
+msgid "menu_none_serial_mdns"
+msgstr "Ningún puerto serial o servicio mDNS disponible"
 
 msgid "menu_add_ip"
 msgstr "Agregar IP Manualmente"
@@ -101,6 +134,9 @@ msgstr "Iniciar"
 
 msgid "menu_send"
 msgstr "Enviar"
+
+msgid "menu_deviot_output"
+msgstr "Salida en Consola Deviot"
 
 msgid "menu_auto_scroll"
 msgstr "Scroll Automático"
@@ -135,6 +171,9 @@ msgstr "Opciones"
 msgid "menu_upgrade_pio"
 msgstr "Actualizar PlatformIO"
 
+msgid "menu_developer_pio"
+msgstr "Usar Version en Desarrollo de Pio"
+
 msgid "menu_update_board_list"
 msgstr "Actualizar Lista de Placas"
 
@@ -155,6 +194,15 @@ msgstr "Cambiar Carpeta de Compilación"
 
 msgid "menu_use_cpp_new"
 msgstr "Usar CPP con Nuevo Archivo"
+
+msgid "menu_always_native"
+msgstr "Usar Estructura de PlatformIO"
+
+msgid "menu_change_default_path"
+msgstr "Cambiar Directorio por Defecto"
+
+msgid "menu_remove_default_path"
+msgstr "Eliminar Directorio por Defecto"
 
 msgid "menu_languages"
 msgstr "Idioma"
@@ -205,10 +253,19 @@ msgid "not_empty_sketch_{0}"
 msgstr "{0} No es posible cargar un sketch vacío\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} Archivo no válido para cargar\n"
+msgstr "{0} Archivo no válido para procesar\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} No es un archivo IoT\n"
+
+msgid "select_board_list"
+msgstr "Seleciona una Placa de la Lista"
+
+msgid "select_env_list"
+msgstr "Selecciona un Entorno de Desarrollo de la Lista"
+
+msgid "select_port_list"
+msgstr "Selecciona un Puerto de la Lista"
 
 msgid "none_board_sel_{0}"
 msgstr "{0} Ninguna placa ha sido seleccionada"
@@ -272,6 +329,21 @@ msgstr "Procesando"
 
 msgid "done"
 msgstr "Listo"
+
+msgid "restart_deviot"
+msgstr "Esta acción requiere de reiniciar Sublime Text. ¿Deseas continuar?"
+
+msgid "continue_button"
+msgstr "Continuar"
+
+msgid "ota_error_platform"
+msgstr "Cargas vía OTA sólo están disponibles para plataformas Espressif (ESP8266) actualmente"
+
+msgid "select_library"
+msgstr "Selecciona una Librería"
+
+msgid "select_example"
+msgstr "Selecciona un Ejemplo"
 
 
 # Librerías
@@ -339,3 +411,44 @@ msgstr "Enviar:"
 
 msgid "sended_{0}"
 msgstr "\n[ENVIADO] {0}\n"
+
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Contraseña:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Iniciando en"
+
+msgid "upload_size"
+msgstr "Tamaño de Carga"
+
+msgid "sending_invitation_to"
+msgstr "Enviando invitación a"
+
+msgid "waiting_device"
+msgstr "Esperado dispositivo"
+
+msgid "waiting_result"
+msgstr "Esperando resultado"
+
+msgid "result"
+msgstr "Resultado"
+
+msgid "authentication"
+msgstr "Autentificación"
+
+msgid "failed"
+msgstr "Fallido"
+
+msgid "attempt"
+msgstr "intento"
+
+msgid "of"
+msgstr "de"
+
+msgid "not_in_sync"
+msgstr "No sincronizado"

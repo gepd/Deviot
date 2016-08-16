@@ -12,12 +12,8 @@ import errno
 import inspect
 import sublime
 
-try:
-    from . import Tools
-    from .Dir import Dir
-except:
-    from libs import Tools
-    from libs.Dir import Dir
+from .Dir import Dir
+
 
 ROOT_PATH = 'System Root(/)'
 
@@ -100,7 +96,7 @@ def getEnvDir():
 def getEnvBinDir():
     env_dir = getEnvDir()
     env_bin_dir = os.path.join(
-        env_dir, 'Scripts' if 'windows' in Tools.getOsName() else 'bin')
+        env_dir, 'Scripts' if 'windows' in sublime.platform() else 'bin')
 
     try:
         os.makedirs(env_bin_dir)
@@ -158,6 +154,7 @@ def getPioLibrary():
 
     try:
         os.makedirs(pio_lib)
+        os.chmod(pio_lib, 0o777)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
@@ -251,7 +248,7 @@ def getCWD(file_path):
     return folder_path
 
 
-def getParentCWD(file_path):
+def getParentPath(file_path):
     folder_path = os.path.dirname(file_path)
     parent = os.path.dirname(folder_path)
     return parent
@@ -264,7 +261,7 @@ def getFullIniPath(path):
 
 def getTempPath(file_name=False):
     tmp_path = '/tmp'
-    os_name = Tools.getOsName()
+    os_name = sublime.platform()
     if os_name == 'windows':
         tmp_path = os.environ['tmp']
 
@@ -283,6 +280,24 @@ def getTempPath(file_name=False):
     return tmp_path
 
 
+def getBuildPath(file_name):
+    from .Preferences import Preferences
+
+    build_dir = Preferences().get('build_dir', False)
+
+    if(build_dir):
+        build_dir = os.path.join(build_dir, file_name)
+
+        try:
+            os.makedirs(build_dir)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise exc
+            pass
+
+    return build_dir
+
+
 def getOpenFolderPath(path):
     url = 'file://' + path
     return url
@@ -299,7 +314,7 @@ def listWinVolume():
 
 def listRootPath():
     root_list = []
-    os_name = Tools.getOsName()
+    os_name = sublime.platform()
     if os_name == 'windows':
         root_list = listWinVolume()
     else:
@@ -309,6 +324,9 @@ def listRootPath():
 
 
 def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=None):
+    from .Preferences import Preferences
+    from .I18n import I18n
+
     if index == -1:
         return ''
 
@@ -316,6 +334,10 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
         sel_path = paths[0].split('(')[1][:-1]
         if func:
             if key:
+                save_path = [sel_path, index, level]
+                if(key == 'default_path'):
+                    sel_path = save_path
+                Preferences().set('last_path', save_path)
                 func(key, sel_path)
         return
 
@@ -324,6 +346,15 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             level -= 1
         elif index > 1:
             level += 1
+
+        default_path = Preferences().get('default_path', False)
+        if(not default_path):
+            default_path = Preferences().get('last_path', False)
+
+        if(index == -2 and default_path):
+            paths = [default_path[0]]
+            index = default_path[1]
+            level = default_path[2]
 
         if level <= 0:
             level = 0
@@ -343,11 +374,6 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             sub_dirs = cur_dir.listDirs()
             paths = [d.getPath() for d in sub_dirs]
 
-        try:
-            from .I18n import I18n
-        except:
-            from libs.I18n import I18n
-
         _ = I18n().translate
 
         paths.insert(0, parent_path)
@@ -358,7 +384,7 @@ def selectDir(window, index=-2, level=0, paths=None, key=None, func=None, label=
             window, index, level, paths, key, func)), 5)
 
 
-def getLibraryFolders():
+def getLibraryFolders(platform='all'):
 
     # Platformio Libraries
     pio_lib_path = getPioLibrary()
@@ -370,14 +396,19 @@ def getLibraryFolders():
     pio_packages = getPioPackages()
     pio_packages = os.path.join(pio_packages, '*')
     sub_dirs = glob.glob(pio_packages)
+
+    if(platform == 'atmelavr'):
+        platform = 'avr'
+
     for path in sub_dirs:
-        sub_paths = glob.glob(path)
-        for sub_path in sub_paths:
-            sub_path = os.path.join(sub_path, '*')
-            sub_path = glob.glob(sub_path)
-            for core_lib in sub_path:
-                if 'libraries' in core_lib:
-                    lib = os.path.join(core_lib, '*')
-                    library_folders.append(lib)
+        if(platform in path or platform == 'all'):
+            sub_paths = glob.glob(path)
+            for sub_path in sub_paths:
+                sub_path = os.path.join(sub_path, '*')
+                sub_path = glob.glob(sub_path)
+                for core_lib in sub_path:
+                    if 'libraries' in core_lib:
+                        lib = os.path.join(core_lib, '*')
+                        library_folders.append(lib)
 
     return library_folders

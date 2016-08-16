@@ -9,16 +9,10 @@ from __future__ import unicode_literals
 import os
 import glob
 
-try:
-    from . import Paths
-    from . import Tools
-    from .Preferences import Preferences
-    from .JSONFile import JSONFile
-except:
-    from libs import Paths
-    from libs import Tools
-    from libs.Preferences import Preferences
-    from libs.JSONFile import JSONFile
+from . import Paths
+from . import Tools
+from .Preferences import Preferences
+from .JSONFile import JSONFile
 
 
 @Tools.singleton

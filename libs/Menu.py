@@ -11,16 +11,11 @@ import json
 import glob
 from re import search
 
-try:
-    from . import Serial, Paths
-    from .Preferences import Preferences
-    from .JSONFile import JSONFile
-    from .I18n import I18n
-except:
-    from libs.Preferences import Preferences
-    from libs.JSONFile import JSONFile
-    from libs import Serial, Paths
-    from libs.I18n import I18n
+from . import Paths
+from .Preferences import Preferences
+from .JSONFile import JSONFile
+from .I18n import I18n
+
 
 _ = I18n().translate
 
@@ -45,96 +40,95 @@ class Menu(object):
 
         Returns: {json array} -- list of all boards to show in the menu
         '''
-        vendors = {}
-        boards = []
 
-        platformio_data = self.getTemplateMenu(
+        boards = [[_("select_board_list")]]
+        is_native = Preferences().get('native', False)
+        type = 'board_id' if not is_native else 'found_ini'
+        list_env = Preferences().get(type, '')
+        data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
 
-        if(not platformio_data):
+        if(not data):
             return
 
-        platformio_data = json.loads(platformio_data)
+        platformio_data = json.loads(data)
 
         # searching data
         for datakey, datavalue in platformio_data.items():
-            for infokey, infovalue in datavalue.items():
-                vendor = datavalue['vendor']
-                if('name' in infokey):
-                    temp_info = {}
-                    temp_info['caption'] = infovalue
-                    temp_info['command'] = 'deviot_select_board'
-                    temp_info['checkbox'] = True
-                    temp_info['args'] = {'board_id': datakey}
-                    children = vendors.setdefault(vendor, [])
-                    children.append(temp_info)
-
-        # reorganizing data
-        for vendor, children in vendors.items():
-            children = sorted(children, key=lambda x: x['caption'])
-            boards.append({'caption': vendor,
-                           'children': children})
-
-        boards = sorted(boards, key=lambda x: x['caption'])
-
+            caption = "+ " + datavalue['name']
+            for env in list_env:
+                if(datakey == env):
+                    caption = "- " + datavalue['name']
+            vendor = "%s | %s" % (datavalue['vendor'], datakey)
+            boards.append([caption, vendor])
         return boards
 
-    def createEnvironmentMenu(self, empty=False):
+    def getEnvironments(self):
         '''
         Get all the boards selected by the user and creates a JSON
         file with the list of all environment selected by the user.
         The file is stored in:
         Packages/User/Deviot/environment/environment.json
         '''
-        environments = []
-        if(not empty):
-            is_native = Preferences().get('native', False)
-            type = 'board_id' if not is_native else 'found_ini'
-            env_selecs = Preferences().get(type, '')
-            env_boards = self.getTemplateMenu(
-                'env_boards.json', user_path=True)
 
-            if(not env_boards):
-                return
+        from . import Tools
 
-            # search
-            for board in env_boards:
-                for selected in env_selecs:
-                    try:
-                        environments.append(board[selected]['children'][0])
-                    except:
-                        pass
+        selected_index = 0
+        environments = [[_("select_env_list")]]
+        index = 0
 
-        # save
-        env_menu = self.getTemplateMenu(file_name='environment.json')
-        env_menu[0]['children'][0]['children'] = environments
-        self.saveSublimeMenu(data=env_menu,
-                             sub_folder='environment',
-                             user_path=True)
+        is_native = Preferences().get('native', False)
+        type = 'board_id' if not is_native else 'found_ini'
+        list_env = Preferences().get(type, '')
+
+        env_selected = Tools.getEnvironment()
+        env_data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+        env_data = json.loads(env_data)
+
+        for env in env_data:
+            for selected in list_env:
+                if(selected == env):
+                    caption = env_data[env]['name']
+                    vendor = "%s | %s" % (env_data[env]['vendor'], env)
+                    environments.append([caption, vendor])
+
+                    if(selected == env_selected):
+                        selected_index = index + 1
+                    index += 1
+
+        return [environments, selected_index]
 
     def createLibraryImportMenu(self):
         """
         Creates the import library menu
         this method search in the user and core libraries
         """
-        library_paths = Paths.getLibraryFolders()
-        added_lib = []
-        children = []
+
+        is_native = Preferences().get('native', False)
+        type = 'env_selected' if not is_native else 'native_env_selected'
+        sel_env = Preferences().get(type, '')
+
+        data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+        data = json.loads(data)
+
+        # check current platform
+        try:
+            platform = data[sel_env]['platform'].lower()
+        except:
+            platform = 'all'
+
+        library_paths = Paths.getLibraryFolders(platform)
+        added_lib = [[_("select_library")]]
+        check_list = []
 
         # get preset
-        menu_import_lib = self.getTemplateMenu(file_name='import_library.json')
-
         for library_dir in library_paths:
             # add separator
-            if 'arduinoteensy' not in library_dir:
-                temp_info = {}
-                temp_info['caption'] = '-'
-                children.append(temp_info)
             sub_path = glob.glob(library_dir)
-
             # search in sub path
             for library in sub_path:
-
                 # Add core libraries
                 if '__cores__' in library:
                     core_subs = os.path.join(library, '*')
@@ -143,14 +137,10 @@ class Menu(object):
                         core_sub_subs = os.path.join(core_sub, '*')
                         core_sub_subs = glob.glob(core_sub_subs)
                         for core_lib in core_sub_subs:
-                            caption = os.path.basename(core_lib)
-                            if caption not in added_lib:
-                                temp_info = {}
-                                temp_info['caption'] = caption
-                                temp_info['command'] = 'add_library'
-                                temp_info['args'] = {'library_path': library}
-                                children.append(temp_info)
-                                added_lib.append(caption)
+                            if caption not in check_list:
+                                caption = os.path.basename(core_lib)
+                                added_lib.append([caption, library])
+                                check_list.append(caption)
 
                 # the rest of the libraries
                 caption = os.path.basename(library)
@@ -158,41 +148,49 @@ class Menu(object):
                 # get library name from json file
                 pio_libs = os.path.join('platformio', 'lib')
                 if pio_libs in library:
-
                     # get library json details
-                    library_json = os.path.join(library, 'library.json')
-                    if (not os.path.exists(library_json)):
-                        library_json = os.path.join(
-                            library, 'library.properties')
+                    json_file = os.path.join(library, 'library.json')
+                    if not os.path.exists(json_file):
+                        json_file = os.path.join(library, 'library.properties')
 
                     # when there´s json content, read it
-                    json = JSONFile(library_json)
-                    json = json.getData()
-                    if (json != {}):
-                        caption = json['name']
+                    data = JSONFile(json_file)
+                    data = data.getData()
+                    if (data != {}):
+                        caption = data['name']
 
-                if caption not in added_lib and '__cores__' not in caption:
-                    temp_info = {}
-                    temp_info['caption'] = caption
-                    temp_info['command'] = 'add_library'
-                    temp_info['args'] = {'library_path': library}
-                    children.append(temp_info)
-                    added_lib.append(caption)
+                if caption not in added_lib and '__cores__' not in caption and caption not in check_list:
+                    added_lib.append([caption, library])
+                    check_list.append(caption)
 
-        # save file
-        menu_import_lib[0]['children'][0]['children'] = children
-        self.saveSublimeMenu(data=menu_import_lib,
-                             sub_folder='import_library',
-                             user_path=True)
+        if(len(added_lib) <= 1):
+            added_lib = [[_("menu_not_libraries")]]
+
+        return added_lib
 
     def createLibraryExamplesMenu(self):
         """
         Shows the examples of the library in a menu
         """
-        examples = []
-        children = []
+        is_native = Preferences().get('native', False)
+        type = 'env_selected' if not is_native else 'native_env_selected'
+        sel_env = Preferences().get(type, '')
 
-        library_paths = Paths.getLibraryFolders()
+        data = self.getTemplateMenu(
+            file_name='platformio_boards.json', user_path=True)
+        data = json.loads(data)
+
+        # check current platform
+        try:
+            platform = data[sel_env]['platform'].lower()
+        except:
+            platform = 'all'
+
+        examples = [[_("select_library")]]
+        check_list = []
+
+        library_paths = Paths.getLibraryFolders(platform)
+
         for path in library_paths:
             sub_paths = glob.glob(path)
             for sub in sub_paths:
@@ -203,70 +201,23 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if os.path.isdir(lib) and os.listdir(lib) and 'examples' in lib:
-                        file_examples = os.path.join(lib, '*')
-                        file_examples = glob.glob(file_examples)
-                        for file in file_examples:
-                            caption_example = os.path.basename(file)
-                            temp_info = {}
-                            temp_info['caption'] = caption_example
-                            temp_info['command'] = 'open_example'
-                            temp_info['args'] = {'example_path': file}
-                            children.append(temp_info)
-                        temp_info = {}
-                        temp_info['caption'] = caption
-                        temp_info['children'] = children
-                        examples.append(temp_info)
-                        children = []
-            examples.append({'caption': '-'})
+                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib) and caption not in check_list:
+                        examples.append([caption, lib])
+                        check_list.append(caption)
 
-        # get preset
-        menu_lib_example = self.getTemplateMenu(file_name='examples.json')
+        if(len(examples) <= 1):
+            added_lib = [[_("menu_not_libraries")]]
 
-        # save file
-        menu_lib_example[0]['children'][0]['children'] = examples
-        self.saveSublimeMenu(data=menu_lib_example,
-                             sub_folder='library_example',
-                             user_path=True)
-
-    def createSerialPortsMenu(self):
-        '''
-        Creates a menu list with all serial ports available
-        '''
-        port_list = Serial.listSerialPorts()
-        ip_port = Preferences().get('ip_port', '')
-
-        if(ip_port):
-            port_list.insert(0, ip_port)
-
-        menu_preset = self.getTemplateMenu(file_name='serial.json')
-        menu_ports = [
-            {"caption": _("menu_add_ip"), "command": "add_serial_ip"}]
-
-        for port in port_list:
-            temp_info = {}
-            temp_info['caption'] = port
-            temp_info['command'] = 'select_port'
-            temp_info['checkbox'] = True
-            temp_info['args'] = {'id_port': port}
-            menu_ports.append(temp_info)
-
-        menu_preset[0]['children'][0]['children'] = menu_ports
-
-        self.saveSublimeMenu(data=menu_preset,
-                             sub_folder='serial',
-                             user_path=True)
+        return examples
 
     def createMainMenu(self):
         '''
         Creates the main menu with the differents options
         including boards, libraries, and user options.
         '''
-        boards = self.createBoardsMenu()
+        from .Tools import getJSONBoards
 
-        if(not boards):
-            return False
-
+        getJSONBoards()
         menu_data = self.getTemplateMenu(file_name='menu_main.json')
 
         # Main Menu
@@ -274,9 +225,6 @@ class Menu(object):
             for second_menu in menu_data[0][first_menu]:
                 if 'caption' in second_menu:
                     second_menu['caption'] = _(second_menu['caption'])
-                if 'children' in second_menu:
-                    if(second_menu['id'] == 'select_board'):
-                        second_menu['children'] = boards
 
         # sub menu translation (avoiding the boards menu)
         for third_menu in menu_data[0]['children']:
@@ -293,14 +241,26 @@ class Menu(object):
                 pass
 
         self.saveSublimeMenu(data=menu_data)
-
-        env_path = Paths.getSublimeMenuPath(
-            'environment', user_path=True)
-
-        if(os.path.isfile(env_path)):
-            self.createEnvironmentMenu()
-
         self.createLanguageMenu()
+        self.translateContextMenu()
+
+    def translateContextMenu(self):
+        """
+        Translate the context menu getting the preset file from context.json
+        """
+        contex_file = self.getTemplateMenu(file_name='context.json')
+
+        for contex in contex_file:
+            try:
+                contex['caption'] = _(contex['caption'])
+            except:
+                pass
+
+        plugin = Paths.getPluginPath()
+        context_path = os.path.join(plugin, 'Context.sublime-menu')
+        preset_file = JSONFile(context_path)
+        preset_file.setData(contex_file)
+        preset_file.saveData()
 
     def createLanguageMenu(self):
         """

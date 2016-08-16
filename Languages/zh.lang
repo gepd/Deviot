@@ -1,40 +1,43 @@
-# LANGUAGE: Korean (Korean)
-# Korean translations for Deviot Plugin.
-# Copyright (C) 2015-2016 GEPD
+# LANGUAGE: 中文(简体) (Chinese(Simplified))
+# translations for Deviot Plugin.
+# Copyright (C) 2015-2016
 # This file is distributed under the same license as the Deviot Plugin.
-# Translator: gro
+# Translator: Steve Chekblain
+# 
+# Use this file to create your own language file, once you do it
+# save it in the ISO 639-1 format (two letters) and with the extension .lang
 
 # Setup Process
 
 msgid "deviot_need_python"
-msgstr "Deviot이 동작하려면 Python 2.7이 필요합니다, 다운로드 해서 설치해주세요"
+msgstr "Deviot 依赖于 Python, 请安装 Python 2.7"
 
 msgid "button_download_python"
-msgstr "Python 다운로드하기"
+msgstr "下载 Python"
 
 msgid "deviot_setup{0}"
-msgstr "[ Deviot {0} ] 설정\n"
+msgstr "[ Deviot {0} ] 初始化\n"
 
 msgid "pio_is_installed{0}"
-msgstr "{0} PlatformIO가 설치되었습니다, 이제 Deviot을 사용하실 수 있어요!"
+msgstr "{0} PlatformIO 已安装在您的系统, 您现在已可以开始使用 Deviot!"
 
 msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO가 설치되지 않았습니다\n설치 준비중입니다, 시간이 좀 걸릴 수 있으니 조금 기다려 주세요.\n"
+msgstr "{0} PlatformIO 未安装\n正在安装, 请稍候...\n"
 
 msgid "downloading_files{0}"
-msgstr "{0} 필요한 파일들을 다운로드합니다...\n"
+msgstr "{0} 正在下载必要文件...\n"
 
 msgid "error_downloading_files{0}"
-msgstr "{0} 필요한 파일들을 다운로드 중에 오류가 발생했습니다...\n"
+msgstr "{0} 下载出错!\n"
 
 msgid "error_saving_files{0}"
-msgstr "{0} 필요한 파일들을 저장하는 중에 오류가 발생했습니다...\n"
+msgstr "{0} 文件无法保存\n"
 
 msgid "extracting_files{0}"
-msgstr "{0} 압축 해제 중입니다...\n"
+msgstr "{0} 正在解压缩文件...\n"
 
 msgid "installing_pio{0}"
-msgstr "{0} PlatformIO를 설치합니다...\n"
+msgstr "{0} 正在安装 PlatformIO...\n"
 
 msgid "uninstall_old_pio{0}"
 msgstr "{0} Uninstalling current version...\n"
@@ -46,10 +49,10 @@ msgid "installing_stable_pio{0}"
 msgstr "{0} Installing 'stable' PlatformIO version...\n"
 
 msgid "setup_finished{0}"
-msgstr "{0} 설치가 끝났습니다, 이제 Deviot을 사용하실 수 있어요!"
+msgstr "{0} 安装完成, 您现在已可以开始使用 Deviot!\n"
 
 msgid "searching_pio_updates"
-msgstr "PlatformIO 업그레이드를 확인합니다...\n\n"
+msgstr "查找 PlatformIO 更新...\n\n"
 
 msgid "new_pio_update{0}{1}"
 msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
@@ -60,139 +63,136 @@ msgstr "Update Now"
 # Menu
 
 msgid "menu_new_sketch"
-msgstr "새로운 스케치"
+msgstr "新建工程"
 
 msgid "menu_select_boards"
-msgstr "보드 선택"
+msgstr "选择开发板"
 
 msgid "menu_select_env"
-msgstr "프로세서 선택"
+msgstr "选择开发环境"
 
 msgid "menu_search_lib"
-msgstr "라이브러리 검색하기"
+msgstr "查找库"
 
 msgid "menu_remove_lib"
-msgstr "라이브러리 삭제하기"
+msgstr "移除库"
 
 msgid "menu_import_library"
-msgstr "라이브러리 가져오기"
+msgstr "导入库"
 
 msgid "menu_not_libraries"
 msgstr "Not Libraries Availables"
 
 msgid "menu_library_examples"
-msgstr "예제"
+msgstr "示例"
 
 msgid "menu_not_examples"
 msgstr "Not Examples Availables"
 
 msgid "menu_option_lib"
-msgstr "라이브러리 설정"
+msgstr "库选项"
 
 msgid "menu_open_lib_folder"
-msgstr "라이브러리 폴더 열기"
+msgstr "打开库文件夹"
 
 msgid "menu_change_user_lib_path"
-msgstr "사용자 라이브러리 폴더 경로 바꾸기"
+msgstr "更改库文件目录"
 
 msgid "menu_build"
-msgstr "빌드"
+msgstr "生成"
 
 msgid "menu_upload"
-msgstr "업로드"
+msgstr "上传"
 
 msgid "menu_clean"
-msgstr "클린"
+msgstr "清理生成文件"
 
 msgid "menu_open_ini_file"
 msgstr "Open Build Config File"
 
 msgid "menu_hide_console"
-msgstr "Deviot 콘솔 숨김"
-
-msgid "menu_show_console"
-msgstr "Show Deviot Console"
+msgstr "隐藏 Deviot 控制台"
 
 msgid "menu_serial_ports"
-msgstr "시리얼 포트"
+msgstr "选择串口"
 
 msgid "menu_auth_change"
 msgstr "Change OTA Password"
 
 msgid "menu_none_serial_mdns"
-msgstr "None serial port or mDNS service available"
+msgstr "None serial port or mDNS services available"
 
 msgid "menu_add_ip"
-msgstr "IP 추가하기"
+msgstr "手动添加"
 
 msgid "menu_monitor_serial"
-msgstr "시리얼 모니터"
+msgstr "串口监视器"
 
 msgid "menu_run"
-msgstr "실행하기"
+msgstr "运行"
 
 msgid "menu_send"
-msgstr "전송하기"
+msgstr "发送"
 
 msgid "menu_deviot_output"
 msgstr "Output in Deviot Console"
 
 msgid "menu_auto_scroll"
-msgstr "자동-스크롤"
+msgstr "自动滚屏"
 
 msgid "menu_baudrate"
-msgstr "통신 속도"
+msgstr "波特率"
 
 msgid "menu_line_ending"
-msgstr "줄넘김"
+msgstr "结尾字符"
 
 msgid "menu_none"
-msgstr "없음"
+msgstr "无"
 
 msgid "menu_new_line"
-msgstr "New Line"
+msgstr "行结束符"
 
 msgid "menu_cr"
-msgstr "Carriage Return"
+msgstr "回车"
 
 msgid "menu_nl_cr"
-msgstr "NL & CR 모두"
+msgstr "NL & CR"
 
 msgid "menu_display_mode"
-msgstr "표시 형식"
+msgstr "显示模式"
 
 msgid "menu_text"
-msgstr "Text"
+msgstr "文本"
 
 msgid "menu_option"
-msgstr "환경설정"
+msgstr "选项"
 
 msgid "menu_upgrade_pio"
-msgstr "PlatformIO 업그레이드"
-
-msgid "menu_update_board_list"
-msgstr "보드 목록 업데이트"
+msgstr "升级 PlatformIO"
 
 msgid "menu_developer_pio"
 msgstr "Use Development Pio Version"
 
+msgid "menu_update_board_list"
+msgstr "升级开发板列表"
+
 msgid "menu_show_verbose"
-msgstr "빌드 시 모든 메시지 보임"
+msgstr "显示详细编译器输出"
 
 msgid "menu_remove_user_files"
-msgstr "유저 선택 설정 파일 삭제"
+msgstr "移除参数文件"
 
 msgid "menu_keep_temp_files"
-msgstr "Temp 파일 유지"
+msgstr "保留临时文件"
 
 msgid "menu_open_build_folder"
-msgstr "빌드 폴더 열기"
+msgstr "打开生成文件夹"
 
 msgid "menu_change_build_folder"
-msgstr "빌드 폴더 변경하기"
+msgstr "更改生成文件夹"
 
 msgid "menu_use_cpp_new"
-msgstr "새 스케치를 CPP File로 생성"
+msgstr "为新文件使用C++格式"
 
 msgid "menu_always_native"
 msgstr "Use PlatformIO Structure"
@@ -204,19 +204,19 @@ msgid "menu_remove_default_path"
 msgstr "Remove Default Path"
 
 msgid "menu_languages"
-msgstr "언어"
+msgstr "语言 (Languages)"
 
 msgid "menu_donate_deviot"
-msgstr "❤ 기부하기"
+msgstr "❤ 捐赠"
 
 msgid "menu_about"
-msgstr "도움말"
+msgstr "关于"
 
 msgid "menu_about_deviot"
-msgstr "Deviot에 관하여"
+msgstr "关于 Deviot"
 
 msgid "menu_about_pio"
-msgstr "PlatformIO에 관하여"
+msgstr "关于 PlatformIO"
 
 
 # Mensajes y errores
@@ -225,37 +225,37 @@ msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
 msgid "checking_pio_updates"
-msgstr "PlatformIO 업데이트 확인중...\n"
+msgstr "查找 PlatformIO 更新...\n"
 
 msgid "error_pio_updates"
-msgstr "PlatformIO를 업데이트하는 중 오류가 발생했습니다\n"
+msgstr "PlatformIO 更新失败\n"
 
 msgid "pio_up_date{0}"
-msgstr "PlatformIO가 최신 버젼이네요 ({0})\n"
+msgstr "PlatformIO 已是最新版本 ({0})\n"
 
 msgid "pio_new_updated_installed{0}"
-msgstr "새 버젼을 찾아서 설치했습니다 ({0})\n"
+msgstr "新版本已安装 ({0})\n"
 
 msgid "download_board_list"
-msgstr "보드 목록 다운로드중\n"
+msgstr "下载开发板列表\n"
 
 msgid "list_updated"
-msgstr "목록 갱신 완료!\n"
+msgstr "开发板列表已更新!\n"
 
 msgid "caption_new_sketch"
-msgstr "새 스케치에 이름을 지어주세요:"
+msgstr "新工程名:"
 
 msgid "updating_board_list"
-msgstr "보드 목록 업데이트"
+msgstr "正在更新开发板列表"
 
 msgid "not_empty_sketch_{0}"
-msgstr "{0} 빈 스케치라서 업로드할 수 없네요\n"
+msgstr "{0} 无法上传空工程\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} 파일은 업로드할 수 없습니다\n"
+msgstr "{0} 无效上传文件\n"
 
 msgid "not_iot_{0}{1}"
-msgstr "{0} {1}은(는) IoT 파일이 아닙니다\n"
+msgstr "{0} {1} 不是 IoT 项目\n"
 
 msgid "select_board_list"
 msgstr "Select a Board From The List"
@@ -267,67 +267,67 @@ msgid "select_port_list"
 msgstr "Select a Port From The List"
 
 msgid "none_board_sel_{0}"
-msgstr "{0} 보드가 선택되지 않았어요\n"
+msgstr "{0} 未选择开发板\n"
 
 msgid "init_project_{0}"
-msgstr "{0} 프로젝트를 초기화합니다 | "
+msgstr "{0} 初始化项目 | "
 
 msgid "built_project_{0}"
-msgstr "{0} 프로젝트를 빌드합니다 | 진행중...\n"
+msgstr "{0} 生成项目 | 正在处理...\n"
 
 msgid "none_port_select_{0}"
-msgstr "{0} 시리얼 포트가 선택되지 않았어요\n"
+msgstr "{0} 未选择串口\n"
 
 msgid "none_env_select_{0}"
-msgstr "{0} 환경이 선택되지 않았어요\n"
+msgstr "{0} 未选择开发环境\n"
 
 msgid "error_installing_env_{0}"
-msgstr "{0} virtualenv 설치 오류\n"
+msgstr "{0} virtualenv 安装错误\n"
 
 msgid "error_making_env_{0}"
-msgstr "{0} virtualenv 생성 오류\n"
+msgstr "{0} virtualenv 创建错误\n"
 
 msgid "error_installing_pio_{0}"
-msgstr "{0} PlatformIO 설치 오류\n"
+msgstr "{0} PlatformIO 安装错误\n"
 
 msgid "uploading_firmware_{0}"
-msgstr "{0} 펌웨어 업로드중 | "
+msgstr "{0} 上传固件 | "
 
 msgid "clean_built_files__{0}"
-msgstr "{0} 빌드 파일 청소중 | "
+msgstr "{0} 清理生成文件 | "
 
 msgid "success_took_{1}"
-msgstr "SUCCESS | {1}초 걸렸어요\n"
+msgstr "成功 | 总时间 {1}s\n"
 
 msgid "success_took_{0}{1}"
-msgstr "{0} SUCCESS | {1}초 걸렸어요\n"
+msgstr "{0} 成功 | 总时间 {1}s\n"
 
 msgid "success_warnings_took__{0}{1}"
-msgstr "{0} SUCCESS 되었지만 WARNING이 있어요 | {1}초 걸렸어요\n"
+msgstr "{0} 成功(有警告) | 总时间 {1}s\n"
 
 msgid "error_took_{0}{1}"
-msgstr "{0} ERROR | {1}초 걸렸어요\n"
+msgstr "{0} 错误 | 总时间 {1}s\n"
 
 msgid "continue"
-msgstr "Continue"
+msgstr "继续"
 
 msgid "confirm_del_pref"
-msgstr "이 후에, Sublime Text를 재시작해야 합니다. 계속 하시겠습니다?"
+msgstr "将重启 Sublime Text. 确定吗?"
 
 msgid "success"
-msgstr "성공"
+msgstr "成功"
 
 msgid "error"
-msgstr "실패"
+msgstr "错误"
 
 msgid "success_warnings"
-msgstr "Success with warning(s)"
+msgstr "成功(有警告)"
 
 msgid "processing"
-msgstr "Processing"
+msgstr "处理中"
 
 msgid "done"
-msgstr "완료"
+msgstr "完毕"
 
 msgid "restart_deviot"
 msgstr "This action required to restart Sublime Text. Do you want to continue?"
@@ -344,71 +344,72 @@ msgstr "Select a Library"
 msgid "select_example"
 msgstr "Select an Example"
 
+
 # Libraries
 
 
 msgid "search_query"
-msgstr "찾을 쿼리:"
+msgstr "查找主题:"
 
 msgid "add_ip_caption"
-msgstr "Write the IP Address:"
+msgstr "IP 地址:"
 
 msgid "select_cur_dir_{0}"
-msgstr "Select Current Dir ({0})"
+msgstr "选择当前目录 ({0})"
 
 msgid "installing_lib_{0}{1}"
-msgstr "{0} 라이브러리 {1} 설치중 | "
+msgstr "{0} 安装库 {1} | "
 
 msgid "uninstalling_lib_{0}{1}"
-msgstr "{0} 라이브러리 {1} 삭제중 | "
+msgstr "{0} 卸载库 {1} | "
 
 msgid "download_lib"
-msgstr "다운로드중...\n"
+msgstr "下载中...\n"
 
 msgid "searching"
-msgstr "검색중"
+msgstr "查找中"
 
 msgid "installing"
-msgstr "설치중"
+msgstr "安装中"
 
 msgid "install_package_{0}"
-msgstr "\n{0} package 설치중: "
+msgstr "\n安装 {0} 扩展包: "
 
 msgid "already_installed{0}"
-msgstr "{0}이(가) 이미 설치되어있네요\n"
+msgstr "{0} 已安装\n"
 
 msgid "downloading_package{0}"
-msgstr "package {0}을(를) 다운로드중\n\n시간이 좀 걸릴 수 있으니, 조금 기다려 주세요.\n"
+msgstr "正在下载扩展包 {0}\n\n请稍候...\n"
 
 msgid "unpacking"
-msgstr "Unpacking...\n"
+msgstr "正在解压缩文件...\n"
 
 msgid "download_dependece"
-msgstr "Downloading dependence\n"
+msgstr "下载依赖文件\n"
 
 msgid "preparing_list"
-msgstr "Preparing List"
+msgstr "准备列表"
 
 msgid "removing"
-msgstr "삭제중"
+msgstr "正在移除"
 
 msgid "none_lib_found"
-msgstr "라이브러리를 찾을 수 없습니다"
+msgstr "找不到库"
 
 msgid "none_lib_installed"
-msgstr "라이브러리가 설치되지 않았습니다"
+msgstr "未安装任何库"
 
 
 # Serial Monitor
 
 msgid "serial_port_used_{0}"
-msgstr "시리얼 포트 {0}이(가) 이미 점유되어 있습니다. 해당 포트를 점유하고 있는 프로그램을 종료해 보세요.\n"
+msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
 
 msgid "send"
-msgstr "전송:"
+msgstr "Send:"
 
 msgid "sended_{0}"
-msgstr "\n[전송완료] {0}\n"
+msgstr "\n[SENDED] {0}\n"
 
 # Auth OTA
 

@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import os
 import glob
-import codecs
 
 
 class Dir(object):

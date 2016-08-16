@@ -9,20 +9,10 @@ from __future__ import unicode_literals
 import threading
 import sublime
 import time
+import queue
 
-try:
-    from . import Tools
-    from .I18n import I18n
-except:
-    from libs import Tools
-    from libs.I18n import I18n
+from .I18n import I18n
 
-python_version = Tools.getPythonVersion()
-
-if python_version < 3:
-    import Queue as queue
-else:
-    import queue
 
 _ = I18n().translate
 
@@ -79,31 +69,38 @@ class Console:
     Creates the user console to show different messages.
     """
 
-    def __init__(self, window, name='deviot_console'):
-        self.name = name
+    def __init__(self, window=False, color=True, monitor=False):
+        from .Preferences import Preferences
         self.window = window
+        self.monitor = monitor
+        if(not window):
+            self.window = sublime.active_window()
+        self.panel = self.window.create_output_panel('exec')
 
-        if python_version < 3:
-            self.panel = self.window.get_output_panel(self.name)
-        else:
-            self.panel = self.window.create_output_panel(self.name)
-
-        self.panel.set_name(self.name)
+        if(not color or monitor):
+            self.panel.set_syntax_file(
+                "Packages/Text/Plain text.tmLanguage")
+            return
+        self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
+        self.panel.set_name('exec')
 
     def printScreen(self, text):
         sublime.set_timeout(lambda: self.println(text), 0)
 
     def println(self, text):
         if(len(text)):
-            panel_name = 'output.' + self.name
-            self.window.run_command("show_panel", {"panel": panel_name})
+            from .Preferences import Preferences
+            view = self.window.find_output_panel('exec')
+            if(view.size() < 1):
+                self.window.run_command("show_panel", {"panel": "output.exec"})
             self.panel.set_read_only(False)
-            if(python_version < 3):
-                edit = self.panel.begin_edit()
-                self.panel.insert(edit, self.panel.size(), text)
-                self.panel.end_edit(edit)
-            else:
-                self.panel.run_command("append", {"characters": text})
+            self.panel.run_command("append", {"characters": text})
+
+            # Preferences to auto-scroll
+            auto_scroll = True if not self.monitor else Preferences().get('auto_scroll', True)
+            if(view.size() > 80 and auto_scroll):
+                self.panel.run_command(
+                    "move_to", {"extend": False, "to": "eof"})
             self.panel.set_read_only(True)
 
 
@@ -133,19 +130,11 @@ class MonitorView:
             from libs.Preferences import Preferences
 
         # Preferences to auto-scroll
-        auto_scroll = Preferences().get('auto_scroll', False)
-
+        auto_scroll = Preferences().get('auto_scroll', True)
         self.view.set_read_only(False)
-        pos = self.view.size()
-        
-        if python_version < 3:
-            edit = self.view.begin_edit()           
-            self.view.insert(edit, pos, text)
-            self.view.end_edit(edit)
-        else:
-            if(auto_scroll):
-                self.view.show(pos)
-            self.view.run_command("append", {"characters": text})
+        self.view.run_command("append", {"characters": text})
+        if(auto_scroll):
+            self.view.run_command("move_to", {"extend": False, "to": "eof"})
         self.view.set_read_only(True)
 
 
