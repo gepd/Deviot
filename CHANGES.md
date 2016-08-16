@@ -4,7 +4,7 @@
 * New Programmer menu option
 * New colors in Deviot Console
 * New checks for pio updates automatically and warns to the user
-* New `Select Board`, `Select Environment`, `Serial Port` menu options are shown with quick panel instead of menu list
+* New `Select Board`, `Select Environment`, `Serial Port`, `Import Library` and `Examples` menu options are shown with quick panel instead of menu list
 * New Asks for board, environment or serial port instead of show an error
 * New context menu options (shortcuts)
 * New Deviot parle Français
