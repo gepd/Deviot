@@ -9,49 +9,49 @@
 #### - Consola de Salida Coloreada
 Más legibilidad para leer los errores en tu código
 
-![Consola Coloreada](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/colored_console.png?raw=true)
+![Consola Coloreada](https://github.com/gepd/Deviot/blob/master/Docs/images/colored_console.png?raw=true)
 
 #### - Quick Search
 Una forma rápida para buscar entre la lista de más de 270 tarjetas de desarollos.
 
-![Quick Search](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/quick_search.png?raw=true)
+![Quick Search](https://github.com/gepd/Deviot/blob/master/Docs/images/quick_search.png?raw=true)
 
 * [Lis completa de placas](http://platformio.org/boards)
 
 #### - Gestor de Librerías
 Busca, Instala o elimina fácilmente cualquier librería que necesites para tu proyecto
 
-![Gestor de Librerias](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/library_search.png?raw=true)
+![Gestor de Librerias](https://github.com/gepd/Deviot/blob/master/Docs/images/library_search.png?raw=true)
 
 * [Leer sobre la instalación de librerías privadas](https://github.com/gepd/Deviot/blob/master/Docs/Private_Library.md)
 
 #### - Snippets
-![Snippets](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/snippets.gif?raw=true)
+![Snippets](https://github.com/gepd/Deviot/blob/master/Docs/images/snippets.gif?raw=true)
 
 * [Todos los snippets disponibles](https://github.com/gepd/Deviot/blob/master/Docs/snippets.md)
 
 #### - OTA
 En este momento OTA (over-the-air) está disponible solo en las [plataformas de desarrollo](http://platformio.org/boards?count=15&filter%5Bplatform%5D=espressif&page=1&sorting%5Bvendor%5D=asc) `Espressif` (ESP8266)
 
-![OTA](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/ota.png?raw=true)
+![OTA](https://github.com/gepd/Deviot/blob/master/Docs/images/ota.png?raw=true)
 
 #### - PlatformIO
 - Si has usas **PlatformIO CLI** puedes compilar/usar tus sketches como siempre.
 - Si vienes desde el **IDE de Arduino/Genuino**, no te preocupes, Deviot no modificará la estructura de tus archivos.
 
-![Pio](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/platformio_structure.png?raw=true)
+![Pio](https://github.com/gepd/Deviot/blob/master/Docs/images/platformio_structure.png?raw=true)
 
 # Instalación
 
 Recuerda seleccionar `Add python.exe to Path` cuando instales python en Windows.
 
-![Instalar Python](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/win_python.gif?raw=true)
+![Instalar Python](https://github.com/gepd/Deviot/blob/master/Docs/images/win_python.gif?raw=true)
 
 * 1. [Instalar Python 2](https://www.python.org/downloads/)
 * 2. Usando [package control](https://packagecontrol.io/installation), instala el paquete llamado `Deviot` desde la lista.
 * 3. Espera hasta que el plugin esté completamente instalado.
 
-![Instalar Deviot](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/deviot_install_.gif?raw=true)
+![Instalar Deviot](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot_install_.gif?raw=true)
 
 
 ## - Usar el plugin
@@ -60,7 +60,7 @@ Recuerda seleccionar `Add python.exe to Path` cuando instales python en Windows.
 2. Compila o sube tu código (Tendrás que seleccionar tus preferencias de compilación/subida)
 3. ¡Listo!
 
-![Deviot Preview](https://github.com/gepd/Deviot/blob/feature/v1.2.0/Docs/images/deviot1.gif?raw=true)
+![Deviot Preview](https://github.com/gepd/Deviot/blob/master/Docs/images/deviot1.gif?raw=true)
 
 
 ## - Idiomas
