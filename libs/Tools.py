@@ -12,11 +12,7 @@ import glob
 import locale
 import sublime
 
-try:
-    from . import __version__, __title__
-except:
-    import __version__
-    import __title__
+from . import __version__, __title__
 
 H_EXTS = ['.h']
 include = r'^\s*#include\s*[<"](\S+)[">]'
@@ -65,34 +61,29 @@ def getFileNameFromPath(path, ext=True):
     return file_name
 
 
-def isIOTFile(view):
+def isIOTFile(path):
     '''
     Check if the file in the current view of ST is an allowed
     IoT file, the files are specified in the exts variable.
-
-    Arguments:  view {st object} -- stores many info related with ST
     '''
     exts = ['ino', 'pde', 'cpp', 'c', '.S']
 
-    file_path = getPathFromView(view)
-
-    if file_path and file_path.split('.')[-1] in exts:
+    if path and path.split('.')[-1] in exts:
         return True
     return False
 
 
-def setStatus(view, text=False, erase_time=0, key=False):
+def setStatus(text=False, erase_time=0, key=False):
     '''
     Sets the info to show in the status bar of Sublime Text.
     This info is showing only when the working file is considered IoT
 
     Arguments: view {st object} -- stores many info related with ST
     '''
+    window = sublime.active_window()
+    view = window.active_view()
 
-    if(not view):
-        return
-
-    is_iot = isIOTFile(view)
+    is_iot = isIOTFile(view.file_name())
 
     if(key and is_iot):
         view.set_status(key, text)
@@ -100,10 +91,7 @@ def setStatus(view, text=False, erase_time=0, key=False):
     info = []
     if(is_iot and not erase_time):
 
-        try:
-            from .Preferences import Preferences
-        except:
-            from libs.Preferences import Preferences
+        from .Preferences import Preferences
 
         pio_version = Preferences().get('pio_version', 0)
 
@@ -119,17 +107,14 @@ def setStatus(view, text=False, erase_time=0, key=False):
         sublime.set_timeout(cleanStatus, erase_time)
 
 
-def userPreferencesStatus(view):
+def userPreferencesStatus():
     '''
     Shows the COM port and the environment selected for the user
 
     Arguments: view {st object} -- stores many info related with ST
     '''
-    try:
-        from .Preferences import Preferences
-    except:
-        from libs.Preferences import Preferences
-    pass
+    from .Preferences import Preferences
+
     native = Preferences().get('native', False)
 
     # Check for environment
@@ -138,12 +123,12 @@ def userPreferencesStatus(view):
     else:
         env = Preferences().get('env_selected', False)
     if env:
-        setStatus(view, env.upper(), key='_deviot_env')
+        setStatus(env.upper(), key='_deviot_env')
 
     # check for port
-    env = Preferences().get('id_port', False)
-    if env:
-        setStatus(view, env, key='_deviot_port')
+    port = Preferences().get('id_port', False)
+    if port:
+        setStatus(port.upper(), key='_deviot_port')
 
 
 def singleton(cls):
@@ -157,23 +142,6 @@ def singleton(cls):
             instances[cls] = cls(*args, **kw)
         return instances[cls]
     return _singleton
-
-
-def getOsName():
-    """
-    Gets the name of the S.O running in the system
-    """
-    name = sys.platform
-
-    if name == 'win32':
-        os_name = 'windows'
-    elif name == 'darwin':
-        os_name = 'osx'
-    elif 'linux' in name:
-        os_name = 'linux'
-    else:
-        os_name = 'other'
-    return os_name
 
 
 def getPythonVersion():
@@ -197,12 +165,8 @@ def getSystemLang():
 
 
 def createSketch(sketch_name, path):
-    try:
-        from . import Paths
-        from .Preferences import Preferences
-    except:
-        from libs import Paths
-        from libs.Preferences import Preferences
+    from . import Paths
+    from .Preferences import Preferences
 
     # file path
     sketch_path = os.path.join(path, sketch_name)
@@ -240,7 +204,7 @@ def createSketch(sketch_name, path):
 
 
 def getDefaultPaths():
-    if(getOsName() == 'windows'):
+    if(sublime.platform() == 'windows'):
         default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
     else:
         default_path = ["/usr/bin", "/usr/local/bin"]
@@ -270,22 +234,14 @@ def toggleSerialMonitor(window=None):
             windows to call or close the serial monitor
 
     """
-    try:
-        from .Serial import SerialMonitor
-        from . import Serial
-        from .Preferences import Preferences
-        from .Messages import MonitorView
-    except:
-        from libs.Serial import SerialMonitor
-        from libs import Serial
-        from libs.Preferences import Preferences
-        from libs.Messages import MonitorView
+    from .Serial import SerialMonitor
+    from . import Serial
+    from .Preferences import Preferences
 
     monitor_module = Serial
     serial_monitor = None
 
-    preferences = Preferences()
-    serial_port = preferences.get('id_port', '')
+    serial_port = Preferences().get('id_port', '')
     serial_ports = Serial.listSerialPorts()
 
     # create window and view if not exists
@@ -297,8 +253,16 @@ def toggleSerialMonitor(window=None):
             serial_monitor = monitor_module.serial_monitor_dict.get(
                 serial_port, None)
         if not serial_monitor:
-            monitor_view = MonitorView(window, serial_port)
-            serial_monitor = SerialMonitor(serial_port, monitor_view)
+            output_view = Preferences().get('deviot_output', False)
+            if(not output_view):
+                from .Messages import MonitorView
+                monitor_view = MonitorView(window, serial_port)
+                header = False
+            else:
+                from .Messages import Console
+                monitor_view = Console(window, color=False, monitor=True)
+                header = True
+            serial_monitor = SerialMonitor(serial_port, monitor_view, header)
 
         if not serial_monitor.isRunning():
             serial_monitor.start()
@@ -319,12 +283,8 @@ def sendSerialMessage(text):
         text {string}
             Text to send
     """
-    try:
-        from . import Serial
-        from .Preferences import Preferences
-    except:
-        from libs import Serial
-        from libs.Preferences import Preferences
+    from . import Serial
+    from .Preferences import Preferences
 
     monitor_module = Serial
 
@@ -337,17 +297,15 @@ def sendSerialMessage(text):
             serial_monitor.send(text)
 
 
-def closeSerialMonitors(preferences):
+def closeSerialMonitors():
     """
     Closes all the serial monitor running
 
     Arguments:
         preferences {object} -- User preferences instance
     """
-    try:
-        from . import Serial
-    except:
-        from libs import Serial
+    from . import Serial
+    from .Preferences import Preferences
 
     monitor_module = Serial
     in_use = monitor_module.serials_in_use
@@ -357,15 +315,9 @@ def closeSerialMonitors(preferences):
             cur_serial_monitor = monitor_module.serial_monitor_dict.get(
                 port, None)
             if cur_serial_monitor:
-                preferences.set('autorun_monitor', True)
+                Preferences().set('autorun_monitor', True)
                 cur_serial_monitor.stop()
             monitor_module.serials_in_use.remove(port)
-
-
-try:
-    from . import Keywords
-except:
-    from libs import Keywords
 
 
 def getKeywords():
@@ -375,10 +327,8 @@ def getKeywords():
     Returns:
         [list] -- list of object with the keywords
     """
-    try:
-        from . import Paths
-    except:
-        from libs import Paths
+    from . import Paths
+    from . import Keywords
 
     keywords = []
     keywords_dirs = Paths.getLibraryFolders()
@@ -396,12 +346,8 @@ def createCompletions():
     """
     Generate the completions file
     """
-    try:
-        from . import Paths
-        from .JSONFile import JSONFile
-    except:
-        from libs import Paths
-        from libs.JSONFile import JSONFile
+    from . import Paths
+    from .JSONFile import JSONFile
 
     keywords = getKeywords()
     keyword_ids = []
@@ -429,12 +375,8 @@ def createSyntaxFile():
     """
     Generate the syntax file based in the installed libraries
     """
-    try:
-        from . import Paths
-        from .JSONFile import JSONFile
-    except:
-        from libs import Paths
-        from libs.JSONFile import JSONFile
+    from . import Paths
+    from .JSONFile import JSONFile
 
     keywords = getKeywords()
 
@@ -544,29 +486,20 @@ def openExample(path, window):
         path {string} -- example folder
         window {object} -- window st object to open the new sketch
     """
+    if path.endswith(('.ino', '.pde')):
+        window.open_file(path)
+
     files = os.path.join(path, '*')
     files = glob.glob(files)
+
     for file in files:
-        if '.ino' in file:
+        if file.endswith(('.ino', '.pde')):
             window.open_file(file)
-
-
-def updateMenuLibs():
-    try:
-        from .Menu import Menu
-    except:
-        from libs.Menu import Menu
-
-    Menu().createLibraryImportMenu()
-    Menu().createLibraryExamplesMenu()
 
 
 def removePreferences():
     from shutil import rmtree
-    try:
-        from . import Paths
-    except:
-        from libs import Paths
+    from . import Paths
 
     plug_path = Paths.getPluginPath()
     dst = os.path.join(plug_path, 'Settings-Default', 'Main.sublime-menu')
@@ -577,3 +510,110 @@ def removePreferences():
     rmtree(user_path, ignore_errors=False)
     os.remove(main_menu)
     os.remove(dst)
+
+
+def getEnvironment():
+    from .Preferences import Preferences
+
+    # Get the environment based in the current file
+    native = Preferences().get('native', False)
+
+    if native:
+        environment = Preferences().get('native_env_selected', False)
+    else:
+        environment = Preferences().get('env_selected', False)
+
+    return environment
+
+
+def saveEnvironment(data):
+    from .Preferences import Preferences
+
+    settings = Preferences()
+
+    # Save data
+    native = settings.get('native', True)
+
+    if(native):
+        settings.set('native_env_selected', data)
+    else:
+        settings.set('env_selected', data)
+
+
+def checkBoards():
+    from .Preferences import Preferences
+
+    settings = Preferences()
+
+    enabled = settings.get('enable_menu', False)
+    if(enabled):
+        native = settings.get('native', False)
+        if(native):
+            env = settings.get('found_ini', False)
+            enabled = True if env else False
+        else:
+            env = settings.get('board_id', False)
+            enabled = True if env else False
+
+    return enabled
+
+
+def getJSONBoards(force=False):
+    from . import Paths
+    # check if json file is saved
+    data_file = Paths.getTemplateMenuPath('platformio_boards.json',
+                                          user_path=True)
+
+    if(not os.path.isfile(data_file) or force):
+        from .PlatformioCLI import PlatformioCLI
+        PlatformioCLI(feedback=False, console=False).getAPIBoards()
+
+
+def checkEnvironments():
+    from .Preferences import Preferences
+
+    settings = Preferences()
+
+    enabled = settings.get('enable_menu', False)
+    if(enabled):
+        native = settings.get('native', False)
+        if(native):
+            env = settings.get('native_env_selected', False)
+            enabled = True if env else False
+        else:
+            env = settings.get('env_selected', False)
+            enabled = True if env else False
+
+    return enabled
+
+
+def runCommand(command, cwd=None):
+    '''Commands
+
+    Run all the commands to install the plugin
+
+    Arguments:
+        command {[list]} -- [list of commands]
+
+    Keyword Arguments:
+        cwd {[str]} -- [current working dir] (default: {None})
+
+    Returns:
+        [list] -- list[0]: return code list[1]: command output
+    '''
+    import subprocess
+
+    command.append("2>&1")
+    command = ' '.join(command)
+    process = subprocess.Popen(command, stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE, cwd=cwd,
+                               universal_newlines=True, shell=True)
+
+    output = process.communicate()
+    stdout = output[0]
+    return_code = process.returncode
+
+    if(return_code > 0):
+        print(stdout)
+
+    return (return_code, stdout)

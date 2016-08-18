@@ -13,12 +13,12 @@
             {"caption": "-"},
             {
                 "caption": "menu_select_boards",
-                "id": "select_board",
-                "children":[]
+                "command": "deviot_select_board",
+                "id": "deviot_select_board"
             },{
                 "caption": "menu_select_env",
-                "id": "environment",
-                "children":[]
+                "command": "select_env",
+                "id": "environment"
             },
             {"caption": "-"},
             {
@@ -31,10 +31,12 @@
                 "command": "remove_library"
             },{
                 "caption": "menu_import_library",
-                "id": "import_library"
+                "id": "import_library",
+                "command": "import_library"
             },{
                 "caption": "menu_library_examples",
-                "id": "library_examples"
+                "id": "library_examples",
+                "command": "list_library_examples"
             },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
@@ -47,10 +49,6 @@
             },
             {"caption": "-"},
             {
-                "caption": "menu_open_ini_file",
-                "id": "open_ini_file",
-                "command": "open_ini_file"
-            },{
                 "caption": "menu_build",
                 "id": "build_sketch",
                 "command": "build_sketch"
@@ -63,15 +61,77 @@
                 "id": "clean_sketch",
                 "command": "clean_sketch"
             },{
+                "caption": "menu_open_ini_file",
+                "id": "open_ini_file",
+                "command": "open_ini_file"
+            },{
+                "caption": "menu_show_console",
+                "id": "show_console",
+                "command": "show_console"
+            },{
                 "caption": "menu_hide_console",
                 "id": "hide_console",
                 "command": "hide_console"
             },
             {"caption": "-"},
             {
+                "caption": "Programmer",
+                "id": "menu_programmer",
+                "children":
+                [
+                    {
+                        "caption": "None",
+                        "checkbox": true,
+                        "args": {"programmer": false},
+                        "command": "programmer_none"
+                    },{
+                        "caption": "AVR ISP",
+                        "checkbox": true,
+                        "args": {"programmer": "avr"},
+                        "command": "programmer_avr"
+                    },{
+                        "caption": "AVRISP mkII",
+                        "checkbox": true,
+                        "args": {"programmer": "avrmkii"},
+                        "command": "programmer_avr_mkii"
+                    },{
+                        "caption": "USBtinyISP",
+                        "checkbox": true,
+                        "args": {"programmer": "usbtyni"},
+                        "command": "programmer_usb_tyni"
+                    },{
+                        "caption": "ArduinoISP",
+                        "checkbox": true,
+                        "args": {"programmer": "arduinoisp"},
+                        "command": "programmer_arduino_isp"
+                    },{
+                        "caption": "USBasp",
+                        "checkbox": true,
+                        "args": {"programmer": "usbasp"},
+                        "command": "programmer_usbasp"
+                    },{
+                        "caption": "Parallel Programmer",
+                        "checkbox": true,
+                        "args": {"programmer": "parallel"},
+                        "command": "programmer_parallel"
+                    },{
+                        "caption": "Arduino as ISP",
+                        "checkbox": true,
+                        "args": {"programmer": "arduinoasisp"},
+                        "command": "programmer_arduino_as_isp"
+                    }
+                ]
+            },
+            {"caption": "-"},
+            {
                 "caption": "menu_serial_ports",
                 "id": "serial_ports",
-                "children":[]
+                "command": "select_port"
+            },
+            {
+                "caption": "menu_auth_change",
+                "id": "auth_change",
+                "command": "auth_change"
             },
             {
                 "caption": "menu_monitor_serial",
@@ -88,6 +148,11 @@
                         "caption": "menu_send",
                         "id": "send_message_serial",
                         "command": "send_message_serial"
+                    },
+                    {
+                        "caption": "menu_deviot_output",
+                        "id": "deviot_output",
+                        "command": "deviot_output"
                     },
                     {
                         "caption": "menu_auto_scroll",
@@ -254,11 +319,12 @@
                                     "caption":"menu_upgrade_pio",
                                     "command":"upgrade_pio"
                                 },
-                                {"caption": "-"},
                                 {
-                                    "caption":"menu_update_board_list",
-                                    "command":"update_board_list"
+                                    "caption":"menu_developer_pio",
+                                    "checkbox":true,
+                                    "command":"developer_pio"
                                 },
+                                {"caption": "-"},
                                 {
                                     "caption":"menu_show_verbose",
                                     "checkbox":true,
@@ -285,6 +351,10 @@
                                 {
                                     "caption":"menu_use_cpp_new",
                                     "command":"use_cpp_template"
+                                },
+                                {
+                                    "caption":"menu_always_native",
+                                    "command":"use_always_native"
                                 },
                                 {"caption": "-"},
                                 {

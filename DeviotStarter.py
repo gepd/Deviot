@@ -7,40 +7,25 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import sys
 import glob
-import time
 import sublime
 import sublime_plugin
+import subprocess
 import threading
 from shutil import rmtree
 
-try:
-    from .libs import Paths, Tools
-    from .libs.Menu import Menu
-    from .libs.Messages import Console
-    from .libs.PlatformioCLI import PlatformioCLI
-    from .libs.Preferences import Preferences
-    from .libs.QuickPanel import quickPanel
-    from .libs import Libraries
-    from .libs.I18n import I18n
-    from .libs import Serial
-    from .libs import Messages
-    from .libs.Progress import ThreadProgress
-    from .libs.Install import PioInstall
-except:
-    from libs import Paths
-    from libs import Tools
-    from libs.Menu import Menu
-    from libs.Messages import Console
-    from libs.PlatformioCLI import PlatformioCLI
-    from libs.Preferences import Preferences
-    from libs.QuickPanel import quickPanel
-    from libs import Libraries
-    from libs.I18n import I18n
-    from libs import Serial
-    from libs import Messages
-    from libs.Progress import ThreadProgress
-    from libs.Install import PioInstall
+from .libs import Paths, Tools
+from .libs.Menu import Menu
+from .libs.PlatformioCLI import PlatformioCLI
+from .libs.Preferences import Preferences
+from .libs.QuickPanel import quickPanel
+from .libs import Libraries
+from .libs.I18n import I18n
+from .libs import Serial
+from .libs import Messages
+from .libs.Install import PioInstall
+from .libs.Progress import ThreadProgress
 
 _ = I18n().translate
 
@@ -48,22 +33,12 @@ package_name = 'Deviot'
 
 
 def plugin_loaded():
-    protected = Preferences().get('protected')
-    if(not protected):
-        thread = threading.Thread(target=PioInstall().checkPio)
-        thread.start()
-        ThreadProgress(thread, _('processing'), _('done'))
-    else:
-        # creating files
-        Tools.createCompletions()
-        Tools.createSyntaxFile()
-        Menu().createMainMenu()
-        Menu().createLibraryImportMenu()
-        Menu().createLibraryExamplesMenu()
-
-        # Run serial port listener
-        Serial_Lib = Serial.SerialListener(func=Menu().createSerialPortsMenu)
-        Serial_Lib.start()
+    window = sublime.active_window()
+    thread = threading.Thread(target=PioInstall(window).checkPio)
+    thread.start()
+    ThreadProgress(thread, _('processing'), _('done'))
+    Tools.setStatus()
+    Tools.userPreferencesStatus()
 
 
 def plugin_unloaded():
@@ -93,9 +68,9 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(view, command=False).checkInitFile()
-        Tools.setStatus(view)
-        Tools.userPreferencesStatus(view)
+        PlatformioCLI(feedback=False, console=False).checkInitFile()
+        Tools.setStatus()
+        Tools.userPreferencesStatus()
 
     def on_close(self, view):
         """
@@ -134,9 +109,6 @@ class DeviotListener(sublime_plugin.EventListener):
                 rmtree(tmp_path, ignore_errors=False)
                 Preferences().set('builded_sketch', False)
 
-        # Empty enviroment menu
-        Menu().createEnvironmentMenu(empty=True)
-
 
 class DeviotNewSketchCommand(sublime_plugin.WindowCommand):
 
@@ -155,23 +127,18 @@ class DeviotSelectBoardCommand(sublime_plugin.WindowCommand):
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
 
-    def run(self, board_id):
-        native = Preferences().get('native', False)
-        remove = Preferences().boardSelected(board_id)
-        if(remove):
-            PlatformioCLI().removeEnvFromFile(board_id)
-        if(native and not remove):
-            view = self.window.active_view()
-            console_name = 'Deviot|Init' + str(time.time())
-            console = Console(view.window(), name=console_name)
-            Preferences().set('init_queue', board_id)
-            PlatformioCLI(view, console).openInThread('init', chosen=board_id)
-        Menu().createEnvironmentMenu()
+    def run(self):
+        self.MENU_LIST = Menu().createBoardsMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
 
-    def is_checked(self, board_id):
-        check = Preferences().checkBoard(board_id)
-        return check
+    def on_done(self, selected):
+        if(selected != -1):
+            board_id = self.MENU_LIST[selected][1].split(' | ')[1]
+            Preferences().boardSelected(board_id)
+            Tools.saveEnvironment(board_id)
+            Tools.userPreferencesStatus()
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -184,29 +151,20 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
 
-    def run(self, board_id):
-        native = Preferences().get('native', False)
+    def run(self):
+        self.MENU_LIST = Menu().getEnvironments()
+        quickPanel(self.MENU_LIST[0], self.on_done, index=self.MENU_LIST[1])
 
-        key = 'env_selected'
-        if(native):
-            key = 'native_env_selected'
-
-        Preferences().set(key, board_id)
-        Tools.userPreferencesStatus(self.window.active_view())
-
-    def is_checked(self, board_id):
-        native = Preferences().get('native', False)
-
-        key = 'env_selected'
-        if(native):
-            key = 'native_env_selected'
-
-        check = Preferences().get(key, False)
-        return board_id == check
+    def on_done(self, selected):
+        if(selected != -1):
+            env = self.MENU_LIST[0][selected][1].split(' | ')[1]
+            Tools.saveEnvironment(env)
+            Tools.userPreferencesStatus()
 
     def is_enabled(self):
-        return Preferences().get('enable_menu', False)
+        return Tools.checkBoards()
 
 
 class SearchLibraryCommand(sublime_plugin.WindowCommand):
@@ -233,8 +191,8 @@ class ShowResultsCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        choose = Libraries.Libraries().getList()
-        quickPanel(self.window, choose, self.on_done)
+        MENU_LIST = Libraries.Libraries().getList()
+        quickPanel(MENU_LIST, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
@@ -260,12 +218,32 @@ class ShowRemoveListCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        choose = Libraries.Libraries(self.window).installedList()
-        quickPanel(self.window, choose, self.on_done)
+        choose = Libraries.Libraries(
+            self.window,
+            feedback=False).installedList()
+        quickPanel(choose, self.on_done)
 
     def on_done(self, result):
         if(result != -1):
             Libraries.openInThread('remove', self.window, result)
+
+
+class ImportLibraryCommand(sublime_plugin.WindowCommand):
+    """
+    Shows the list with the availables libraries in deviot using quick panel
+
+    Extends: sublime_plugin.WindowCommand
+    """
+    MENU_LIST = []
+
+    def run(self):
+        self.MENU_LIST = Menu().createLibraryImportMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
+
+    def on_done(self, selection):
+        if(selection > 0):
+            path = self.MENU_LIST[selection][1]
+            self.window.run_command('add_library', {'path': path})
 
 
 class AddLibraryCommand(sublime_plugin.TextCommand):
@@ -275,19 +253,54 @@ class AddLibraryCommand(sublime_plugin.TextCommand):
     Extends: sublime_plugin.TextCommand
     """
 
-    def run(self, edit, library_path):
-        Tools.addLibraryToSketch(self.view, edit, library_path)
+    def run(self, edit, path):
+        Tools.addLibraryToSketch(self.view, edit, path)
 
 
-class OpenExampleCommand(sublime_plugin.WindowCommand):
+class ListLibraryExamplesCommand(sublime_plugin.WindowCommand):
     """
-    Open the selected example from the deviot menu
+    Shows the list with examples of the availables libraries in
+    deviot using quick panel
 
     Extends: sublime_plugin.WindowCommand
     """
+    MENU_LIST = []
 
-    def run(self, example_path):
-        Tools.openExample(example_path, self.window)
+    def run(self):
+        self.MENU_LIST = Menu().createLibraryExamplesMenu()
+        quickPanel(self.MENU_LIST, self.on_done)
+
+    def on_done(self, selection):
+        if(selection > 0):
+            path = self.MENU_LIST[selection][1]
+            self.window.run_command('list_examples', {'path': path})
+
+
+class ListExamplesCommand(sublime_plugin.WindowCommand):
+    """
+    Shows the list with the available examples in the library
+
+    Extends: sublime_plugin.WindowCommand
+    """
+    MENU_LIST = []
+
+    def run(self, path):
+
+        self.MENU_LIST = [[_("select_example")]]
+
+        file_examples = os.path.join(path, '*')
+        file_examples = glob.glob(file_examples)
+
+        for file in file_examples:
+            caption = os.path.basename(file)
+            self.MENU_LIST.append([caption, file])
+
+        quickPanel(self.MENU_LIST, self.on_done)
+
+    def on_done(self, selection):
+        if(selection > 0):
+            path = self.MENU_LIST[selection][1]
+            Tools.openExample(path, self.window)
 
 
 class OpenLibraryFolderCommand(sublime_plugin.TextCommand):
@@ -303,18 +316,6 @@ class OpenLibraryFolderCommand(sublime_plugin.TextCommand):
         sublime.run_command('open_url', {'url': url})
 
 
-class OpenIniFileCommand(sublime_plugin.WindowCommand):
-
-    def run(self):
-        views = []
-        path = Preferences().get('ini_path', False)
-        path = os.path.join(path, 'platformio.ini')
-        view = self.window.open_file(path)
-        views.append(view)
-        if views:
-            self.window.focus_view(views[0])
-
-
 class BuildSketchCommand(sublime_plugin.TextCommand):
     """
     Trigger a method to build the files in the current
@@ -325,10 +326,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Build' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('build')
+        PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -344,10 +342,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Upload' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('upload')
+        PlatformioCLI().openInThread('upload')
 
     def is_enabled(self):
         return Preferences().get('enable_menu')
@@ -362,18 +357,37 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Clean' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console).openInThread('clean')
+        PlatformioCLI().openInThread('clean')
 
     def is_enabled(self):
-        is_enabled = Preferences().get('builded_sketch')
-
-        if(not Preferences().get('enable_menu', False)):
-            is_enabled = False
-
+        is_enabled = Preferences().get('enable_menu', False)
+        if(is_enabled):
+            view = sublime.active_window().active_view()
+            is_enabled = Tools.isIOTFile(view.file_name())
         return is_enabled
+
+
+class OpenIniFileCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        view = self.window.active_view()
+        is_iot = Tools.isIOTFile(view.file_name())
+
+        if(not is_iot):
+            return
+
+        views = []
+        path = Preferences().get('ini_path', False)
+        path = os.path.join(path, 'platformio.ini')
+        view = self.window.open_file(path)
+        views.append(view)
+        if views:
+            self.window.focus_view(views[0])
+
+    def is_enabled(self):
+        view = self.window.active_view()
+        is_iot = Tools.isIOTFile(view.file_name())
+        return is_iot
 
 
 class HideConsoleCommand(sublime_plugin.WindowCommand):
@@ -387,6 +401,17 @@ class HideConsoleCommand(sublime_plugin.WindowCommand):
         self.window.run_command("hide_panel", {"panel": "output.exec"})
 
 
+class ShowConsoleCommand(sublime_plugin.WindowCommand):
+    """
+    Hide the deviot console
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.run_command("show_panel", {"panel": "output.exec"})
+
+
 class SelectPortCommand(sublime_plugin.WindowCommand):
     """
     Saves the port COM selected by the user in the
@@ -395,12 +420,111 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, id_port):
-        Preferences().set('id_port', id_port)
+    def run(self):
+        thread = threading.Thread(target=PlatformioCLI(
+            console=False, feedback=False).listSerialPorts)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
 
-    def is_checked(self, id_port):
-        saved_id_port = Preferences().get('id_port')
-        return saved_id_port == id_port
+
+class AuthChangeCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the password to use in OTA Upload
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.show_input_panel(_("pass_caption"), '',
+                                     self.on_done,
+                                     None,
+                                     None)
+
+    def on_done(self, password):
+        Preferences().set('auth', password)
+
+    def is_enabled(self):
+        return PlatformioCLI(console=False).mDNSCheck(feedback=False)
+
+
+class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+
+class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
@@ -417,7 +541,7 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
     def on_done(self, result):
         if(result != -1):
             result = (result if result != 0 else '')
-            Preferences().set('ip_port', result)
+            Preferences().set('id_port', result)
             Menu().createSerialPortsMenu()
 
 
@@ -429,11 +553,18 @@ class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
+        if(not Preferences().get('id_port', False)):
+            PlatformioCLI(feedback=False, callback=self.on_done).openInThread(
+                'ports', process=False)
+            return
+        self.on_done()
+
+    def on_done(self):
         Tools.toggleSerialMonitor(self.window)
 
     def is_checked(self):
-        monitor_module = Serial
         state = False
+        monitor_module = Serial
         serial_port = Preferences().get('id_port', '')
         if serial_port in monitor_module.serials_in_use:
             serial_monitor = monitor_module.serial_monitor_dict.get(
@@ -452,27 +583,51 @@ class SendMessageSerialCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         caption = _('send')
-        self.window.show_input_panel(caption, '', self.on_done, None, None)
+        self.window.show_input_panel(
+            caption, '', self.on_done, None, self.on_cancel)
 
     def on_done(self, text):
         if(text):
             Tools.sendSerialMessage(text)
             self.window.run_command('send_message_serial')
 
+    def on_cancel(self):
+        view = self.window.find_output_panel('exec')
+        region = sublime.Region(0, view.size())
+        src_text = view.substr(region)
+        if("Serial Monitor" in src_text):
+            self.window.run_command("show_panel", {"panel": "output.exec"})
 
-class AutoScrollMonitorCommand(sublime_plugin.WindowCommand):
+
+class DeviotOutputCommand(sublime_plugin.WindowCommand):
     """
-    The scroll goes automatically to the last line when this option is activated.
+    Select between use the deviot console as monitor serial or
+    a normal window.
 
     Extends: sublime_plugin.WindowCommand
     """
 
     def run(self):
-        keep = Preferences().get('auto_scroll', False)
+        output = Preferences().get('deviot_output', False)
+        Preferences().set('deviot_output', not output)
+
+    def is_checked(self):
+        return Preferences().get('deviot_output', False)
+
+
+class AutoScrollMonitorCommand(sublime_plugin.WindowCommand):
+    """
+    The scroll goes automatically to the last line when this option.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        keep = Preferences().get('auto_scroll', True)
         Preferences().set('auto_scroll', not keep)
 
     def is_checked(self):
-        return Preferences().get('auto_scroll', False)
+        return Preferences().get('auto_scroll', True)
 
 
 class ChooseBaudrateItemCommand(sublime_plugin.WindowCommand):
@@ -526,22 +681,21 @@ class ChooseDisplayModeItemCommand(sublime_plugin.WindowCommand):
 class UpgradePioCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        view = self.view
-        console_name = 'Deviot|Upgrade' + str(time.time())
-        console = Console(view.window(), name=console_name)
-        PlatformioCLI(view, console, install=True).openInThread('upgrade')
+        window = sublime.active_window()
+        thread = threading.Thread(target=PioInstall(window, True).checkPio)
+        thread.start()
 
 
-class UpdateBoardListCommand(sublime_plugin.WindowCommand):
-    """
-    Update the board list, extracting the info from platformIO
-    ecosystem
+class DeveloperPioCommand(sublime_plugin.TextCommand):
 
-    Extends: sublime_plugin.WindowCommand
-    """
+    def run(self, edit):
+        window = sublime.active_window()
+        thread = threading.Thread(target=PioInstall(window, True).developer)
+        thread.start()
+        ThreadProgress(thread, _('processing'), _('done'))
 
-    def run(self):
-        PlatformioCLI(install=True).openInThread('update_boards')
+    def is_checked(self):
+        return Preferences().get('developer', False)
 
 
 class ToggleVerboseCommand(sublime_plugin.WindowCommand):
@@ -604,7 +758,7 @@ class ChangeBuildFolderCommand(sublime_plugin.WindowCommand):
         Paths.selectDir(self.window, key='build_dir', func=Preferences().set)
 
 
-class UseCppTemplate(sublime_plugin.WindowCommand):
+class UseCppTemplateCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         keep = Preferences().get('use_cpp', False)
@@ -612,6 +766,16 @@ class UseCppTemplate(sublime_plugin.WindowCommand):
 
     def is_checked(self):
         return Preferences().get('use_cpp', False)
+
+
+class UseAlwaysNativeCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        keep = Preferences().get('always_native', False)
+        Preferences().set('always_native', not keep)
+
+    def is_checked(self):
+        return Preferences().get('always_native', False)
 
 
 class ChangeDefaultPathCommand(sublime_plugin.WindowCommand):
@@ -640,7 +804,13 @@ class RemoveDefaultPathCommand(sublime_plugin.WindowCommand):
 class SelectLanguageCommand(sublime_plugin.WindowCommand):
 
     def run(self, id_lang):
-        Preferences().set('id_lang', id_lang)
+        restart = sublime.ok_cancel_dialog(_('restart_deviot'),
+                                           _('continue_button'))
+
+        if(restart):
+            Preferences().set('id_lang', id_lang)
+            Preferences().set('updt_menu', True)
+            self.window.run_command('sublime_restart')
 
     def is_checked(self, id_lang):
         saved_id_lang = Preferences().get('id_lang')
@@ -688,4 +858,30 @@ class AddStatusCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit, text, erase_time):
-        Tools.setStatus(self.view, text, erase_time)
+        Tools.setStatus(text, erase_time)
+
+
+class SublimeRestartCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        if(sublime.platform() == 'windows'):
+            if sublime.version()[:1] == '3':
+                exec = os.path.join(os.getcwd(), 'sublime_text.exe')
+                cmd = 'taskkill /im sublime_text.exe /f && cmd /C "%s"' % exec
+                subprocess.call(cmd, shell=True)
+            else:
+                os.execl(sys.executable, ' ')
+        elif(sublime.platform() == 'osx'):
+            if sublime.version()[:1] == '3':
+                exec = os.path.join(os.getcwd(), 'subl')
+                cmd = 'pkill subl && "%s"' % exec
+                subprocess.call(cmd, shell=True)
+            else:
+                os.execl(os.path.join(os.getcwd(), 'subl'))
+        else:
+            if sublime.version()[:1] == '3':
+                exec = os.path.join(os.getcwd(), 'sublime_text')
+                cmd = 'pkill  \'sublime_text\' && "%s"' % exec
+                subprocess.call(cmd, shell=True)
+            else:
+                os.execl(os.path.join(os.getcwd(), 'sublime_text'))

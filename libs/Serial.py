@@ -5,57 +5,18 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-import time
 import glob
+import time
+import sublime
 import threading
 
-try:
-    from . import Tools
-    from . import pyserial
-    from . import Messages
-    from .Preferences import Preferences
-except:
-    from libs import Tools
-    from libs import pyserial
-    from libs import Messages
-    from libs.Preferences import Preferences
+from . import pyserial
+from . import Messages
+from . import Tools
+from .Preferences import Preferences
 
-if Tools.getOsName() == 'windows':
-    if Tools.getPythonVersion() < 3:
-        import _winreg as winreg
-    else:
-        import winreg
-
-
-@Tools.singleton
-class SerialListener(object):
-    """
-    Constantly checks if a port has been connected or disconnected
-    """
-
-    def __init__(self, func=None):
-        self.func = func
-        self.serial_list = []
-        self.is_alive = False
-
-    def start(self):
-        if not self.is_alive:
-            self.is_alive = True
-            listener_thread = threading.Thread(target=self.update)
-            listener_thread.start()
-        self.func()
-
-    def update(self):
-        while self.is_alive:
-            pre_serial_list = self.serial_list
-            self.serial_list = listSerialPorts()
-            if self.serial_list != pre_serial_list:
-                if self.func:
-                    self.func()
-            time.sleep(1)
-
-    def stop(self):
-        self.is_alive = False
+if(sublime.platform() == 'windows'):
+    import winreg
 
 
 serials_in_use = []
@@ -67,12 +28,15 @@ class SerialMonitor(object):
     Handle the messages sended and received from/to the serial monitor
     """
 
-    def __init__(self, serial_port, console=None):
+    def __init__(self, serial_port, console=None, header=False):
         super(SerialMonitor, self).__init__()
         self.port = serial_port
         self.serial = pyserial.Serial()
         self.serial.port = serial_port
         self.queue = Messages.MessageQueue(console)
+        self.queue.startPrint()
+        if(header):
+            self.queue.put("Serial Monitor - %s\n\n" % serial_port)
         self.Preferences = Preferences()
         self.is_alive = False
 
@@ -80,7 +44,6 @@ class SerialMonitor(object):
         return self.is_alive
 
     def start(self):
-        self.queue.startPrint()
         if not self.is_alive:
             baudrate = self.Preferences.get('baudrate', 9600)
             self.serial.baudrate = baudrate
@@ -202,10 +165,10 @@ def listSerialPorts():
     """
     List all the serial ports availables in the diffents O.S
     """
-    os_name = Tools.getOsName()
-    if os_name == "windows":
+    os_name = sublime.platform()
+    if (os_name == "windows"):
         serial_ports = listWinSerialPorts()
-    elif os_name == 'osx':
+    elif (os_name == 'osx'):
         serial_ports = listOsxSerialPorts()
     else:
         serial_ports = listLinuxSerialPorts()
@@ -260,3 +223,23 @@ def listLinuxSerialPorts():
         pattern = dev_path + dev_name
         serial_ports += glob.glob(pattern)
     return serial_ports
+
+
+def listMdnsServices():
+    import os
+    from . import Paths
+
+    executable = os.path.join(Paths.getEnvBinDir(), 'python')
+    mdns = os.path.join(Paths.getPluginPath(), 'libs', 'mDNS.py')
+
+    cmd = ['"%s"' % executable, '"%s"' % mdns]
+    out = Tools.runCommand(cmd)
+    out = out[1].replace("'", "\"")
+    out = out.split('\n')
+
+    if('ImportError: No module named zeroconf' in out):
+        from .Install import PioInstall
+        PioInstall().installDependencies('zeroconf')
+        out = listMdnsServices()
+
+    return out

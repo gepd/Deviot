@@ -15,7 +15,7 @@ msgstr "Telecharger Python"
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
 
-msgid "pio_is_installed{0}"	
+msgid "pio_is_installed{0}" 
 msgstr "{0} PlatformIO est installé, profitez de  Deviot !"
 
 msgid "pio_isn_installed{0}"
@@ -36,11 +36,26 @@ msgstr "{0} Extraction des fichiers...\n"
 msgid "installing_pio{0}"
 msgstr "{0} Installation de PlatformIO...\n"
 
+msgid "uninstall_old_pio{0}" # Translate
+msgstr "{0} Uninstalling current version...\n"
+
+msgid "installing_dev_pio{0}" # Translate
+msgstr "{0} Installing 'develop' PlatformIO version...\n"
+
+msgid "installing_stable_pio{0}" # Translate
+msgstr "{0} Installing 'stable' PlatformIO version...\n"
+
 msgid "setup_finished{0}"
 msgstr "{0} Installation terminée, profitez de Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Recherche des mise à jour de  PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}" # Translate
+msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+
+msgid "update_button" # Translate
+msgstr "Update Now"
 
 # Menu
 
@@ -62,8 +77,14 @@ msgstr "Effacer librairie"
 msgid "menu_import_library"
 msgstr "Importer Librairie"
 
+msgid "menu_not_libraries" # Translate
+msgstr "Not Libraries Availables"
+
 msgid "menu_library_examples"
 msgstr "Exemples"
+
+msgid "menu_not_examples" # Translate
+msgstr "Not Examples Availables"
 
 msgid "menu_option_lib"
 msgstr "Option de Librairie "
@@ -74,9 +95,6 @@ msgstr "Ouvrir dossier des Librairies"
 msgid "menu_change_user_lib_path"
 msgstr "Changer destination des librairies"
 
-msgid "menu_open_ini_file"
-msgstr "Ouvrir Config de compilation"
-
 msgid "menu_build"
 msgstr "Compilation"
 
@@ -86,17 +104,26 @@ msgstr "Chargement"
 msgid "menu_clean"
 msgstr "Nettoyage"
 
+msgid "menu_open_ini_file" # Translate
+msgstr "Ouvrir Config de compilation"
+
 msgid "menu_hide_console"
 msgstr "Cacher la console Deviot"
+
+msgid "menu_show_console" # Translate
+msgstr "Show Deviot Console"
 
 msgid "menu_serial_ports"
 msgstr "Port(s) serie(s)"
 
+msgid "menu_auth_change" # Translate
+msgstr "Change OTA Password"
+
+msgid "menu_none_serial_mdns" # Translate
+msgstr "None serial port or mDNS services available"
+
 msgid "menu_add_ip"
 msgstr " Ajouter IP Manuelle"
-
-msgid "menu_not_used_port"
-msgstr "Not Used"
 
 msgid "menu_monitor_serial"
 msgstr "Moniteur Serie"
@@ -106,6 +133,9 @@ msgstr "Commencer"
 
 msgid "menu_send"
 msgstr "Envoyer"
+
+msgid "menu_deviot_output" # Translate
+msgstr "Output in Deviot Console"
 
 msgid "menu_auto_scroll"
 msgstr "Défilement automatique"
@@ -143,6 +173,9 @@ msgstr "MAJ PlatformIO"
 msgid "menu_update_board_list"
 msgstr "MAJ Liste de Cartes"
 
+msgid "menu_developer_pio" # Translate
+msgstr "Use Development Pio Version"
+
 msgid "menu_show_verbose"
 msgstr "Affichage complet lors de la compilation"
 
@@ -160,6 +193,9 @@ msgstr "Changer le dossier de compilation"
 
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
+
+msgid "menu_always_native" # Translate
+msgstr "Use PlatformIO Structure"
 
 msgid "menu_change_default_path"
 msgstr "Changer le dossier par défaut"
@@ -220,6 +256,15 @@ msgstr "{0} Fichier invalide pour le chargement\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} is not a IoT File\n"
+
+msgid "select_board_list" # Translate
+msgstr "Select a Board From The List"
+
+msgid "select_env_list" # Translate
+msgstr "Select an Environment From The List"
+
+msgid "select_port_list" # Translate
+msgstr "Select a Port From The List"
 
 msgid "none_board_sel_{0}"
 msgstr "{0} Aucune carte sélectionné\n"
@@ -284,6 +329,21 @@ msgstr "En cours"
 msgid "done"
 msgstr "Exécuté"
 
+msgid "restart_deviot" # Translate
+msgstr "This action required to restart Sublime Text. Do you want to continue?"
+
+msgid "continue_button" # Translate
+msgstr "Continue"
+
+msgid "ota_error_platform" # Translate
+msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
+
+msgid "select_library"
+msgstr "Select a Library"
+
+msgid "select_example"
+msgstr "Select an Example"
+
 
 # Libraries
 
@@ -339,7 +399,6 @@ msgstr "None Library Found"
 msgid "none_lib_installed"
 msgstr "None library installed"
 
-
 # Serial Monitor
 
 msgid "serial_port_used_{0}"
@@ -350,3 +409,43 @@ msgstr "Send:"
 
 msgid "sended_{0}"
 msgstr "\n[SENDED] {0}\n"
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Password:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Starting on"
+
+msgid "upload_size"
+msgstr "Upload size"
+
+msgid "sending_invitation"
+msgstr "Sending invitation to"
+
+msgid "waiting_device"
+msgstr "Waiting for device"
+
+msgid "waiting_result"
+msgstr "Waiting for result"
+
+msgid "result"
+msgstr "Result"
+
+msgid "authentication"
+msgstr "Authentication"
+
+msgid "failed"
+msgstr "Failed"
+
+msgid "attempt"
+msgstr "attempt"
+
+msgid "of"
+msgstr "of"
+
+msgid "not_in_sync"
+msgstr "not in sync"

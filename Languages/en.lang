@@ -36,11 +36,26 @@ msgstr "{0} Extracting files...\n"
 msgid "installing_pio{0}"
 msgstr "{0} Installing PlatformIO...\n"
 
+msgid "uninstall_old_pio{0}"
+msgstr "{0} Uninstalling current version...\n"
+
+msgid "installing_dev_pio{0}"
+msgstr "{0} Installing 'develop' PlatformIO version...\n"
+
+msgid "installing_stable_pio{0}"
+msgstr "{0} Installing 'stable' PlatformIO version...\n"
+
 msgid "setup_finished{0}"
 msgstr "{0} Installation finished, now you can enjoy Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Searching PlatformIO Upgrades...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+
+msgid "update_button"
+msgstr "Update Now"
 
 # Menu
 
@@ -48,7 +63,7 @@ msgid "menu_new_sketch"
 msgstr "New Sketch"
 
 msgid "menu_select_boards"
-msgstr "Select board(s)"
+msgstr "Select board"
 
 msgid "menu_select_env"
 msgstr "Select Environment"
@@ -62,8 +77,14 @@ msgstr "Remove Library"
 msgid "menu_import_library"
 msgstr "Import Library"
 
+msgid "menu_not_libraries"
+msgstr "Not Libraries Availables"
+
 msgid "menu_library_examples"
 msgstr "Examples"
+
+msgid "menu_not_examples"
+msgstr "Not Examples Availables"
 
 msgid "menu_option_lib"
 msgstr "Library Options"
@@ -74,9 +95,6 @@ msgstr "Open Libraries Folder"
 msgid "menu_change_user_lib_path"
 msgstr "Change Folder Library Path"
 
-msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
-
 msgid "menu_build"
 msgstr "Build"
 
@@ -86,17 +104,26 @@ msgstr "Upload"
 msgid "menu_clean"
 msgstr "Clean"
 
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
 msgid "menu_hide_console"
 msgstr "Hide Deviot Console"
+
+msgid "menu_show_console"
+msgstr "Show Deviot Console"
 
 msgid "menu_serial_ports"
 msgstr "Serial Port(s)"
 
+msgid "menu_auth_change"
+msgstr "Change OTA Password"
+
+msgid "menu_none_serial_mdns"
+msgstr "None serial port or mDNS services available"
+
 msgid "menu_add_ip"
 msgstr "Add IP Manually"
-
-msgid "menu_not_used_port"
-msgstr "Not Used"
 
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
@@ -106,6 +133,9 @@ msgstr "Run"
 
 msgid "menu_send"
 msgstr "Send"
+
+msgid "menu_deviot_output"
+msgstr "Output in Deviot Console"
 
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
@@ -140,6 +170,9 @@ msgstr "Options"
 msgid "menu_upgrade_pio"
 msgstr "Upgrade PlatformIO"
 
+msgid "menu_developer_pio"
+msgstr "Use Development Pio Version"
+
 msgid "menu_update_board_list"
 msgstr "Update Board List"
 
@@ -160,6 +193,9 @@ msgstr "Change Build Folder"
 
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
+
+msgid "menu_always_native"
+msgstr "Use PlatformIO Structure"
 
 msgid "menu_change_default_path"
 msgstr "Change Default Path"
@@ -216,10 +252,19 @@ msgid "not_empty_sketch_{0}"
 msgstr "{0} Isn't possible to upload an empty sketch\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} File not valid to upload\n"
+msgstr "{0} File not valid to process\n"
 
 msgid "not_iot_{0}{1}"
 msgstr "{0} {1} is not a IoT File\n"
+
+msgid "select_board_list"
+msgstr "Select a Board From The List"
+
+msgid "select_env_list"
+msgstr "Select an Environment From The List"
+
+msgid "select_port_list"
+msgstr "Select a Port From The List"
 
 msgid "none_board_sel_{0}"
 msgstr "{0} None board Selected\n"
@@ -283,6 +328,21 @@ msgstr "Processing"
 
 msgid "done"
 msgstr "Done"
+
+msgid "restart_deviot"
+msgstr "This action required to restart Sublime Text. Do you want to continue?"
+
+msgid "continue_button"
+msgstr "Continue"
+
+msgid "ota_error_platform"
+msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
+
+msgid "select_library"
+msgstr "Select a Library"
+
+msgid "select_example"
+msgstr "Select an Example"
 
 
 # Libraries
@@ -350,3 +410,43 @@ msgstr "Send:"
 
 msgid "sended_{0}"
 msgstr "\n[SENDED] {0}\n"
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Password:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Starting on"
+
+msgid "upload_size"
+msgstr "Upload size"
+
+msgid "sending_invitation"
+msgstr "Sending invitation to"
+
+msgid "waiting_device"
+msgstr "Waiting for device"
+
+msgid "waiting_result"
+msgstr "Waiting for result"
+
+msgid "result"
+msgstr "Result"
+
+msgid "authentication"
+msgstr "Authentication"
+
+msgid "failed"
+msgstr "Failed"
+
+msgid "attempt"
+msgstr "attempt"
+
+msgid "of"
+msgstr "of"
+
+msgid "not_in_sync"
+msgstr "not in sync"
