@@ -428,7 +428,6 @@ class PioInstall(object):
 
         # creating files (menu, completions, syntax)
         from .PlatformioCLI import generateFiles
-        Tools.updateMenuLibs()
         generateFiles()
 
         self.Preferences.set('protected', True)
