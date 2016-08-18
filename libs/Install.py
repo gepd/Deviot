@@ -318,6 +318,11 @@ class PioInstall(object):
                                                   _('update_button'))
 
             if(update):
+                if(not self.feedback):
+                    self.message_queue.startPrint()
+                    self.message_queue.put("_deviot_{0}", version)
+                    self.message_queue.put("upgrading_pio")
+
                 # try to update
                 if(sublime.platform() == 'osx'):
                     executable = os.path.join(self.env_bin_dir, 'python')

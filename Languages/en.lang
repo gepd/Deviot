@@ -344,6 +344,9 @@ msgstr "Select a Library"
 msgid "select_example"
 msgstr "Select an Example"
 
+msgid "upgrading_pio"
+msgstr "Upgrading PlarformIO...\n"
+
 
 # Libraries
 
