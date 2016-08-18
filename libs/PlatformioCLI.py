@@ -234,9 +234,10 @@ class PlatformioCLI(CommandsPy):
             self.openInThread(self.listSerialPorts, join=True)
 
         # check if the port is available
-        if(next == 'upload' and not any(x in self.port for x in self.ports_list[0]) and self.port == ''):
-            self.openInThread(self.selectPort)
-            return
+        if(next == 'upload'):
+            if(not any(x in self.port for x in self.ports_list[0]) or self.port == ''):
+                self.openInThread(self.selectPort)
+                return
 
         mcu = self.getMCU()
         if(next == 'upload' and "esp" in mcu and "COM" not in self.port):
