@@ -250,9 +250,6 @@ class Libraries:
                         'user_libraries', []).remove(lib_id)
                     self.Preferences.saveData()
 
-        # update menu
-        Tools.updateMenuLibs()
-
     def saveLibraryData(self, data, file_name):
         """
         Stores the data of the libraries in a json file
