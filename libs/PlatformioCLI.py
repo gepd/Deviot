@@ -235,7 +235,7 @@ class PlatformioCLI(CommandsPy):
 
         # check if the port is available
         if(next == 'upload'):
-            if(not any(x in self.port for x in self.ports_list[0]) or self.port == ''):
+            if(not any(x[0] in self.port for x in self.ports_list) or self.port == ''):
                 self.openInThread(self.selectPort)
                 return
 
