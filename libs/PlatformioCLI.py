@@ -583,7 +583,12 @@ class PlatformioCLI(CommandsPy):
         env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
                                           user_path=True)
         env_data = json.loads(env_data)
-        selected = env_data[environment]['build']['mcu']
+
+        try:
+            selected = env_data[environment]['build']['mcu']
+        except:  # PlatformIO 3
+            selected = env_data[0]['mcu']
+
         return selected
 
     def authOTA(self):

@@ -40,6 +40,7 @@ class Libraries:
         self.view = view
         self.window = window
         self.Preferences = Preferences()
+        self.pio_version = int(self.Preferences.get('pio_version', 2)[0])
 
         # create window and view if not exists
         if self.window is None:
@@ -151,7 +152,10 @@ class Libraries:
         time.sleep(0.01)
 
         # Install Library with CLI
-        command = ['lib', 'install', lib_id]
+        if(self.pio_version > 2):
+            command = ['lib', '--global', 'install', lib_id]
+        else:
+            command = ['lib', 'install', lib_id]
         self.Commands.runCommand(
             command, 'installing_lib_{0}{1}', extra_message=lib_name)
 
@@ -176,7 +180,12 @@ class Libraries:
         stores the data in a json file and run a command to show the
         quick panel with all the data founded
         """
-        command = ['lib', 'list', '--json-output']
+
+        if(self.pio_version > 2):
+            command = ['lib', '--global', 'list', '--json-output']
+        else:
+            command = ['lib', 'list', '--json-output']
+
         Commands = CommandsPy()
         output = Commands.runCommand(command, setReturn=True)
         output = json.loads(output)
@@ -224,7 +233,11 @@ class Libraries:
         time.sleep(0.01)
 
         # uninstall Library with CLI
-        command = ['lib', 'uninstall', lib_id]
+        if(self.pio_version > 2):
+            command = ['lib', '--global', 'uninstall', lib_id]
+        else:
+            command = ['lib', 'uninstall', lib_id]
+
         self.Commands.runCommand(
             command, 'uninstalling_lib_{0}{1}', extra_message=lib_name)
 

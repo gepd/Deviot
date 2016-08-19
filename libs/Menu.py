@@ -54,13 +54,23 @@ class Menu(object):
         platformio_data = json.loads(data)
 
         # searching data
-        for datakey, datavalue in platformio_data.items():
-            caption = "+ " + datavalue['name']
-            for env in list_env:
-                if(datakey == env):
-                    caption = "- " + datavalue['name']
-            vendor = "%s | %s" % (datavalue['vendor'], datakey)
-            boards.append([caption, vendor])
+        try:
+            for datakey, datavalue in platformio_data.items():
+                caption = "+ " + datavalue['name']
+                for env in list_env:
+                    if(datakey == env):
+                        caption = "- " + datavalue['name']
+                vendor = "%s | %s" % (datavalue['vendor'], datakey)
+                boards.append([caption, vendor])
+        except:  # PlatformIO 3
+            for data in platformio_data:
+                caption = "+ " + data['name']
+                for env in list_env:
+                    if(data['id'] == env):
+                        caption = "- " + data['name']
+                vendor = "%s | %s" % (data['vendor'], data['id'])
+                boards.append([caption, vendor])
+
         return boards
 
     def getEnvironments(self):
@@ -88,9 +98,17 @@ class Menu(object):
 
         for env in env_data:
             for selected in list_env:
-                if(selected == env):
+                try:
+                    id = env
                     caption = env_data[env]['name']
-                    vendor = "%s | %s" % (env_data[env]['vendor'], env)
+                    vendor = env_data[env]['vendor']
+                except:  # PlatformIO 3
+                    id = env['id']
+                    caption = env['name']
+                    vendor = env['vendor']
+
+                if(selected == id):
+                    vendor = "%s | %s" % (vendor, id)
                     environments.append([caption, vendor])
 
                     if(selected == env_selected):
