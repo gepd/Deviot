@@ -1,4 +1,11 @@
 # Deviot Release Notes
+## Version 1.2.2 | 18 Aug
+* Support for PlatformIO 3.0
+* Other minor fixes
+
+## Version 1.2.1 | 18 Aug
+* Adding console feedback when a PlatformIO update is available
+
 ## Version 1.2.0 | 17 Aug
 * Support for mDNS autodiscover and upload with mDNS port (OTA)
 * New Programmer menu option
