@@ -177,7 +177,8 @@ class CommandsPy(object):
         if('warning:' in outputif and 'cygwin' not in outputif or
                 'in function' in outputif or
                 'reference' in outputif or 'in file' in outputif or
-                'error:' in outputif or '^' in outputif):
+                'error:' in outputif or '^' in outputif or
+                'ser_open' in outputif):
 
             if('^' in outputif):
                 output = self.previous + output
@@ -227,12 +228,21 @@ class CommandsPy(object):
                 self.message_queue.put('install_package_{0}', package)
 
         if('already' in outputif):
-            package = re.match(r"\w+ (\w+\W?\w+?)\s", self.previous).group(1)
+            try:
+                package = re.match(r"\w+ (\w+\W?\w+?)\s",
+                                   self.previous).group(1)
+            except:
+                package = ""
+
             self.message_queue.put('already_installed{0}', package)
 
         if('downloading' in outputif.strip() and outputif != self.previous):
             message = 'downloading_package{0}' if 'lib' not in command else 'download_lib'
-            package = re.match(r"\w+ (\w+\W?\w+?)\s", self.previous).group(1)
+            try:
+                package = re.match(r"\w+ (\w+\W?\w+?)\s",
+                                   self.previous).group(1)
+            except:
+                package = ""
 
             if(self.down_string and 'lib' in command and 'install' in command):
                 message = 'download_dependece'
