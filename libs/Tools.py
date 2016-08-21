@@ -547,7 +547,10 @@ def checkBoards():
 
     enabled = settings.get('enable_menu', False)
     if(enabled):
-        native = settings.get('native', False)
+        if(settings.get('force_native', False)):
+            native = True
+        else:
+            native = settings.get('native', True)
         if(native):
             env = settings.get('found_ini', False)
             enabled = True if env else False
@@ -576,7 +579,10 @@ def checkEnvironments():
 
     enabled = settings.get('enable_menu', False)
     if(enabled):
-        native = settings.get('native', False)
+        if(settings.get('force_native', False)):
+            native = True
+        else:
+            native = settings.get('native', True)
         if(native):
             env = settings.get('native_env_selected', False)
             enabled = True if env else False

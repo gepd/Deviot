@@ -771,11 +771,11 @@ class UseCppTemplateCommand(sublime_plugin.WindowCommand):
 class UseAlwaysNativeCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        keep = Preferences().get('always_native', False)
-        Preferences().set('always_native', not keep)
+        keep = Preferences().get('force_native', False)
+        Preferences().set('force_native', not keep)
 
     def is_checked(self):
-        return Preferences().get('always_native', False)
+        return Preferences().get('force_native', False)
 
 
 class ChangeDefaultPathCommand(sublime_plugin.WindowCommand):
