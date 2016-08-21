@@ -138,10 +138,9 @@ class Menu(object):
         Creates the import library menu
         this method search in the user and core libraries
         """
+        from . import Tools
 
-        is_native = Preferences().get('native', False)
-        type = 'env_selected' if not is_native else 'native_env_selected'
-        sel_env = Preferences().get(type, '')
+        sel_env = Tools.getEnvironment()
 
         data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
@@ -206,9 +205,9 @@ class Menu(object):
         """
         Shows the examples of the library in a menu
         """
-        is_native = Preferences().get('native', False)
-        type = 'env_selected' if not is_native else 'native_env_selected'
-        sel_env = Preferences().get(type, '')
+        from . import Tools
+
+        sel_env = Tools.getEnvironment()
 
         data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)

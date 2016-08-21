@@ -681,17 +681,6 @@ def getWorkingPath(view):
         return buildpath
 
 
-def getTypeEnvironment():
-    from .Preferences import Preferences
-
-    native = Preferences().get('native')
-
-    if(native):
-        return 'native_env_selected'
-    else:
-        return 'env_selected'
-
-
 def runCommand(command, cwd=None):
     '''Commands
 

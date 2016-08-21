@@ -545,8 +545,7 @@ class PlatformioCLI(CommandsPy):
         """
 
         # get data from user preference file
-        type_env = Tools.getTypeEnvironment()
-        environment = Preferences().get(type_env, False)
+        environment = Tools.getEnvironment()
         env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
                                           user_path=True)
         env_data = json.loads(env_data)
@@ -590,9 +589,7 @@ class PlatformioCLI(CommandsPy):
         Returns:
             bool -- True if is possible to upload, False if isn't
         """
-        is_native = Preferences().get('native')
-        type_env = "env_selected" if not is_native else "native_env_selected"
-        environment = Preferences().get(type_env, False)
+        environment = Tools.getEnvironment()
         port = Preferences().get('id_port', False)
 
         if(not environment or not port):
