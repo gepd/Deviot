@@ -56,12 +56,15 @@ class Menu(object):
         # searching data
         try:
             for datakey, datavalue in platformio_data.items():
-                caption = "+ " + datavalue['name']
-                for env in list_env:
-                    if(datakey == env):
-                        caption = "- " + datavalue['name']
-                vendor = "%s | %s" % (datavalue['vendor'], datakey)
-                boards.append([caption, vendor])
+                try:
+                    caption = "+ " + datavalue['name']
+                    for env in list_env:
+                        if(datakey == env):
+                            caption = "- " + datavalue['name']
+                    vendor = "%s | %s" % (datavalue['vendor'], datakey)
+                    boards.append([caption, vendor])
+                except:
+                    pass
         except:  # PlatformIO 3
             for data in platformio_data:
                 caption = "+ " + data['name']
@@ -96,24 +99,37 @@ class Menu(object):
             file_name='platformio_boards.json', user_path=True)
         env_data = json.loads(env_data)
 
-        for env in env_data:
-            for selected in list_env:
+        try:
+            for key, value in env_data.items():
                 try:
-                    id = env
-                    caption = env_data[env]['name']
-                    vendor = env_data[env]['vendor']
-                except:  # PlatformIO 3
-                    id = env['id']
-                    caption = env['name']
-                    vendor = env['vendor']
+                    id = key
+                    caption = value['name']
+                    vendor = value['vendor']
 
-                if(selected == id):
-                    vendor = "%s | %s" % (vendor, id)
-                    environments.append([caption, vendor])
+                    for selected in list_env:
+                        if(selected == id):
+                            vendor = "%s | %s" % (vendor, id)
+                            environments.append([caption, vendor])
 
-                    if(selected == env_selected):
-                        selected_index = index + 1
-                    index += 1
+                            if(selected == env_selected):
+                                selected_index = index + 1
+                            index += 1
+                except:
+                    pass
+        except:  # PlatformIO 3
+            for value in env_data:
+                id = value['id']
+                caption = value['name']
+                vendor = value['vendor']
+
+                for selected in list_env:
+                    if(selected == id):
+                        vendor = "%s | %s" % (vendor, id)
+                        environments.append([caption, vendor])
+
+                        if(selected == env_selected):
+                            selected_index = index + 1
+                        index += 1
 
         return [environments, selected_index]
 
