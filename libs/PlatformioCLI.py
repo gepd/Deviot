@@ -327,6 +327,10 @@ class PlatformioCLI(CommandsPy):
         # initialize the sketch
         self.initProject()
 
+        # add the programmer option to the platformio.ini
+        programmer = Preferences().get("programmer", False)
+        self.programmer(programmer)
+
         # stop if there is an error
         if(CMD.error_running):
             return
@@ -501,6 +505,7 @@ class PlatformioCLI(CommandsPy):
         """
 
         # list of programmers
+        self.loadData()
         flags = {
             'avr':          {"upload_protocol": "stk500v1",
                              "upload_flags": "-P$UPLOAD_PORT",
@@ -519,8 +524,16 @@ class PlatformioCLI(CommandsPy):
                              "upload_port": C['PORT']}
         }
 
+        # prevent to do anything if none environment is selected
+        if(not C['ENVIRONMENT']):
+            return
+
+        # open platformio.ini and get the environment
         INIFILE = ConfigObj(C['INIPATH'])
         ENVIRONMENT = 'env:%s' % C['ENVIRONMENT']
+
+        if(ENVIRONMENT not in INIFILE):
+            return
         ENV = INIFILE[ENVIRONMENT]
 
         rm = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']

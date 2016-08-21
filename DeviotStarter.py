@@ -162,6 +162,8 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             env = self.MENU_LIST[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
+            programmer = Preferences().get('programmer', False)
+            PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_enabled(self):
         return Tools.checkBoards()
@@ -451,80 +453,120 @@ class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
+        PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
         return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
