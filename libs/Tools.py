@@ -40,7 +40,7 @@ def getPathFromView(view):
     return file_view
 
 
-def getFileNameFromPath(path, ext=True):
+def getNameFromPath(path, ext=True):
     """
     Gets the name of the file from a path
 
@@ -566,7 +566,7 @@ def getJSONBoards(force=False):
 
     if(not os.path.isfile(data_file) or force):
         from .PlatformioCLI import PlatformioCLI
-        PlatformioCLI(feedback=False, console=False).getAPIBoards()
+        PlatformioCLI(feedback=False).getAPIBoards()
 
 
 def checkEnvironments():
@@ -585,6 +585,105 @@ def checkEnvironments():
             enabled = True if env else False
 
     return enabled
+
+
+def isNativeProject(view):
+    """
+    Checks if the file in the given view has been initialized
+    or not and set the project as native if the file structure
+    is like PlatformIO or not native if is diferent. If the file
+    isn't initialized and 'force_native' is check it will be
+    always native.
+
+    Returns:
+            [bolean] - True if it's native, false if isn't
+    """
+    file_path = view.file_name()
+
+    from .Preferences import Preferences
+    from . import Paths
+
+    force_native = Preferences().get('force_native', False)
+
+    # only if file has been saved
+    if(file_path):
+        parent_path = Paths.getParentPath(file_path)
+        native = False
+
+        # find platformio.ini
+        for file in os.listdir(parent_path):
+            if(file.endswith('platformio.ini')):
+                Preferences().set('native', True)
+                return True
+
+    # check if horce native was selected
+    if(force_native):
+        native = True
+
+    # if is stored in the temp folder set as native
+    if(not force_native):
+        if("Temp" in file_path or "tmp" in file_path):
+            native = True
+
+    # save in preferences file
+    Preferences().set('native', native)
+
+    return native
+
+
+def checkIniFile(path):
+    """
+    Check if platformio.ini exist in the given path
+    """
+    if(os.path.isdir(path)):
+        for file in os.listdir(path):
+            if(file.endswith('platformio.ini')):
+                return True
+    return False
+
+
+def isIniFile(view):
+    """
+    Check if platformio.ini exist
+    """
+    from . import Paths
+
+    filepath = getPathFromView(view)
+    tempname = getNameFromPath(filepath, ext=False)
+    inipath = Paths.getBuildPath(tempname)
+    check = checkIniFile(inipath)
+
+    return check
+
+
+def getWorkingPath(view):
+    from . import Paths
+    from .Preferences import Preferences
+
+    filepath = Paths.getCWD(view.file_name())
+    parentpath = Paths.getParentPath(filepath)
+    check = checkIniFile(parentpath)
+
+    if(check):
+        return parentpath
+    else:
+        tempname = getNameFromPath(filepath, ext=False)
+        buildpath = Paths.getBuildPath(tempname)
+        force = Preferences().get('force_native', False)
+        if(force):
+            buildpath = filepath
+        return buildpath
+
+
+def getTypeEnvironment():
+    from .Preferences import Preferences
+
+    native = Preferences().get('native')
+
+    if(native):
+        return 'native_env_selected'
+    else:
+        return 'env_selected'
 
 
 def runCommand(command, cwd=None):

@@ -68,7 +68,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(feedback=False, console=False).checkInitFile()
+        PlatformioCLI(feedback=False).checkInitFile()
         Tools.setStatus()
         Tools.userPreferencesStatus()
 
@@ -98,7 +98,7 @@ class DeviotListener(sublime_plugin.EventListener):
         file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
-        file_name = Tools.getFileNameFromPath(file_path, ext=False)
+        file_name = Tools.getNameFromPath(file_path, ext=False)
         tmp_path = Paths.getTempPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
@@ -421,8 +421,8 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        thread = threading.Thread(target=PlatformioCLI(
-            console=False, feedback=False).listSerialPorts)
+        listports = PlatformioCLI(feedback=False).listSerialPorts
+        thread = threading.Thread(target=listports)
         thread.start()
         ThreadProgress(thread, _('processing'), _('done'))
 
@@ -444,7 +444,7 @@ class AuthChangeCommand(sublime_plugin.WindowCommand):
         Preferences().set('auth', password)
 
     def is_enabled(self):
-        return PlatformioCLI(console=False).mDNSCheck(feedback=False)
+        return PlatformioCLI().mDNSCheck(feedback=False)
 
 
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
