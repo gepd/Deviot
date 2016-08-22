@@ -713,7 +713,7 @@ class PlatformioCLI(CommandsPy):
         """
         from . import Serial
 
-        lista = [[_('select_port_list'), ""], [_('menu_add_ip'), ""]]
+        lista = [[_('select_port_list').upper(), ""], [_('menu_add_ip'), ""]]
         current_port = Preferences().get('id_port', False)
         index = 1
 

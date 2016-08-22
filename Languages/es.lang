@@ -262,7 +262,7 @@ msgid "select_board_list"
 msgstr "Seleciona una Placa de la Lista"
 
 msgid "select_env_list"
-msgstr "Selecciona un Entorno de Desarrollo de la Lista"
+msgstr "Selecciona un Entorno de Desarrollo"
 
 msgid "select_port_list"
 msgstr "Selecciona un Puerto de la Lista"
@@ -344,6 +344,9 @@ msgstr "Selecciona una Librería"
 
 msgid "select_example"
 msgstr "Selecciona un Ejemplo"
+
+msgid "_previous"
+msgstr "< Volver"
 
 msgid "upgrading_pio"
 msgstr "Actualizando PlarformIO...\n"

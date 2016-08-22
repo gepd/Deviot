@@ -41,7 +41,7 @@ class Menu(object):
         Returns: {json array} -- list of all boards to show in the menu
         '''
 
-        boards = [[_("select_board_list")]]
+        boards = [[_("select_board_list").upper()]]
         is_native = Preferences().get('native', False)
         type = 'board_id' if not is_native else 'found_ini'
         list_env = Preferences().get(type, '')
@@ -87,7 +87,7 @@ class Menu(object):
         from . import Tools
 
         selected_index = 0
-        environments = [[_("select_env_list")]]
+        environments = [[_("select_env_list").upper()]]
         index = 0
 
         is_native = Preferences().get('native', False)
@@ -153,7 +153,7 @@ class Menu(object):
             platform = 'all'
 
         library_paths = Paths.getLibraryFolders(platform)
-        added_lib = [[_("select_library")]]
+        added_lib = [[_("select_library").upper()]]
         check_list = []
 
         # get preset
@@ -219,7 +219,7 @@ class Menu(object):
         except:
             platform = 'all'
 
-        examples = [[_("select_library")]]
+        examples = [[_("select_library").upper()]]
         check_list = []
 
         library_paths = Paths.getLibraryFolders(platform)
