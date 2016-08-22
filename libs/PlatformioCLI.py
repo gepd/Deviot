@@ -647,6 +647,14 @@ class PlatformioCLI(CommandsPy):
         Preferences().set('auth', password)
         self.openInThread('upload')
 
+    def monitorCall(self):
+        """
+        Make to select a serial port when run a monitor serial and
+        none port was selected
+        """
+        C['CALLBACK'] = 'monitor'
+        self.openInThread(self.selectPort)
+
     def openInThread(self, func, join=False):
         """
         Function to open function/methods like build/upload/clean/ports and

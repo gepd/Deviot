@@ -594,9 +594,7 @@ class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         if(not Preferences().get('id_port', False)):
-            PlatformioCLI(feedback=False, callback=self.on_done).openInThread(
-                'ports', process=False)
-            return
+            PlatformioCLI(feedback=False).monitorCall()
         self.on_done()
 
     def on_done(self):
