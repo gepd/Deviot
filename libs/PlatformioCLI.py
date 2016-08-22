@@ -141,6 +141,7 @@ class PlatformioCLI(CommandsPy):
         if (self.view.is_dirty()):
             self.view.run_command('save')
 
+        # store data in config dict
         C['NATIVE'] = Tools.isNativeProject(self.view)
         C['SKETCHPATH'] = Tools.getPathFromView(self.view)
         C['SKETCHDIR'] = Paths.getCWD(C['SKETCHPATH'])
@@ -179,6 +180,7 @@ class PlatformioCLI(CommandsPy):
 
         INIPATH = C['INIPATH']
         NATIVE = C['NATIVE']
+
         # only if platformio.ini exist
         if(not INIPATH):
             return
@@ -213,6 +215,7 @@ class PlatformioCLI(CommandsPy):
         if(not C['IOT']):
             return
 
+        # store the callback
         if(not C['CALLBACK']):
             C['CALLBACK'] = next
 
@@ -228,11 +231,11 @@ class PlatformioCLI(CommandsPy):
             quickPanel(list[0], self.saveEnvironmetCallback, index=list[1])
             return
 
-        if(next == 'upload' and not C['PORTSLIST']):
-            self.openInThread(self.listSerialPorts, join=True)
-
         # check if the port is available
         if(next == 'upload'):
+            if(not C['PORTSLIST']):
+                self.listSerialPorts()
+
             if(not any(x[0] in PORT for x in C['PORTSLIST']) or PORT == ''):
                 self.openInThread(self.selectPort)
                 return
@@ -316,6 +319,7 @@ class PlatformioCLI(CommandsPy):
         Build the file in the current view using PlatformIO CLI. It first
         checks if the current environment was previously initialized
         """
+
         if(not C['IOT']):
             return
 
@@ -423,12 +427,12 @@ class PlatformioCLI(CommandsPy):
 
         """
 
-        from .JSONFile import JSONFile
-        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
-        serial = JSONFile(quick_path)
+        # call the list of ports only if wasn't called previously
+        if(not C['PORTSLIST']):
+            self.listSerialPorts()
 
-        quickPanel(serial.data, self.savePortCallback,
-                   index=C['PORTINDEX'])
+        # show quick panel
+        quickPanel(C['PORTSLIST'], self.savePortCallback, index=C['PORTINDEX'])
 
     def saveBoardCallback(self, selected):
         """
@@ -472,22 +476,24 @@ class PlatformioCLI(CommandsPy):
             selected {int} -- index with the choosen option
         """
         if(selected > 0):
+            # if option was add serial port
             if(selected == 1):
                 self.window.run_command('add_serial_ip')
-            from .JSONFile import JSONFile
-            quick_path = Paths.getTemplateMenuPath(
-                'serial.json', user_path=True)
-            serial = JSONFile(quick_path)
-            C['PORTSLIST'] = serial.data
-            choose = serial.data
-            id_port = choose[selected][0]
-            C['C'] = id_port
+                return
+
+            # read option selected and stored it
+            id_port = C['PORTSLIST'][selected][0]
             Preferences().set('id_port', id_port)
             Tools.userPreferencesStatus()
+            C['PORT'] = id_port
 
+            # callback
             if(C['CALLBACK'] == 'upload'):
                 callback = getattr(self, C['CALLBACK'])
                 self.beforeProcess(callback)
+
+            if(C['CALLBACK'] == 'monitor'):
+                self.window.run_command('serial_monitor_run')
 
     def overrideSrc(self):
         """
@@ -495,10 +501,14 @@ class PlatformioCLI(CommandsPy):
         to override the source folder where the sketch is stored
         (when the file haven't PlatformIO structure)
         """
-
+        # open platformio.ini
         INIFILE = ConfigObj(C['INIPATH'])
+
+        # set 'src_dir' in [platformio]
         source = {'src_dir': C['SKETCHDIR']}
         INIFILE['platformio'] = source
+
+        # write in file
         INIFILE.write()
 
     def programmer(self, programmer):
@@ -720,23 +730,16 @@ class PlatformioCLI(CommandsPy):
                     two = service["properties"]["board"]
                     if(current_port and current_port == one):
                         C['PORTINDEX'] = index
-
                     lista.append([one, two])
                 except:
                     pass
+
+        # none port found
         if(len(lista) == 2):
             lista = [[_('menu_none_serial_mdns'), ""], [_('menu_add_ip'), ""]]
 
-        # save ports
-        from .JSONFile import JSONFile
-        quick_path = Paths.getTemplateMenuPath('serial.json', user_path=True)
-        serial = JSONFile(quick_path)
-        serial.setData(lista)
-        serial.saveData()
-
+        # store ports list
         C['PORTSLIST'] = lista
-        if(C['CALLBACK'] is not 'upload'):
-            self.selectPort()
 
     def getAPIBoards(self):
         '''
