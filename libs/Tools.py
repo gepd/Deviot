@@ -667,13 +667,13 @@ def getWorkingPath(view):
     from .Preferences import Preferences
 
     filepath = Paths.getCWD(view.file_name())
-    parentpath = Paths.getParentPath(filepath)
+    parentpath = os.path.dirname(filepath)
     check = checkIniFile(parentpath)
 
     if(check):
         return parentpath
     else:
-        tempname = getNameFromPath(filepath, ext=False)
+        tempname = getNameFromPath(parentpath, ext=False)
         buildpath = Paths.getBuildPath(tempname)
         force = Preferences().get('force_native', False)
         if(force):

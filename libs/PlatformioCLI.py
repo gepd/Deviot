@@ -116,13 +116,16 @@ class PlatformioCLI(CommandsPy):
 
         # save file not empty
         if(not C['SKETCHPATH'] and C['SKETCHSIZE'] > 0):
-            saved_file = self.saveCodeInFile(self.view)
-            self.view = saved_file[1]
+            view = self.saveCodeInFile(self.view)
+            self.view = view[1]
+            C['NATIVE'] = Tools.isNativeProject(self.view)
             C['SKETCHPATH'] = Tools.getPathFromView(self.view)
+            C['PARENTDIR'] = Paths.getParentPath(C['SKETCHPATH'])
+            C['WORKINGPATH'] = Tools.getWorkingPath(self.view)
             C['FILENAME'] = Tools.getNameFromPath(C['SKETCHPATH'])
+            C['IOT'] = Tools.isIOTFile(C['SKETCHPATH'])
             TEMPNAME = Tools.getNameFromPath(C['SKETCHPATH'], ext=False)
             C['TEMPNAME'] = TEMPNAME
-            C['IOT'] = Tools.isIOTFile(C['SKETCHPATH'])
 
         # check if file is iot
         if(C['FEEDBACK'] and not C['IOT']):
@@ -298,7 +301,7 @@ class PlatformioCLI(CommandsPy):
 
         # structure the project as native or not native
         if(not CMD.error_running):
-            if(NATIVE):
+            if(NATIVE and not Tools.checkIniFile(C['PARENTDIR'])):
                 CURRENTPATH = C['SKETCHDIR']
                 FILENAME = C['FILENAME']
                 NEWPATH = os.path.join(CURRENTPATH, 'src', FILENAME)
@@ -660,24 +663,24 @@ class PlatformioCLI(CommandsPy):
         """
         ext = '.ino'
 
-        tmp_path = Paths.getTempPath()
-        file_name = str(time.time()).split('.')[0]
-        file_path = os.path.join(tmp_path, file_name)
-        file_path = os.path.join(file_path, 'src')
-        os.makedirs(file_path)
+        tmppath = Paths.getTempPath()
+        filename = str(time.time()).split('.')[0]
+        filepath = os.path.join(tmppath, filename, 'src')
 
-        full_path = file_name + ext
-        full_path = os.path.join(file_path, full_path)
+        Paths.makeFolder(filepath)
+
+        fullpath = filename + ext
+        fullpath = os.path.join(filepath, fullpath)
 
         region = sublime.Region(0, view.size())
         text = view.substr(region)
-        file = JSONFile(full_path)
+        file = JSONFile(fullpath)
         file.writeFile(text)
 
         view.set_scratch(True)
         window = view.window()
         window.run_command('close')
-        view = window.open_file(full_path)
+        view = window.open_file(fullpath)
 
         return (True, view)
 
