@@ -261,13 +261,13 @@ class PlatformioCLI(CommandsPy):
             if(C['AUTH']):
                 if(not saved_auth or saved_auth == '0' and self.mDNSCheck()):
                     self.window.show_input_panel(
-                        _("pass_caption"), '', self.saveAuthPassword, None, None)
+                        _("pass_caption"), '', self.saveAuthPass, None, None)
                 return
 
         # Create and store the console
         try:
-            C['CONSOLE'] = Console(self.window)
             WORKINGPATH = C['WORKINGPATH']
+            C['CONSOLE'] = Console(self.window)
             CMDS = CommandsPy(console=C['CONSOLE'], cwd=WORKINGPATH)
             C['CMDS'] = CMDS
             Paths.makeFolder(WORKINGPATH)
@@ -277,9 +277,7 @@ class PlatformioCLI(CommandsPy):
         # Call method in a new thread
         if(C['CALLBACK']):
             callback = getattr(self, C['CALLBACK'])
-            action_thread = threading.Thread(target=callback)
-            action_thread.start()
-            ThreadProgress(action_thread, _('processing'), _('done'))
+            self.openInThread(callback)
 
     def initProject(self):
         """
@@ -327,8 +325,7 @@ class PlatformioCLI(CommandsPy):
 
         self.message_queue = MessageQueue(C['CONSOLE'])
         self.message_queue.startPrint()
-        self.message_queue.put(
-            '[ Deviot {0} ] {1}\\n', version, C['FILENAME'])
+        self.message_queue.put('[ Deviot {0} ] {1}\\n', version, C['FILENAME'])
 
         # initialize the sketch
         self.initProject()
@@ -357,7 +354,6 @@ class PlatformioCLI(CommandsPy):
             return
 
         CMD = C['CMDS']
-
         PORT = C['PORT']
         ENVIRONMENT = C['ENVIRONMENT']
 
@@ -371,8 +367,7 @@ class PlatformioCLI(CommandsPy):
 
         self.message_queue = MessageQueue(C['CONSOLE'])
         self.message_queue.startPrint()
-        self.message_queue.put(
-            '[ Deviot {0} ] {1}\\n', version, C['FILENAME'])
+        self.message_queue.put('[ Deviot {0} ] {1}\\n', version, C['FILENAME'])
 
         # initialize the sketch
         self.initProject()
@@ -398,7 +393,6 @@ class PlatformioCLI(CommandsPy):
         self.programmer(programmer)
 
         # run command
-        return
         CMD.runCommand(command, "uploading_firmware_{0}")
 
         # start the monitor serial if was running previously
@@ -444,9 +438,13 @@ class PlatformioCLI(CommandsPy):
         if(selected != -1):
             choose = Menu().createBoardsMenu()
             board_id = choose[selected][1].split(' | ')[1]
+
+            # store data
             Preferences().boardSelected(board_id)
             Tools.saveEnvironment(board_id)
             Tools.userPreferencesStatus()
+
+            # callback
             self.beforeProcess(C['CALLBACK'])
 
     def saveEnvironmetCallback(self, selected):
@@ -548,10 +546,11 @@ class PlatformioCLI(CommandsPy):
         INIFILE = ConfigObj(C['INIPATH'])
         ENVIRONMENT = 'env:%s' % C['ENVIRONMENT']
 
+        # stop if environment wasn't initialized yet
         if(ENVIRONMENT not in INIFILE):
             return
-        ENV = INIFILE[ENVIRONMENT]
 
+        ENV = INIFILE[ENVIRONMENT]
         rm = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']
 
         # remove previous configuration
@@ -574,9 +573,9 @@ class PlatformioCLI(CommandsPy):
         """
 
         # get data from user preference file
+        boardsfile = 'platformio_boards.json'
         environment = Tools.getEnvironment()
-        env_data = Menu().getTemplateMenu(file_name='platformio_boards.json',
-                                          user_path=True)
+        env_data = Menu().getTemplateMenu(file_name=boardsfile, user_path=True)
         env_data = json.loads(env_data)
 
         try:
@@ -618,9 +617,10 @@ class PlatformioCLI(CommandsPy):
         Returns:
             bool -- True if is possible to upload, False if isn't
         """
-        environment = Tools.getEnvironment()
         port = Preferences().get('id_port', False)
+        environment = Tools.getEnvironment()
 
+        # stop if none environment or port was previously selected
         if(not environment or not port):
             return False
 
@@ -637,7 +637,7 @@ class PlatformioCLI(CommandsPy):
             return False
         return True
 
-    def saveAuthPassword(self, password):
+    def saveAuthPass(self, password):
         """
         Saves the password in the preferences file to OTA uploads
 
@@ -706,9 +706,8 @@ class PlatformioCLI(CommandsPy):
         from . import Serial
 
         lista = [[_('select_port_list'), ""], [_('menu_add_ip'), ""]]
-
-        index = 1
         current_port = Preferences().get('id_port', False)
+        index = 1
 
         # serial ports
         serial = Serial.listSerialPorts()

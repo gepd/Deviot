@@ -414,41 +414,6 @@ class ShowConsoleCommand(sublime_plugin.WindowCommand):
         self.window.run_command("show_panel", {"panel": "output.exec"})
 
 
-class SelectPortCommand(sublime_plugin.WindowCommand):
-    """
-    Saves the port COM selected by the user in the
-    preferences file.
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        listports = PlatformioCLI(feedback=False).listSerialPorts
-        thread = threading.Thread(target=listports)
-        thread.start()
-        ThreadProgress(thread, _('processing'), _('done'))
-
-
-class AuthChangeCommand(sublime_plugin.WindowCommand):
-    """
-    Saves the password to use in OTA Upload
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        self.window.show_input_panel(_("pass_caption"), '',
-                                     self.on_done,
-                                     None,
-                                     None)
-
-    def on_done(self, password):
-        Preferences().set('auth', password)
-
-    def is_enabled(self):
-        return PlatformioCLI().mDNSCheck(feedback=False)
-
-
 class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
@@ -569,6 +534,19 @@ class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
         return Tools.isIOTFile(file)
 
 
+class SelectPortCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the port COM selected by the user in the
+    preferences file.
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        listports = PlatformioCLI(feedback=False).selectPort
+        PlatformioCLI(feedback=False).openInThread(listports)
+
+
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
     """
     Add a IP to the list of COM ports
@@ -585,6 +563,26 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
             result = (result if result != 0 else '')
             Preferences().set('id_port', result)
             Menu().createSerialPortsMenu()
+
+
+class AuthChangeCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the password to use in OTA Upload
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.show_input_panel(_("pass_caption"), '',
+                                     self.on_done,
+                                     None,
+                                     None)
+
+    def on_done(self, password):
+        Preferences().set('auth', password)
+
+    def is_enabled(self):
+        return PlatformioCLI().mDNSCheck(feedback=False)
 
 
 class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
