@@ -115,14 +115,20 @@ class Libraries:
 
         # arrange list to the quickpanel
         quick_list = []
+        frameworks = ""
         if(list['total']):
             for item in list['items']:
                 if(str(item['id']) + ' ' not in " ".join(list_ins) + ' '):
+                    for framework in item['frameworks']:
+                        if(framework):
+                            frameworks += str(framework) + ' '
                     item_list = []
+                    info = "%s | %s" % (str(item['id']), frameworks)
                     item_list.append(item['name'])
                     item_list.append(item['description'])
-                    item_list.append(str(item['id']))
+                    item_list.append(info)
                     quick_list.append(item_list)
+                    frameworks = ""
 
         # if none result
         if(list['total'] == 0 or not quick_list):
@@ -142,7 +148,7 @@ class Libraries:
                 position in dict of the library selected
         """
         list = self.getLibrary('quick_list.json')
-        lib_id = list[selected][2]
+        lib_id = list[selected][2].split(' ')[0]
         lib_name = list[selected][0]
 
         self.message_queue.startPrint()
