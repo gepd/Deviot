@@ -150,8 +150,7 @@ class PlatformioCLI(CommandsPy):
         C['INIT'] = Tools.isIniFile(self.view)
 
         # Get the current environment
-        TYPEPROJECT = Tools.getTypeEnvironment()
-        C['ENVIRONMENT'] = Preferences().get(TYPEPROJECT, False)
+        C['ENVIRONMENT'] = Tools.getEnvironment()
 
         # set the current working path
         C['WORKINGPATH'] = Tools.getWorkingPath(self.view)
@@ -454,11 +453,15 @@ class PlatformioCLI(CommandsPy):
             selected {int} -- index with the choosen option
         """
         if(selected != -1):
-            list = Menu().getEnvironments()
-            env = list[0][selected][1].split(' | ')[1]
-            Tools.saveEnvironment(env)
+            choose = Menu().getEnvironments()
+            environment = choose[0][selected][1].split(' | ')[1]
+
+            # store data
+            Tools.saveEnvironment(environment)
             Tools.userPreferencesStatus()
-            C['ENVIRONMENT'] = env
+            C['ENVIRONMENT'] = environment
+
+            # callback
             self.beforeProcess(C['CALLBACK'])
 
     def savePortCallback(self, selected):
