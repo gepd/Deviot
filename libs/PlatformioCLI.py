@@ -276,6 +276,17 @@ class PlatformioCLI(CommandsPy):
         except:
             pass
 
+        # avoid an error in a non native project if the folder of the
+        # sketch has been renamed
+        if(not C['NATIVE']):
+            INIFILE = ConfigObj(C['INIPATH'])
+
+            # check src_dir
+            if('src_dir' in INIFILE['platformio']):
+                if(INIFILE['platformio']['src_dir'] is not C['SKETCHDIR']):
+                    INIFILE['platformio']['src_dir'] = C['SKETCHDIR']
+                    INIFILE.write()
+
         # Call method in a new thread
         if(C['CALLBACK']):
             callback = getattr(self, C['CALLBACK'])
