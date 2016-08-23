@@ -17,7 +17,7 @@ from shutil import rmtree
 
 from .libs import Paths, Tools
 from .libs.Menu import Menu
-from .libs.PlatformioCLI import PlatformioCLI
+from .libs import PlatformioCLI
 from .libs.Preferences import Preferences
 from .libs.QuickPanel import quickPanel
 from .libs import Libraries
@@ -68,7 +68,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(feedback=False).checkInitFile()
+        PlatformioCLI.PlatformioCLI(feedback=False).checkInitFile()
         Tools.setStatus()
         Tools.userPreferencesStatus()
 
@@ -163,7 +163,7 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
             programmer = Preferences().get('programmer', False)
-            PlatformioCLI(feedback=False).programmer(programmer)
+            PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_enabled(self):
         return Tools.checkBoards()
@@ -332,7 +332,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('build')
+        PlatformioCLI.PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -348,7 +348,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('upload')
+        PlatformioCLI.PlatformioCLI().openInThread('upload')
 
     def is_enabled(self):
         return Preferences().get('enable_menu')
@@ -363,7 +363,7 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('clean')
+        PlatformioCLI.PlatformioCLI().openInThread('clean')
 
     def is_enabled(self):
         is_enabled = Preferences().get('enable_menu', False)
@@ -422,7 +422,7 @@ class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -437,7 +437,7 @@ class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -452,7 +452,7 @@ class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -467,7 +467,7 @@ class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -482,7 +482,7 @@ class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -497,7 +497,7 @@ class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -512,7 +512,7 @@ class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -527,7 +527,7 @@ class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
-        PlatformioCLI(feedback=False).programmer(programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_checked(self, programmer):
         prog = Preferences().get('programmer', False)
@@ -547,8 +547,9 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        listports = PlatformioCLI(feedback=False).selectPort
-        PlatformioCLI(feedback=False).openInThread(listports)
+        PlatformioCLI.C['PORTSLIST'] = ""
+        listports = PlatformioCLI.PlatformioCLI(feedback=False).selectPort
+        PlatformioCLI.PlatformioCLI(feedback=False).openInThread(listports)
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
@@ -586,7 +587,7 @@ class AuthChangeCommand(sublime_plugin.WindowCommand):
         Preferences().set('auth', password)
 
     def is_enabled(self):
-        return PlatformioCLI().mDNSCheck(feedback=False)
+        return PlatformioCLI.PlatformioCLI().mDNSCheck(feedback=False)
 
 
 class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
@@ -598,7 +599,7 @@ class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         if(not Preferences().get('id_port', False)):
-            PlatformioCLI(feedback=False).monitorCall()
+            PlatformioCLI.PlatformioCLI(feedback=False).monitorCall()
         self.on_done()
 
     def on_done(self):
