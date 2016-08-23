@@ -241,7 +241,7 @@ class PlatformioCLI(CommandsPy):
                 return
 
         mcu = self.getMCU()
-        if(next == 'upload' and "esp" in mcu and "COM" not in PORT):
+        if(next == 'upload' and "esp" in mcu and "COM" not in PORT and "tty" not in PORT):
             # check if auth is required to mdns
             from . import Serial
             saved_auth = Preferences().get('auth', False)
@@ -250,8 +250,8 @@ class PlatformioCLI(CommandsPy):
             for service in mdns:
                 try:
                     service = json.loads(service)
-                    server = service['server']
-                    if(server[:-1] == PORT):
+                    ip = service['ip']
+                    if(ip == PORT):
                         auth = service["properties"]["auth_upload"]
                         C['AUTH'] = True if auth == 'yes' else False
                 except:
@@ -262,7 +262,9 @@ class PlatformioCLI(CommandsPy):
                 if(not saved_auth or saved_auth == '0' and self.mDNSCheck()):
                     self.window.show_input_panel(
                         _("pass_caption"), '', self.saveAuthPass, None, None)
-                return
+                    return
+            else:
+                Preferences().set('auth', '0')
 
         # Create and store the console
         try:
@@ -372,11 +374,6 @@ class PlatformioCLI(CommandsPy):
         # initialize the sketch
         self.initProject()
 
-        # add ota auth
-        if(not C['AUTH']):
-            Preferences().set('auth', '0')
-        self.authOTA()
-
         # get programmer preference
         programmer = Preferences().get("programmer", False)
 
@@ -391,6 +388,9 @@ class PlatformioCLI(CommandsPy):
 
         # add the programmer option
         self.programmer(programmer)
+
+        # add ota auth
+        self.authOTA()
 
         # run command
         CMD.runCommand(command, "uploading_firmware_{0}")
@@ -602,12 +602,12 @@ class PlatformioCLI(CommandsPy):
         Arguments:
             password {str} -- password
         """
-        password = Preferences().get('auth', False)
+        password = Preferences().get('auth', '0')
         INIFILE = ConfigObj(C['INIPATH'])
         ENVIRONMENT = 'env:%s' % C['ENVIRONMENT']
 
         # remove flag
-        if(password or password == '0'):
+        if(not password or password == '0'):
             if('upload_flags' in INIFILE[ENVIRONMENT]):
                 INIFILE[ENVIRONMENT].pop('upload_flags')
                 INIFILE.write()
