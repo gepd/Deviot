@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+from re import search
 import threading
 import sublime
 import time
@@ -78,8 +79,7 @@ class Console:
         self.panel = self.window.create_output_panel('exec')
 
         if(not color or monitor):
-            self.panel.set_syntax_file(
-                "Packages/Text/Plain text.tmLanguage")
+            self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
             return
         self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
         self.panel.set_name('exec')
@@ -91,9 +91,24 @@ class Console:
         if(len(text)):
             from .Preferences import Preferences
             view = self.window.find_output_panel('exec')
+
             if(view.size() < 1):
                 self.window.run_command("show_panel", {"panel": "output.exec"})
+
             self.panel.set_read_only(False)
+
+            # allow to show percentage in one line
+            if(search(r"[Uploading:]\s\[=*\s*\] \d+%", text) is not None):
+                # change focus
+                panel_view = self.window.find_output_panel('exec')
+                self.window.focus_view(panel_view)
+
+                # remove las line before write
+                macro = "res://Packages/Default/Delete Line.sublime-macro"
+                self.window.run_command("run_macro_file", {"file": macro})
+                self.window.run_command("run_macro_file", {"file": macro})
+                self.window.run_command("run_macro_file", {"file": macro})
+
             self.panel.run_command("append", {"characters": text})
 
             # Preferences to auto-scroll
