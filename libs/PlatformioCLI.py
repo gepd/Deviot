@@ -236,7 +236,7 @@ class PlatformioCLI(CommandsPy):
             if(not C['PORTSLIST']):
                 self.listSerialPorts()
 
-            if(not any(x[0] in PORT for x in C['PORTSLIST']) or PORT == ''):
+            if(not any(PORT in x[0] for x in C['PORTSLIST']) or PORT == ''):
                 self.openInThread(self.selectPort)
                 return
 
@@ -480,9 +480,18 @@ class PlatformioCLI(CommandsPy):
                 return
 
             # read option selected and stored it
-            id_port = C['PORTSLIST'][selected][0]
+            try:
+                port_bar = C['PORTSLIST'][selected][0].split(' ')[0]
+                id_port = C['PORTSLIST'][selected][0].split(' ')[2]
+            except:
+                id_port = C['PORTSLIST'][selected][0]
+                port_bar = C['PORTSLIST'][selected][0]
+
             Preferences().set('id_port', id_port)
+            Preferences().set('port_bar', port_bar)
+
             Tools.userPreferencesStatus()
+
             C['PORT'] = id_port
 
             # callback
@@ -728,14 +737,15 @@ class PlatformioCLI(CommandsPy):
 
         # mdns services
         mdns = Serial.listMdnsServices()
+
         if(mdns):
             for service in mdns:
                 index += 1
                 try:
                     service = json.loads(service)
-                    one = service["server"][:-1]
+                    one = service["server"][:-1] + ' | ' + service["ip"]
                     two = service["properties"]["board"]
-                    if(current_port and current_port == one):
+                    if(current_port and current_port == service["ip"]):
                         C['PORTINDEX'] = index
                     lista.append([one, two])
                 except:

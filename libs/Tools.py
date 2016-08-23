@@ -126,7 +126,7 @@ def userPreferencesStatus():
         setStatus(env.upper(), key='_deviot_env')
 
     # check for port
-    port = Preferences().get('id_port', False)
+    port = Preferences().get('port_bar', False)
     if port:
         setStatus(port.upper(), key='_deviot_port')
 
