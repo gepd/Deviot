@@ -66,7 +66,7 @@ Remember to choose `Add python.exe to Path` when you install it in Windows.
 
 
 ## - Languages 
-Deviot is available in **English**, **Spanish**, **French**, **Korean**(Incomplete), **Chinese**(Incomplete)
+Deviot is available in **English**, **Spanish**, **French**(Incomplete), **Korean**(Incomplete), **Chinese**
 
 If you want to contribute and translate it to your language use [this template](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) or any other language file as reference. ([Languages availables](https://github.com/gepd/Deviot/tree/master/Languages))
 
@@ -75,7 +75,7 @@ You should let the `msgid` as is, and paste your translated string in `msgstr`. 
 ## - Thanks to
 * **[PlatformIO](http://www.platformio.org)**: Ivan Kravets
 * **Korean Translation:** @gro
-* **Chinese Translation:** @chkb123456
+* **Chinese Translation:** @chkb123456, loong
 * **French Translation:** @Alnoa
 * **Code Contributor:** @goolic
 

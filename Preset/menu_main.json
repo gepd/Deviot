@@ -75,7 +75,7 @@
             },
             {"caption": "-"},
             {
-                "caption": "Programmer",
+                "caption": "menu_programmer",
                 "id": "menu_programmer",
                 "children":
                 [
@@ -286,21 +286,21 @@
                                 "checkbox": true
                             },
                             {
-                                "caption": "Ascii",
+                                "caption": "menu_ascii",
                                 "id": "display_mode_sacii",
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Ascii"},
                                 "checkbox": true
                             },
                             {
-                                "caption": "Hex",
+                                "caption": "menu_hex",
                                 "id": "display_mode_hex",
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Hex"},
                                 "checkbox": true
                             },
                             {
-                                "caption": "Hex + Ascii",
+                                "caption": "menu_hexascii",
                                 "id": "display_mode_hex",
                                 "command": "choose_display_mode_item",
                                 "args": {"display_mode_item": "Mix"},

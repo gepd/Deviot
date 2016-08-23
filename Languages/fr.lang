@@ -110,6 +110,9 @@ msgstr "Ouvrir Config de compilation"
 msgid "menu_hide_console"
 msgstr "Cacher la console Deviot"
 
+msgid "menu_programmer"
+msgstr "Programmer"
+
 msgid "menu_show_console" # Translate
 msgstr "Show Deviot Console"
 
@@ -163,6 +166,15 @@ msgstr "Mode d’affichage"
 
 msgid "menu_text"
 msgstr "Texte"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
 
 msgid "menu_option"
 msgstr "Options"
@@ -343,6 +355,9 @@ msgstr "Select a Library"
 
 msgid "select_example"
 msgstr "Select an Example"
+
+msgid "_previous"
+msgstr "< Previous"
 
 msgid "upgrading_pio"
 msgstr "Upgrading PlarformIO...\n"

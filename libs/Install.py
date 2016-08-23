@@ -204,7 +204,8 @@ class PioInstall(object):
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("downloading_files{0}", current_time)
 
-            url_file = 'https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.1.tar.gz'
+            url_file = 'https://pypi.python.org/packages/source/v/' \
+                'virtualenv/virtualenv-14.0.6.tar.gz'
 
             try:
                 file_request = Request(url_file, headers=self.headers)
@@ -230,18 +231,23 @@ class PioInstall(object):
 
         # extract file
         current_time = time.strftime('%H:%M:%S')
+        virtualenv = os.path.join(self.env_dir, 'virtualenv')
         self.message_queue.put("extracting_files{0}", current_time)
-        tmp = tempfile.mkdtemp()
-        Tools.extractTar(self.env_file, tmp)
 
-        # install virtualenv in a temp dir
+        if(not os.path.isdir(virtualenv)):
+            Tools.extractTar(self.env_file, self.env_dir)
+
+        # rename folder
+        extracted = os.path.join(self.env_dir, 'virtualenv-14.0.6')
+        if(not os.path.isdir(virtualenv)):
+            os.rename(extracted, virtualenv)
+
+        # install virtualenv
         current_time = time.strftime('%H:%M:%S')
         self.message_queue.put("installing_pio{0}", current_time)
 
-        temp_env = os.path.join(tmp, 'env-root')
-        cwd = os.path.join(tmp, 'virtualenv-14.0.1')
-        cmd = ['python', 'setup.py', 'install', '--root', temp_env]
-        out = Tools.runCommand(cmd, cwd)
+        cmd = ['python', 'virtualenv.py', '"%s"' % self.env_dir]
+        out = Tools.runCommand(cmd, virtualenv)
 
         py_version = sub(r'\D', '', out[1])
 
@@ -252,26 +258,6 @@ class PioInstall(object):
             self.message_queue.put(
                 "error_installing_env_{0}", current_time)
             return
-
-        # make vitualenv
-        for root, dirs, files in os.walk(tmp):
-            for file in files:
-                if(file == 'virtualenv.py'):
-                    cwd = root
-
-        if(os.path.exists(cwd)):
-            cmd = ['python', 'virtualenv.py', '"%s"' % (self.env_dir)]
-            out = Tools.runCommand(cmd, cwd)
-
-            # error
-            if(out[0] > 0):
-                current_time = time.strftime('%H:%M:%S')
-                self.message_queue.put(
-                    "error_making_env_{0}", current_time)
-                return
-
-        # remove temp dir
-        rmtree(tmp)
 
         # Install pio
         if(sublime.platform() == 'osx'):
@@ -459,14 +445,17 @@ class PioInstall(object):
 
         if(not developer):
             # install developer version
+            develop_file = 'https://github.com/platformio/' \
+                'platformio/archive/develop.zip'
+
             if(sublime.platform() == 'osx'):
                 executable = os.path.join(self.env_bin_dir, 'python')
                 cmd = ['"%s"' % (executable), '-m', 'pip',
-                       'install', '-U', 'https://github.com/platformio/platformio/archive/develop.zip']
+                       'install', '-U', develop_file]
             else:
                 executable = os.path.join(self.env_bin_dir, 'pip')
-                cmd = ['"%s"' % (executable), 'install', '-U',
-                       'https://github.com/platformio/platformio/archive/develop.zip']
+                cmd = ['"%s"' % (executable), 'install', '-U', develop_file]
+
             current_time = time.strftime('%H:%M:%S')
             self.message_queue.put("installing_dev_pio{0}", current_time)
             out = Tools.runCommand(cmd)

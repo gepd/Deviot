@@ -17,7 +17,7 @@ from shutil import rmtree
 
 from .libs import Paths, Tools
 from .libs.Menu import Menu
-from .libs.PlatformioCLI import PlatformioCLI
+from .libs import PlatformioCLI
 from .libs.Preferences import Preferences
 from .libs.QuickPanel import quickPanel
 from .libs import Libraries
@@ -68,7 +68,7 @@ class DeviotListener(sublime_plugin.EventListener):
 
         Arguments: view {ST object} -- Sublime Text Object
         """
-        PlatformioCLI(feedback=False, console=False).checkInitFile()
+        PlatformioCLI.PlatformioCLI(feedback=False).checkInitFile()
         Tools.setStatus()
         Tools.userPreferencesStatus()
 
@@ -98,7 +98,7 @@ class DeviotListener(sublime_plugin.EventListener):
         file_path = Tools.getPathFromView(view)
         if(not file_path):
             return
-        file_name = Tools.getFileNameFromPath(file_path, ext=False)
+        file_name = Tools.getNameFromPath(file_path, ext=False)
         tmp_path = Paths.getTempPath()
         tmp_all = os.path.join(tmp_path, '*')
         tmp_all = glob.glob(tmp_all)
@@ -162,6 +162,8 @@ class SelectEnvCommand(sublime_plugin.WindowCommand):
             env = self.MENU_LIST[0][selected][1].split(' | ')[1]
             Tools.saveEnvironment(env)
             Tools.userPreferencesStatus()
+            programmer = Preferences().get('programmer', False)
+            PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
 
     def is_enabled(self):
         return Tools.checkBoards()
@@ -286,7 +288,7 @@ class ListExamplesCommand(sublime_plugin.WindowCommand):
 
     def run(self, path):
 
-        self.MENU_LIST = [[_("select_example")]]
+        self.MENU_LIST = [[_("select_example").upper()], [_("_previous")]]
 
         file_examples = os.path.join(path, '*')
         file_examples = glob.glob(file_examples)
@@ -298,6 +300,10 @@ class ListExamplesCommand(sublime_plugin.WindowCommand):
         quickPanel(self.MENU_LIST, self.on_done)
 
     def on_done(self, selection):
+        if(selection == 1):
+            self.window.run_command("list_library_examples")
+            return
+
         if(selection > 0):
             path = self.MENU_LIST[selection][1]
             Tools.openExample(path, self.window)
@@ -326,7 +332,7 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('build')
+        PlatformioCLI.PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
         return Preferences().get('enable_menu', False)
@@ -342,7 +348,7 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('upload')
+        PlatformioCLI.PlatformioCLI().openInThread('upload')
 
     def is_enabled(self):
         return Preferences().get('enable_menu')
@@ -357,7 +363,7 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
-        PlatformioCLI().openInThread('clean')
+        PlatformioCLI.PlatformioCLI().openInThread('clean')
 
     def is_enabled(self):
         is_enabled = Preferences().get('enable_menu', False)
@@ -370,24 +376,19 @@ class CleanSketchCommand(sublime_plugin.TextCommand):
 class OpenIniFileCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        view = self.window.active_view()
-        is_iot = Tools.isIOTFile(view.file_name())
 
-        if(not is_iot):
+        if(not PlatformioCLI.C['IOT']):
             return
 
         views = []
-        path = Preferences().get('ini_path', False)
-        path = os.path.join(path, 'platformio.ini')
+        path = PlatformioCLI.C['INIPATH']
         view = self.window.open_file(path)
         views.append(view)
         if views:
             self.window.focus_view(views[0])
 
     def is_enabled(self):
-        view = self.window.active_view()
-        is_iot = Tools.isIOTFile(view.file_name())
-        return is_iot
+        return PlatformioCLI.C['IOT']
 
 
 class HideConsoleCommand(sublime_plugin.WindowCommand):
@@ -412,6 +413,126 @@ class ShowConsoleCommand(sublime_plugin.WindowCommand):
         self.window.run_command("show_panel", {"panel": "output.exec"})
 
 
+class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
+class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
+
+    def run(self, programmer):
+        Preferences().set('programmer', programmer)
+        PlatformioCLI.PlatformioCLI(feedback=False).programmer(programmer)
+
+    def is_checked(self, programmer):
+        prog = Preferences().get('programmer', False)
+        return prog == programmer
+
+    def is_enabled(self, programmer):
+        file = self.window.active_view().file_name()
+        return Tools.isIOTFile(file)
+
+
 class SelectPortCommand(sublime_plugin.WindowCommand):
     """
     Saves the port COM selected by the user in the
@@ -421,110 +542,9 @@ class SelectPortCommand(sublime_plugin.WindowCommand):
     """
 
     def run(self):
-        thread = threading.Thread(target=PlatformioCLI(
-            console=False, feedback=False).listSerialPorts)
-        thread.start()
-        ThreadProgress(thread, _('processing'), _('done'))
-
-
-class AuthChangeCommand(sublime_plugin.WindowCommand):
-    """
-    Saves the password to use in OTA Upload
-
-    Extends: sublime_plugin.WindowCommand
-    """
-
-    def run(self):
-        self.window.show_input_panel(_("pass_caption"), '',
-                                     self.on_done,
-                                     None,
-                                     None)
-
-    def on_done(self, password):
-        Preferences().set('auth', password)
-
-    def is_enabled(self):
-        return PlatformioCLI(console=False).mDNSCheck(feedback=False)
-
-
-class ProgrammerNoneCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerAvrCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerArduinoIspCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerUsbaspCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerParallelCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
-
-
-class ProgrammerArduinoAsIspCommand(sublime_plugin.WindowCommand):
-
-    def run(self, programmer):
-        Preferences().set('programmer', programmer)
-
-    def is_checked(self, programmer):
-        prog = Preferences().get('programmer', False)
-        return prog == programmer
+        PlatformioCLI.C['PORTSLIST'] = ""
+        listports = PlatformioCLI.PlatformioCLI(feedback=False).selectPort
+        PlatformioCLI.PlatformioCLI(feedback=False).openInThread(listports)
 
 
 class AddSerialIpCommand(sublime_plugin.WindowCommand):
@@ -545,6 +565,26 @@ class AddSerialIpCommand(sublime_plugin.WindowCommand):
             Menu().createSerialPortsMenu()
 
 
+class AuthChangeCommand(sublime_plugin.WindowCommand):
+    """
+    Saves the password to use in OTA Upload
+
+    Extends: sublime_plugin.WindowCommand
+    """
+
+    def run(self):
+        self.window.show_input_panel(_("pass_caption"), '',
+                                     self.on_done,
+                                     None,
+                                     None)
+
+    def on_done(self, password):
+        Preferences().set('auth', password)
+
+    def is_enabled(self):
+        return PlatformioCLI.PlatformioCLI().mDNSCheck(feedback=False)
+
+
 class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
     """
     Run a selected serial monitor and show the messages in a new window
@@ -554,9 +594,7 @@ class SerialMonitorRunCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         if(not Preferences().get('id_port', False)):
-            PlatformioCLI(feedback=False, callback=self.on_done).openInThread(
-                'ports', process=False)
-            return
+            PlatformioCLI.PlatformioCLI(feedback=False).monitorCall()
         self.on_done()
 
     def on_done(self):
@@ -771,11 +809,11 @@ class UseCppTemplateCommand(sublime_plugin.WindowCommand):
 class UseAlwaysNativeCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        keep = Preferences().get('always_native', False)
-        Preferences().set('always_native', not keep)
+        keep = Preferences().get('force_native', False)
+        Preferences().set('force_native', not keep)
 
     def is_checked(self):
-        return Preferences().get('always_native', False)
+        return Preferences().get('force_native', False)
 
 
 class ChangeDefaultPathCommand(sublime_plugin.WindowCommand):

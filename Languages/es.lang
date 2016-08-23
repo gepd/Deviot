@@ -111,6 +111,9 @@ msgstr "Abrir Archivo Para Compilación"
 msgid "menu_hide_console"
 msgstr "Ocultar Consola Deviot"
 
+msgid "menu_programmer"
+msgstr "Programador"
+
 msgid "menu_show_console"
 msgstr "Mostrar Consola Deviot"
 
@@ -163,7 +166,16 @@ msgid "menu_display_mode"
 msgstr "Modo de Visualización"
 
 msgid "menu_text"
-msgstr "Texto"
+msgstr "Text"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
 
 msgid "menu_option"
 msgstr "Opciones"
@@ -262,7 +274,7 @@ msgid "select_board_list"
 msgstr "Seleciona una Placa de la Lista"
 
 msgid "select_env_list"
-msgstr "Selecciona un Entorno de Desarrollo de la Lista"
+msgstr "Selecciona un Entorno de Desarrollo"
 
 msgid "select_port_list"
 msgstr "Selecciona un Puerto de la Lista"
@@ -344,6 +356,9 @@ msgstr "Selecciona una Librería"
 
 msgid "select_example"
 msgstr "Selecciona un Ejemplo"
+
+msgid "_previous"
+msgstr "< Volver"
 
 msgid "upgrading_pio"
 msgstr "Actualizando PlarformIO...\n"
