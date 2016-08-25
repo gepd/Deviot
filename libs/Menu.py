@@ -90,9 +90,9 @@ class Menu(object):
         environments = [[_("select_env_list").upper()]]
         index = 0
 
-        is_native = Preferences().get('native', False)
-        type = 'board_id' if not is_native else 'found_ini'
-        list_env = Preferences().get(type, '')
+        list_env = Preferences().get('board_id', [])
+        list_env.extend(Tools.getEnvFromFile())
+        list_env = sorted(list(set(list_env)))
 
         env_selected = Tools.getEnvironment()
         env_data = self.getTemplateMenu(

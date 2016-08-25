@@ -526,6 +526,13 @@ def getEnvironment():
     return environment
 
 
+def getInitPath(view):
+    workingpath = getWorkingPath(view)
+    inipath = os.path.join(workingpath, 'platformio.ini')
+
+    return inipath
+
+
 def saveEnvironment(data):
     from .Preferences import Preferences
 
@@ -540,25 +547,21 @@ def saveEnvironment(data):
         settings.set('env_selected', data)
 
 
-def checkBoards():
-    from .Preferences import Preferences
+def getEnvFromFile():
+    from .configobj.configobj import ConfigObj
 
-    settings = Preferences()
+    window = sublime.active_window()
+    view = window.active_view()
 
-    enabled = settings.get('enable_menu', False)
-    if(enabled):
-        if(settings.get('force_native', False)):
-            native = True
-        else:
-            native = settings.get('native', True)
-        if(native):
-            env = settings.get('found_ini', False)
-            enabled = True if env else False
-        else:
-            env = settings.get('board_id', False)
-            enabled = True if env else False
+    inipath = getInitPath(view)
 
-    return enabled
+    envs = []
+    if(os.path.exists(inipath)):
+        inifile = ConfigObj(inipath)
+        for env in inifile:
+            if('env' in env):
+                envs.append(env.split(":")[1])
+    return envs
 
 
 def getJSONBoards(force=False):
@@ -569,7 +572,7 @@ def getJSONBoards(force=False):
 
     if(not os.path.isfile(data_file) or force):
         from .PlatformioCLI import PlatformioCLI
-        PlatformioCLI(feedback=False).getAPIBoards()
+        PlatformioCLI().getAPIBoards()
 
 
 def checkEnvironments():
@@ -668,17 +671,20 @@ def getWorkingPath(view):
 
     filepath = Paths.getCWD(view.file_name())
     parentpath = os.path.dirname(filepath)
-    check = checkIniFile(parentpath)
+    init_native = checkIniFile(parentpath)
 
-    if(check):
-        return parentpath
+    if(init_native or filepath.endswith('src')):
+        returnpath = parentpath
     else:
-        tempname = getNameFromPath(parentpath, ext=False)
-        buildpath = Paths.getBuildPath(tempname)
-        force = Preferences().get('force_native', False)
+        tempname = getNameFromPath(filepath, ext=False)
+        returnpath = Paths.getBuildPath(tempname)
+
+        force = Preferences().get('native', True)
+
         if(force):
-            buildpath = filepath
-        return buildpath
+            returnpath = filepath
+
+    return returnpath
 
 
 def runCommand(command, cwd=None):
