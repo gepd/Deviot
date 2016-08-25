@@ -40,13 +40,15 @@ class Menu(object):
 
         Returns: {json array} -- list of all boards to show in the menu
         '''
+        from . import Tools
 
+        file = "platformio_boards.json"
         boards = [[_("select_board_list").upper()]]
-        is_native = Preferences().get('native', False)
-        type = 'board_id' if not is_native else 'found_ini'
-        list_env = Preferences().get(type, '')
-        data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        data = self.getTemplateMenu(file_name=file, user_path=True)
+
+        list_env = Preferences().get('board_id', [])
+        list_env.extend(Tools.getEnvFromFile())
+        list_env = sorted(list(set(list_env)))
 
         if(not data):
             return
@@ -142,8 +144,8 @@ class Menu(object):
 
         sel_env = Tools.getEnvironment()
 
-        data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        file = "platformio_boards.json"
+        data = self.getTemplateMenu(file_name=file, user_path=True)
         data = json.loads(data)
 
         # check current platform
@@ -192,7 +194,8 @@ class Menu(object):
                     if (data != {}):
                         caption = data['name']
 
-                if caption not in added_lib and '__cores__' not in caption and caption not in check_list:
+                if caption not in added_lib and '__cores__' not in caption and
+                caption not in check_list:
                     added_lib.append([caption, library])
                     check_list.append(caption)
 
@@ -234,7 +237,8 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib) and caption not in check_list:
+                    if 'examples' in lib and os.path.isdir(lib) and
+                    os.listdir(lib) and caption not in check_list:
                         examples.append([caption, lib])
                         check_list.append(caption)
 
