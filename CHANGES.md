@@ -1,4 +1,25 @@
 # Deviot Release Notes
+## Version 1.2.3 | 25 Aug
+* New option "Previous" to back when a library was selected in the examples list
+* Deviot install uses "virtualenv 14.0.6" to simplify the process
+* Improved chinese translation (Thanks to "loong")
+* The programmer will be add in the platformio.ini file after selecting it in the menu
+* Avoid to check PlatformIO updates when developer version is installed
+* Show "Framewor(s)" type in library results
+* Show IP of mDNS service in list of ports
+* Reload main menu when it's corrupted after an update (Issue: https://github.com/gepd/Deviot/issues/54)
+* OTA upload uses the device IP insted of the service name to avoid DNS errors
+* Show percentage in console when upload by OTA
+* Multiples bug fixes with authentication in OTA uploads
+* Bug fix to prevent an error when a sketch folder has been renamed in a non native project
+* Bug fix when PlatformIO board list have format problems
+* Bug Fix for run monitor serial when none port is selected (issue: https://github.com/gepd/Deviot/issues/52)
+* Bug Fix showing message 'Not Found' when the results only have installed libraries
+* Bug fix saving the sketch before build/upload
+* Bug fix in menu option 'Open Build Config File' introduced in previous release
+* Factorized serial port feature
+* Factorized project recognition
+
 ## Version 1.2.2 | 18 Aug
 * Support for PlatformIO 3.0
 * Other minor fixes
