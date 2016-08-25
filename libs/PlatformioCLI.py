@@ -517,8 +517,6 @@ class PlatformioCLI(CommandsPy):
         password = Preferences().get('auth', '0')
         INIFILE = ConfigObj(C['INIPATH'])
         ENVIRONMENT = 'env:%s' % C['ENVIRONMENT']
-        print(C['INIPATH'])
-        print(INIFILE)
 
         # remove flag
         if(not password or password == '0'):

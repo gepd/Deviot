@@ -178,7 +178,7 @@ class CommandsPy(object):
                 'in function' in outputif or
                 'reference' in outputif or 'in file' in outputif or
                 'error:' in outputif or '^' in outputif or
-                'ser_open' in outputif):
+                'ser_open' in outputif or 'permission' in outputif):
 
             if('^' in outputif):
                 output = self.previous + output
