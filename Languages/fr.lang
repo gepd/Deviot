@@ -248,12 +248,6 @@ msgstr "PlatformIO est à jour ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "Une nouvelle version est disponible, et installée ({0})\n"
 
-msgid "download_board_list"
-msgstr "Téléchargement de la liste des cartes\n"
-
-msgid "list_updated"
-msgstr "Liste à jour !\n"
-
 msgid "caption_new_sketch"
 msgstr "Nom pour le nouveau Sketch:"
 
@@ -278,20 +272,11 @@ msgstr "Select an Environment From The List"
 msgid "select_port_list" # Translate
 msgstr "Select a Port From The List"
 
-msgid "none_board_sel_{0}"
-msgstr "{0} Aucune carte sélectionné\n"
-
 msgid "init_project_{0}"
-msgstr "{0} Initialisation du projet | "
+msgstr "{0} Initialisation du projet | En cours...\n"
 
 msgid "built_project_{0}"
 msgstr "{0} Construction du projet | En cours...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} Aucun port série sélectionné\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} Aucun environnement sélectionné\n"
 
 msgid "error_installing_env_{0}"
 msgstr "{0} Erreur d’installation virtualenv\n"

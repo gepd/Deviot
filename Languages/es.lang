@@ -249,12 +249,6 @@ msgstr "Tienes instalada la última versión de PlatformIO ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "Una nueva version fue encontrada e instalada ({0})\n"
 
-msgid "download_board_list"
-msgstr "Descargando lista de placas\n"
-
-msgid "list_updated"
-msgstr "¡Lista actualizada!\n"
-
 msgid "caption_new_sketch"
 msgstr "Nombre para el Sketch:"
 
@@ -279,20 +273,11 @@ msgstr "Selecciona un Entorno de Desarrollo"
 msgid "select_port_list"
 msgstr "Selecciona un Puerto de la Lista"
 
-msgid "none_board_sel_{0}"
-msgstr "{0} Ninguna placa ha sido seleccionada"
-
 msgid "init_project_{0}"
-msgstr "{0} Inicializando el proyecto | "
+msgstr "{0} Inicializando el proyecto | Procesando...\n"
 
 msgid "built_project_{0}"
 msgstr "{0} Compilando el proyecto | Procesando...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} Ningún puerto Serial ha sido seleccionado\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} Ningún entorno de desarrollo ha sido seleccionado\n"
 
 msgid "error_installing_env_{0}"
 msgstr "{0} Error Installing virtualenv\n"

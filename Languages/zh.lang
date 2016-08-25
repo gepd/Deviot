@@ -251,12 +251,6 @@ msgstr "PlatformIO 是最新的 ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "发现并安装了一个新版本 ({0})\n"
 
-msgid "download_board_list"
-msgstr "下载开发板列表\n"
-
-msgid "list_updated"
-msgstr "列表更新！\n"
-
 msgid "caption_new_sketch"
 msgstr "名称："
 
@@ -281,20 +275,11 @@ msgstr "从列表中选择一个开发环境"
 msgid "select_port_list"
 msgstr "从列表中选择一个端口"
 
-msgid "none_board_sel_{0}"
-msgstr "{0} 没有选择开发板\n"
-
 msgid "init_project_{0}"
-msgstr "{0} 初始化 | "
+msgstr "{0} 初始化 | 处理...\n"
 
 msgid "built_project_{0}"
 msgstr "{0} 编译 | 处理...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} 没有选择串口\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} 没有选择开发环境(首先选择开发板)\n"
 
 msgid "error_installing_env_{0}"
 msgstr "{0} 安装 Virtualenv 时出错\n"
