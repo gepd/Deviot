@@ -294,7 +294,11 @@ class PioInstall(object):
             self.message_queue.put('checking_pio_updates')
 
         # check version installed and last released
-        if(int(sub(r'\D', '', self.pio_cloud_ver)) != int(sub(r'\D', '', str(self.pio_current_ver)))):
+        developer = Preferences().get("developer", False)
+        if(int(sub(r'\D', '', self.pio_cloud_ver)) is not
+                int(sub(r'\D', '', str(self.pio_current_ver))) and
+                not developer):
+
             update = True
             if(not self.feedback):
                 # Display a pop up window if a new version is available
