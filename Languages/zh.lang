@@ -2,7 +2,7 @@
 # translations for Deviot Plugin.
 # Copyright (C) 2015-2016
 # This file is distributed under the same license as the Deviot Plugin.
-# Translator: Steve Chekblain
+# Translator: Steve Chekblain, loong
 # 
 # Use this file to create your own language file, once you do it
 # save it in the ISO 639-1 format (two letters) and with the extension .lang
@@ -19,75 +19,75 @@ msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] 初始化\n"
 
 msgid "pio_is_installed{0}"
-msgstr "{0} PlatformIO 已安装在您的系统, 您现在已可以开始使用 Deviot!"
+msgstr "{0} PlatformIO 安装完毕，现在可以享受 Deviot！"
 
 msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO 未安装\n正在安装, 请稍候...\n"
+msgstr "{0} 准备安装 PlatformIO，请耐心等待，可能要花上一段时间。 \n"
 
 msgid "downloading_files{0}"
-msgstr "{0} 正在下载必要文件...\n"
+msgstr "{0} 正在下载所需文件...\n"
 
 msgid "error_downloading_files{0}"
-msgstr "{0} 下载出错!\n"
+msgstr "{0} 下载所需文件时出错 ...\n"
 
 msgid "error_saving_files{0}"
-msgstr "{0} 文件无法保存\n"
+msgstr "{0} 保存所需文件时出错...\n"
 
 msgid "extracting_files{0}"
-msgstr "{0} 正在解压缩文件...\n"
+msgstr "{0} 提取文件...\n"
 
 msgid "installing_pio{0}"
-msgstr "{0} 正在安装 PlatformIO...\n"
+msgstr "{0} 安装 PlatformIO...\n"
 
 msgid "uninstall_old_pio{0}"
-msgstr "{0} Uninstalling current version...\n"
+msgstr "{0} 卸载当前版本...\n"
 
 msgid "installing_dev_pio{0}"
-msgstr "{0} Installing 'develop' PlatformIO version...\n"
+msgstr "{0} 安装 PlatformIO 开发版...\n"
 
 msgid "installing_stable_pio{0}"
-msgstr "{0} Installing 'stable' PlatformIO version...\n"
+msgstr "{0} 安装 PlatformIO 稳定版...\n"
 
 msgid "setup_finished{0}"
-msgstr "{0} 安装完成, 您现在已可以开始使用 Deviot!\n"
+msgstr "{0} 安装完毕，去享受 Deviot 吧！\n"
 
 msgid "searching_pio_updates"
-msgstr "查找 PlatformIO 更新...\n\n"
+msgstr "搜索 PlatformIO 升级...\n\n"
 
 msgid "new_pio_update{0}{1}"
-msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+msgstr "发现 PlatformIO {0} 新版本, 当前版本 {1} ，是否更新？"
 
 msgid "update_button"
-msgstr "Update Now"
+msgstr "现在升级"
 
-# Menu
+# 菜单
 
 msgid "menu_new_sketch"
-msgstr "新建工程"
+msgstr "新建"
 
 msgid "menu_select_boards"
-msgstr "选择开发板"
+msgstr "开发板"
 
 msgid "menu_select_env"
-msgstr "选择开发环境"
+msgstr "开发环境"
 
 msgid "menu_search_lib"
-msgstr "查找库"
+msgstr "搜索库"
 
 msgid "menu_remove_lib"
-msgstr "移除库"
+msgstr "删除库"
 
 msgid "menu_import_library"
 msgstr "导入库"
 
 msgid "menu_not_libraries"
-msgstr "Not Libraries Availables"
+msgstr "没有库"
 
 msgid "menu_library_examples"
 msgstr "示例"
 
 msgid "menu_not_examples"
-msgstr "Not Examples Availables"
+msgstr "没有示例"
 
 msgid "menu_option_lib"
 msgstr "库选项"
@@ -96,34 +96,40 @@ msgid "menu_open_lib_folder"
 msgstr "打开库文件夹"
 
 msgid "menu_change_user_lib_path"
-msgstr "更改库文件目录"
+msgstr "更改库文件夹路径"
 
 msgid "menu_build"
-msgstr "生成"
+msgstr "编译"
 
 msgid "menu_upload"
-msgstr "上传"
+msgstr "下载"
 
 msgid "menu_clean"
-msgstr "清理生成文件"
+msgstr "清除"
 
 msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
+msgstr "配置文件"
 
 msgid "menu_hide_console"
-msgstr "隐藏 Deviot 控制台"
+msgstr "隐藏控制台"
+
+msgid "menu_programmer"
+msgstr "编程器"
+
+msgid "menu_show_console"
+msgstr "显示控制台"
 
 msgid "menu_serial_ports"
-msgstr "选择串口"
+msgstr "串口"
 
 msgid "menu_auth_change"
-msgstr "Change OTA Password"
+msgstr "更改密码"
 
 msgid "menu_none_serial_mdns"
-msgstr "None serial port or mDNS services available"
+msgstr "没有串口或mDNS服务"
 
 msgid "menu_add_ip"
-msgstr "手动添加"
+msgstr "添加串口"
 
 msgid "menu_monitor_serial"
 msgstr "串口监视器"
@@ -135,34 +141,43 @@ msgid "menu_send"
 msgstr "发送"
 
 msgid "menu_deviot_output"
-msgstr "Output in Deviot Console"
+msgstr "控制台输出"
 
 msgid "menu_auto_scroll"
-msgstr "自动滚屏"
+msgstr "自动滚动"
 
 msgid "menu_baudrate"
 msgstr "波特率"
 
 msgid "menu_line_ending"
-msgstr "结尾字符"
+msgstr "行尾"
 
 msgid "menu_none"
 msgstr "无"
 
 msgid "menu_new_line"
-msgstr "行结束符"
+msgstr "换行"
 
 msgid "menu_cr"
 msgstr "回车"
 
 msgid "menu_nl_cr"
-msgstr "NL & CR"
+msgstr "换行和回车"
 
 msgid "menu_display_mode"
 msgstr "显示模式"
 
 msgid "menu_text"
 msgstr "文本"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "十六进制"
+
+msgid "menu_hexascii"
+msgstr "十六进制 + ASCII"
 
 msgid "menu_option"
 msgstr "选项"
@@ -171,148 +186,133 @@ msgid "menu_upgrade_pio"
 msgstr "升级 PlatformIO"
 
 msgid "menu_developer_pio"
-msgstr "Use Development Pio Version"
+msgstr "使用 PlatformIO 开发版"
 
 msgid "menu_update_board_list"
 msgstr "升级开发板列表"
 
 msgid "menu_show_verbose"
-msgstr "显示详细编译器输出"
+msgstr "显示详细输出"
 
 msgid "menu_remove_user_files"
-msgstr "移除参数文件"
+msgstr "删除参数文件"
 
 msgid "menu_keep_temp_files"
 msgstr "保留临时文件"
 
 msgid "menu_open_build_folder"
-msgstr "打开生成文件夹"
+msgstr "打开编译文件夹"
 
 msgid "menu_change_build_folder"
-msgstr "更改生成文件夹"
+msgstr "更改编译文件夹"
 
 msgid "menu_use_cpp_new"
-msgstr "为新文件使用C++格式"
+msgstr "使用 .CPP 新建文件"
 
 msgid "menu_always_native"
-msgstr "Use PlatformIO Structure"
+msgstr "使用 PlatformIO 新建"
 
 msgid "menu_change_default_path"
-msgstr "Change Default Path"
+msgstr "更改默认路径 "
 
 msgid "menu_remove_default_path"
-msgstr "Remove Default Path"
+msgstr "删除默认路径"
 
 msgid "menu_languages"
-msgstr "语言 (Languages)"
+msgstr "语言"
 
 msgid "menu_donate_deviot"
-msgstr "❤ 捐赠"
+msgstr "捐赠"
 
 msgid "menu_about"
 msgstr "关于"
 
 msgid "menu_about_deviot"
-msgstr "关于 Deviot"
+msgstr "关于Deviot"
 
 msgid "menu_about_pio"
-msgstr "关于 PlatformIO"
+msgstr "关于PlatformIO"
 
 
-# Mensajes y errores
+# 信息和错误
 
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
 msgid "checking_pio_updates"
-msgstr "查找 PlatformIO 更新...\n"
+msgstr "检查 PlatformIO 更新 ...\n"
 
 msgid "error_pio_updates"
-msgstr "PlatformIO 更新失败\n"
+msgstr "更新 PlatformIO 时出错\n"
 
 msgid "pio_up_date{0}"
-msgstr "PlatformIO 已是最新版本 ({0})\n"
+msgstr "PlatformIO 是最新的 ({0})\n"
 
 msgid "pio_new_updated_installed{0}"
-msgstr "新版本已安装 ({0})\n"
-
-msgid "download_board_list"
-msgstr "下载开发板列表\n"
-
-msgid "list_updated"
-msgstr "开发板列表已更新!\n"
+msgstr "发现并安装了一个新版本 ({0})\n"
 
 msgid "caption_new_sketch"
-msgstr "新工程名:"
+msgstr "名称："
 
 msgid "updating_board_list"
-msgstr "正在更新开发板列表"
+msgstr "更新开发板列表"
 
 msgid "not_empty_sketch_{0}"
-msgstr "{0} 无法上传空工程\n"
+msgstr "{0} 不能下载空程序\n"
 
 msgid "invalid_file_{0}"
-msgstr "{0} 无效上传文件\n"
+msgstr "{0} 下载无效\n"
 
 msgid "not_iot_{0}{1}"
-msgstr "{0} {1} 不是 IoT 项目\n"
+msgstr "{0} {1} 不是 IoT(物联网) 文件\n"
 
 msgid "select_board_list"
-msgstr "Select a Board From The List"
+msgstr "从列表中选择一个开发板"
 
 msgid "select_env_list"
-msgstr "Select an Environment From The List"
+msgstr "从列表中选择一个开发环境"
 
 msgid "select_port_list"
-msgstr "Select a Port From The List"
-
-msgid "none_board_sel_{0}"
-msgstr "{0} 未选择开发板\n"
+msgstr "从列表中选择一个端口"
 
 msgid "init_project_{0}"
-msgstr "{0} 初始化项目 | "
+msgstr "{0} 初始化 | 处理...\n"
 
 msgid "built_project_{0}"
-msgstr "{0} 生成项目 | 正在处理...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} 未选择串口\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} 未选择开发环境\n"
+msgstr "{0} 编译 | 处理...\n"
 
 msgid "error_installing_env_{0}"
-msgstr "{0} virtualenv 安装错误\n"
+msgstr "{0} 安装 Virtualenv 时出错\n"
 
 msgid "error_making_env_{0}"
-msgstr "{0} virtualenv 创建错误\n"
+msgstr "{0} 创建 Virtualenv 时出错\n"
 
 msgid "error_installing_pio_{0}"
-msgstr "{0} PlatformIO 安装错误\n"
+msgstr "{0} 安装 PlatformIO 时出错\n"
 
 msgid "uploading_firmware_{0}"
-msgstr "{0} 上传固件 | "
+msgstr "{0} 下载固件 | "
 
 msgid "clean_built_files__{0}"
-msgstr "{0} 清理生成文件 | "
+msgstr "{0} 清除创建文件 | "
 
 msgid "success_took_{1}"
-msgstr "成功 | 总时间 {1}s\n"
+msgstr "成功 | 用时 {1} 秒\n"
 
 msgid "success_took_{0}{1}"
-msgstr "{0} 成功 | 总时间 {1}s\n"
+msgstr "{0} 成功 | 用时 {1} 秒\n"
 
 msgid "success_warnings_took__{0}{1}"
-msgstr "{0} 成功(有警告) | 总时间 {1}s\n"
+msgstr "{0} 成功(&警告) | 用时 {1} 秒\n"
 
 msgid "error_took_{0}{1}"
-msgstr "{0} 错误 | 总时间 {1}s\n"
+msgstr "{0} 错误 | 用时 {1} 秒\n"
 
 msgid "continue"
 msgstr "继续"
 
 msgid "confirm_del_pref"
-msgstr "将重启 Sublime Text. 确定吗?"
+msgstr "在此之后，需要重启 Sublime Text。是否继续？"
 
 msgid "success"
 msgstr "成功"
@@ -321,41 +321,43 @@ msgid "error"
 msgstr "错误"
 
 msgid "success_warnings"
-msgstr "成功(有警告)"
+msgstr "成功(&警告)"
 
 msgid "processing"
-msgstr "处理中"
+msgstr "处理"
 
 msgid "done"
-msgstr "完毕"
+msgstr "完成"
 
 msgid "restart_deviot"
-msgstr "This action required to restart Sublime Text. Do you want to continue?"
+msgstr "此操作需要重启Sublime，是否继续？"
 
 msgid "continue_button"
-msgstr "Continue"
+msgstr "继续"
 
 msgid "ota_error_platform"
-msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
+msgstr "在线只能升级当前 Espressif (ESP8266) 平台"
 
 msgid "select_library"
-msgstr "Select a Library"
+msgstr "选择库"
 
 msgid "select_example"
-msgstr "Select an Example"
+msgstr "选择示例"
+
+msgid "_previous"
+msgstr "< 以前"
 
 msgid "upgrading_pio"
-msgstr "Upgrading PlarformIO...\n"
+msgstr "升级 PlarformIO...\n"
 
 
-# Libraries
-
+# 库
 
 msgid "search_query"
-msgstr "查找主题:"
+msgstr "搜索查询："
 
 msgid "add_ip_caption"
-msgstr "IP 地址:"
+msgstr "输入IP地址： "
 
 msgid "select_cur_dir_{0}"
 msgstr "选择当前目录 ({0})"
@@ -367,89 +369,89 @@ msgid "uninstalling_lib_{0}{1}"
 msgstr "{0} 卸载库 {1} | "
 
 msgid "download_lib"
-msgstr "下载中...\n"
+msgstr "下载...\n"
 
 msgid "searching"
-msgstr "查找中"
+msgstr "搜索"
 
 msgid "installing"
-msgstr "安装中"
+msgstr "安装"
 
 msgid "install_package_{0}"
-msgstr "\n安装 {0} 扩展包: "
+msgstr "\n安装 {0} 插件： "
 
 msgid "already_installed{0}"
 msgstr "{0} 已安装\n"
 
 msgid "downloading_package{0}"
-msgstr "正在下载扩展包 {0}\n\n请稍候...\n"
+msgstr "下载插件 {0}\n\n它可能需要一段时间，请耐心等待。\n"
 
 msgid "unpacking"
-msgstr "正在解压缩文件...\n"
+msgstr "解压...\n"
 
 msgid "download_dependece"
 msgstr "下载依赖文件\n"
 
 msgid "preparing_list"
-msgstr "准备列表"
+msgstr "准备清单"
 
 msgid "removing"
-msgstr "正在移除"
+msgstr "删除"
 
 msgid "none_lib_found"
-msgstr "找不到库"
+msgstr "没有发现库"
 
 msgid "none_lib_installed"
-msgstr "未安装任何库"
+msgstr "没有安装库"
 
 
-# Serial Monitor
+# 串口监视器
 
 msgid "serial_port_used_{0}"
-msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgstr "串口 {0} 正在使用中。请尝试关闭可能使用此串口的程序。\n"
 
 msgid "send"
-msgstr "Send:"
+msgstr "发送："
 
 msgid "sended_{0}"
-msgstr "\n[SENDED] {0}\n"
+msgstr "\n[发送] {0}\n"
 
-# Auth OTA
+# 在线升级验证
 
 msgid "pass_caption"
-msgstr "Password:"
+msgstr "密码："
 
-# Output console
+# 输出控制台
 
 msgid "starting_on"
-msgstr "Starting on"
+msgstr "开始"
 
 msgid "upload_size"
-msgstr "Upload size"
+msgstr "上传大小"
 
 msgid "sending_invitation"
-msgstr "Sending invitation to"
+msgstr "发送到"
 
 msgid "waiting_device"
-msgstr "Waiting for device"
+msgstr "等待设备"
 
 msgid "waiting_result"
-msgstr "Waiting for result"
+msgstr "等待结果"
 
 msgid "result"
-msgstr "Result"
+msgstr "结果"
 
 msgid "authentication"
-msgstr "Authentication"
+msgstr "验证"
 
 msgid "failed"
-msgstr "Failed"
+msgstr "失败"
 
 msgid "attempt"
-msgstr "attempt"
+msgstr "重试"
 
 msgid "of"
-msgstr "of"
+msgstr "分析"
 
 msgid "not_in_sync"
-msgstr "not in sync"
+msgstr "不一致"

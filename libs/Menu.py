@@ -40,13 +40,15 @@ class Menu(object):
 
         Returns: {json array} -- list of all boards to show in the menu
         '''
+        from . import Tools
 
-        boards = [[_("select_board_list")]]
-        is_native = Preferences().get('native', False)
-        type = 'board_id' if not is_native else 'found_ini'
-        list_env = Preferences().get(type, '')
-        data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        file = "platformio_boards.json"
+        boards = [[_("select_board_list").upper()]]
+        data = self.getTemplateMenu(file_name=file, user_path=True)
+
+        list_env = Preferences().get('board_id', [])
+        list_env.extend(Tools.getEnvFromFile())
+        list_env = sorted(list(set(list_env)))
 
         if(not data):
             return
@@ -56,12 +58,15 @@ class Menu(object):
         # searching data
         try:
             for datakey, datavalue in platformio_data.items():
-                caption = "+ " + datavalue['name']
-                for env in list_env:
-                    if(datakey == env):
-                        caption = "- " + datavalue['name']
-                vendor = "%s | %s" % (datavalue['vendor'], datakey)
-                boards.append([caption, vendor])
+                try:
+                    caption = "+ " + datavalue['name']
+                    for env in list_env:
+                        if(datakey == env):
+                            caption = "- " + datavalue['name']
+                    vendor = "%s | %s" % (datavalue['vendor'], datakey)
+                    boards.append([caption, vendor])
+                except:
+                    pass
         except:  # PlatformIO 3
             for data in platformio_data:
                 caption = "+ " + data['name']
@@ -84,36 +89,49 @@ class Menu(object):
         from . import Tools
 
         selected_index = 0
-        environments = [[_("select_env_list")]]
+        environments = [[_("select_env_list").upper()]]
         index = 0
 
-        is_native = Preferences().get('native', False)
-        type = 'board_id' if not is_native else 'found_ini'
-        list_env = Preferences().get(type, '')
+        list_env = Preferences().get('board_id', [])
+        list_env.extend(Tools.getEnvFromFile())
+        list_env = sorted(list(set(list_env)))
 
         env_selected = Tools.getEnvironment()
         env_data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
         env_data = json.loads(env_data)
 
-        for env in env_data:
-            for selected in list_env:
+        try:
+            for key, value in env_data.items():
                 try:
-                    id = env
-                    caption = env_data[env]['name']
-                    vendor = env_data[env]['vendor']
-                except:  # PlatformIO 3
-                    id = env['id']
-                    caption = env['name']
-                    vendor = env['vendor']
+                    id = key
+                    caption = value['name']
+                    vendor = value['vendor']
 
-                if(selected == id):
-                    vendor = "%s | %s" % (vendor, id)
-                    environments.append([caption, vendor])
+                    for selected in list_env:
+                        if(selected == id):
+                            vendor = "%s | %s" % (vendor, id)
+                            environments.append([caption, vendor])
 
-                    if(selected == env_selected):
-                        selected_index = index + 1
-                    index += 1
+                            if(selected == env_selected):
+                                selected_index = index + 1
+                            index += 1
+                except:
+                    pass
+        except:  # PlatformIO 3
+            for value in env_data:
+                id = value['id']
+                caption = value['name']
+                vendor = value['vendor']
+
+                for selected in list_env:
+                    if(selected == id):
+                        vendor = "%s | %s" % (vendor, id)
+                        environments.append([caption, vendor])
+
+                        if(selected == env_selected):
+                            selected_index = index + 1
+                        index += 1
 
         return [environments, selected_index]
 
@@ -122,13 +140,12 @@ class Menu(object):
         Creates the import library menu
         this method search in the user and core libraries
         """
+        from . import Tools
 
-        is_native = Preferences().get('native', False)
-        type = 'env_selected' if not is_native else 'native_env_selected'
-        sel_env = Preferences().get(type, '')
+        sel_env = Tools.getEnvironment()
 
-        data = self.getTemplateMenu(
-            file_name='platformio_boards.json', user_path=True)
+        file = "platformio_boards.json"
+        data = self.getTemplateMenu(file_name=file, user_path=True)
         data = json.loads(data)
 
         # check current platform
@@ -138,7 +155,7 @@ class Menu(object):
             platform = 'all'
 
         library_paths = Paths.getLibraryFolders(platform)
-        added_lib = [[_("select_library")]]
+        added_lib = [[_("select_library").upper()]]
         check_list = []
 
         # get preset
@@ -177,7 +194,8 @@ class Menu(object):
                     if (data != {}):
                         caption = data['name']
 
-                if caption not in added_lib and '__cores__' not in caption and caption not in check_list:
+                if caption not in added_lib and '__cores__' not in caption and
+                caption not in check_list:
                     added_lib.append([caption, library])
                     check_list.append(caption)
 
@@ -190,9 +208,9 @@ class Menu(object):
         """
         Shows the examples of the library in a menu
         """
-        is_native = Preferences().get('native', False)
-        type = 'env_selected' if not is_native else 'native_env_selected'
-        sel_env = Preferences().get(type, '')
+        from . import Tools
+
+        sel_env = Tools.getEnvironment()
 
         data = self.getTemplateMenu(
             file_name='platformio_boards.json', user_path=True)
@@ -204,7 +222,7 @@ class Menu(object):
         except:
             platform = 'all'
 
-        examples = [[_("select_library")]]
+        examples = [[_("select_library").upper()]]
         check_list = []
 
         library_paths = Paths.getLibraryFolders(platform)
@@ -219,7 +237,8 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib) and caption not in check_list:
+                    if 'examples' in lib and os.path.isdir(lib) and
+                    os.listdir(lib) and caption not in check_list:
                         examples.append([caption, lib])
                         check_list.append(caption)
 

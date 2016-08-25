@@ -178,7 +178,7 @@ class CommandsPy(object):
                 'in function' in outputif or
                 'reference' in outputif or 'in file' in outputif or
                 'error:' in outputif or '^' in outputif or
-                'ser_open' in outputif):
+                'ser_open' in outputif or 'permission' in outputif):
 
             if('^' in outputif):
                 output = self.previous + output
@@ -195,7 +195,10 @@ class CommandsPy(object):
                             "El programador no responde", output)
             self.message_queue.put('\n' + output)
 
-        if(' attempt ' in outputif or re.search(r"\[ \d+% \]", outputif) is not None):
+        if(' attempt ' in outputif or
+                re.search(r"\[ \d+% \]", outputif) is not None or
+                re.search(r"\] \d+%", outputif) is not None):
+
             dic = {'attempt': _('attempt'),
                    'of': _('of'),
                    'not in sync': _('not_in_sync')}

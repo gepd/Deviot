@@ -270,32 +270,18 @@ def getTempPath(file_name=False):
     if(file_name):
         tmp_path = os.path.join(tmp_path, file_name)
 
-    try:
-        os.makedirs(tmp_path)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
     return tmp_path
 
 
-def getBuildPath(file_name):
+def getBuildPath(filename):
     from .Preferences import Preferences
 
     build_dir = Preferences().get('build_dir', False)
 
     if(build_dir):
-        build_dir = os.path.join(build_dir, file_name)
-
-        try:
-            os.makedirs(build_dir)
-        except OSError as exc:
-            if exc.errno != errno.EEXIST:
-                raise exc
-            pass
-
-    return build_dir
+        build_dir = os.path.join(build_dir, filename)
+        return build_dir
+    return getTempPath(filename)
 
 
 def getOpenFolderPath(path):
@@ -412,3 +398,15 @@ def getLibraryFolders(platform='all'):
                         library_folders.append(lib)
 
     return library_folders
+
+
+def makeFolder(path):
+    """
+    Make a folder from the fiven path
+    """
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass

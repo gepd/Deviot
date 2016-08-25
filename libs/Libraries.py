@@ -99,9 +99,6 @@ class Libraries:
         # save data in file
         self.saveLibraryData(list, 'default_list.json')
         # show result in the quick panel
-        sublime.set_timeout(self.show_results, 0)
-
-    def show_results(self):
         self.window.run_command('show_results')
 
     def getList(self):
@@ -116,20 +113,27 @@ class Libraries:
         list = self.getLibrary('default_list.json')
         list_ins = self.Preferences.get('user_libraries', '')
 
-        # if none result
-        if(list['total'] == 0):
-            list = [_('none_lib_found')]
-            return list
-
         # arrange list to the quickpanel
         quick_list = []
-        for item in list['items']:
-            if(str(item['id']) + ' ' not in " ".join(list_ins) + ' '):
-                item_list = []
-                item_list.append(item['name'])
-                item_list.append(item['description'])
-                item_list.append(str(item['id']))
-                quick_list.append(item_list)
+        frameworks = ""
+        if(list['total']):
+            for item in list['items']:
+                if(str(item['id']) + ' ' not in " ".join(list_ins) + ' '):
+                    for framework in item['frameworks']:
+                        if(framework):
+                            frameworks += str(framework) + ' '
+                    item_list = []
+                    info = "%s | %s" % (str(item['id']), frameworks)
+                    item_list.append(item['name'])
+                    item_list.append(item['description'])
+                    item_list.append(info)
+                    quick_list.append(item_list)
+                    frameworks = ""
+
+        # if none result
+        if(list['total'] == 0 or not quick_list):
+            list = [_('none_lib_found')]
+            return list
 
         # save and return data
         self.saveLibraryData(quick_list, 'quick_list.json')
@@ -144,7 +148,7 @@ class Libraries:
                 position in dict of the library selected
         """
         list = self.getLibrary('quick_list.json')
-        lib_id = list[selected][2]
+        lib_id = list[selected][2].split(' ')[0]
         lib_name = list[selected][0]
 
         self.message_queue.startPrint()

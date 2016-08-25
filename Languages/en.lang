@@ -110,6 +110,9 @@ msgstr "Open Build Config File"
 msgid "menu_hide_console"
 msgstr "Hide Deviot Console"
 
+msgid "menu_programmer"
+msgstr "Programmer"
+
 msgid "menu_show_console"
 msgstr "Show Deviot Console"
 
@@ -163,6 +166,15 @@ msgstr "Display Mode"
 
 msgid "menu_text"
 msgstr "Text"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
 
 msgid "menu_option"
 msgstr "Options"
@@ -236,12 +248,6 @@ msgstr "PlatformIO is up to date ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "A new version was found and installed ({0})\n"
 
-msgid "download_board_list"
-msgstr "Downloading board list\n"
-
-msgid "list_updated"
-msgstr "List updated!\n"
-
 msgid "caption_new_sketch"
 msgstr "Name for New Sketch:"
 
@@ -266,20 +272,11 @@ msgstr "Select an Environment From The List"
 msgid "select_port_list"
 msgstr "Select a Port From The List"
 
-msgid "none_board_sel_{0}"
-msgstr "{0} None board Selected\n"
-
 msgid "init_project_{0}"
-msgstr "{0} Initializing the project | "
+msgstr "{0} Initializing the project | Processing...\n"
 
 msgid "built_project_{0}"
 msgstr "{0} Building the project | Processing...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} None serial port selected\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} None environment selected\n"
 
 msgid "error_installing_env_{0}"
 msgstr "{0} Error Installing virtualenv\n"
@@ -343,6 +340,9 @@ msgstr "Select a Library"
 
 msgid "select_example"
 msgstr "Select an Example"
+
+msgid "_previous"
+msgstr "< Previous"
 
 msgid "upgrading_pio"
 msgstr "Upgrading PlarformIO...\n"

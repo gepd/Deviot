@@ -110,6 +110,9 @@ msgstr "Open Build Config File"
 msgid "menu_hide_console"
 msgstr "Deviot 콘솔 숨김"
 
+msgid "menu_programmer"
+msgstr "Programmer"
+
 msgid "menu_show_console"
 msgstr "Show Deviot Console"
 
@@ -163,6 +166,15 @@ msgstr "표시 형식"
 
 msgid "menu_text"
 msgstr "Text"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
 
 msgid "menu_option"
 msgstr "환경설정"
@@ -236,12 +248,6 @@ msgstr "PlatformIO가 최신 버젼이네요 ({0})\n"
 msgid "pio_new_updated_installed{0}"
 msgstr "새 버젼을 찾아서 설치했습니다 ({0})\n"
 
-msgid "download_board_list"
-msgstr "보드 목록 다운로드중\n"
-
-msgid "list_updated"
-msgstr "목록 갱신 완료!\n"
-
 msgid "caption_new_sketch"
 msgstr "새 스케치에 이름을 지어주세요:"
 
@@ -266,20 +272,11 @@ msgstr "Select an Environment From The List"
 msgid "select_port_list"
 msgstr "Select a Port From The List"
 
-msgid "none_board_sel_{0}"
-msgstr "{0} 보드가 선택되지 않았어요\n"
-
 msgid "init_project_{0}"
-msgstr "{0} 프로젝트를 초기화합니다 | "
+msgstr "{0} 프로젝트를 초기화합니다 | 진행중...\n"
 
 msgid "built_project_{0}"
 msgstr "{0} 프로젝트를 빌드합니다 | 진행중...\n"
-
-msgid "none_port_select_{0}"
-msgstr "{0} 시리얼 포트가 선택되지 않았어요\n"
-
-msgid "none_env_select_{0}"
-msgstr "{0} 환경이 선택되지 않았어요\n"
 
 msgid "error_installing_env_{0}"
 msgstr "{0} virtualenv 설치 오류\n"
@@ -343,6 +340,9 @@ msgstr "Select a Library"
 
 msgid "select_example"
 msgstr "Select an Example"
+
+msgid "_previous"
+msgstr "< Previous"
 
 msgid "upgrading_pio"
 msgstr "Upgrading PlarformIO...\n"
