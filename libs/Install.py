@@ -259,6 +259,13 @@ class PioInstall(object):
         cmd = ['python', 'virtualenv.py', '"%s"' % self.env_dir]
         out = Tools.runCommand(cmd, virtualenv)
 
+        # Error
+        if(out[0] > 0):
+            current_time = time.strftime('%H:%M:%S')
+            self.message_queue.put(
+                "error_making_env_{0}", current_time)
+            return
+
         py_version = sub(r'\D', '', out[1])
 
         # error
