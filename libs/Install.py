@@ -23,6 +23,7 @@ from . import Paths
 from . import Tools
 from . import Messages
 from .I18n import I18n
+from .JSONFile import JSONFile
 from . import __version__ as version
 from .Preferences import Preferences
 from .Progress import ThreadProgress
@@ -92,6 +93,15 @@ class PioInstall(object):
             if(os.path.isdir(remove)):
                 rmtree(remove)
                 self.Preferences.set('updt_menu', True)
+
+        # check if the main menu is corrupted
+        try:
+            menu_path = Paths.getSublimeMenuPath()
+            menu_file = JSONFile(menu_path)
+            menu_data = menu_file.getData()
+            menu_data[0]['children'][2]['caption']
+        except:
+            self.Preferences.set('updt_menu', True)
 
         if(self.pio_current_ver):
             # Check main menu
