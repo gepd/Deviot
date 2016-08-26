@@ -194,8 +194,7 @@ class Menu(object):
                     if (data != {}):
                         caption = data['name']
 
-                if caption not in added_lib and '__cores__' not in caption and
-                caption not in check_list:
+                if caption not in added_lib and '__cores__' not in caption and caption not in check_list:
                     added_lib.append([caption, library])
                     check_list.append(caption)
 
@@ -237,8 +236,7 @@ class Menu(object):
                     new_caption = search(r"^(\w+)_ID?", caption)
                     if(new_caption is not None):
                         caption = new_caption.group(1)
-                    if 'examples' in lib and os.path.isdir(lib) and
-                    os.listdir(lib) and caption not in check_list:
+                    if 'examples' in lib and os.path.isdir(lib) and os.listdir(lib) and caption not in check_list:
                         examples.append([caption, lib])
                         check_list.append(caption)
 
