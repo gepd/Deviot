@@ -23,6 +23,12 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>\b(boolean|byte|word)\b</string>
+			<key>name</key>
+			<string>storage.type.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>\b(${KEYWORD1})\b</string>
 			<key>name</key>
 			<string>storage.type.iot</string>
