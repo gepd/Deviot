@@ -502,7 +502,10 @@ class PlatformioCLI(CommandsPy):
         try:
             selected = env_data[environment]['build']['mcu']
         except:  # PlatformIO 3
-            selected = env_data[0]['mcu']
+            for env in env_data:
+                if(env['id'] == environment):
+                    selected = env['mcu']
+                    break
 
         return selected
 
@@ -538,6 +541,8 @@ class PlatformioCLI(CommandsPy):
         Returns:
             bool -- True if is possible to upload, False if isn't
         """
+        from re import search
+
         PORT = Preferences().get('id_port', False)
         environment = Tools.getEnvironment()
 
@@ -547,7 +552,8 @@ class PlatformioCLI(CommandsPy):
 
         MCU = self.getMCU()
 
-        if("esp" not in MCU and "tty" not in PORT and "COM" not in PORT):
+        if(search(r"[\d{3}\.]{3}", PORT) is not None and
+                "esp" not in MCU.lower()):
             if(feedback):
                 self.message_queue = MessageQueue(C['CONSOLE'])
                 self.message_queue.startPrint()
