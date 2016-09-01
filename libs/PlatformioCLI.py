@@ -275,9 +275,9 @@ class PlatformioCLI(CommandsPy):
         command = ['run', '-e %s' % C['ENVIRONMENT']]
         CMD.runCommand(command, "built_project_{0}")
 
-        C['BUILD'] = True
         if(CMD.error_running):
-            C['BUILD'] = False
+            exec_view = self.window.find_output_panel('exec')
+            Tools.ERRORS_LIST.extend(Tools.highlightError(exec_view))
 
     def upload(self):
         """
@@ -333,6 +333,9 @@ class PlatformioCLI(CommandsPy):
             if(autorun):
                 Tools.toggleSerialMonitor()
                 Preferences().set('autorun_monitor', False)
+        else:
+            exec_view = self.window.find_output_panel('exec')
+            Tools.ERRORS_LIST.extend(Tools.highlightError(exec_view))
         self.message_queue.stopPrint()
 
     def clean(self):

@@ -332,6 +332,9 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
+        if(Tools.ERRORS_LIST):
+            Tools.ERRORS_LIST = Tools.highlightRemove(Tools.ERRORS_LIST)
+
         PlatformioCLI.PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
@@ -348,6 +351,9 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
+        if(Tools.ERRORS_LIST):
+            Tools.ERRORS_LIST = Tools.highlightRemove(Tools.ERRORS_LIST)
+
         PlatformioCLI.C['PORTSLIST'] = None
         PlatformioCLI.PlatformioCLI().openInThread('upload')
 

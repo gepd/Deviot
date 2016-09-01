@@ -686,6 +686,108 @@ def getWorkingPath(view):
 
     return returnpath
 
+ERRORS_LIST = []
+
+
+def highlightError(view, conf=False):
+    from re import search
+
+    # Default config
+    if(not conf):
+        icon = 'Packages/Theme - Default/dot.png'
+        flag = sublime.DRAW_NO_FILL
+    else:
+        icon = conf['icon']
+        flag = conf['flag']
+
+    idn = 0
+    errors_list = []
+
+    region = sublime.Region(0, view.size())
+    sketch = view.substr(region)
+
+    for text in sketch.splitlines():
+        if('before' in text):
+            string_before = search(u'\'(\w+)\'$', text).group(1)
+
+        if 'error:' in text:
+            r_error = []
+            before = False
+            before_found = False
+            previous_line = False
+            # error is in previous line
+            if('before' in text):
+                before = True
+
+            text = text.split('error:')[0].strip()
+            infos = text.split(':')
+
+            if ':/' in text:
+                file_path = infos[0] + ':' + infos[1]
+                infos.pop(0)
+                infos.pop(0)
+            else:
+                file_path = infos[0]
+                infos.pop(0)
+
+            line_no = int(infos[0])
+            column_no = int(infos[1])
+
+            file_view = view.window().open_file(file_path)
+            current_line = ""
+            sketch_name = file_view.file_name().replace('\\', '_')
+
+            # get view
+            while(not current_line):
+                point = file_view.text_point(line_no, column_no)
+                line = file_view.line(point)
+                current_line = file_view.substr(line)
+
+                point = file_view.text_point(line_no - 1, column_no)
+                line = file_view.line(point)
+                previous_line = file_view.substr(line)
+
+                if(string_before in current_line):
+                    before_found = True
+
+                if(not before_found or not previous_line):
+                    current_line = ""
+
+                line_no = line_no - 1
+
+            if(before):
+                point = file_view.text_point(line_no, column_no)
+                line = file_view.line(point)
+
+            key_name = sketch_name + str(idn)
+            errors_list.append(key_name)
+
+            r_error.append(sublime.Region(line.a, line.b))
+            file_view.add_regions(key_name, r_error, 'invalid', icon, flag)
+
+            if(not idn):
+                file_view.show(point)
+
+            idn = idn + 1
+
+    return errors_list
+
+
+def highlightRemove(errors_list):
+    from time import sleep
+
+    return_list = []
+    view = sublime.active_window().active_view()
+    file_name = view.file_name().replace('\\', '_')
+
+    for error in errors_list:
+        if(file_name in error):
+            view.erase_regions(error)
+        else:
+            return_list.append(error)
+
+    return return_list
+
 
 def runCommand(command, cwd=None):
     '''Commands
