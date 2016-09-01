@@ -1,4 +1,11 @@
 # Deviot Release Notes
+## Version 1.2.4 | 01 Sep
+* New feature to highlight errors in sketch
+* New feature to scroll to the error line from console
+* Add syntax recognition for boolean, byte and word var type
+* Bug Fix checking ota in esp  (issues: https://github.com/gepd/Deviot/issues/53 https://github.com/gepd/Deviot/issues/55)
+* Bug fix reading comments in ini file with ";" marker
+
 ## Version 1.2.3 | 25 Aug
 * New option "Previous" to back when a library was selected in the examples list
 * Deviot install uses "virtualenv 14.0.6" to simplify the process

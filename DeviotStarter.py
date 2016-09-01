@@ -72,6 +72,30 @@ class DeviotListener(sublime_plugin.EventListener):
         Tools.setStatus()
         Tools.userPreferencesStatus()
 
+    def on_selection_modified(self, view):
+        region = view.sel()[0]
+        region = view.line(region)
+        text = view.substr(region)
+
+        if 'error:' in text:
+            text = text.split('error:')[0].strip()
+            infos = text.split(':')
+
+            if ':/' in text:
+                file_path = infos[0] + ':' + infos[1]
+                infos.pop(0)
+                infos.pop(0)
+            else:
+                file_path = infos[0]
+                infos.pop(0)
+
+            line_no = int(infos[0])
+            column_no = int(infos[1])
+
+            file_view = view.window().open_file(file_path)
+            point = file_view.text_point(line_no, column_no)
+            file_view.show(point)
+
     def on_close(self, view):
         """
         When a sketch is closed, temp files are deleted
@@ -332,6 +356,9 @@ class BuildSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
+        if(Tools.ERRORS_LIST):
+            Tools.ERRORS_LIST = Tools.highlightRemove(Tools.ERRORS_LIST)
+
         PlatformioCLI.PlatformioCLI().openInThread('build')
 
     def is_enabled(self):
@@ -348,6 +375,9 @@ class UploadSketchCommand(sublime_plugin.TextCommand):
     """
 
     def run(self, edit):
+        if(Tools.ERRORS_LIST):
+            Tools.ERRORS_LIST = Tools.highlightRemove(Tools.ERRORS_LIST)
+
         PlatformioCLI.C['PORTSLIST'] = None
         PlatformioCLI.PlatformioCLI().openInThread('upload')
 
