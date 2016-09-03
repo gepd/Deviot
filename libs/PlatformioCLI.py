@@ -478,9 +478,10 @@ class PlatformioCLI(CommandsPy):
         rm = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']
 
         # remove previous configuration
-        for line in rm:
-            if(line in ENV):
-                ENV.pop(line)
+        if(rm[0] in ENV):
+            for line in rm:
+                if(line in ENV):
+                    ENV.pop(line)
 
         # add programmer option if it was selected
         if(programmer):
