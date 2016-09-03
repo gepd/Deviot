@@ -11,7 +11,7 @@ import time
 import json
 import threading
 import sublime
-from re import compile, match
+from re import search
 from shutil import move
 
 from .Commands import CommandsPy
@@ -177,7 +177,7 @@ class PlatformioCLI(CommandsPy):
 
             # check auth in esp
             MCU = self.getMCU()
-            if("esp" in MCU and "COM" not in PORT and "tty" not in PORT):
+            if(search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", PORT) is not None and "esp" not in MCU.lower()):
                 from . import Serial
                 saved_auth = Preferences().get('auth', '0')
                 mdns = Serial.listMdnsServices()
@@ -544,7 +544,6 @@ class PlatformioCLI(CommandsPy):
         Returns:
             bool -- True if is possible to upload, False if isn't
         """
-        from re import search
 
         PORT = Preferences().get('id_port', False)
         environment = Tools.getEnvironment()
@@ -555,8 +554,7 @@ class PlatformioCLI(CommandsPy):
 
         MCU = self.getMCU()
 
-        if(search(r"[\d{3}\.]{3}", PORT) is not None and
-                "esp" not in MCU.lower()):
+        if(search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", PORT) is not None and "esp" not in MCU.lower()):
             if(feedback):
                 self.message_queue = MessageQueue(C['CONSOLE'])
                 self.message_queue.startPrint()
