@@ -1,4 +1,9 @@
 # Deviot Release Notes
+## Version 1.2.5 | 09 Sep
+* Fix persisting bug in mDNSCheck (Issue: https://github.com/gepd/Deviot/issues/59)
+* Bug fix to avoid remove 'upload_speed' when it was set manually in the ini file (Issue: https://github.com/gepd/Deviot/issues/58)
+* Bug fix checking PlatformIO updates
+
 ## Version 1.2.4 | 01 Sep
 * New feature to highlight errors in sketch
 * New feature to scroll to the error line from console
