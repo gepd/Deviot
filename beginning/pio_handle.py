@@ -10,7 +10,6 @@ import os
 import sys
 import sublime
 
-from ..libraries.configobj.configobj import ConfigObj
 from ..libraries import tools, paths
 
 
@@ -120,40 +119,23 @@ def update_version_file():
     out = get_pio_version()
     version = sub(r'\D', '', out[1])
 
-    file_config = paths.getConfigFile()
-    config = ConfigObj(file_config)
-
-    if('version' not in config):
-        config['version'] = version
-    else:
-        if(config['version'] is not version):
-            config['version'] = version
-
-    config.write()
+    tools.saveConfig('version', version)
 
     return 200
 
 
 def get_pio_install_state():
-    file_config = paths.getConfigFile()
-    config = ConfigObj(file_config)
-
-    if('pio_installed' in config):
-        if(config['pio_installed']):
-            return 200
-    return 103
+    installed = tools.getConfig('pio_installed', False)
+    if(not installed):
+        return 103
+    return 200
 
 
 def set_pio_installed():
     """
     Set PlatformIO as installed in the config file
     """
-    file_config = paths.getConfigFile()
-    config = ConfigObj(file_config)
-
-    config['pio_installed'] = True
-
-    config.write()
+    tools.saveConfig('pio_installed', True)
 
 
 def save_virtualenv_file(env_file_path):
