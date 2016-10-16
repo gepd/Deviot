@@ -81,6 +81,9 @@ def extractTar(tar_path, extract_path='.'):
 
 
 def createCommand(command):
+    """
+    Edit the command depending of the O.S of the user
+    """
     settings = sublime.load_settings("Deviot.sublime-settings")
     env_path = settings.get('env_path', False)
 

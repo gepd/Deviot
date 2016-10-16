@@ -77,6 +77,8 @@ def install():
 
     # Install PlatFormIO
     I_STATE = install_pio()
+    update_version_file()
+
     return I_STATE
 
 
@@ -106,7 +108,16 @@ def check_upgrade():
 
     if(version != published_version):
         return 104
+    return 200
 
+
+def upgrade():
+    # try to update
+    out = tools.run_command(['pip', 'install', '-U', 'platformio'])
+    print(out[1])
+    # error updating
+    if(out[0] > 0):
+        return 110
     return 200
 
 

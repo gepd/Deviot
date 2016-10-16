@@ -9,5 +9,7 @@ error = {
     107: "error preparing virtualenv",
     108: "error installing virtualenv",
     109: "error installing platformio",
+    110: "error updating platformio",
+    111: "check an update",
     200: "All OK"
 }
