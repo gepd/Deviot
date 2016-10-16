@@ -76,13 +76,25 @@ def install():
     tools.save_env_paths(env_path)
 
     # Install PlatFormIO
-    I_STATE = install_pio()
+    I_STATE = install_command()
     update_version_file()
 
     return I_STATE
 
 
-def check_upgrade():
+def install_command():
+    """
+    Command to install PlatformIO
+    """
+    cmd = ['pip', 'install', '-U', 'platformio']
+    out = tools.run_command(cmd)
+
+    if(out[0] > 0):
+        return 109
+    return 200
+
+
+def check_update():
     """
     check if PlatformIO is up to date
     """
@@ -111,16 +123,6 @@ def check_upgrade():
     return 200
 
 
-def upgrade():
-    # try to update
-    out = tools.run_command(['pip', 'install', '-U', 'platformio'])
-    print(out[1])
-    # error updating
-    if(out[0] > 0):
-        return 110
-    return 200
-
-
 def update_version_file():
     """
     update the version saved in the config file
@@ -136,6 +138,9 @@ def update_version_file():
 
 
 def get_pio_install_state():
+    """
+    check if platformio is set as installed in the config file
+    """
     installed = tools.getConfig('pio_installed', False)
     if(not installed):
         return 103
@@ -150,6 +155,11 @@ def set_pio_installed():
 
 
 def save_virtualenv_file(env_file_path):
+    """
+    Download and save the virtualenv file (v14.0.6)
+    only if it's not in cache
+    """
+
     # check if virtualenv file is cached
     cached_file = False
     if(os.path.exists(env_file_path)):
@@ -180,7 +190,10 @@ def save_virtualenv_file(env_file_path):
 
 
 def prepare_virtualenv(env_dir_path, env_file_path, denv_dir_path):
-
+    """
+    Extracts the downloaded file and rename the folder to
+    maintain the directories ordered
+    """
     try:
         # extract file
         if(not os.path.isdir(env_dir_path)):
@@ -196,6 +209,10 @@ def prepare_virtualenv(env_dir_path, env_file_path, denv_dir_path):
 
 
 def install_virtual_env(denv_dir_path, env_dir_path):
+    """
+    Install the virtualenv in the path set in denv_dir_path
+    env_dir_path is the folder where virtualenv.py is located
+    """
     settings = sublime.load_settings("Deviot.sublime-settings")
     pylink = settings.get('pylink', 'python')
 
@@ -204,13 +221,4 @@ def install_virtual_env(denv_dir_path, env_dir_path):
 
     if(out[0] > 0):
         return 108
-    return 200
-
-
-def install_pio():
-    cmd = ['pip', 'install', '-U', 'platformio']
-    out = tools.run_command(cmd)
-
-    if(out[0] > 0):
-        return 109
     return 200

@@ -33,48 +33,63 @@ class Requirements(object):
 
         # check for updates
         if(R_STATE == 200):
-            date_now = datetime.now()
-            date_updt = tools.getConfig('check_update', False)
+            self.check_updates()
 
-            # compare the dates for check updates
-            try:
-                date_updt = datetime.strptime(
-                    date_updt, '%Y-%m-%d %H:%M:%S.%f')
+        # install PlatformIO
+        if(R_STATE == 103):
+            self.pio_requests()
 
-                if(date_now > date_updt):
-                    R_STATE = 101
-            except:
-                R_STATE = 101
-
-            if(R_STATE == 101):
-                # saves the date in the preferences for next check
-                if(not date_updt or date_now > date_updt):
-                    date_updt = datetime.now() + timedelta(5, 0)
-                    tools.saveConfig('check_update', str(date_updt))
-
-                # check for an upgrade
-                R_STATE = pio_handle.check_upgrade()
-
-                if(R_STATE == 104):
-                    R_STATE = pio_handle.upgrade()
-        else:
-            # Python and PlatformIO Check
-
-            # check python
-            from .python_install import check_python
-            R_STATE = check_python()
-
-            # check PlatformIO
-            if(R_STATE is 200):
-                R_STATE = pio_handle.check_pio()
-
-            # Install pio
-            if(R_STATE != 200):
-                R_STATE = pio_handle.install()
-
-            # set pio as installed
-            if(R_STATE is 200):
-                pio_handle.set_pio_installed()
-
-        # show error
+        # show error in cosole
         message.print_error(R_STATE)
+
+    def pio_requests():
+        """
+        Checks the requirements to install PlatformIO
+        as python. If PlatformIO is already installed it
+        skip this step.
+        """
+        # check python
+        from .python_install import check_python
+        R_STATE = check_python()
+
+        # check PlatformIO
+        if(R_STATE is 200):
+            R_STATE = pio_handle.check_pio()
+
+        # Install pio
+        if(R_STATE != 200):
+            R_STATE = pio_handle.install()
+
+        # set pio as installed
+        if(R_STATE == 200):
+            pio_handle.set_pio_installed()
+
+    def check_updates():
+        """
+        check updates each x time defined in timedelta(5, 0)
+        where 5 is 5 days
+        """
+        date_now = datetime.now()
+        date_updt = tools.getConfig('check_update', False)
+
+        # compare the dates to check updates
+        try:
+            date_updt = datetime.strptime(
+                date_updt, '%Y-%m-%d %H:%M:%S.%f')
+
+            if(date_now < date_updt):
+                return
+        except:
+            return
+
+        # saves the date in the config file for next check
+        if(not date_updt or date_now > date_updt):
+            date_updt = datetime.now() + timedelta(5, 0)
+            tools.saveConfig('check_update', str(date_updt))
+
+        # check for an update
+        R_STATE = pio_handle.check_update()
+
+        # update pio
+        if(R_STATE == 104):
+            R_STATE = pio_handle.install_command()

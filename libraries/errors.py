@@ -1,3 +1,6 @@
+"""
+List of errors to show in the console
+"""
 error = {
     100: "not python installed",
     101: "not pthon 2",

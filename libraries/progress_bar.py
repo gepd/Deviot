@@ -2,6 +2,10 @@ import sublime
 
 
 class ProgressBar:
+    """
+    Show a message in the status bar
+    """
+
     def __init__(self, label, width=10):
         self.label = label
         self.width = width
@@ -20,5 +24,6 @@ class ProgressBar:
         status = status % (2 * self.width)
         before = min(status, (2 * self.width) - status)
         after = self.width - before
-        sublime.status_message("%s [%s=%s]" % (self.label, " " * before, " " * after))
-        sublime.set_timeout(lambda: self.update(status+1), 100)
+        sublime.status_message("%s [%s=%s]" % (
+            self.label, " " * before, " " * after))
+        sublime.set_timeout(lambda: self.update(status + 1), 100)
