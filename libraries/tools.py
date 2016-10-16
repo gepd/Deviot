@@ -125,3 +125,34 @@ def run_command(command, cwd=None):
     return_code = process.returncode
 
     return (return_code, stdout)
+
+
+def getConfig(key, default=None):
+    """
+    get a given value in the deviot.ini file or
+    return the default value
+    """
+    from .configobj.configobj import ConfigObj
+    from . import paths
+
+    file_config = paths.getConfigFile()
+    config = ConfigObj(file_config)
+
+    if(key in config):
+        return config[key]
+    return default
+
+
+def saveConfig(key, value):
+    """
+    save a value in the deviot.ini file
+    """
+    from .configobj.configobj import ConfigObj
+    from . import paths
+
+    file_config = paths.getConfigFile()
+    config = ConfigObj(file_config)
+
+    config[key] = value
+
+    config.write()
