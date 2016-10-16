@@ -82,7 +82,7 @@ def install():
     return I_STATE
 
 
-def install_command():
+def install_command(update=False):
     """
     Command to install PlatformIO
     """
@@ -90,6 +90,8 @@ def install_command():
     out = tools.run_command(cmd)
 
     if(out[0] > 0):
+        if(update):
+            return 110
         return 109
     return 200
 

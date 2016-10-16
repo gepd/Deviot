@@ -92,4 +92,4 @@ class Requirements(object):
 
         # update pio
         if(R_STATE == 104):
-            R_STATE = pio_handle.install_command()
+            R_STATE = pio_handle.install_command(update=True)
