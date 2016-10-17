@@ -159,3 +159,25 @@ def saveConfig(key, value):
     config[key] = value
 
     config.write()
+
+
+def get_setting(key, default=None):
+    """
+    get setting handled by ST
+    """
+    import sublime
+
+    settings = sublime.load_settings("Deviot.sublime-settings")
+
+    return settings.get(key, default)
+
+
+def save_setting(key, value):
+    """
+    save setting handled by ST
+    """
+    import sublime
+
+    settings = sublime.load_settings("Deviot.sublime-settings")
+    settings.set(key, value)
+    sublime.save_settings("Deviot.sublime-settings")
