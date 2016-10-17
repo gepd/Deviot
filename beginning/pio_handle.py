@@ -215,8 +215,7 @@ def install_virtual_env(denv_dir_path, env_dir_path):
     Install the virtualenv in the path set in denv_dir_path
     env_dir_path is the folder where virtualenv.py is located
     """
-    settings = sublime.load_settings("Deviot.sublime-settings")
-    pylink = settings.get('pylink', 'python')
+    pylink = tools.get_setting('pylink', 'python')
 
     cmd = [pylink, 'virtualenv.py', '"%s"' % denv_dir_path]
     out = tools.run_command(cmd, env_dir_path)

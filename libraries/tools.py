@@ -53,9 +53,7 @@ def save_env_paths(new_path):
     paths = list(OrderedDict.fromkeys(paths))
     paths = os.path.pathsep.join(paths)
 
-    settings = sublime.load_settings("Deviot.sublime-settings")
-    settings.set('env_path', paths)
-    sublime.save_settings("Deviot.sublime-settings")
+    save_setting('env_path', paths)
 
 
 def getHeaders():
@@ -80,12 +78,11 @@ def extractTar(tar_path, extract_path='.'):
         tar.extract(item, extract_path)
 
 
-def createCommand(command):
+def create_command(command):
     """
     Edit the command depending of the O.S of the user
     """
-    settings = sublime.load_settings("Deviot.sublime-settings")
-    env_path = settings.get('env_path', False)
+    env_path = get_setting('env_path', False)
 
     if(not env_path):
         return command
