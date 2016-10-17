@@ -42,14 +42,14 @@ class Requirements(object):
         # show error in cosole
         message.print_error(R_STATE)
 
-    def pio_requests():
+    def pio_requests(self):
         """
         Checks the requirements to install PlatformIO
         as python. If PlatformIO is already installed it
         skip this step.
         """
         # check python
-        from .python_install import check_python
+        from .python_handle import check_python
         R_STATE = check_python()
 
         # check PlatformIO
@@ -64,7 +64,7 @@ class Requirements(object):
         if(R_STATE == 200):
             pio_handle.set_pio_installed()
 
-    def check_updates():
+    def check_updates(self):
         """
         check updates each x time defined in timedelta(5, 0)
         where 5 is 5 days
