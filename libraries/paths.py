@@ -98,6 +98,36 @@ def getCacheDir():
     return cache_dir
 
 
+def getTempPath(file_name=False):
+    """
+    Return the path of the temporal folder based in the O.S
+    ended with Deviot (tmp/Deviot)
+    if file_name argument is set it weill include in the final path
+    """
+    tmp_path = '/tmp'
+    os_name = sublime.platform()
+    if os_name == 'windows':
+        tmp_path = os.environ['tmp']
+
+    tmp_path = os.path.join(tmp_path, 'Deviot')
+
+    if(file_name):
+        tmp_path = os.path.join(tmp_path, file_name)
+
+    return tmp_path
+
+
+def getBuildPath(filename):
+    from .Preferences import Preferences
+
+    build_dir = Preferences().get('build_dir', False)
+
+    if(build_dir):
+        build_dir = os.path.join(build_dir, filename)
+        return build_dir
+    return getTempPath(filename)
+
+
 def getEnvFile():
     """
     get virtualenv tar file in Packages/User/Deviot/.cache/
