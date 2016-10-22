@@ -178,3 +178,33 @@ def save_setting(key, value):
     settings = sublime.load_settings("Deviot.sublime-settings")
     settings.set(key, value)
     sublime.save_settings("Deviot.sublime-settings")
+
+
+def make_folder(path):
+    """
+    Make a folder with the given path
+    """
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+
+def output_in_file(command, file_path):
+    """
+    run a command who return and output in a json format
+    and store it in a file
+    """
+    from .file import File
+    from ..platformio.run_command import run_command
+
+    out = run_command(command)
+    boards = out[1]
+
+    # save in file
+    file_board = File(file_path)
+    file_board.write(boards)
+
+    return 200

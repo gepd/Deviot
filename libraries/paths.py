@@ -60,6 +60,17 @@ def getDeviotUserPath():
     return deviot_user_path
 
 
+def getBoardsFilePath():
+    """
+    Path of the file board /Packages/Deviot/boards.json
+    """
+
+    folder = getDeviotUserPath()
+    file = os.path.join(folder, 'boards.json')
+
+    return file
+
+
 def getConfigFile():
     """
     config file in Packages/User/Deviot/

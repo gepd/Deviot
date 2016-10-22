@@ -62,7 +62,18 @@ class Requirements(object):
 
         # set pio as installed
         if(R_STATE == 200):
-            pio_handle.set_pio_installed()
+            R_STATE = pio_handle.set_pio_installed()
+
+        # save boards in file
+        if(R_STATE == 200):
+            from ..libraries import tools, paths
+
+            file = paths.getBoardsFilePath()
+            cmd = ['boards', '--json-output']
+            R_STATE = tools.output_in_file(cmd, file)
+
+            if(R_STATE != 200):
+                return "Error"  # TODO implement error
 
     def check_updates(self):
         """
