@@ -113,7 +113,7 @@ def run_command(command, cwd=None):
     '''
     import subprocess
 
-    command = createCommand(command)
+    command = create_command(command)
     command.append("2>&1")
     command = ' '.join(command)
     process = subprocess.Popen(command, stdin=subprocess.PIPE,
@@ -127,7 +127,7 @@ def run_command(command, cwd=None):
     return (return_code, stdout)
 
 
-def getConfig(key, default=None):
+def get_config(key, default=None):
     """
     get a given value in the deviot.ini file or
     return the default value
@@ -143,7 +143,7 @@ def getConfig(key, default=None):
     return default
 
 
-def saveConfig(key, value):
+def save_config(key, value):
     """
     save a value in the deviot.ini file
     """

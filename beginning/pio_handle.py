@@ -134,7 +134,7 @@ def update_version_file():
     out = get_pio_version()
     version = sub(r'\D', '', out[1])
 
-    tools.saveConfig('version', version)
+    tools.save_config('version', version)
 
     return 200
 
@@ -143,7 +143,7 @@ def get_pio_install_state():
     """
     check if platformio is set as installed in the config file
     """
-    installed = tools.getConfig('pio_installed', False)
+    installed = tools.get_config('pio_installed', False)
     if(not installed):
         return 103
     return 200
@@ -153,7 +153,9 @@ def set_pio_installed():
     """
     Set PlatformIO as installed in the config file
     """
-    tools.saveConfig('pio_installed', True)
+    tools.save_config('pio_installed', True)
+
+    return 200
 
 
 def save_virtualenv_file(env_file_path):

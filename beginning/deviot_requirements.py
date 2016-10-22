@@ -70,7 +70,7 @@ class Requirements(object):
         where 5 is 5 days
         """
         date_now = datetime.now()
-        date_updt = tools.getConfig('check_update', False)
+        date_updt = tools.get_config('check_update', False)
 
         # compare the dates to check updates
         try:
@@ -85,7 +85,7 @@ class Requirements(object):
         # saves the date in the config file for next check
         if(not date_updt or date_now > date_updt):
             date_updt = datetime.now() + timedelta(5, 0)
-            tools.saveConfig('check_update', str(date_updt))
+            tools.save_config('check_update', str(date_updt))
 
         # check for an update
         R_STATE = pio_handle.check_update()
