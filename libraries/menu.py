@@ -49,21 +49,22 @@ class Menu(object):
         """
         callback to store the selected environment
         """
+        self.PR.get_project_hash()
         if(selected == -1):
             return
 
-        environment_config = tools.get_config('environment_selected')
+        file_name = self.PR.get_project_hash()
+        environment_config = tools.get_config(file_name)
         environments_list = self.quick_environment_list()
         environment_select = environments_list[selected][1]
         environment = environment_select.split("|")[-1].strip()
-        file_name = self.PR.get_project_file_name(ext=False)
 
         if(not environment_config):
             config = tools.get_config(full=True)
-            config['environment_selected'] = {}
-            config['environment_selected'][file_name] = environment
+            config[file_name] = {}
+            config[file_name]['select_environmet'] = environment
             tools.save_config(full=config)
             return 200
 
         environment_config[file_name] = environment
-        tools.save_config('environment_selected', environment_config)
+        tools.save_config(file_name, environment_config)
