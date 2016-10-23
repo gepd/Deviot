@@ -82,6 +82,15 @@ class ProjectRecognition(object):
         """
         return self.view.file_name()
 
+    def get_project_hash(self):
+        """
+        return a unique hash based in the path of the file
+        """
+        import hashlib
+        file_path = self.get_project_path()
+        hash_object = hashlib.md5(file_path.encode('utf-8'))
+        return hash_object.hexdigest()
+
     def get_project_folder(self):
         """
         return the folder of the current project
