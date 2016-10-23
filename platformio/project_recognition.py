@@ -262,7 +262,7 @@ class ProjectRecognition(object):
 
         envs_selected = tools.get_config('environments')
 
-        if(file_name in envs_selected):
+        if(envs_selected and file_name in envs_selected):
             envs.extend(envs_selected[file_name])
             envs = list(set(envs))
 
