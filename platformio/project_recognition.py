@@ -265,14 +265,14 @@ class ProjectRecognition(object):
         file
         """
         envs = []
-        file_name = self.get_file_name(ext=False)
+        file_hash = self.get_project_hash()
         envs_initialized = self.get_envs_initialized()
         envs.extend(envs_initialized)
 
-        envs_selected = tools.get_config('environments')
+        envs_selected = tools.get_config(file_hash)
 
-        if(envs_selected and file_name in envs_selected):
-            envs.extend(envs_selected[file_name])
+        if(envs_selected):
+            envs.extend(envs_selected['boards'])
             envs = list(set(envs))
 
         return envs
