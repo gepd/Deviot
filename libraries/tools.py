@@ -216,3 +216,45 @@ def output_in_file(command, file_path):
     file_board.write(boards)
 
     return 200
+
+
+def create_sketch(path, sketch_name):
+    """
+    create a new sketch with the name and path given
+    the template include a basic code stored in the preset
+    folder inside of the plugin
+    """
+    from . import paths
+    # file path
+    sketch_path = os.path.join(path, sketch_name)
+    if not os.path.exists(sketch_path):
+        os.makedirs(sketch_path)
+
+    # use cpp file/template intead of ino
+    cpp = get_setting('use_cpp', False)
+    if cpp:
+        ext = '.cpp'
+    else:
+        ext = '.ino'
+
+    # get template
+    template_file_name = 'template' + ext
+    preset_path = paths.getPresetPath()
+    template_file_path = os.path.join(preset_path, template_file_name)
+    with open(template_file_path) as file:
+        src_code = file.read()
+    src_file_name = sketch_name + ext
+    src_file_path = os.path.join(sketch_path, src_file_name)
+
+    # save new file
+    with open(src_file_path, 'w') as src_file:
+        src_code = src_code.replace('${src_file_name}', src_file_name)
+        src_file.write(src_code)
+
+    # open new file
+    views = []
+    window = sublime.active_window()
+    view = window.open_file(src_file_path)
+    views.append(view)
+    if views:
+        window.focus_view(views[0])
