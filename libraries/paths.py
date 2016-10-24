@@ -181,3 +181,89 @@ def getEnvBinDir():
         pass
 
     return env_bin_dir
+
+
+def listWinVolume():
+    """
+    return the list of system drives in windows
+    """
+    vol_list = []
+    for label in range(67, 90):
+        vol = chr(label) + ':\\'
+        if os.path.isdir(vol):
+            vol_list.append([vol])
+    return vol_list
+
+
+def listRootPath():
+    """
+    return the system drives in windows or unix
+    """
+    root_list = []
+    os_name = sublime.platform()
+    if os_name == 'windows':
+        root_list = listWinVolume()
+    else:
+        home_path = os.getenv('HOME')
+        root_list = [home_path, ROOT_PATH]
+    return root_list
+
+
+def folder_explorer(path=None, index=-2, window=None, ls=None, callback=None):
+    """
+    shows the list of files in the system drive(s)
+    if the argument 'path' is set, it will show the
+    folder in the given path. To get the selected path
+    use the callback argument
+    """
+
+    if(index == -1):
+        return
+
+    if(not window):
+        window = sublime.active_window()
+
+    if(index == -2 and path):
+        path = [path]
+
+    if(index == 0 and callback):
+        return callback(path[0])
+
+    paths = []
+
+    paths.insert(0, ['< Back'])
+    paths.insert(0, ['SELECT THE CURRENT PATH'])
+
+    # if we aren't in the root path
+    if(not path and ls is not None and index > 1):
+        path = ls[index]
+
+    # list the root paths
+    if(not path):
+        root = listRootPath()
+        paths.extend(root)
+
+    if(index > 0):
+        # when the back option is selected
+        if(index == 1 and path is not None):
+            dir_back = os.path.dirname(path[0])
+            if(path[0] != dir_back):
+                path = [dir_back]
+            else:
+                root = listRootPath()
+                paths.extend(root)
+                path = None
+        else:
+            # when any option (less Current and Back) is selected
+            if(isinstance(path, list)):
+                path = [os.path.join(path[0], ls[index][0])]
+
+    # list the sub directories from the given path
+    if(path):
+        sub_paths = os.path.join(path[0], '*')
+        for dirs in glob.glob(sub_paths):
+            if(os.path.isdir(dirs)):
+                paths.append([dirs])
+
+    sublime.set_timeout(lambda: window.show_quick_panel(
+        paths, lambda index: folder_explorer(path, index, window, paths, callback)), 0)
