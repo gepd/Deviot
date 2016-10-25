@@ -1,0 +1,13 @@
+[
+    {
+        "keys": ["alt+q"],
+        "command": "show_overlay",
+                "args": {
+                    "overlay": "command_palette", 
+                    "text": "Deviot: "
+                }
+    },{
+        "keys": ["ctrl+shift+n"],
+        "command": "deviot_new_file"
+    }
+]
