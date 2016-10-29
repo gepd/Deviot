@@ -1,35 +1,39 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import os
 import subprocess
 from ..libraries import tools
 
 
-def run_command(command, cwd=None, realtime=False):
+def run_command(command, cwd=None, realtime=False, callback=None):
     '''
     Run a command with Popen and return the results or print the errors
     '''
+    if(not cwd):
+        cwd = os.getcwd()
 
     command = prepare_command(command)
     process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE, cwd=cwd,
                                universal_newlines=True, shell=True)
 
-    if(realtime):
+    if(realtime or callback):
         while True:
             output = process.stdout.readline()
             # exit when there is nothing to show
             if output == '' and process.poll() is not None:
                 break
 
-            print(output)
+            # callback(output)
+            if output and callback:
+                callback(output)
 
     # return code and stdout
     output = process.communicate()
     stdout = output[0]
     return_code = process.returncode
 
-    return (return_code, stdout)
+    # return (return_code, stdout)
 
 
 def prepare_command(post_command, verbose=False):

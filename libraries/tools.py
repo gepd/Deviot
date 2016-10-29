@@ -258,3 +258,27 @@ def create_sketch(path, sketch_name):
     views.append(view)
     if views:
         window.focus_view(views[0])
+
+
+def findInOpendView(view_name):
+    """
+    Search a specific view in the list of available views
+
+    Arguments:
+        view_name {string}
+            Name of the view to search
+    """
+    opened_view = None
+    found = False
+    windows = sublime.windows()
+    for window in windows:
+        views = window.views()
+        for view in views:
+            name = view.name()
+            if name == view_name:
+                opened_view = view
+                found = True
+                break
+        if found:
+            break
+    return (window, opened_view)

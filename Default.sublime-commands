@@ -2,5 +2,9 @@
     {
         "caption": "Deviot: New File",
         "command": "deviot_new_file"
+    },
+    {
+        "caption": "Deviot: Open Terminal",
+        "command": "open_pio_terminal"
     }
 ]
