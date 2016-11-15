@@ -1,0 +1,455 @@
+# LANGUAGE: English (English)
+# Spanish translations for Deviot Plugin.
+# Copyright (C) 2015-2016 GEPD
+# This file is distributed under the same license as the Deviot Plugin.
+#
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot necessita di Python 2.7 per funzionare, per favore scaricalo e installalo"
+
+msgid "button_download_python"
+msgstr "Scarica Python"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Installazione\n"
+
+msgid "pio_is_installed{0}"
+msgstr "{0} PlatformIO è installato nel tuo sistema, goditi Deviot!"
+
+msgid "pio_isn_installed{0}"
+msgstr "{0} PlatformIO non è installato\nPreparazione all'installazione, per favore sii paziente potrebbe volerci un po'.\n"
+
+msgid "downloading_files{0}"
+msgstr "{0} Scaricamento dei files necessari...\n"
+
+msgid "error_downloading_files{0}"
+msgstr "{0} C'è stato un errore durante lo scaricamento dei files necessari...\n"
+
+msgid "error_saving_files{0}"
+msgstr "{0} C'è stato un errore durante il salvataggio dei file necessari...\n"
+
+msgid "extracting_files{0}"
+msgstr "{0} Estrazione files...\n"
+
+msgid "installing_pio{0}"
+msgstr "{0} Installazione di PlatformIO...\n"
+
+msgid "uninstall_old_pio{0}"
+msgstr "{0} Disinstallazione della versione corrente...\n"
+
+msgid "installing_dev_pio{0}"
+msgstr "{0} Installazione della versione 'develop' di PlatformIO...\n"
+
+msgid "installing_stable_pio{0}"
+msgstr "{0} Installazione della versione 'stable' di PlatformIO...\n"
+
+msgid "setup_finished{0}"
+msgstr "{0} Installazione completata, buon divertimento con Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Ricerca Aggiornamenti di PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "La versione {0} di PlatformIO è disponibile, la tua versione corrente è {1} Vuoi aggiornarla?"
+
+msgid "update_button"
+msgstr "Aggiorna Ora"
+
+# Menu
+
+msgid "menu_new_sketch"
+msgstr "Nuovo Sketch"
+
+msgid "menu_select_boards"
+msgstr "Scegli scheda"
+
+msgid "menu_select_env"
+msgstr "Scegli Ambiente"
+
+msgid "menu_search_lib"
+msgstr "Cerca Libreria"
+
+msgid "menu_remove_lib"
+msgstr "Rimuovi Libreria"
+
+msgid "menu_import_library"
+msgstr "Importa Libreria"
+
+msgid "menu_not_libraries"
+msgstr "Nessuna Libreria Disponibile"
+
+msgid "menu_library_examples"
+msgstr "Esempi"
+
+msgid "menu_not_examples"
+msgstr "Nessun esempio disponibile"
+
+msgid "menu_option_lib"
+msgstr "Opzioni di Libreria"
+
+msgid "menu_open_lib_folder"
+msgstr "Apri Cartella delle librerie"
+
+msgid "menu_change_user_lib_path"
+msgstr "Cambia percorso della Libreria"
+
+msgid "menu_build"
+msgstr "Compila"
+
+msgid "menu_upload"
+msgstr "Carica"
+
+msgid "menu_clean"
+msgstr "Pulisci"
+
+msgid "menu_open_ini_file"
+msgstr "Apri Config File di Compilazione"
+
+msgid "menu_hide_console"
+msgstr "Nascondi Deviot Console"
+
+msgid "menu_programmer"
+msgstr "Programmatore"
+
+msgid "menu_show_console"
+msgstr "Mostra Deviot Console"
+
+msgid "menu_serial_ports"
+msgstr "Porte Seriali"
+
+msgid "menu_auth_change"
+msgstr "Cambia OTA Password"
+
+msgid "menu_none_serial_mdns"
+msgstr "Porta seriale o servizio mDNS non disponibile"
+
+msgid "menu_add_ip"
+msgstr "Aggiungi IP Manualmente"
+
+msgid "menu_monitor_serial"
+msgstr "Monitor Seriale"
+
+msgid "menu_run"
+msgstr "Esegui"
+
+msgid "menu_send"
+msgstr "Invia"
+
+msgid "menu_deviot_output"
+msgstr "Output nella Console Deviot"
+
+msgid "menu_auto_scroll"
+msgstr "Auto-Scroll"
+
+msgid "menu_baudrate"
+msgstr "Baudrate"
+
+msgid "menu_line_ending"
+msgstr "Terminatore di riga"
+
+msgid "menu_none"
+msgstr "Nessuno"
+
+msgid "menu_new_line"
+msgstr "Nuova linea"
+
+msgid "menu_cr"
+msgstr "Ritorno a capo"
+
+msgid "menu_nl_cr"
+msgstr "Entrambi NL & CR"
+
+msgid "menu_display_mode"
+msgstr "Modalità Display"
+
+msgid "menu_text"
+msgstr "Testo"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
+
+msgid "menu_option"
+msgstr "Opzioni"
+
+msgid "menu_upgrade_pio"
+msgstr "Aggiorna PlatformIO"
+
+msgid "menu_developer_pio"
+msgstr "Usa la Versione Development Pio"
+
+msgid "menu_update_board_list"
+msgstr "Aggiorna Lista di Schede"
+
+msgid "menu_show_verbose"
+msgstr "Output dettagliato durante la Compilazione"
+
+msgid "menu_remove_user_files"
+msgstr "Rimuovi Files di Preferenze"
+
+msgid "menu_keep_temp_files"
+msgstr "Mantieni Temp Files"
+
+msgid "menu_open_build_folder"
+msgstr "Apri Cartella di Compilazione"
+
+msgid "menu_change_build_folder"
+msgstr "Cambia Cartella di Compilazione"
+
+msgid "menu_use_cpp_new"
+msgstr "Usa CPP File con New File"
+
+msgid "menu_always_native"
+msgstr "Usa Struttura di PlatformIO"
+
+msgid "menu_change_default_path"
+msgstr "Cambia Percorso di Default"
+
+msgid "menu_remove_default_path"
+msgstr "Rimuovi Percorso di Default"
+
+msgid "menu_languages"
+msgstr "Lingua"
+
+msgid "menu_donate_deviot"
+msgstr "❤ Fai una donazione"
+
+msgid "menu_about"
+msgstr "Informazioni"
+
+msgid "menu_about_deviot"
+msgstr "Su Deviot"
+
+msgid "menu_about_pio"
+msgstr "Su PlatformIO"
+
+
+# Mensajes y errores
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "checking_pio_updates"
+msgstr "Controllo aggiornamenti per PlatformIO in corso...\n"
+
+msgid "error_pio_updates"
+msgstr "C'è stato un errore durante l'aggiornamento di PlatformIO\n"
+
+msgid "pio_up_date{0}"
+msgstr "PlatformIO è aggiornato ({0})\n"
+
+msgid "pio_new_updated_installed{0}"
+msgstr "Una nuova versione è stata trovata ed installata ({0})\n"
+
+msgid "caption_new_sketch"
+msgstr "Nome per il Nuovo Sketch:"
+
+msgid "updating_board_list"
+msgstr "Aggiornamento Liste di schede"
+
+msgid "not_empty_sketch_{0}"
+msgstr "{0} Impossibile caricare uno sketch vuoto\n"
+
+msgid "invalid_file_{0}"
+msgstr "{0} File non valido per l'elaborazione\n"
+
+msgid "not_iot_{0}{1}"
+msgstr "{0} {1} non è un File IoT\n"
+
+msgid "select_board_list"
+msgstr "Scegli una Scheda dalla Lista"
+
+msgid "select_env_list"
+msgstr "Scegli un Ambiente dalla Lista"
+
+msgid "select_port_list"
+msgstr "Scegli una Porta dalla Lista"
+
+msgid "init_project_{0}"
+msgstr "{0} Inizializzazione del progetto | Elaborazione...\n"
+
+msgid "built_project_{0}"
+msgstr "{0} Compilazione del progetto | Elaborazione...\n"
+
+msgid "error_installing_env_{0}"
+msgstr "{0} Errore durante l'Installazione di virtualenv\n"
+
+msgid "error_making_env_{0}"
+msgstr "{0} Errore durante la Creazione di virtualenv\n"
+
+msgid "error_installing_pio_{0}"
+msgstr "{0} Errore durante l'Installazione di PlatformIO\n"
+
+msgid "uploading_firmware_{0}"
+msgstr "{0} Caricamento firmware | "
+
+msgid "clean_built_files__{0}"
+msgstr "{0} Pulizia file compilati | "
+
+msgid "success_took_{1}"
+msgstr "SUCCESSO | tempo {1}s\n"
+
+msgid "success_took_{0}{1}"
+msgstr "{0} SUCCESSO | tempo {1}s\n"
+
+msgid "success_warnings_took__{0}{1}"
+msgstr "{0} SUCCESSO ma con WARNING(s) | tempo {1}s\n"
+
+msgid "error_took_{0}{1}"
+msgstr "{0} ERRORE | tempo {1}s\n"
+
+msgid "continue"
+msgstr "Continua"
+
+msgid "confirm_del_pref"
+msgstr "Dopo questo dovrai riavviare Sublime Text. Vuoi continuare?"
+
+msgid "success"
+msgstr "Successo"
+
+msgid "error"
+msgstr "Errore"
+
+msgid "success_warnings"
+msgstr "Successo con warning(s)"
+
+msgid "processing"
+msgstr "Elaborando"
+
+msgid "done"
+msgstr "Fatto"
+
+msgid "restart_deviot"
+msgstr "Questa azione richiede di riavviare Sublime Text. Vuoi continuare?"
+
+msgid "continue_button"
+msgstr "Continua"
+
+msgid "ota_error_platform"
+msgstr "Aggiornamenti OTA al momento disponibili solo per piattaforme Espressif (ESP8266)"
+
+msgid "select_library"
+msgstr "Scegli una Libreria"
+
+msgid "select_example"
+msgstr "Scegli un Esempio"
+
+msgid "_previous"
+msgstr "< Indietro"
+
+msgid "upgrading_pio"
+msgstr "Aggiornamento di PlarformIO in corso...\n"
+
+
+# Libraries
+
+
+msgid "search_query"
+msgstr "Query di ricerca:"
+
+msgid "add_ip_caption"
+msgstr "Scrivi l'Indirizzo IP:"
+
+msgid "select_cur_dir_{0}"
+msgstr "Scegli Directory Attuale ({0})"
+
+msgid "installing_lib_{0}{1}"
+msgstr "{0} Installazione Libreria {1} | "
+
+msgid "uninstalling_lib_{0}{1}"
+msgstr "{0} Disinstallazione Libreria {1} | "
+
+msgid "download_lib"
+msgstr "Scaricamento in corso...\n"
+
+msgid "searching"
+msgstr "Ricerca"
+
+msgid "installing"
+msgstr "Installazione"
+
+msgid "install_package_{0}"
+msgstr "\nInstallazione {0} pacchetto: "
+
+msgid "already_installed{0}"
+msgstr "{0} già installato\n"
+
+msgid "downloading_package{0}"
+msgstr "Scaricamento pacchetto {0}\n\nPer favore sii paziente potrebbe volerci un po'.\n"
+
+msgid "unpacking"
+msgstr "Elaborazione pacchetti...\n"
+
+msgid "download_dependece"
+msgstr "Scaricamento dipendenza\n"
+
+msgid "preparing_list"
+msgstr "Preparazione Lista"
+
+msgid "removing"
+msgstr "Rimozione in corso"
+
+msgid "none_lib_found"
+msgstr "Nessuna Libreria Trovata"
+
+msgid "none_lib_installed"
+msgstr "Nessuna Libreria Installata"
+
+
+# Serial Monitor
+
+msgid "serial_port_used_{0}"
+msgstr "Porta seriale {0} già in uso. Ferma qualsiasi programma che la potrebbe usare.\n"
+
+msgid "send"
+msgstr "Invia:"
+
+msgid "sended_{0}"
+msgstr "\n[INVIATO] {0}\n"
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Password:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Iniziando con"
+
+msgid "upload_size"
+msgstr "Dimensione Caricamento"
+
+msgid "sending_invitation"
+msgstr "Invio invito a"
+
+msgid "waiting_device"
+msgstr "In attesa del dispositivo"
+
+msgid "waiting_result"
+msgstr "In attesa del risultato"
+
+msgid "result"
+msgstr "Risultato"
+
+msgid "authentication"
+msgstr "Autenticazione"
+
+msgid "failed"
+msgstr "Fallito"
+
+msgid "attempt"
+msgstr "tentativo"
+
+msgid "of"
+msgstr "di"
+
+msgid "not_in_sync"
+msgstr "not in sync"
