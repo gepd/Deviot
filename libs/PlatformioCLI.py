@@ -450,7 +450,7 @@ class PlatformioCLI(CommandsPy):
                              "upload_port": C['PORT']},
             'avrmkii':      {"upload_protocol": "stk500v2",
                              "upload_flags": "-Pusb"},
-            'usbtyni':      {"upload_protocol": "usbtiny"},
+            'usbtiny':      {"upload_protocol": "usbtiny"},
             'arduinoisp':   {"upload_protocol": "arduinoisp"},
             'usbasp':       {"upload_protocol": "usbasp",
                              "upload_flags": "-Pusb"},

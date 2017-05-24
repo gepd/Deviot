@@ -489,7 +489,7 @@ class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
         return Tools.isIOTFile(file)
 
 
-class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
+class ProgrammerUsbTinyCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)
