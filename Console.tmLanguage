@@ -14,6 +14,89 @@
     <string>zConsole</string>
     <key>patterns</key>
     <array>
+        <dict> <!-- (In file included from )(/path/to/filename.ext):(123):(45), -->
+            <key>name</key>
+            <string>meta.block.error.cpp</string>
+            <key>begin</key>
+            <string>^((?:\w+ )*(.+\..{1,4}):(\d+):(\d+)[,:])</string>
+            <key>beginCaptures</key> <!-- captures for the begin pattern -->
+            <dict>
+                <key>1</key>
+                <dict>
+                    <key>name</key>
+                    <string>support.error.line.trail</string>
+                </dict>
+                <key>2</key>
+                <dict>
+                    <key>name</key>
+                    <string>string.unquoted</string>
+                </dict>
+                <key>3</key>
+                <dict>
+                    <key>name</key>
+                    <string>constant.numeric.integer</string>
+                </dict>
+                <key>4</key>
+                <dict>
+                    <key>name</key>
+                    <string>constant.numeric.integer</string>
+                </dict>
+            </dict>
+            <key>end</key>
+            <string>^(?: *(\^) *)$</string> <!--       ^      caret alone on the line  -->
+            <key>captures</key> <!-- captures for the end pattern -->
+            <dict>
+                <key>1</key>
+                <dict>
+                    <key>name</key>
+                    <string>support.indicator.caret</string>
+                </dict>
+            </dict>
+            <key>patterns</key> <!-- patterns to capture within this block -->
+            <array>
+                <dict> <!-- #error string -->
+                    <key>match</key>
+                    <string>^(#(?:warning|error)) +(.*) *$</string>
+                    <key>name</key>
+                    <string>source.c</string>
+                </dict>
+                <dict> <!-- /path/to/filename.ext:123:45: warning: string -->
+                    <key>match</key>
+                    <string>(^.+\..{1,4}):(\d+):(\d+): ((warning|error|note): .+)$</string>
+                    <key>name</key>
+                    <string>support.error.line.trail</string>
+                    <key>captures</key>
+                    <dict>
+                        <key>1</key>
+                        <dict>
+                            <key>name</key>
+                            <string>string.unquoted</string>
+                        </dict>
+                        <key>2</key>
+                        <dict>
+                            <key>name</key>
+                            <string>constant.numeric.integer</string>
+                        </dict>
+                        <key>3</key>
+                        <dict>
+                            <key>name</key>
+                            <string>constant.numeric.integer</string>
+                        </dict>
+                        <key>4</key>
+                        <dict>
+                            <key>name</key>
+                            <string>meta.message.error</string>
+                        </dict>
+                    </dict>
+                </dict>
+                <dict> <!-- #error string -->
+                    <key>match</key>
+                    <string>^.*$</string>
+                    <key>name</key>
+                    <string>meta.error.line.source</string>
+                </dict>
+            </array>
+        </dict>
         <dict> <!-- [ deviot x.x.x ] filename.ext -->
             <key>match</key>
             <string>(\[\s.+\s\]) ([\w]+\.[a-zA-Z]{3}$)</string>
@@ -50,13 +133,13 @@
         </dict>
         <dict> <!-- 00:00:00 string | status... -->
             <key>match</key>
-            <string>(^[\d+:\d+]+)\s([a-zA-Z\s]+) \| ([[:alpha:]]+\.{3}$)</string>
+            <string>(^[\d:]+)\s([a-zA-Z\s]+) \| ([[:alpha:]]+\.{3}$)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
                 <dict>
                     <key>name</key>
-                    <string>entity.name.class</string>
+                    <string>constant.numeric.time</string>
                 </dict>
                 <key>2</key>
                 <dict>
@@ -72,13 +155,13 @@
         </dict>
         <dict> <!-- 00:00:00 [INFO]: string(.) -->
             <key>match</key>
-            <string>(^[\d+:\d+]+) \[INFO\]: ([[:alpha:]\s.]+)</string>
+            <string>(^[\d:]+) \[INFO\]: ([[:alpha:]\s.]+)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
                 <dict>
                     <key>name</key>
-                    <string>entity.name.class</string>
+                    <string>constant.numeric.time</string>
                 </dict>
                 <key>2</key>
                 <dict>
@@ -89,13 +172,13 @@
         </dict>
         <dict>  <!-- 00:00:00 string | STATE -->
             <key>match</key>
-            <string>(^[\d+:\d+]+)\s([a-zA-Z\s]+) \| ([A-Z]+) \|</string>
+            <string>(^[\d:]+)\s([a-zA-Z\s]+) \| ([A-Z]+) \|</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
                 <dict>
                     <key>name</key>
-                    <string>entity.name.class</string>
+                    <string>constant.numeric.time</string>
                 </dict>
                 <key>2</key>
                 <dict>
@@ -109,25 +192,20 @@
                 </dict>
             </dict>
         </dict>
-        <dict> <!-- 00:00:00 [INFO]: string | -->
+        <dict> <!-- 00:00:00 string -->
             <key>match</key>
-            <string>(^[\d+:\d+]+) ([[:alpha:][0-9]\.,\¡\!\s]*)</string>
+            <string>(^\d\d:\d\d:\d\d+) ([[:alpha:][0-9]_\.,\¡\!\s]*)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
                 <dict>
                     <key>name</key>
-                    <string>entity.name.class</string>
+                    <string>constant.numeric.time</string>
                 </dict>
                 <key>2</key>
                 <dict>
                     <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
+                    <string>support.error.deviot</string>
                 </dict>
             </dict>
         </dict>
@@ -358,16 +436,6 @@
                     <key>name</key>
                     <string>entity.name.class</string>
                 </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>4</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
             </dict>
         </dict>
         <dict> <!-- avr header -->
@@ -479,7 +547,7 @@
             <key>name</key>
             <string>storage.type</string>
         </dict>
-        <dict> <!-- tooked time -->
+        <dict> <!-- took time -->
             <key>match</key>
             <string>[\d\.\d]+s$</string>
             <key>name</key>

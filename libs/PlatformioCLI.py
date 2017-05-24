@@ -70,6 +70,9 @@ class PlatformioCLI(CommandsPy):
         C['FILENAME'] = Tools.getNameFromPath(C['SKETCHPATH'])
         C['IOT'] = Tools.isIOTFile(C['SKETCHPATH'])
 
+    def getC():
+        return C
+
     def fileCheck(self, next):
         """
         Checks if the file can be processed, if it can't, shows an error
