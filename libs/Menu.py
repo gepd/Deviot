@@ -380,7 +380,7 @@ class Menu(object):
                                  -- (default: False)
         user_path {boolean} -- True: Save file in Packages/Deviot/Preset
                             -- False: Save file in Packages/User/Deviot/Preset
-                               (Defaul:False)
+                               (Default:False)
         """
         menu_file_path = Paths.getSublimeMenuPath(sub_folder, user_path)
         file_menu = JSONFile(menu_file_path)
