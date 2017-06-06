@@ -73,28 +73,15 @@ class DeviotListener(sublime_plugin.EventListener):
         Tools.userPreferencesStatus()
 
     def on_selection_modified(self, view):
-        region = view.sel()[0]
-        region = view.line(region)
-        text = view.substr(region)
+        if view.name() != 'exec':
+            return
 
-        if 'error:' in text:
-            text = text.split('error:')[0].strip()
-            infos = text.split(':')
+        # Try to highlight the error line
+        error_line = view.substr(view.line(view.sel()[0]))
+        Tools.highlightLineInFile(view, error_line)
 
-            if ':/' in text:
-                file_path = infos[0] + ':' + infos[1]
-                infos.pop(0)
-                infos.pop(0)
-            else:
-                file_path = infos[0]
-                infos.pop(0)
-
-            line_no = int(infos[0])
-            column_no = int(infos[1])
-
-            file_view = view.window().open_file(file_path)
-            point = file_view.text_point(line_no, column_no)
-            file_view.show(point)
+        # optional: select the console line too
+        #view.sel().add(view.line(view.sel()[0]))
 
     def on_close(self, view):
         """
@@ -489,7 +476,7 @@ class ProgrammerAvrMkiiCommand(sublime_plugin.WindowCommand):
         return Tools.isIOTFile(file)
 
 
-class ProgrammerUsbTyniCommand(sublime_plugin.WindowCommand):
+class ProgrammerUsbTinyCommand(sublime_plugin.WindowCommand):
 
     def run(self, programmer):
         Preferences().set('programmer', programmer)

@@ -688,6 +688,78 @@ def getWorkingPath(view):
 
 ERRORS_LIST = []
 
+def getIniPath():
+    from .PlatformioCLI import PlatformioCLI
+    path = os.path.dirname(PlatformioCLI.getC()['INIPATH'])
+    if path[-1] == '/':
+        path = path[:-1]
+    return path
+
+def parseCodePosition(text):
+    pars = re.match(r'(?:In file included from )?(\S.*\.[a-zA-Z0-9]{1,5}):(\d+):(\d+)[:,].*', text)
+    if pars is None:
+        return [ '', 0, 0 ]
+
+    file_path = pars.group(1)
+
+    #
+    # On macOS, at least, the position of platformio.ini has side-effects.
+    # If it's at some level above the main .ino file with src_dir other than "."
+    # then error messages don't contain the absolute path, but rather, a path
+    # relative to platformio.ini. So this rectifies a relative path.
+    #
+    if file_path[0] != '/':
+        file_path = getIniPath() + '/' + file_path
+
+    if not os.path.exists(file_path):
+        file_path = ''
+
+    row_no = int(pars.group(2)) - 1
+    if row_no < 0:
+        row_no = 0
+
+    column_no = int(pars.group(3)) - 1
+    if column_no < 0:
+        column_no = 0
+
+    return [ file_path, row_no, column_no ]
+
+def highlightLineInView(file_view, line_no, column_no):
+    sel = file_view.sel()
+    sel.clear()
+    point = file_view.text_point(line_no, column_no)
+    file_view.show_at_center(point)
+    sel.add(file_view.line(point))
+
+# If the selection is already set, don't keep setting it
+def highlightLineInFile(view, error_text):
+    file_path, line_no, column_no = parseCodePosition(error_text)
+    if file_path == '':
+        return
+
+    # from .PlatformioCLI import PlatformioCLI
+    # myC = PlatformioCLI.getC()
+    # print("myC   INIPATH = " + myC['INIPATH'])
+    # print("myC SKETCHDIR = " + myC['SKETCHDIR'])
+    # from .configobj.configobj import ConfigObj
+    # INIFILE = ConfigObj(myC['INIPATH'])
+    # src_dir = INIFILE['platformio']['src_dir']
+    # print("myC   src_dir = " + src_dir)
+
+    w = view.window()
+    curr_view = w.active_view()
+    curr_line = curr_view.rowcol(curr_view.sel()[0].a)[0]
+    curr_key = (curr_view.file_name() or '') + ':' + str(curr_line)
+
+    key = file_path + ':' + str(line_no)
+
+    # print("Curr Pos Key = " + curr_key)
+    # print(" New Pos Key = " + key)
+
+    if curr_key != key and os.path.exists(file_path):
+        file_view = w.open_file(file_path)
+        highlightLineInView(file_view, line_no, column_no)
+        w.focus_view(file_view)
 
 def highlightError(view, conf=False):
     from re import search
@@ -706,69 +778,59 @@ def highlightError(view, conf=False):
     region = sublime.Region(0, view.size())
     sketch = view.substr(region)
 
+    # open all files with errors and mark them
     for text in sketch.splitlines():
-        if('before' in text):
-            string_before = search(u'\'(\w+)\'$', text).group(1)
+        # find word between single quotes on a line with 'before' in the text
+        string_before = search(u'\'(\w+)\'$', text).group(1) if 'before' in text else ''
 
+        # for 'error:' lines, open the file, mark lines with a bullet and outline
         if 'error:' in text:
+            file_path, line_no, column_no = parseCodePosition(text)
+            if file_path == '':
+                continue
+
             r_error = []
-            before = False
+            before = True if 'before' in text else False    # error in previous line?
             before_found = False
             previous_line = False
-            # error is in previous line
-            if('before' in text):
-                before = True
 
-            text = text.split('error:')[0].strip()
-            infos = text.split(':')
+            # open the file if it exists
+            if os.path.exists(file_path):
+                file_view = view.window().open_file(file_path)
+                current_line = ""
+                sketch_name = file_view.file_name().replace('\\', '_')
 
-            if ':/' in text:
-                file_path = infos[0] + ':' + infos[1]
-                infos.pop(0)
-                infos.pop(0)
-            else:
-                file_path = infos[0]
-                infos.pop(0)
+                while(not current_line):
+                    point = file_view.text_point(line_no, column_no)
+                    line = file_view.line(point)
+                    current_line = file_view.substr(line)
 
-            line_no = int(infos[0])
-            column_no = int(infos[1])
+                    point = file_view.text_point(line_no - 1, column_no)
+                    line = file_view.line(point)
+                    previous_line = file_view.substr(line)
 
-            file_view = view.window().open_file(file_path)
-            current_line = ""
-            sketch_name = file_view.file_name().replace('\\', '_')
+                    if(string_before in current_line):
+                        before_found = True
 
-            # get view
-            while(not current_line):
-                point = file_view.text_point(line_no, column_no)
-                line = file_view.line(point)
-                current_line = file_view.substr(line)
+                    if(not before_found or not previous_line):
+                        current_line = ""
 
-                point = file_view.text_point(line_no - 1, column_no)
-                line = file_view.line(point)
-                previous_line = file_view.substr(line)
+                    line_no = line_no - 1
 
-                if(string_before in current_line):
-                    before_found = True
+                if(before):
+                    point = file_view.text_point(line_no, column_no)
+                    line = file_view.line(point)
 
-                if(not before_found or not previous_line):
-                    current_line = ""
+                key_name = sketch_name + str(idn)
+                errors_list.append(key_name)
 
-                line_no = line_no - 1
+                r_error.append(sublime.Region(line.a, line.b))
+                file_view.add_regions(key_name, r_error, 'invalid', icon, flag)
 
-            if(before):
-                point = file_view.text_point(line_no, column_no)
-                line = file_view.line(point)
+                if(not idn):
+                    highlightLineInFile(view, text)
 
-            key_name = sketch_name + str(idn)
-            errors_list.append(key_name)
-
-            r_error.append(sublime.Region(line.a, line.b))
-            file_view.add_regions(key_name, r_error, 'invalid', icon, flag)
-
-            if(not idn):
-                file_view.show(point)
-
-            idn = idn + 1
+                idn = idn + 1
 
     return errors_list
 

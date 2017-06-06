@@ -97,8 +97,8 @@
                     },{
                         "caption": "USBtinyISP",
                         "checkbox": true,
-                        "args": {"programmer": "usbtyni"},
-                        "command": "programmer_usb_tyni"
+                        "args": {"programmer": "usbtiny"},
+                        "command": "programmer_usb_tiny"
                     },{
                         "caption": "ArduinoISP",
                         "checkbox": true,
