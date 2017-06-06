@@ -2,7 +2,6 @@
 # Italian translations for Deviot Plugin.
 # Copyright (C) 2015-2016 GEPD
 # This file is distributed under the same license as the Deviot Plugin.
-#
 
 # Setup Process
 
@@ -19,19 +18,19 @@ msgid "pio_is_installed{0}"
 msgstr "{0} PlatformIO è installato nel tuo sistema, goditi Deviot!"
 
 msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO non è installato\nPreparazione all'installazione, per favore sii paziente potrebbe volerci un po'.\n"
+msgstr "{0} PlatformIO non è installato\nPreparazione all'installazione, Potrebbe volerci un po'.\n"
 
 msgid "downloading_files{0}"
-msgstr "{0} Scaricamento dei files necessari...\n"
+msgstr "{0} Scaricamento dei file necessari...\n"
 
 msgid "error_downloading_files{0}"
-msgstr "{0} C'è stato un errore durante lo scaricamento dei files necessari...\n"
+msgstr "{0} C'è stato un errore durante lo scaricamento dei file necessari...\n"
 
 msgid "error_saving_files{0}"
 msgstr "{0} C'è stato un errore durante il salvataggio dei file necessari...\n"
 
 msgid "extracting_files{0}"
-msgstr "{0} Estrazione files...\n"
+msgstr "{0} Estrazione dei file...\n"
 
 msgid "installing_pio{0}"
 msgstr "{0} Installazione di PlatformIO...\n"
@@ -49,7 +48,7 @@ msgid "setup_finished{0}"
 msgstr "{0} Installazione completata, buon divertimento con Deviot!\n"
 
 msgid "searching_pio_updates"
-msgstr "Ricerca Aggiornamenti di PlatformIO...\n\n"
+msgstr "Ricerca aggiornamenti per PlatformIO...\n\n"
 
 msgid "new_pio_update{0}{1}"
 msgstr "La versione {0} di PlatformIO è disponibile, la tua versione corrente è {1} Vuoi aggiornarla?"
@@ -138,7 +137,7 @@ msgid "menu_send"
 msgstr "Invia"
 
 msgid "menu_deviot_output"
-msgstr "Output nella Console Deviot"
+msgstr "Output nella console Deviot"
 
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
@@ -183,37 +182,37 @@ msgid "menu_upgrade_pio"
 msgstr "Aggiorna PlatformIO"
 
 msgid "menu_developer_pio"
-msgstr "Usa la Versione Development Pio"
+msgstr "Usa la versione Development di PlatformIO"
 
 msgid "menu_update_board_list"
-msgstr "Aggiorna Lista di Schede"
+msgstr "Aggiorna lista delle Schede"
 
 msgid "menu_show_verbose"
-msgstr "Output dettagliato durante la Compilazione"
+msgstr "Mostra output dettagliato durante la Compilazione"
 
 msgid "menu_remove_user_files"
-msgstr "Rimuovi Files di Preferenze"
+msgstr "Rimuovi i file delle preferenze"
 
 msgid "menu_keep_temp_files"
-msgstr "Mantieni Temp Files"
+msgstr "Mantieni file temporanei"
 
 msgid "menu_open_build_folder"
-msgstr "Apri Cartella di Compilazione"
+msgstr "Apri cartella di Compilazione"
 
 msgid "menu_change_build_folder"
-msgstr "Cambia Cartella di Compilazione"
+msgstr "Cambia cartella di Compilazione"
 
 msgid "menu_use_cpp_new"
 msgstr "Usa CPP File con New File"
 
 msgid "menu_always_native"
-msgstr "Usa Struttura di PlatformIO"
+msgstr "Usa struttura di PlatformIO"
 
 msgid "menu_change_default_path"
-msgstr "Cambia Percorso di Default"
+msgstr "Cambia Percorso predefinito"
 
 msgid "menu_remove_default_path"
-msgstr "Rimuovi Percorso di Default"
+msgstr "Rimuovi percorso predefinito"
 
 msgid "menu_languages"
 msgstr "Lingua"
@@ -231,7 +230,7 @@ msgid "menu_about_pio"
 msgstr "Su PlatformIO"
 
 
-# Mensajes y errores
+# Messages and Errors
 
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
@@ -264,13 +263,13 @@ msgid "not_iot_{0}{1}"
 msgstr "{0} {1} non è un File IoT\n"
 
 msgid "select_board_list"
-msgstr "Scegli una Scheda dalla Lista"
+msgstr "Scegli una Scheda dalla lista"
 
 msgid "select_env_list"
-msgstr "Scegli un Ambiente dalla Lista"
+msgstr "Scegli un Ambiente dalla lista"
 
 msgid "select_port_list"
-msgstr "Scegli una Porta dalla Lista"
+msgstr "Scegli una Porta dalla lista"
 
 msgid "init_project_{0}"
 msgstr "{0} Inizializzazione del progetto | Elaborazione...\n"
@@ -288,10 +287,10 @@ msgid "error_installing_pio_{0}"
 msgstr "{0} Errore durante l'Installazione di PlatformIO\n"
 
 msgid "uploading_firmware_{0}"
-msgstr "{0} Caricamento firmware | "
+msgstr "{0} Caricamento del firmware | "
 
 msgid "clean_built_files__{0}"
-msgstr "{0} Pulizia file compilati | "
+msgstr "{0} Pulizia dei file compilati | "
 
 msgid "success_took_{1}"
 msgstr "SUCCESSO | tempo {1}s\n"
@@ -300,7 +299,7 @@ msgid "success_took_{0}{1}"
 msgstr "{0} SUCCESSO | tempo {1}s\n"
 
 msgid "success_warnings_took__{0}{1}"
-msgstr "{0} SUCCESSO ma con WARNING(s) | tempo {1}s\n"
+msgstr "{0} SUCCESSO ma con AVVERTENZE | tempo {1}s\n"
 
 msgid "error_took_{0}{1}"
 msgstr "{0} ERRORE | tempo {1}s\n"
@@ -318,7 +317,7 @@ msgid "error"
 msgstr "Errore"
 
 msgid "success_warnings"
-msgstr "Successo con warning(s)"
+msgstr "Successo con avvertenze"
 
 msgid "processing"
 msgstr "Elaborando"
@@ -333,7 +332,7 @@ msgid "continue_button"
 msgstr "Continua"
 
 msgid "ota_error_platform"
-msgstr "Aggiornamenti OTA al momento disponibili solo per piattaforme Espressif (ESP8266)"
+msgstr "Gli aggiornamenti OTA sono al momento disponibili solo per piattaforme Espressif (ESP8266)"
 
 msgid "select_library"
 msgstr "Scegli una Libreria"
@@ -382,7 +381,7 @@ msgid "already_installed{0}"
 msgstr "{0} già installato\n"
 
 msgid "downloading_package{0}"
-msgstr "Scaricamento pacchetto {0}\n\nPer favore sii paziente potrebbe volerci un po'.\n"
+msgstr "Scaricamento pacchetto {0}\n\nPotrebbe volerci un po'.\n"
 
 msgid "unpacking"
 msgstr "Elaborazione pacchetti...\n"
@@ -406,7 +405,7 @@ msgstr "Nessuna Libreria Installata"
 # Serial Monitor
 
 msgid "serial_port_used_{0}"
-msgstr "Porta seriale {0} già in uso. Ferma qualsiasi programma che la potrebbe usare.\n"
+msgstr "Porta seriale {0} già in uso. Chiudi qualsiasi programma che la potrebbe usare.\n"
 
 msgid "send"
 msgstr "Invia:"
@@ -452,4 +451,4 @@ msgid "of"
 msgstr "di"
 
 msgid "not_in_sync"
-msgstr "not in sync"
+msgstr "non in sincrono"
