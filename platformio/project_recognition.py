@@ -1,255 +1,169 @@
-# !/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+This module read all the information related with the project/file open:
+
+File Path, Project Path (Same Path Without filename), Parent Path, File Name, 
+File Extension, Temp Path, if the project is initialized, the path of the
+platformio.ini file, if it's native (platformio structure or not), list of
+environments initialized and if the src_dir flag is set.
+
+You can call to the "ProjectDetails" class and it will show all the information
+available. This code is intended to work as a standalone so you can call it from
+the sublime console and see the results.
+
+Version: 1.0.0
+Author: Guillermo Díaz
+Contact: gepd@outlook.com
+Licence: Same as the project (Read the LICENCE file in the root)
+"""
+
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+from __future__ import unicode_literals
 
 import os
 import sublime
 
-from ..libraries import tools, paths
-
 
 class ProjectRecognition(object):
-
     def __init__(self):
         self.window = sublime.active_window()
         self.view = self.window.active_view()
+        self.native = None
 
-    def check_project(self):
-        """
-        check requirements before process a project/file
-        """
-        if(not self.get_project_path() and 'monitor' in self.get_view_name()):
-            return 112
-
-        if(self.is_unsaved() and self.get_project_path() is not None):
-            self.save_changes()
-
-        if(self.is_empty()):
-            return 113
-
-        if(not self.is_iot() and self.get_project_path()):
-            return 114
-
-        if(not self.get_project_path()):
-            self.save_file()
-
-        return 200
-
-    def get_project_file_name(self, ext=True):
-        """
-        Gets the name of the current file
-        """
-
-        file_path = self.get_project_path()
-
-        # file name with ext
-        file_name = os.path.basename(file_path)
-
-        # file name without ext
-        if(not ext):
-            file_name = os.path.splitext(file_name)[0]
-
-        return file_name
-
-    def get_file_name(self, ext=True):
-        """
-        return the file name of the current file
-        ext: when is False remove the extension of the file
-        True as default
-        """
-
-        path = self.get_project_path()
-
-        # file name with extension
-        file_name = os.path.basename(path)
-
-        # remove extension
-        if(not ext):
-            file_name = os.path.splitext(file_name)[0]
-
-        return file_name
-
-    def get_view_name(self):
-        """
-        return the name of a view if it was assigned
-        if wasn't the value is None
-        """
-        return self.view.name().lower()
-
-    def get_project_path(self):
-        """
-        return the path of the current project
-        (including the file name)
+    def get_file_path(self):
+        """File Path
+        
+        Full path of the file loaded in the current view,
+        including the file name
+        
+        Returns:
+            [str] -- path of the file path/path/file.ext
         """
         return self.view.file_name()
 
-    def get_project_hash(self):
+    def get_project_path(self):
+        """Project Path
+        
+        Path (without file name) from the current file loaded 
+        in the current view.
+        
+        Returns:
+            [str] -- path of the file path/path/
         """
-        return a unique hash based in the path of the file
-        """
-        import hashlib
-        file_path = self.get_project_path()
-        hash_object = hashlib.md5(file_path.encode('utf-8'))
-        return hash_object.hexdigest()
+        full_path = self.get_file_path()
+        project_path = os.path.dirname(full_path)
+        return project_path
 
-    def get_project_folder(self):
-        """
-        return the folder of the current project
-        (without file name)
-        """
-        file_path = self.get_project_path()
-        folder_path = os.path.dirname(file_path)
+    def get_temp_project_path(self):
+        """Temp Project Path
 
-        return folder_path
+        Path of project in a temporal folder, this folder
+        do not neccessarilly exits
 
-    def get_parent_project_path(self):
+        
+        Returns:
+            [str] -- temp_path/project_name/
         """
-        return the parent path of the current project
-        (including the file name)
-        """
-        file_path = self.get_project_path()
+        file_name = self.get_file_name(ext=False)
+        temp = self.get_temp_path(file_name)
 
-        folder_path = os.path.dirname(file_path)
-        parent = os.path.dirname(folder_path)
+        return temp
+
+    def get_parent_path(self):
+        """Parent Path
+        
+        Parent path or one folder behind of the file currently
+        loaded in the current  view the path do not include 
+        the file name
+        
+        Returns:
+            [str] -- path/parent_path/
+        """
+        project_path = self.get_project_path()
+        parent = os.path.dirname(project_path)
 
         return parent
 
-    def get_working_path(self):
+    def get_file_name(self, ext=True):
+        """File Name
+        
+        Name of the file loaded in the current view. 
+        
+        Keyword Arguments:
+            ext {bool} -- if is set to false removes the 
+                          extension of the filename 
+                          (default: {True})
+        
+        Returns:
+            [str] -- filename.ext or filename
         """
-        get the working path based in the type of structure
-        platformio or arduino type
+        full_path = self.get_file_path()
+        file_name = os.path.basename(full_path)
+
+        if(not ext):
+            file_name = os.path.splitext(file_name)[0]
+
+        return file_name
+
+    def get_file_extension(self):
+        """Extension
+        
+        Extract the extension of the file loaded in the current
+        view and return it (without the dot)
+        
+        Returns:
+            [str] -- ext
         """
-        file_path = self.get_project_folder()
-        parent_path = self.get_parent_project_path()
-        has_init_file = self.has_init_file(parent_path)
-
-        if(has_init_file or file_path.endswith('src')):
-            return_path = parent_path
-        else:
-            temp_name = self.get_project_file_name()
-            return_path = self.get_build_path()
-
-            native = tools.get_config('native', True)
-
-            if(native):
-                return_path = file_path
-
-        return return_path
-
-    def is_iot(self):
-        """
-        Check if the file in the current view is an IoT file,
-        the type of files are specified in the var exts.
-        """
-        exts = ['ino', 'pde', 'cpp', 'c', '.S']
-        path = self.get_project_path()
-
-        if path and path.split('.')[-1] in exts:
-            return True
-        return False
-
-    def is_native(self):
-        """
-        checks if the current project is native type or not
-        based in the location of the file platformio.ini
-        """
-        native = False
-        file_path = self.get_project_path()
-        force_native = tools.get_config('force_native', False)
-
-        # only if file has been saved
-        if(file_path):
-            parent_path = self.get_parent_project_path()
-
-            # find platformio.ini
-            for file in os.listdir(parent_path):
-                if(file.endswith('platformio.ini')):
-                    tools.save_config('native', True)
-                    return True
-
-        # check if horce native was selected
-        if(force_native):
-            native = True
-
-        # if is stored in the temp folder set as native
-        if(not force_native):
-            if("Temp" in file_path or "tmp" in file_path):
-                native = True
-
-        # save in preferences file
-        tools.save_config('native', native)
-
-        return native
-
-    def is_unsaved(self):
-        """
-        return True if the view has unsaved changes
-        """
-        return self.view.is_dirty()
-
-    def save_changes():
-        """
-        Save changes in a file already saved
-        """
-        self.view.run_command('save')
-
-    def is_empty(self):
-        """
-        return True if the view is empty
-        """
-        size = self.get_project_size()
-
-        if(size > 0):
-            return False
-        return True
-
-    def get_project_size(self):
-        """
-        return the size of the current sketch
-        """
-        return self.view.size()
-
-    def get_build_path(self):
-        """
-        get default build path or custom path selected
-        by the user
-        """
-        file_name = self.get_project_file_name(ext=False)
-        build_dir = tools.get_setting('build_dir', False)
-
-        if(build_dir):
-            build_dir = os.path.join(build_dir, file_name)
-            return build_dir
-        return paths.getTempPath(file_name)
+        file_name = self.get_file_name()
+        extension = file_name.split(".")[1]
+        return extension
 
     def get_ini_path(self):
+        """platformio.ini File
+
+        Usually the platformio.ini file in one folder behind
+        of the file open, but deviot can also work with a file
+        estructure like arduino, this means, all the compile
+        files are stored in other folder, in this case this
+        folder is located in the temporal folder of your current
+        operative system
+        
+        platformio.ini is searched in the parent folder or in
+        the temp folder and return the path, if the file is not
+        found in any of this folders it will returns None
+        
+        Returns:
+            [str/none] -- path/platformio.ini / none
         """
-        get the path of the platformio.ini file
-        """
-        project_folder = self.get_working_path()
-        ini_path = os.path.join(project_folder, 'platformio.ini')
+        parent = self.get_parent_path()
+        ini_path = self.search_pio_ini(parent)
+        
+        if(not ini_path):
+            temp = self.get_temp_project_path()
+            ini_path = self.search_pio_ini(temp)
 
         return ini_path
 
-    def has_init_file(self, path):
-        """
-        Check if platformio.ini exist in the given path
-        """
-        if(os.path.isdir(path)):
-            for file in os.listdir(path):
-                if(file.endswith('platformio.ini')):
-                    return True
-        return False
-
     def get_envs_initialized(self):
-        """
-        this function return a list with all the
-        available environments in the platformio.ini file
+        """Initialized Environments
+        
+        List with all the available (initialized) environments in
+        the platformio.ini file of the current file. If the file did
+        not exits or there are none environment initialized it will
+        return none
+        
+        Returns:
+            [list/none] -- [environment, environment] / none
         """
         ini_path = self.get_ini_path()
         environments = []
 
-        if(os.path.exists(ini_path)):
-            from ..libraries.configobj.configobj import ConfigObj
+        if(ini_path and os.path.exists(ini_path)):
+            from .configobj.configobj import ConfigObj
 
             ini_file = ConfigObj(ini_path)
 
@@ -257,63 +171,138 @@ class ProjectRecognition(object):
                 if('env:' in pio_env):
                     environments.append(pio_env.split(":")[1])
 
+        if(not environments):
+            return None
+
         return environments
 
-    def get_envs(self):
+
+    def get_src_dir(self):
+        """SRC DIR
+        
+        Check if the src_dir flag has been set in the platformio.ini,
+        if it has been set, will return the value otherwise it will 
+        return none
+        
+        Returns:
+            [str/none] -- src_dir_path/none
         """
-        get the environments pre selected and saved in the config
-        file
+        ini_path = self.get_ini_path()
+
+        if(ini_path and os.path.exists(ini_path)):
+            from .configobj.configobj import ConfigObj
+
+            ini_file = ConfigObj(ini_path)
+
+            if('platformio' in ini_file):
+                if('src_dir' in ini_file['platformio']):
+                    return ini_file['platformio']['src_dir']
+            return None
+
+    def is_initialized(self):
+        """Project Initialized
+        
+        True if the platformio.ini file is found in the parent
+        folder or in the temporal folder, false if not
+        
+        Returns:
+            bool -- true if it's found
         """
-        envs = []
-        file_hash = self.get_project_hash()
-        envs_initialized = self.get_envs_initialized()
-        envs.extend(envs_initialized)
 
-        envs_selected = tools.get_config(file_hash)
+        if(self.get_ini_path()):
+            return True
+        return False
 
-        if(envs_selected):
-            envs.extend(envs_selected['boards'])
-            envs = list(set(envs))
-
-        return envs
-
-    def check_env_in_file(self):
+    def is_native(self):
+        """Native Project
+        
+        When the platformio.ini file is located in the temp folder
+        the project is not native, otherwise it's native, if it's
+        not initialized (file nonexistent file) return None
+        
+        Returns:
+            [bool/none] -- True if is native/none if the file not exists
         """
-        check if the selected environment is initialized or not
+        ini_file_path = self.get_ini_path()
+
+        if(ini_file_path is None):
+            return None
+
+        parent_path = self.get_parent_path()
+        ini_path = os.path.dirname(ini_file_path)
+
+        if(parent_path == ini_path):
+            return True
+        return False
+
+    def search_pio_ini(self, path):
+        """Search platformio.ini
+        
+        Iterates over the given path and search the platformio.ini file
+        if the file is found return the full path of the file otherwise None
+        
+        Arguments:
+            path {str} -- string with the path to search platformio.ini
+        
+        Returns:
+            [str/none] -- path/platformio.ini / none
         """
-        env_selected = tools.get_config('environment_selected')
-        env_selected = self.get_project_file_name(ext=False)
+        if(os.path.isdir(path)):
+            for file in os.listdir(path):
+                if(file.endswith('platformio.ini')):
+                    return os.path.join(path, file)
+            return None
 
-        env_list = self.get_envs_initialized()
-
-        if(env_selected in env_list):
-            return 200
-        return 115
-
-    def save_file(self):
+    def get_temp_path(self, extra_str=''):
+        """Temp Path
+        
+        Path of the temp folder, if the extra_str argument
+        is given it will add that string to the final path
+        
+        Keyword Arguments:
+            extra_str {str} --extring to add at the temp path  (default: '')
+        
+        Returns:
+            [str] -- temp_path | temp_path/extra_str
         """
-        If the sketch in the current view has been not saved, it generate
-        a random name and stores in a temp folder.
-        """
-        import time
-        from ..libraries.file import File
+        tmp_path = '/tmp'
+        os_name = sublime.platform()
+        if os_name == 'windows':
+            tmp_path = os.environ['tmp']
 
-        ext = '.ino'
+        tmp_path = os.path.join(tmp_path, 'Deviot')
 
-        file_name = str(time.time()).split('.')[0]
-        temp_path = paths.getTempPath()
-        file_path = os.path.join(temp_path, file_name, 'src')
-        full_path = file_name + ext
-        full_path = os.path.join(file_path, full_path)
+        if(extra_str):
+            tmp_path = os.path.join(tmp_path, extra_str)
 
-        tools.make_folder(file_path)
+        return tmp_path
 
-        region = sublime.Region(0, self.view.size())
-        text = self.view.substr(region)
 
-        file = File(full_path)
-        file.write(text)
+class ProjectDetails(ProjectRecognition):
+    """Details
+    
+    Show all the information related with the current project/file
+    it includes platformIO information (platformio.ini)
+    
+    Extends:
+        ProjectRecognition
+    """
+    def __init__(self):
+        super(ProjectDetails, self).__init__()
 
-        self.view.set_scratch(True)
-        self.window.run_command('close')
-        self.view = self.window.open_file(full_path)
+        width = 25
+        
+        details = ["File Path", "Project Path", "Paren Path",
+                    "File Name", "File Extension", "Temp Path",
+                    "Ini Path", "Initialized", "Native",
+                    "Envs Initialized", "SRC-DIR"]
+        
+        infos = [self.get_file_path(), self.get_project_path(),
+                self.get_parent_path(), self.get_file_name(),
+                self.get_file_extension(), self.get_temp_path(),
+                self.get_ini_path(), self.is_initialized(),
+                self.is_native(), self.get_envs_initialized(),
+                self.get_src_dir()]
+
+        for detail, info in zip(details, infos):
+            print ("{}: {}".format(detail.ljust(width), str(info).ljust(width)))
