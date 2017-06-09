@@ -13,6 +13,7 @@ class File(object):
         """
         with open(self.file_name, 'w') as file:
             file.write(text)
+            return True
 
     def read(self):
         """
@@ -21,7 +22,7 @@ class File(object):
         with open(self.file_name) as file:
             return file.read()
 
-    def get_in_json(self):
+    def read_json(self):
         """
         serialize the content of the file and transform it in
         a json format type
