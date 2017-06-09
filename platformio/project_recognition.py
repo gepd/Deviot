@@ -122,6 +122,19 @@ class ProjectRecognition(object):
         extension = file_name.split(".")[1]
         return extension
 
+    def get_file_hash(self):
+        """Hash File Path
+        
+        Unique hash based in the file path
+        
+        Returns:
+            str -- hash of the file path
+        """
+        import hashlib
+        file_path = self.get_file_path()
+        hash_object = hashlib.md5(file_path.encode('utf-8'))
+        return hash_object.hexdigest()
+
     def get_ini_path(self):
         """platformio.ini File
 
@@ -163,7 +176,7 @@ class ProjectRecognition(object):
         environments = []
 
         if(ini_path and os.path.exists(ini_path)):
-            from .configobj.configobj import ConfigObj
+            from ..libraries.configobj.configobj import ConfigObj
 
             ini_file = ConfigObj(ini_path)
 
@@ -172,7 +185,7 @@ class ProjectRecognition(object):
                     environments.append(pio_env.split(":")[1])
 
         if(not environments):
-            return None
+            return []
 
         return environments
 

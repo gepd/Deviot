@@ -36,10 +36,11 @@ def getPackagesPath():
 
 def getPresetPath():
     """
-    Packages/Deviot/Preset
+    Packages/Deviot/presets
     """
     plugin_path = getPluginPath()
-    preset_path = os.path.join(plugin_path, 'Preset')
+    preset_path = os.path.join(plugin_path, 'presets')
+    
     return preset_path
 
 
@@ -59,14 +60,39 @@ def getDeviotUserPath():
 
     return deviot_user_path
 
-
-def getBoardsFilePath():
+def getUserPioPath():
     """
-    Path of the file board /Packages/Deviot/boards.json
+    Deviot folder in Packages/User/Deviot/pio
     """
+    deviot_user_path = getDeviotUserPath()
+    data_path = os.path.join(deviot_user_path, 'pio')
 
-    folder = getDeviotUserPath()
-    file = os.path.join(folder, 'boards.json')
+    try:
+        os.makedirs(data_path)
+    except OSError as exc:
+        if exc.errno != errno.EEXIST:
+            raise exc
+        pass
+
+    return data_path
+
+
+def getBoardsFileDataPath():
+    """
+    Deviot file in Packages/User/Deviot/pio/boards.json
+    """
+    user_data = getUserPioPath()
+    boards_file = os.path.join(user_data, 'boards.json')
+
+    return boards_file
+
+
+def getPresetFile(file_name):
+    """
+    Path of the file board /Packages/Deviot/presets/filename.json
+    """
+    presets = getPresetPath()
+    file = os.path.join(presets, file_name)
 
     return file
 

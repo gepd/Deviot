@@ -1,0 +1,397 @@
+[
+    {
+        "caption": "Deviot",
+        "mnemonic": "D",
+        "id": "deviot",
+        "children":
+        [            
+            {
+                "caption": "menu_quick_panel",
+                "command": "show_overlay",
+                "args": {"overlay": "command_palette", "text": "Deviot: "}
+            },{
+                "caption": "menu_new_sketch",
+                "id": "menu_new_sketch",
+                "command": "deviot_new_sketch"
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_select_boards",
+                "command": "deviot_select_boards",
+                "id": "deviot_select_board"
+            },{
+                "caption": "menu_select_env",
+                "command": "deviot_select_environment",
+                "id": "deviot_select_environment"
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_search_lib",
+                "id": "search_library",
+                "command": "search_library"
+            },{
+                "caption": "menu_remove_lib",
+                "id": "remove_library",
+                "command": "remove_library"
+            },{
+                "caption": "menu_import_library",
+                "id": "import_library",
+                "command": "import_library"
+            },{
+                "caption": "menu_library_examples",
+                "id": "library_examples",
+                "command": "list_library_examples"
+            },{
+                "caption": "menu_option_lib",
+                "id": "library_options",
+                "children": [
+                                {
+                                    "caption":"menu_open_lib_folder",
+                                    "command":"open_library_folder"
+                                }
+                            ]
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_build",
+                "id": "build_sketch",
+                "command": "build_sketch"
+            },{
+                "caption": "menu_upload",
+                "id": "upload_sketch",
+                "command": "upload_sketch"
+            },{
+                "caption": "menu_clean",
+                "id": "clean_sketch",
+                "command": "clean_sketch"
+            },{
+                "caption": "menu_open_ini_file",
+                "id": "open_ini_file",
+                "command": "open_ini_file"
+            },{
+                "caption": "menu_show_console",
+                "id": "show_console",
+                "command": "show_console"
+            },{
+                "caption": "menu_hide_console",
+                "id": "hide_console",
+                "command": "hide_console"
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_programmer",
+                "id": "menu_programmer",
+                "children":
+                [
+                    {
+                        "caption": "None",
+                        "checkbox": true,
+                        "args": {"programmer": false},
+                        "command": "programmer_none"
+                    },{
+                        "caption": "AVR ISP",
+                        "checkbox": true,
+                        "args": {"programmer": "avr"},
+                        "command": "programmer_avr"
+                    },{
+                        "caption": "AVRISP mkII",
+                        "checkbox": true,
+                        "args": {"programmer": "avrmkii"},
+                        "command": "programmer_avr_mkii"
+                    },{
+                        "caption": "USBtinyISP",
+                        "checkbox": true,
+                        "args": {"programmer": "usbtyni"},
+                        "command": "programmer_usb_tyni"
+                    },{
+                        "caption": "ArduinoISP",
+                        "checkbox": true,
+                        "args": {"programmer": "arduinoisp"},
+                        "command": "programmer_arduino_isp"
+                    },{
+                        "caption": "USBasp",
+                        "checkbox": true,
+                        "args": {"programmer": "usbasp"},
+                        "command": "programmer_usbasp"
+                    },{
+                        "caption": "Parallel Programmer",
+                        "checkbox": true,
+                        "args": {"programmer": "parallel"},
+                        "command": "programmer_parallel"
+                    },{
+                        "caption": "Arduino as ISP",
+                        "checkbox": true,
+                        "args": {"programmer": "arduinoasisp"},
+                        "command": "programmer_arduino_as_isp"
+                    }
+                ]
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_serial_ports",
+                "id": "serial_ports",
+                "command": "select_port"
+            },
+            {
+                "caption": "menu_auth_change",
+                "id": "auth_change",
+                "command": "auth_change"
+            },
+            {
+                "caption": "menu_monitor_serial",
+                "id": "serial_monitor",
+                "children":
+                [
+                    {
+                        "caption": "menu_run",
+                        "id": "serial_monitor_run",
+                        "command": "serial_monitor_run",
+                        "checkbox": true
+                    },
+                    {
+                        "caption": "menu_send",
+                        "id": "send_message_serial",
+                        "command": "send_message_serial"
+                    },
+                    {
+                        "caption": "menu_deviot_output",
+                        "id": "deviot_output",
+                        "command": "deviot_output"
+                    },
+                    {
+                        "caption": "menu_auto_scroll",
+                        "id": "auto_scroll_monitor",
+                        "command": "auto_scroll_monitor"
+                    },
+                    {
+                        "caption": "menu_baudrate",
+                        "id": "baudrate_item",
+                        "children":
+                        [
+                            {
+                                "caption": "300",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 300},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "1200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 1200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "2400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 2400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "4800",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 4800},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "9600",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 9600},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "14400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 14400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "19200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 19200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "28800",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 28800},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "38400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 38400},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "57600",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 57600},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "115200",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 115200},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "230400",
+                                "command": "choose_baudrate_item",
+                                "args": {"baudrate_item": 230400},
+                                "checkbox": true
+                            }
+                        ]
+                    },
+                    {
+                        "caption": "menu_line_ending",
+                        "id": "line_ending_item",
+                        "children":
+                        [
+                            {
+                                "caption": "menu_none",
+                                "id": "line_ending_none",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": ""},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_new_line",
+                                "id": "line_ending_new",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\n"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_cr",
+                                "id": "line_ending_return",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\r"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_nl_cr",
+                                "id": "line_ending_both",
+                                "command": "choose_line_ending_item",
+                                "args": {"line_ending_item": "\r\n"},
+                                "checkbox": true
+                            }
+                        ]
+                    },
+                    {
+                        "caption": "menu_display_mode",
+                        "id": "display_mode_item",
+                        "children":
+                        [
+                            {
+                                "caption": "menu_text",
+                                "id": "display_mode_text",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Text"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_ascii",
+                                "id": "display_mode_sacii",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Ascii"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_hex",
+                                "id": "display_mode_hex",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Hex"},
+                                "checkbox": true
+                            },
+                            {
+                                "caption": "menu_hexascii",
+                                "id": "display_mode_hex",
+                                "command": "choose_display_mode_item",
+                                "args": {"display_mode_item": "Mix"},
+                                "checkbox": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_option",
+                "id":"options",
+                "children": [
+                                {
+                                    "caption":"menu_upgrade_pio",
+                                    "command":"upgrade_pio"
+                                },
+                                {
+                                    "caption":"menu_developer_pio",
+                                    "checkbox":true,
+                                    "command":"developer_pio"
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"menu_show_verbose",
+                                    "checkbox":true,
+                                    "command":"toggle_verbose"
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"menu_remove_user_files",
+                                    "command":"remove_user_files"
+                                },
+                                {
+                                    "caption":"menu_keep_temp_files",
+                                    "checkbox":true,
+                                    "command":"keep_temp_files"
+                                },
+                                {
+                                    "caption":"menu_open_build_folder",
+                                    "command":"open_build_folder"
+                                },
+                                {
+                                    "caption":"menu_change_build_folder",
+                                    "command":"change_build_folder"
+                                },
+                                {
+                                    "caption":"menu_use_cpp_new",
+                                    "command":"use_cpp_template"
+                                },
+                                {
+                                    "caption":"menu_always_native",
+                                    "command":"use_always_native"
+                                },
+                                {"caption": "-"},
+                                {
+                                    "caption":"menu_change_default_path",
+                                    "command":"change_default_path"
+                                },
+                                {
+                                    "caption":"menu_remove_default_path",
+                                    "command":"remove_default_path"
+                                }
+                            ]
+            },{
+                "caption": "menu_languages",
+                "id":"language",
+                "children": []
+            },{
+                "caption": "menu_donate_deviot",
+                "command": "donate_deviot"
+            },{
+                "caption": "menu_about",
+                "id": "menu_about",
+                "children": [                        
+                                {
+                                    "caption": "menu_about_deviot",
+                                    "command": "about_deviot"
+                                },
+                                {
+                                    "caption": "menu_about_pio",
+                                    "command": "about_pio"
+                                }
+
+                            ]
+            }
+        ]
+    }
+]
