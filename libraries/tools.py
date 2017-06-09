@@ -172,7 +172,7 @@ def get_setting(key, default=None):
     """
     import sublime
 
-    settings = sublime.load_settings("Deviot.sublime-settings")
+    settings = sublime.load_settings("Deviot/deviot.sublime-settings")
 
     return settings.get(key, default)
 
@@ -183,9 +183,9 @@ def save_setting(key, value):
     """
     import sublime
 
-    settings = sublime.load_settings("Deviot.sublime-settings")
+    settings = sublime.load_settings("Deviot/deviot.sublime-settings")
     settings.set(key, value)
-    sublime.save_settings("Deviot.sublime-settings")
+    sublime.save_settings("Deviot/deviot.sublime-settings")
 
 
 def make_folder(path):
