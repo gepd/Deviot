@@ -126,53 +126,13 @@ def run_command(command, cwd=None):
 
     return (return_code, stdout)
 
-
-def get_config(key=False, default=None, full=False):
-    """
-    get a given value in the deviot.ini file or
-    return the default value
-    """
-    from .configobj.configobj import ConfigObj
-    from .paths import getConfigFile
-
-    file_config = getConfigFile()
-    config = ConfigObj(file_config)
-
-    if(full):
-        return config
-
-    if(key in config):
-        return config[key]
-    return default
-
-
-def save_config(key=False, value=False, full=None):
-    """
-    save a value in the deviot.ini file
-    """
-    from .configobj.configobj import ConfigObj
-    from . import paths
-
-    file_config = paths.getConfigFile()
-    config = ConfigObj(file_config)
-
-    if(full):
-        config = full
-        config.write()
-        return 200
-
-    config[key] = value
-
-    config.write()
-
-
 def get_setting(key, default=None):
     """
     get setting handled by ST
     """
-    import sublime
+    from sublime import load_settings
 
-    settings = sublime.load_settings("Deviot/deviot.sublime-settings")
+    settings = load_settings("Deviot/deviot.sublime-settings")
 
     return settings.get(key, default)
 
@@ -181,11 +141,11 @@ def save_setting(key, value):
     """
     save setting handled by ST
     """
-    import sublime
+    from sublime import load_settings, save_settings
 
-    settings = sublime.load_settings("Deviot/deviot.sublime-settings")
+    settings = load_settings("Deviot/deviot.sublime-settings")
     settings.set(key, value)
-    sublime.save_settings("Deviot/deviot.sublime-settings")
+    save_settings("Deviot/deviot.sublime-settings")
 
 
 def make_folder(path):

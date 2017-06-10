@@ -4,13 +4,13 @@
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
 from . import paths, tools
-from ..platformio.pio_bridge import PioBridge 
+from .preferences_bridge import PreferencesBridge 
 
 
-class QuickMenu(PioBridge):
-
+class QuickMenu(PreferencesBridge):
     def __init__(self):
         super(QuickMenu, self).__init__()
+        self.index = 0
 
     def boards_menu(self):
         """Boards Menu
@@ -34,26 +34,11 @@ class QuickMenu(PioBridge):
         if(selected == -1):
             return
 
-        file_hash = self.get_file_hash()
-        settings = tools.get_setting(file_hash, [])
-
         boards_list = self.quick_boards_list()
         board_select = boards_list[selected][-1]
         board_id = board_select.split("|")[-1].strip()
 
-        if(not settings):
-            settings = {}
-        
-        if('boards' not in settings):
-            settings['boards'] = []
-            settings['boards'].append(board_id)
-        else:
-            if(board_id not in settings['boards']):
-                settings['boards'].append(board_id)
-            else:
-                settings['boards'].remove(board_id)
-
-        tools.save_setting(file_hash, settings)
+        self.save_selected_board(board_id)
 
     def quick_boards_list(self):
         """Boards List
@@ -67,7 +52,7 @@ class QuickMenu(PioBridge):
         """
         from .file import File
 
-        envs = self.get_environments()
+        selected_boards = self.get_selected_boards()
         boards_path = paths.getBoardsFileDataPath()
         boards_file = File(boards_path)
         boards = boards_file.read_json()
@@ -77,7 +62,7 @@ class QuickMenu(PioBridge):
             id = board['id']
             vendor = board['vendor']
 
-            if(id in envs):
+            if(id in selected_boards):
                 start = '- '
             else:
                 start = '+ '
@@ -94,7 +79,7 @@ class QuickMenu(PioBridge):
         Displays the quick panel with the available environments
         """
         environments_list = self.quick_environment_list()
-        quick_panel(environments_list, self.callback_environment)
+        quick_panel(environments_list, self.callback_environment, index=self.index)
 
     def callback_environment(self, selected):
         """Environment Callback
@@ -107,17 +92,11 @@ class QuickMenu(PioBridge):
         if(selected == -1):
             return
 
-        file_hash = self.get_file_hash()
-        settings = tools.get_setting(file_hash)
         environments_list = self.quick_environment_list()
         environment_select = environments_list[selected][1]
         environment = environment_select.split("|")[-1].strip()
 
-        if(not settings):
-            settings = {}
-
-        settings['select_environment'] = environment
-        tools.save_setting(file_hash, settings)
+        self.save_environment(environment)
 
     def quick_environment_list(self):
         """
@@ -128,8 +107,10 @@ class QuickMenu(PioBridge):
 
         environments_list = []
         boards = self.quick_boards_list()
-        environments = self.get_envs_initialized()
+        environments = self.get_selected_boards()
+        environment = self.get_environment()
 
+        index = 0
         total = len(environments)
         count = total
 
@@ -145,7 +126,12 @@ class QuickMenu(PioBridge):
                         vendor = "%s | %s" % (vendor, id)
                         environments_list.append([caption, vendor])
                         count -= 1
-                
+
+                        if(environment == listed):
+                            self.index = index
+
+                        index += 1
+
                 if(not count):
                     break
 

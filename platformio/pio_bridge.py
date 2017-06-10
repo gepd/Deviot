@@ -45,22 +45,82 @@ class PioBridge(ProjectRecognition):
 
         return boards_list
 
-    def get_environments(self):
-        """Environments
+    def remove_ini_environment(self, board_id):
+        """Remove Environment
         
-        List of all environments in the projects the list includes
-        the one selected in deviot and the one initialized in the
-        platformio.ini file and mixed excluding the duplicates
+        Removes the environments from the platformio.ini file.
+        It happens each time a environment/board is removed selecting it
+        from the list of boards (Select Board). The behavior of this
+        option is; if the board isn't in the configs, it will be added
+        if not, removed.
+        
+        Arguments:
+            board_id {[type]} -- [description]
+        """
+        if(self.is_initialized):
+
+            key = 'env:' + board_id
+            pio_file = self.get_config(full=True)
+
+            if(key in pio_file):
+                pio_file.pop(key, None)
+
+            self.save_config(pio_file, full=True)
+
+    def get_config(self, key=None, default=None, full=False):
+        """Gets platformio.ini Configs
+        
+        Gets the platformio.ini file of the project loaded in the
+        current view and return the value of the key requested.
+        You can use the full parameter to retrieve the full file
+        
+        Keyword Arguments:
+            key {str} -- key of the option (default: {None})
+            default {str} -- default value if the key value
+                             is not found (default: {None})
+            full {bool} -- to return the full file (default: {False})
         
         Returns:
-            list -- list of environments
+            str -- found or default value
         """
-        file_hash = self.get_file_hash()
-        settings = get_setting(file_hash, [])
-        environments = self.get_envs_initialized()
+        from ..libraries.configobj.configobj import ConfigObj
 
-        if(settings and settings['boards']):
-            boards = settings['boards']
-            environments = list(set(environments) | set(boards))
+        file_config = self.get_ini_path()
+        config = ConfigObj(file_config)
 
-        return environments
+        if(full):
+            return config
+
+        if(key in config):
+            return config[key]
+        return default
+
+
+    def save_config(self, key=None, value=None, full=False):
+        """Save in platformio.ini
+        
+        Stores the key and value in platfirmio.ini file, this
+        file is the one asociated with current open sketch
+        
+        Keyword Arguments:
+            key {str} -- key of the option/config (default: {None})
+            value {str} -- value of the option/config (default: {None})
+            full {bool} -- when is true write key in the file (default: {False})
+        
+        Returns:
+            bool -- True if the file was write, False if not
+        """
+        from ..libraries.configobj.configobj import ConfigObj
+
+        file_config = self.get_ini_path()
+        config = ConfigObj(file_config)
+
+        if(full):
+            key.write()
+            return True
+
+        config[key] = value
+        
+        config.write()
+        return True
+
