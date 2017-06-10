@@ -6,10 +6,13 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+from sys import exit
+
 from ..libraries.project_check import ProjectCheck
+from ..libraries.preferences_bridge import PreferencesBridge
 from .run_command import run_command
 
-class Initialize(ProjectCheck):
+class Initialize(ProjectCheck, PreferencesBridge):
     """
     Runs the init command to start working with a new board
     Initialize a new folder you need to know the board id
@@ -20,10 +23,11 @@ class Initialize(ProjectCheck):
     The code will run in a new thread to avoid block the
     execution of the sublime text while platformio is working
     """
-    def __init__(self, board_id):
+    def __init__(self):
         super(Initialize, self).__init__()
 
-        self.nonblock_add_board(board_id)
+        self.board_id = self.get_environment()
+        self.nonblock_add_board()
 
     def add_board(self, board_id):
         """New Board
@@ -40,22 +44,21 @@ class Initialize(ProjectCheck):
                     was already initialized, if there was an error, false
         """
         if(not self.is_iot()):
-            print("Not IOT")
-            return False
+            print("--Not IOT")
+            exit(0)
 
         envs = self.get_envs_initialized()
 
-        if(envs and board_id in envs):
+        if(envs and self.board_id in envs):
+            print("Initialized")
             return True
 
         cmd = ['init', '-b ', board_id]
-        out = run_command(cmd, self.cwd)
+        out = run_command(cmd, self.cwd, realtime=True)
 
         self.structurize_project()
 
-        print(out)
-
-    def nonblock_add_board(self, board_id):
+    def nonblock_add_board(self):
         """New Thread Execution
         
         Starts a new thread to run the add_board method
@@ -65,6 +68,7 @@ class Initialize(ProjectCheck):
         """
         from threading import Thread
 
-        thread = Thread(target=self.add_board, args=(board_id,))
+        thread = Thread(target=self.add_board, args=(self.board_id,))
         thread.start()
+        #thread.join()
 
