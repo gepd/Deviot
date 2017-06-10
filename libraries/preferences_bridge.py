@@ -91,3 +91,15 @@ class PreferencesBridge(PioBridge):
 
         if('select_environment' in settings):
             return settings['select_environment']
+
+    def get_serial_port(self):
+        """Serial Port Selected
+        
+        Get the serial port stored in the preferences file
+        
+        Returns:
+            str -- port id ex 'COM1'
+        """
+        port_id = get_setting('port_id', '')
+        
+        return port_id
