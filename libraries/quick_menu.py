@@ -12,7 +12,7 @@ class QuickMenu(PreferencesBridge):
         super(QuickMenu, self).__init__()
         self.index = 0
 
-    def boards_menu(self):
+    def quick_boards(self):
         """Boards Menu
         
         Shows the quick panel with the availables boards in
@@ -73,7 +73,7 @@ class QuickMenu(PreferencesBridge):
 
         return boards_list
 
-    def environment_menu(self):
+    def quick_environments(self):
         """Environment Panel
         
         Displays the quick panel with the available environments
@@ -136,3 +136,16 @@ class QuickMenu(PreferencesBridge):
                     break
 
         return environments_list
+
+    def quick_serial_ports(self):
+        port_list = serial_port_list()
+        quick_panel(port_list, self.callback_serial_ports)
+
+    def callback_serial_ports(self, selected):
+        if(selected == -1):
+            return
+
+        port_list = serial_port_list()
+        port_selected = port_list[selected][1]
+        
+        tools.save_setting('port_id', port_selected)

@@ -128,9 +128,9 @@
             },
             {"caption": "-"},
             {
-                "caption": "menu_serial_ports",
-                "id": "serial_ports",
-                "command": "select_port"
+                "caption": "menu_serial_port",
+                "id": "deviot_serial_port",
+                "command": "deviot_select_port"
             },
             {
                 "caption": "menu_auth_change",
