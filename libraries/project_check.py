@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-ProjectCheck handles the actions between sublime text and platformio.
-Before run a platformio command like initilize, compile or upload, this
-class check if the project meets the requirements to proceed with the
-command, for example if the current file has been saved, or if it's saved
-is in the src folder when the platformio sutrcture options is marked
-"""
-
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
@@ -19,6 +11,13 @@ from os import path
 from ..platformio.project_recognition import ProjectRecognition
 
 class ProjectCheck(ProjectRecognition):
+    """
+    ProjectCheck handles the actions between sublime text and platformio.
+    Before run a platformio command like initilize, compile or upload, this
+    class check if the project meets the requirements to proceed with the
+    command, for example if the current file has been saved, or if it's saved
+    is in the src folder when the platformio sutrcture options is marked
+    """
     def __init__(self):
         super(ProjectCheck, self).__init__()
 
@@ -28,15 +27,15 @@ class ProjectCheck(ProjectRecognition):
         """IOT
         
         Checks if the file in the current view is in the list
-        of the IOT types (accepteds) or not
+        of the IOT types (accepted) or not
         
         Returns:
             bool -- true if is in the list false if not
         """
         ext = self.get_file_extension()
-        accepteds = ['ino', 'pde', 'cpp', 'c', '.S']
+        accepted = ['ino', 'pde', 'cpp', 'c', '.S']
 
-        if(ext not in accepteds):
+        if(ext not in accepted):
             return False
         return True
 
@@ -75,7 +74,7 @@ class ProjectCheck(ProjectRecognition):
         """
         if(self.is_initialized()):
             ini_path = self.get_ini_path()
-            working_path = os.path.dirname(ini_path)
+            working_path = path.dirname(ini_path)
             return working_path
 
         pio_structure = self.get_structure_option()

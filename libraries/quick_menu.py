@@ -138,10 +138,21 @@ class QuickMenu(PreferencesBridge):
         return environments_list
 
     def quick_serial_ports(self):
+        """List of Serial Ports
+        
+        Show the list of serial ports availables in the quick panel
+        """
         port_list = serial_port_list()
         quick_panel(port_list, self.callback_serial_ports)
 
     def callback_serial_ports(self, selected):
+        """Selected Port Callback
+        
+        Stores the selected serial port in the preferences file
+        
+        Arguments:
+            selected {str} -- Port selected ex. 'COM1'
+        """
         if(selected == -1):
             return
 
