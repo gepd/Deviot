@@ -3,7 +3,8 @@
 
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
-from . import paths, tools
+from . import paths
+from .tools import get_setting, save_setting
 from .preferences_bridge import PreferencesBridge 
 
 
@@ -159,4 +160,60 @@ class QuickMenu(PreferencesBridge):
         port_list = serial_port_list()
         port_selected = port_list[selected][1]
         
-        tools.save_setting('port_id', port_selected)
+        save_setting('port_id', port_selected)
+
+    def quick_language(self):
+        """Language Panel
+        
+        Shows the panel to selecte the language of the plugin
+        """
+        language_list = self.quick_language_list()
+        quick_panel(language_list, self.callback_language, index=self.index)
+
+    def quick_language_list(self):
+        """Language List
+        
+        Builts the list with the available languages in Deviot
+        
+        Returns:
+            list -- English language / Language String list
+        """
+        from .I18n import I18n
+
+        i18n = I18n()
+        index = 0
+        language_list = []
+        lang_ids = i18n.get_lang_ids()
+        current = get_setting('lang_id', 'en')
+
+        for lang_id in lang_ids:
+            language = i18n.get_lang_name(lang_id)
+            language_list.append([language[1], language[0]])
+
+            if(current == lang_id):
+                self.index = index
+
+            index += 1
+
+        return language_list
+
+    def callback_language(self, selected):
+        """Language Callback
+        
+        Stores the user language selection
+        
+        Arguments:
+            selected {int} -- user selection
+        """
+        if(selected == -1):
+            return
+
+        from .I18n import I18n
+        from .top_menu import TopMenu
+        
+        lang_ids = I18n().get_lang_ids()
+        port_selected = lang_ids[selected]
+        
+        save_setting('lang_id', port_selected)
+        save_setting('compile_lang', True)
+        self.window.run_command("deviot_reload")

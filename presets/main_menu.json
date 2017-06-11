@@ -372,8 +372,8 @@
                             ]
             },{
                 "caption": "menu_languages",
-                "id":"language",
-                "children": []
+                "command": "deviot_languages",
+                "id":"deviot_languages"
             },{
                 "caption": "menu_donate_deviot",
                 "command": "donate_deviot"

@@ -11,6 +11,9 @@ import os
 from . import paths
 from .file import File
 from .menu_files import MenuFiles
+from .I18n import I18n
+
+_ = I18n().translate
 
 class TopMenu(MenuFiles):
     def __init__(self):
@@ -29,4 +32,30 @@ class TopMenu(MenuFiles):
         menu_preset = self.get_template_menu('main_menu.json')
         path = paths.getPluginPath()
 
+        for option in menu_preset:
+            option = self.translate_children(option)
+            for sub in option['children']:
+                try:
+                    sub = self.translate_children(sub)
+                except KeyError:
+                    pass
+
+
         self.create_sublime_menu(menu_preset, 'Main', path)
+
+    def translate_children(self, option_dict):
+        """Translate Children Menu
+        
+        Translate a children sublime text menu
+        
+        Arguments:
+            option_dict {dict} -- children to be traslated
+        
+        Returns:
+            dict -- children translated
+        """
+        for children in option_dict['children']:
+            children['caption'] = _(children['caption'])
+
+        return option_dict
+
