@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import codecs
 
 class File(object):
 
@@ -19,8 +19,15 @@ class File(object):
         """
         return the content of the file set in self.file_name
         """
-        with open(self.file_name) as file:
-            return file.read()
+        encoding = 'utf-8'
+        text = ''
+
+        try:
+            with codecs.open(self.file_name, 'r', encoding) as file:
+                text = file.read()
+        except(IOError, UnicodeError):
+            pass
+        return text
 
     def read_json(self):
         """
