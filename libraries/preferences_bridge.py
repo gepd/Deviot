@@ -104,7 +104,7 @@ class PreferencesBridge(PioBridge):
         Returns:
             str -- port id ex 'COM1'
         """
-        port_id = get_setting('port_id', '')
+        port_id = get_setting('port_id', None)
         
         return port_id
 

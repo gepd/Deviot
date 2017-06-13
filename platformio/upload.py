@@ -10,19 +10,26 @@ from sys import exit
 
 from .initialize import Initialize
 from .run_command import run_command
-from ..libraries.tools import save_settings
+from ..libraries.tools import save_setting
 
 class Upload(Initialize):
     def __init__(self):
         super(Upload, self).__init__()
-        
-        self.port_id = self.get_serial_port()
+
         save_setting('last_action', self.UPLOAD)
         self.nonblock_upload()
 
     def start_upload(self):
         if(not self.is_iot()):
             exit(0)
+
+        self.check_board_selected()
+        if(not self.board_id):
+            return
+
+        self.check_port_selected()
+        if(not self.port_id):
+            return
 
         cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e ', self.board_id]
         out = run_command(cmd, self.cwd, realtime=True)

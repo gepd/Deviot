@@ -5,7 +5,8 @@ from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
 from . import paths
 from .tools import get_setting, save_setting
-from .preferences_bridge import PreferencesBridge 
+from .preferences_bridge import PreferencesBridge
+from .serial import serial_port_list
 
 
 class QuickMenu(PreferencesBridge):
@@ -162,13 +163,15 @@ class QuickMenu(PreferencesBridge):
         Arguments:
             selected {str} -- Port selected ex. 'COM1'
         """
-        if(selected == -1):
+        if(selected == -1 or selected == 0):
             return
 
         port_list = serial_port_list()
         port_selected = port_list[selected][1]
         
         save_setting('port_id', port_selected)
+
+        self.run_last_action()
 
     def quick_language(self):
         """Language Panel

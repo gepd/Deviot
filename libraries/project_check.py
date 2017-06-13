@@ -24,6 +24,7 @@ class ProjectCheck(QuickMenu):
 
         self.cwd = self.get_working_project_path()
         self.board_id = None
+        self.port_id = None
 
     def is_iot(self):
         """IOT
@@ -152,9 +153,9 @@ class ProjectCheck(QuickMenu):
     def check_board_selected(self):
         """Checks Board Selection
         
-        If an environment is stores in the preferences file, it will
-        be loaded in the board_id object, if none board has been selected
-        it will show the quick panel to select the board
+        If an environment is stored in the preferences file, it will
+        be loaded in the board_id object, if not, it will show the
+        quick panel to select the board
         """
         self.board_id = self.get_environment()
 
@@ -167,6 +168,18 @@ class ProjectCheck(QuickMenu):
 
             QuickMenu().quick_environments()
             return
+
+    def check_port_selected(self):
+        """Checks Serial Port Selection
+        
+        If the serial port is stored in the preferences file, it will
+        be loaded in the port_id object, if not, it will show the 
+        quick panel to select the port
+        """
+        self.port_id = self.get_serial_port()
+
+        if(not self.port_id):
+            QuickMenu().quick_serial_ports()
 
 
 
