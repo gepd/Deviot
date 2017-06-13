@@ -159,7 +159,13 @@ class ProjectCheck(QuickMenu):
         self.board_id = self.get_environment()
 
         if(not self.board_id):
-            QuickMenu().quick_boards()
+            selected_boards = self.get_selected_boards()
+
+            if(not selected_boards):
+                QuickMenu().quick_boards()
+                return
+
+            QuickMenu().quick_environments()
             return
 
 

@@ -10,12 +10,14 @@ from sys import exit
 
 from .initialize import Initialize
 from .run_command import run_command
+from ..libraries.tools import save_settings
 
 class Upload(Initialize):
     def __init__(self):
         super(Upload, self).__init__()
         
         self.port_id = self.get_serial_port()
+        save_setting('last_action', self.UPLOAD)
         self.nonblock_upload()
 
     def start_upload(self):
@@ -24,6 +26,8 @@ class Upload(Initialize):
 
         cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e ', self.board_id]
         out = run_command(cmd, self.cwd, realtime=True)
+
+        save_setting('last_action', None)
 
     def nonblock_upload(self):
         """New Thread Execution

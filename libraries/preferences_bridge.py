@@ -10,6 +10,10 @@ from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge 
 
 class PreferencesBridge(PioBridge):
+    # Flags to be used with last action feature
+    COMPILE = 1
+    UPLOAD = 2
+
     def __init__(self):
         super(PreferencesBridge, self).__init__()
 
@@ -103,3 +107,21 @@ class PreferencesBridge(PioBridge):
         port_id = get_setting('port_id', '')
         
         return port_id
+
+    def run_last_action(self):
+        """Last Action
+        
+        If the user start to compile or upload the sketch and none board or port
+        is selected, the quick panel is displayed to select the corresponding option.
+        As the quick panel is a async method, the compilation or upload will not
+        continue. Before upload or compile a flag is stored to what run after the selection
+        """
+
+        last_action = get_setting('last_action', None)
+
+        if(last_action == self.COMPILE):
+            from ..platformio.compile import Compile
+            Compile()
+        elif(last_action == self.UPLOAD):
+            from ..platformio.upload import Upload
+            Upload()

@@ -27,7 +27,10 @@ class QuickMenu(PreferencesBridge):
         
         The quick panel returns the index of the option selected,
         this index is used to get the id of the board and the id
-        is stored in the setting file
+        is stored in the setting file.
+
+        last_action is used to run the compilation or upload if was
+        the action before call the list of boards
         
         Arguments:
             selected {int} -- index of the selected board
@@ -40,6 +43,7 @@ class QuickMenu(PreferencesBridge):
         board_id = board_select.split("|")[-1].strip()
 
         self.save_selected_board(board_id)
+        self.run_last_action()
 
     def quick_boards_list(self):
         """Boards List
@@ -86,6 +90,9 @@ class QuickMenu(PreferencesBridge):
         """Environment Callback
         
         Callback to store the select environment
+
+        last_action is used to run the compilation or upload if was
+        the action before call the list of environments
         
         Arguments:
             selected {int} -- option selected (index)
@@ -98,6 +105,7 @@ class QuickMenu(PreferencesBridge):
         environment = environment_select.split("|")[-1].strip()
 
         self.save_environment(environment)
+        self.run_last_action()
 
     def quick_environment_list(self):
         """

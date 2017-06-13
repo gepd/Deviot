@@ -10,11 +10,13 @@ from sys import exit
 
 from .initialize import Initialize
 from .run_command import run_command
+from ..libraries.tools import save_setting
 
 class Compile(Initialize):
     def __init__(self):
         super(Compile, self).__init__()
 
+        save_setting('last_action', self.COMPILE)
         self.nonblock_compile()
 
     def start_compilation(self):
@@ -23,8 +25,13 @@ class Compile(Initialize):
 
         self.add_board()
 
+        if(not self.board_id):
+            return
+
         cmd = ['run', '-e ', self.board_id]
         out = run_command(cmd, self.cwd, realtime=True)
+
+        save_setting('last_action', None)
 
     def nonblock_compile(self):
         """New Thread Execution
