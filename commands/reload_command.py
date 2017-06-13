@@ -11,7 +11,6 @@ class DeviotReloadCommand(sublime_plugin.WindowCommand):
         sublime.set_timeout_async(lambda: self.run_async(pkg_name))
 
     def run_async(self, pkg_name=None):
-        print()
         progress_bar = ProgressBar("Reloading %s" % pkg_name)
         progress_bar.start()
 
