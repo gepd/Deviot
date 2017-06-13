@@ -68,8 +68,17 @@ class ProjectRecognition(object):
         Returns:
             [str] -- temp_path/project_name/
         """
-        file_name = self.get_file_name(ext=False)
+        import errno
+        
+        file_name = self.get_file_hash()
         temp = self.get_temp_path(file_name)
+
+        try:
+            os.makedirs(temp)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise exc
+            pass
 
         return temp
 

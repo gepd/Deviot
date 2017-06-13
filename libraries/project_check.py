@@ -9,8 +9,9 @@ from __future__ import unicode_literals
 from os import path
 
 from ..platformio.project_recognition import ProjectRecognition
+from ..libraries.quick_menu import QuickMenu
 
-class ProjectCheck(ProjectRecognition):
+class ProjectCheck(QuickMenu):
     """
     ProjectCheck handles the actions between sublime text and platformio.
     Before run a platformio command like initilize, compile or upload, this
@@ -22,6 +23,7 @@ class ProjectCheck(ProjectRecognition):
         super(ProjectCheck, self).__init__()
 
         self.cwd = self.get_working_project_path()
+        self.board_id = None
 
     def is_iot(self):
         """IOT
@@ -80,7 +82,10 @@ class ProjectCheck(ProjectRecognition):
         pio_structure = self.get_structure_option()
 
         if(pio_structure):
-            return self.get_project_path()
+            project_path = self.get_project_path()
+            if('src' in project_path):
+                project_path = self.get_parent_path()
+            return project_path
         
         return self.get_temp_project_path()
 
@@ -91,9 +96,6 @@ class ProjectCheck(ProjectRecognition):
         if the open file is inside of the src folder, if it isn't
         the file need to be moved to the src folder
         """
-        if(self.is_initialized()):
-            return True
-
         pio_structure = self.get_structure_option()
 
         if(pio_structure):
@@ -107,6 +109,26 @@ class ProjectCheck(ProjectRecognition):
                 move(file_path, dst)
 
                 self.window.open_file(dst)
+                return
+
+        self.override_src()
+
+    def override_src(self):
+        """Adds src_dir
+        
+        When you don't want to keep the platformio file structure, you need to add
+        the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
+        Here we add that option when platformio structure is not enabled
+        """
+        from ..libraries.configobj.configobj import ConfigObj
+        
+        source = {'src_dir': self.get_project_path()}
+        ini_path = self.get_ini_path()
+        config = ConfigObj(ini_path)
+
+        config['platformio'] = source
+        
+        config.write()
 
 
     def get_structure_option(self):
@@ -126,6 +148,20 @@ class ProjectCheck(ProjectRecognition):
         Close the current focused windows in sublime text
         """
         self.window.run_command('close_file')
+
+    def check_board_selected(self):
+        """Checks Board Selection
+        
+        If an environment is stores in the preferences file, it will
+        be loaded in the board_id object, if none board has been selected
+        it will show the quick panel to select the board
+        """
+        self.board_id = self.get_environment()
+
+        if(not self.board_id):
+            QuickMenu().quick_boards()
+            return
+
 
 
 def add_folder_to_filepath(src_path, new_folder):

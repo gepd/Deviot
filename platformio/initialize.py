@@ -6,8 +6,6 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from sys import exit
-
 from ..libraries.project_check import ProjectCheck
 from ..libraries.preferences_bridge import PreferencesBridge
 from .run_command import run_command
@@ -26,10 +24,9 @@ class Initialize(ProjectCheck, PreferencesBridge):
     def __init__(self):
         super(Initialize, self).__init__()
 
-        self.board_id = self.get_environment()
-        self.nonblock_add_board()
+        # self.nonblock_add_board()
 
-    def add_board(self, board_id):
+    def add_board(self):
         """New Board
         
         Adds a new board to the environments of platformio
@@ -45,15 +42,18 @@ class Initialize(ProjectCheck, PreferencesBridge):
         """
         if(not self.is_iot()):
             print("--Not IOT")
-            exit(0)
+            return
+
+        self.check_board_selected()
+        if(not self.board_id):
+            return
 
         envs = self.get_envs_initialized()
-
         if(envs and self.board_id in envs):
             print("Initialized")
             return True
 
-        cmd = ['init', '-b ', board_id]
+        cmd = ['init', '-b ', self.board_id]
         out = run_command(cmd, self.cwd, realtime=True)
 
         self.structurize_project()
@@ -68,7 +68,6 @@ class Initialize(ProjectCheck, PreferencesBridge):
         """
         from threading import Thread
 
-        thread = Thread(target=self.add_board, args=(self.board_id,))
+        thread = Thread(target=self.add_board)
         thread.start()
-        #thread.join()
 

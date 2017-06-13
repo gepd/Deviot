@@ -21,6 +21,8 @@ class Compile(Initialize):
         if(not self.is_iot()):
             exit(0)
 
+        self.add_board()
+
         cmd = ['run', '-e ', self.board_id]
         out = run_command(cmd, self.cwd, realtime=True)
 
