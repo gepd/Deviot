@@ -67,7 +67,7 @@
             },{
                 "caption": "menu_open_ini_file",
                 "id": "open_ini_file",
-                "command": "open_ini_file"
+                "command": "deviot_open_ini_file"
             },{
                 "caption": "menu_show_console",
                 "id": "show_console",
