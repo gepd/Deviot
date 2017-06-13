@@ -18,7 +18,6 @@ from glob import glob
 
 class I18n(object):
     def __init__(self):
-        self.get_system_lang()
         self.sys_lang = ''
         self.lang_list = {}
         self.lang_params = {}
@@ -27,7 +26,8 @@ class I18n(object):
         self.translations = {}
         self.lang_list = {}
 
-        lang = get_setting('lang_id', 'en')
+        lang = get_setting('lang_id', self.sys_lang)
+        self.get_system_lang()
         self.set_lang(lang)
 
     def translate(self, text, *params):
@@ -51,17 +51,17 @@ class I18n(object):
 
         return translated
 
-    def set_lang(self, default):
+    def set_lang(self, selection):
         """Set Language
         
         Sets the language that will be used in the plugin. If there is none option
         in the preferences file, the system language will be used
         
         Arguments:
-            default {str} -- ISO 639*1 language string
+            selection {str} -- ISO 639*1 language string
         """
         self.get_lang_files()
-        lang = self.sys_lang if(self.sys_lang in self.id_name_dict) else default
+        lang = selection if(self.sys_lang in self.id_name_dict) else 'en'
         file_path = self.id_name_dict[lang]
         lang_file = TranslatedLines(file_path)
         self.translations = lang_file.translte_text()

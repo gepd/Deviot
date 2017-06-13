@@ -43,6 +43,18 @@ def getPresetPath():
     
     return preset_path
 
+def getLangListPath():
+    path = getPresetPath()
+    lang_list_path = os.path.join(path, 'languages.list')
+
+    return lang_list_path
+
+def getLangPath():
+    path = getPluginPath()
+    lang_path = os.path.join(path, 'languages')
+
+    return lang_path
+
 
 def getDeviotUserPath():
     """

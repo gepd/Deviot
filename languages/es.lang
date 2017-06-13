@@ -13,41 +13,45 @@ msgstr "Deviot necesita Python 2.7 para funcionar, por favor descargalo e instal
 msgid "button_download_python"
 msgstr "Descargar Python"
 
+### New
+msgid "symlink_detected"
+msgstr "Se ha detectado symlink"
+
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Instalación\n"
 
-msgid "pio_is_installed{0}"
-msgstr "{0} PlatformIO está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
+msgid "pio_is_installed"
+msgstr "PlatformIO está instalado en tu sistema, ¡ya puedes disfrutar de Deviot!"
 
-msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO no está instalado\nPreparándose para instalarlo. Por favor sea paciente esto podría demorar un poco\n"
+msgid "pio_isn_installed"
+msgstr "PlatformIO no está instalado\n\nPreparándose para instalarlo. Por favor sea paciente esto podría demorar un poco.\n\n"
 
-msgid "downloading_files{0}"
-msgstr "{0} Descargando archivos necesarios...\n"
+msgid "downloading_files"
+msgstr "Descargando archivos necesarios...\n"
 
-msgid "error_downloading_files{0}"
-msgstr "{0} Hubo un error descargando los archivos...\n"
+msgid "error_downloading_files"
+msgstr "Hubo un error descargando los archivos...\n"
 
-msgid "error_saving_files{0}"
-msgstr "{0} Hubo un error guardando los archivos...\n"
+msgid "error_saving_files"
+msgstr "Hubo un error guardando los archivos...\n"
 
-msgid "extracting_files{0}"
-msgstr "{0} Extrayendo archivos...\n"
+msgid "extracting_files"
+msgstr "Extrayendo archivos...\n"
 
-msgid "installing_pio{0}"
-msgstr "{0} Instalando PlatformIO...\n"
+msgid "installing_pio"
+msgstr "Instalando PlatformIO...\n"
 
-msgid "uninstall_old_pio{0}"
-msgstr "{0} Desinstalando versión actual...\n"
+msgid "uninstall_old_pio"
+msgstr "Desinstalando versión actual...\n"
 
-msgid "installing_dev_pio{0}"
-msgstr "{0} Instalando versión 'develop' de PlatformIO...\n"
+msgid "installing_dev_pio"
+msgstr "Instalando versión 'develop' de PlatformIO...\n"
 
-msgid "installing_stable_pio{0}"
-msgstr "{0} Instalando versión 'estable' de PlatformIO...\n"
+msgid "installing_stable_pio"
+msgstr "Instalando versión 'estable' de PlatformIO...\n"
 
-msgid "setup_finished{0}"
-msgstr "{0} Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
+msgid "setup_finished"
+msgstr "Instalación finalizada, ¡ya puedes disfrutar de Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Buscando Actualizaciones de PlatformIO...\n\n"
