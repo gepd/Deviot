@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 import sublime
+from sublime import load_settings, save_settings
 
 from ..beginning import __version__
 
@@ -130,10 +131,7 @@ def get_setting(key, default=None):
     """
     get setting handled by ST
     """
-    from sublime import load_settings
-
-    settings = load_settings("Deviot/deviot.sublime-settings")
-
+    settings = load_settings("deviot.sublime-settings")
     return settings.get(key, default)
 
 
@@ -141,11 +139,9 @@ def save_setting(key, value):
     """
     save setting handled by ST
     """
-    from sublime import load_settings, save_settings
-
-    settings = load_settings("Deviot/deviot.sublime-settings")
+    settings = load_settings("deviot.sublime-settings")
     settings.set(key, value)
-    save_settings("Deviot/deviot.sublime-settings")
+    save_settings("deviot.sublime-settings")
 
 
 def make_folder(path):
