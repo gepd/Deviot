@@ -20,6 +20,11 @@ class Upload(Initialize):
         self.nonblock_upload()
 
     def start_upload(self):
+        """Upload
+        
+        Run the upload platformio command checking if a board (environment)
+        and a serial port is selected
+        """
         if(not self.is_iot()):
             exit(0)
 

@@ -20,6 +20,11 @@ class Compile(Initialize):
         self.nonblock_compile()
 
     def start_compilation(self):
+        """Compilation
+        
+        Starts the compilation command, it first checks if the file in the
+        current view is a .iot file and if a board (environment) has been selected
+        """
         if(not self.is_iot()):
             exit(0)
 
