@@ -18,7 +18,6 @@ _ = I18n().translate
 class TopMenu(MenuFiles):
     def __init__(self):
         super(TopMenu, self).__init__()
-        self.create_main_menu()
 
     def create_main_menu(self):
         """Main Menu
@@ -39,7 +38,6 @@ class TopMenu(MenuFiles):
                     sub = self.translate_children(sub)
                 except KeyError:
                     pass
-
 
         self.create_sublime_menu(menu_preset, 'Main', path)
 
