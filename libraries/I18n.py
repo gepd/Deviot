@@ -11,14 +11,15 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from .paths import getLangListPath, getLangPath
-from .tools import get_setting
+from .tools import singleton, get_setting, save_setting
 from os import path
 from .file import File
 from glob import glob
 
+@singleton
 class I18n(object):
     def __init__(self):
-        self.sys_lang = ''
+        self.sys_lang = None
         self.lang_list = {}
         self.lang_params = {}
         self.ids_lang = []
@@ -26,9 +27,8 @@ class I18n(object):
         self.translations = {}
         self.lang_list = {}
 
-        lang = get_setting('lang_id', self.sys_lang)
         self.get_system_lang()
-        self.set_lang(lang)
+        self.set_lang()
 
     def translate(self, text, *params):
         """Trnaslate string
@@ -51,7 +51,7 @@ class I18n(object):
 
         return translated
 
-    def set_lang(self, selection):
+    def set_lang(self):
         """Set Language
         
         Sets the language that will be used in the plugin. If there is none option
@@ -60,11 +60,16 @@ class I18n(object):
         Arguments:
             selection {str} -- ISO 639*1 language string
         """
+        selection = get_setting('lang_id', self.sys_lang)
+        
         self.get_lang_files()
+        
         lang = selection if(self.sys_lang in self.id_name_dict) else 'en'
         file_path = self.id_name_dict[lang]
         lang_file = TranslatedLines(file_path)
+        
         self.translations = lang_file.translte_text()
+        save_setting('lang_id', lang)
 
     def get_lang_ids(self):
         """Language ids lists
@@ -133,7 +138,7 @@ class I18n(object):
             sys_language = 'en'
         else:
             sys_language = sys_language.lower()
-        
+
         self.sys_lang = sys_language[:2]
 
 
