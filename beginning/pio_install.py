@@ -10,10 +10,12 @@ proceed with the installation.
 
 This code is intended to work as a standalone, so you can call to the
 "PioInstall" class and it will run in a new thread and will install all 
-the necessary files to run platformio.
+the necessary files to run platformio. (replace or remove dprint, derror,
+show_message() and show_error())
 
 Version: 1.0.0
-Author: gepd@outlook.com
+Author: Guillermo Díaz
+Contact: gepd@outlook.com
 Licence: Same as the project (Read the LICENCE file in the root)
 
 """
@@ -23,24 +25,25 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-import os
-import json
-import datetime
-import threading
-import tempfile
 import sublime
-import inspect
-import sys
+
+from os import path, environ, makedirs, rename
+from inspect import getfile, currentframe
+from threading import Thread
+from sys import exit
 from time import strftime
 from shutil import rmtree
 from re import match, sub
 from urllib.request import Request
 from urllib.request import urlopen
 from collections import OrderedDict
-
 from . import __version__, __title__
 
-from ..libraries.messages import dprint, derror
+###
+dprint = None
+derror = None
+dstop = None
+###
 
 # TODO
 # Add symlink to a config file
@@ -49,9 +52,17 @@ from ..libraries.messages import dprint, derror
 class PioInstall(object):
 
     def __init__(self, window=False):
+        self.dev_ver = __version__
+        self.sub_ver = sublime.version()
+
+        ###
+        show_messages()
+        dprint("deviot_setup{0}", True, self.dev_ver)
+        ###
+
         self.filePaths()
 
-        thread = threading.Thread(target=self.install)
+        thread = Thread(target=self.install)
         thread.start()
 
     def filePaths(self):
@@ -67,22 +78,22 @@ class PioInstall(object):
         VENVA_FOL = 'virtualenv'  # virtualenv folder
         SOURC_FOL = 'penv'  # where virtualenv and pio will be installed
 
-        CURRENT_FILE = os.path.abspath(inspect.getfile(inspect.currentframe()))
-        PLUGIN_PATH = os.path.dirname(os.path.dirname(CURRENT_FILE))
-        PACKAGE_PATH = os.path.dirname(PLUGIN_PATH)
-        DEVIOT_UPATH = os.path.join(PACKAGE_PATH, 'User', 'Deviot')
-        CACHE_PATH = os.path.join(DEVIOT_UPATH, CACHE_FOL)
+        CURRENT_FILE = path.abspath(getfile(currentframe()))
+        PLUGIN_PATH = path.dirname(path.dirname(CURRENT_FILE))
+        PACKAGE_PATH = path.dirname(PLUGIN_PATH)
+        DEVIOT_UPATH = path.join(PACKAGE_PATH, 'User', 'Deviot')
+        CACHE_PATH = path.join(DEVIOT_UPATH, CACHE_FOL)
         URL_LIST = self.FILE_URL.split("/")
         URL_COUNT = len(URL_LIST)
-        USER_AGENT = 'Deviot/%s (Sublime-Text/%s)' % (__version__,
-                                                      sublime.version())
+        USER_AGENT = 'Deviot/%s (Sublime-Text/%s)' % (self.dev_ver,
+                                                      self.sub_ver)
 
         # global
-        self.V_ENV_FILE = os.path.join(CACHE_PATH, URL_LIST[URL_COUNT - 1])
-        self.V_ENV_PATH = os.path.join(DEVIOT_UPATH, SOURC_FOL)
-        self.V_ENV_BIN_PATH = os.path.join(
+        self.V_ENV_FILE = path.join(CACHE_PATH, URL_LIST[URL_COUNT - 1])
+        self.V_ENV_PATH = path.join(DEVIOT_UPATH, SOURC_FOL)
+        self.V_ENV_BIN_PATH = path.join(
             self.V_ENV_PATH, 'Scripts' if 'windows' in sublime.platform() else 'bin')
-        self.OUTPUT_PATH = os.path.join(self.V_ENV_PATH, VENVA_FOL)
+        self.OUTPUT_PATH = path.join(self.V_ENV_PATH, VENVA_FOL)
         self.HEADERS = {'User-Agent': USER_AGENT}
         self.CACHED_FILE = False
         self.SYMLINK = 'python'
@@ -90,14 +101,14 @@ class PioInstall(object):
         createPath(CACHE_PATH)
 
         # defining default env paths
-        os.environ['PATH'] = getEnvPaths()
+        environ['PATH'] = getEnvPaths()
 
     def cachedFile(self):
         """Cached File
 
         Check if the virtualenvfile was already downloaded
         """
-        if(os.path.isfile(self.V_ENV_FILE)):
+        if(path.isfile(self.V_ENV_FILE)):
             self.CACHED_FILE = True
         return self.CACHED_FILE
 
@@ -113,27 +124,28 @@ class PioInstall(object):
 
         checkPio()
 
-        dprint("Downloading virtualenv")
+        dprint("pio_isn_installed")
+        dprint("downloading_files")
 
         self.downloadFile()
 
-        dprint("Extracting file")
+        dprint("extracting_files")
 
         self.extractFile()
 
         # install virtualenv
-        dprint("Installing platformIO")
+        dprint("installing_pio")
 
         cmd = [self.SYMLINK, 'virtualenv.py', '"%s"' % self.V_ENV_PATH]
         out = runCommand(cmd, "error installing virtualenv", self.OUTPUT_PATH)
 
         # Install pio
         if(sublime.platform() is 'osx'):
-            executable = os.path.join(self.V_ENV_BIN_PATH, 'python')
+            executable = path.join(self.V_ENV_BIN_PATH, 'python')
             cmd = ['"%s"' % (executable), '-m', 'pip',
                    'install', '-U', 'platformio']
         else:
-            executable = os.path.join(self.V_ENV_BIN_PATH, 'pip')
+            executable = path.join(self.V_ENV_BIN_PATH, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
         out = runCommand(cmd, "error installing platformio")
 
@@ -141,7 +153,7 @@ class PioInstall(object):
         env_path = [self.V_ENV_PATH, self.V_ENV_BIN_PATH]
         self.saveEnvPaths(env_path)
 
-        dprint("setup finished")
+        derror("setup_finished")
 
     def downloadFile(self):
         """Download File
@@ -154,7 +166,7 @@ class PioInstall(object):
                 file_open = urlopen(file_request)
                 file = file_open.read()
             except:
-                derror("There was an error downloading virtualenv")
+                derror("error_downloading_files")
 
             # save file
             try:
@@ -162,7 +174,7 @@ class PioInstall(object):
                 output.write(bytearray(file))
                 output.close()
             except:
-                derror("There was an error saving virtualenv")
+                derror("error_saving_files")
 
     def extractFile(self):
         """Extract File
@@ -170,13 +182,13 @@ class PioInstall(object):
         Extract the file and rename the output folder
         """
 
-        if(not os.path.isdir(self.OUTPUT_PATH)):
+        if(not path.isdir(self.OUTPUT_PATH)):
             extractTar(self.V_ENV_FILE, self.V_ENV_PATH)
 
         # rename folder
-        extracted = os.path.join(self.V_ENV_PATH, 'virtualenv-14.0.6')
-        if(not os.path.isdir(self.OUTPUT_PATH)):
-            os.rename(extracted, self.OUTPUT_PATH)
+        extracted = path.join(self.V_ENV_PATH, 'virtualenv-14.0.6')
+        if(not path.isdir(self.OUTPUT_PATH)):
+            rename(extracted, self.OUTPUT_PATH)
 
     def saveEnvPaths(self, new_path):
         '''Environment
@@ -187,14 +199,14 @@ class PioInstall(object):
         Arguments:
             new_path {[list]} -- list with extra paths to store
         '''
-        env_paths = getEnvPaths().split(os.path.pathsep)
+        env_paths = getEnvPaths().split(path.pathsep)
 
         paths = []
         paths.extend(new_path)
         paths.extend(env_paths)
 
         paths = list(OrderedDict.fromkeys(paths))
-        paths = os.path.pathsep.join(paths)
+        paths = path.pathsep.join(paths)
 
         # TODO CHECK PREFERENCES
         # self.Preferences.set('env_path', paths)
@@ -209,7 +221,7 @@ class PioInstall(object):
         cmd = ['python2', '--version']
         out = runCommand(cmd)
 
-        dprint("Symlink detetected")
+        dprint("symlink_detected")
 
         if(out[0] is 0):
             self.SYMLINK = 'python2'
@@ -230,13 +242,15 @@ class PioInstall(object):
 
         # show error and link to download
         if(out[0] > 0 or int(version[0]) is 3):
+            from ..libraries.I18n import I18n
+            _ = I18n().translate
             go_to = sublime.ok_cancel_dialog(
-                "You Need to install python 2", "Download")
+                _("deviot_need_python"), _("button_download_python"))
 
             if(go_to):
                 sublime.run_command(
                     'open_url', {'url': 'https://www.python.org/downloads/'})
-            from sys import exit
+            
             exit(0)
 
 
@@ -251,8 +265,7 @@ def checkPio():
     status = out[0]
 
     if(status is 0):
-        derror("PlatformIO is already installed")
-
+        derror("pio_is_installed")
 
 def createPath(path):
     """
@@ -260,7 +273,7 @@ def createPath(path):
     """
     import errno
     try:
-        os.makedirs(path)
+        makedirs(path)
     except OSError as exc:
         if exc.errno is not errno.EEXIST:
             raise exc
@@ -295,14 +308,14 @@ def getEnvPaths():
     '''
     # default paths
     default_paths = getDefaultPaths()
-    system_paths = os.environ.get("PATH", "").split(os.path.pathsep)
+    system_paths = environ.get("PATH", "").split(path.pathsep)
 
     env_paths = []
     env_paths.extend(default_paths)
     env_paths.extend(system_paths)
 
     env_paths = list(OrderedDict.fromkeys(env_paths))
-    env_paths = os.path.pathsep.join(env_paths)
+    env_paths = path.pathsep.join(env_paths)
 
     return env_paths
 
@@ -352,3 +365,48 @@ def runCommand(command, error='', cwd=None):
         derror(error)
 
     return (return_code, stdout)
+
+def show_messages():
+    """Show message in deviot console
+    
+    Using the MessageQueue package, this function
+    start the message printer queue. (call it from the begining)
+    
+    global variables
+
+    dprint overrides `message.put()` instead calling it that way, 
+    dprint() will make the same behavior
+
+    derror will print the message in the console but will stop the
+    execution of the code
+
+    dstop is the reference of the stop_print method in the MessageQueue
+    class, it will called when derror is executed
+    """
+    from ..libraries.messages import MessageQueue
+
+    global dprint
+    global derror
+    global dstop
+
+    message = MessageQueue()
+    message.start_print()
+    dprint = message.put
+    derror = show_error
+    dstop = message.stop_print
+
+def show_error(text, *args):
+    """Show Error
+    
+    When it's called print the error in the console but stop the
+    execution of the program after doing it
+
+    Use this function calling derror()
+    
+    Arguments:
+        text {str} -- message to show in the console
+        *args {str} -- strings to be replaced with format()
+    """
+    dprint(text, False, *args)
+    dstop()
+    exit(0)
