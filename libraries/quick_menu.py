@@ -37,6 +37,7 @@ class QuickMenu(PreferencesBridge):
             selected {int} -- index of the selected board
         """
         if(selected == -1):
+            save_setting('last_action', None)
             return
 
         boards_list = self.quick_boards_list()
@@ -99,6 +100,7 @@ class QuickMenu(PreferencesBridge):
             selected {int} -- option selected (index)
         """
         if(selected == -1):
+            save_setting('last_action', None)
             return
 
         environments_list = self.quick_environment_list()
@@ -164,6 +166,7 @@ class QuickMenu(PreferencesBridge):
             selected {str} -- Port selected ex. 'COM1'
         """
         if(selected == -1 or selected == 0):
+            save_setting('last_action', None)
             return
 
         port_list = serial_port_list()
