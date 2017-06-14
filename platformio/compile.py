@@ -15,7 +15,6 @@ class Compile(Initialize):
     def __init__(self):
         super(Compile, self).__init__()
 
-        save_setting('last_action', self.COMPILE)
         self.nonblock_compile()
 
     def start_compilation(self):
@@ -24,17 +23,22 @@ class Compile(Initialize):
         Starts the compilation command, it first checks if the file in the
         current view is a .iot file and if a board (environment) has been selected
         """
+
         if(not self.is_iot()):
+            self.derror("not_iot_{0}", self.get_file_name())
             exit(0)
 
+        save_setting('last_action', self.COMPILE)
+        
         self.add_board()
-
         if(not self.board_id):
+            self.dprint("select_board_list")
             return
 
         cmd = ['run', '-e ', self.board_id]
         self.run_command(cmd)
 
+        self.dstop()
         save_setting('last_action', None)
 
     def nonblock_compile(self):

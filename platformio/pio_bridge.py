@@ -11,10 +11,9 @@ from os import path
 from ..libraries import paths
 from ..libraries.file import File
 from ..libraries.tools import get_setting
-from .project_recognition import ProjectRecognition
 from .command import Command
 
-class PioBridge(Command, ProjectRecognition):
+class PioBridge(Command):
     def __init__(self):
         super(PioBridge, self).__init__()
 
@@ -33,7 +32,7 @@ class PioBridge(Command, ProjectRecognition):
         boards = self.run_command(cmd)
 
         board_file_path = paths.getBoardsFileDataPath()
-        File(board_file_path).save_json(boards)
+        File(board_file_path).write(boards)
 
     def get_boards_list(self):
         """Board List

@@ -6,6 +6,7 @@ import subprocess
 from sys import exit
 
 from ..libraries import tools
+from ..platformio.project_recognition import ProjectRecognition
 
 ###
 dprint = None
@@ -13,21 +14,18 @@ derror = None
 dstop = None
 ###
 
-class Command(object):
+class Command(ProjectRecognition):
     def __init__(self):
         super(Command, self).__init__()
         self.realtime = True
         self.set_return = False
         self.verbose = False
+        self.dprint = None
 
     def run_command(self, command):
         '''
         Run a command with Popen and return the results or print the errors
         '''
-        ###
-        # show_messages()
-        # dprint("[ Deviot {0} ] Starting...\n", True, '2.0.0')
-        ###
 
         if(not self.cwd):
             self.cwd = os.getcwd()
@@ -45,7 +43,7 @@ class Command(object):
                     break
 
                 if output:
-                    print(output)
+                    self.dprint(output, hide_hour=True)
                     # dprint(output)
 
         # return code and stdout
@@ -73,6 +71,16 @@ class Command(object):
         command = ' '.join(command)
 
         return command
+
+    def load_printer(self):
+        self.start_print()
+        
+        self.print = self.put
+        self.error = self.print_once
+        print("finish config")
+
+    def set_dprint(self, dprint):
+        self.dprint = dprint
 
 """
 def run_command(command, cwd=None, realtime=False, set_return=None):

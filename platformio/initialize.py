@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from ..libraries.project_check import ProjectCheck
+from ..libraries.messages import MessageQueue
 
 class Initialize(ProjectCheck):
     """
@@ -22,7 +23,13 @@ class Initialize(ProjectCheck):
     def __init__(self):
         super(Initialize, self).__init__()
 
-        # self.nonblock_add_board()
+        messages = MessageQueue("_deviot_{0}","2.0.0")
+        messages.start_print()
+        
+        self.dprint = messages.put
+        self.derror = messages.print_once
+        self.dstop = messages.stop_print
+        self.set_dprint(self.dprint)
 
     def add_board(self):
         """New Board
@@ -38,9 +45,6 @@ class Initialize(ProjectCheck):
             bool -- true if the board was succefully intilized or if it
                     was already initialized, if there was an error, false
         """
-        if(not self.is_iot()):
-            print("--Not IOT")
-            return
 
         self.check_board_selected()
         if(not self.board_id):
@@ -48,7 +52,6 @@ class Initialize(ProjectCheck):
 
         envs = self.get_envs_initialized()
         if(envs and self.board_id in envs):
-            print("Initialized")
             return True
 
         cmd = ['init', '-b ', self.board_id]

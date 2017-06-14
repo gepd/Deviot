@@ -4,8 +4,12 @@
 import sublime
 from time import strftime
 from sys import exit
+from queue import Queue
+from threading import Thread
+from time import sleep
+from sys import exit
+
 from .I18n import I18n
-_ = I18n().translate
 
 class Console(object):
     """Deviot Console
@@ -28,12 +32,8 @@ class Console(object):
 
         self.panel.set_read_only(False)
         self.panel.run_command("append", {"characters": text})
+        self.panel.run_command("move_to", {"extend": False, "to": "eof"})
         self.panel.set_read_only(True)
-
-
-from queue import Queue
-from threading import Thread
-from time import sleep
 
 class MessageQueue(object):
     """Message Queue
@@ -51,13 +51,15 @@ class MessageQueue(object):
     block the sublime text UI
     """
 
-    def __init__(self):
+    def __init__(self, start_header=None, *args):
+        super(MessageQueue, self).__init__()
         self.queue = Queue(0)
         self.console = Console() 
         self.is_alive = False
+        self.is_first = True
         self.stopping = False
-        self.last_time = 0
-
+        self.start_header = start_header
+        self.header_args = args
 
     def put(self, text, hide_hour=False, *args):
         """Put new message
@@ -71,8 +73,8 @@ class MessageQueue(object):
         Keyword Arguments:
             hide_hour {bool} -- avoid to add the hour in the
                                 message (default: {False})
-        """     
-        text = _(text, *args)
+        """ 
+        text = I18n().translate(text, *args)
         
         if '\\n' in text:
             text = text.replace('\\n', '\n')
@@ -95,6 +97,11 @@ class MessageQueue(object):
         """
         if(not self.is_alive):
             self.is_alive = True
+
+            if(self.start_header and self.is_first):
+                self.put(self.start_header, True, *self.header_args)
+                self.is_first = False
+            
             thread = Thread(target=lambda: self.print())
             thread.start()
 
@@ -132,6 +139,11 @@ class MessageQueue(object):
         self.is_alive = False
         self.stopping = False
 
+    def print_once(self, text, *args):
+        if(self.is_alive):
+            self.put(text, False, *args)
+            self.stop_print()
+
     def add_hour(self, txt):
         """Format arguments
         
@@ -144,12 +156,6 @@ class MessageQueue(object):
             [str] -- final string with time + message
         """
         time = strftime('%H:%M:%S')
-        
-        if(self.last_time != time):
-            txt = '[' + time + '] ' + txt
-            self.last_time = time
-        else:
-            space = ' ' * 11
-            txt = space + txt
+        txt = time + ' ' + txt
 
         return txt
