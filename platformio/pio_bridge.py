@@ -74,6 +74,30 @@ class PioBridge(Command, ProjectRecognition):
 
             self.save_config(pio_file, full=True)
 
+    def get_working_project_path(self):
+        """Working Path
+        
+        The working path is where platformio.ini is located
+        it's used each time when deviot is compiling the code
+
+        Returns:
+            str -- path/working_path
+        """
+        if(self.is_initialized()):
+            ini_path = self.get_ini_path()
+            working_path = path.dirname(ini_path)
+            return working_path
+
+        pio_structure = self.get_structure_option()
+
+        if(pio_structure):
+            project_path = self.get_project_path()
+            if('src' in project_path):
+                project_path = self.get_parent_path()
+            return project_path
+        
+        return self.get_temp_project_path()
+
     def get_config(self, key=None, default=None, full=False):
         """Gets platformio.ini Configs
         

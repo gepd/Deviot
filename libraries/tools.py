@@ -8,8 +8,8 @@ from __future__ import unicode_literals
 
 import os
 import sublime
-from sublime import load_settings, save_settings
 
+from sublime import load_settings, save_settings
 from ..beginning import __version__
 
 
@@ -107,26 +107,6 @@ def create_command(command):
 
     return cmd
 
-
-def run_command(command, cwd=None):
-    '''
-    Run a command with Popen and return the results or print the errors
-    '''
-    import subprocess
-
-    command = create_command(command)
-    command.append("2>&1")
-    command = ' '.join(command)
-    process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                               stdout=subprocess.PIPE, cwd=cwd,
-                               universal_newlines=True, shell=True)
-
-    output = process.communicate()
-    stdout = output[0]
-    return_code = process.returncode
-
-    return (return_code, stdout)
-
 def get_setting(key, default=None):
     """
     get setting handled by ST
@@ -143,6 +123,17 @@ def save_setting(key, value):
     settings.set(key, value)
     save_settings("deviot.sublime-settings")
 
+def singleton(cls):
+    """
+    restricts the instantiation of a class to one object
+    """
+    instances = {}
+
+    def _singleton(*args, **kw):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return _singleton
 
 def make_folder(path):
     """

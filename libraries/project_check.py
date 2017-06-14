@@ -21,8 +21,7 @@ class ProjectCheck(QuickMenu):
     """
     def __init__(self):
         super(ProjectCheck, self).__init__()
-
-        self.cwd = self.get_working_project_path()
+        
         self.board_id = None
         self.port_id = None
 
@@ -66,30 +65,6 @@ class ProjectCheck(QuickMenu):
         """
         return self.view.is_dirty()
 
-    def get_working_project_path(self):
-        """Working Path
-        
-        The working path is where platformio.ini is located
-        it's used each time when deviot is compiling the code
-
-        Returns:
-            str -- path/working_path
-        """
-        if(self.is_initialized()):
-            ini_path = self.get_ini_path()
-            working_path = path.dirname(ini_path)
-            return working_path
-
-        pio_structure = self.get_structure_option()
-
-        if(pio_structure):
-            project_path = self.get_project_path()
-            if('src' in project_path):
-                project_path = self.get_parent_path()
-            return project_path
-        
-        return self.get_temp_project_path()
-
     def structurize_project(self):
         """Structure Files
         
@@ -130,18 +105,6 @@ class ProjectCheck(QuickMenu):
         config['platformio'] = source
         
         config.write()
-
-
-    def get_structure_option(self):
-        """Pio Structure Option
-        
-        Check if the platformio structure option is mark as
-        true or not
-        
-        Returns:
-            bool -- true to keep working with platformio structure
-        """
-        return True
 
     def close_file(self):
         """Close File Window
