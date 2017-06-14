@@ -6,15 +6,19 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from .run_command import run_command
+from os import path
+
 from ..libraries import paths
 from ..libraries.file import File
 from ..libraries.tools import get_setting
 from .project_recognition import ProjectRecognition
+from .command import Command
 
-class PioBridge(ProjectRecognition):
+class PioBridge(Command, ProjectRecognition):
     def __init__(self):
         super(PioBridge, self).__init__()
+
+        self.cwd = self.get_working_project_path()
 
     def save_boards_list(self):
         """PlatformIO Board List
@@ -22,11 +26,14 @@ class PioBridge(ProjectRecognition):
         Gets the list of all boards availables in platformIO and
         stores it in a json file
         """
+        self.set_return = True
+        self.realtime = False
+        
         cmd = ['boards', '--json-output']
-        boards = run_command(cmd, set_return=True)
+        boards = self.run_command(cmd)
 
         board_file_path = paths.getBoardsFileDataPath()
-        File(board_file_path).write(boards)
+        File(board_file_path).save_json(boards)
 
     def get_boards_list(self):
         """Board List
@@ -122,5 +129,16 @@ class PioBridge(ProjectRecognition):
         config[key] = value
         
         config.write()
+        return True
+
+    def get_structure_option(self):
+        """Pio Structure Option
+        
+        Check if the platformio structure option is mark as
+        true or not
+        
+        Returns:
+            bool -- true to keep working with platformio structure
+        """
         return True
 

@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 from sys import exit
 
 from .initialize import Initialize
-from .run_command import run_command
 from ..libraries.tools import save_setting
 
 class Clean(Initialize):
@@ -37,7 +36,7 @@ class Clean(Initialize):
             return
 
         cmd = ['run', '-t', 'clean', '-e ', self.board_id]
-        out = run_command(cmd, self.cwd, realtime=True)
+        self.run_command(cmd)
 
     def nonblock_clean(self):
         """New Thread Execution

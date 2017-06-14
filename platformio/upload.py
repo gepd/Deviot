@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 from sys import exit
 
 from .initialize import Initialize
-from .run_command import run_command
 from ..libraries.tools import save_setting
 
 class Upload(Initialize):
@@ -37,7 +36,7 @@ class Upload(Initialize):
             return
 
         cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e ', self.board_id]
-        out = run_command(cmd, self.cwd, realtime=True)
+        out = run_command(cmd)
 
         save_setting('last_action', None)
 

@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 from sys import exit
 
 from .initialize import Initialize
-from .run_command import run_command
 from ..libraries.tools import save_setting
 
 class Compile(Initialize):
@@ -34,7 +33,7 @@ class Compile(Initialize):
             return
 
         cmd = ['run', '-e ', self.board_id]
-        out = run_command(cmd, self.cwd, realtime=True)
+        self.run_command(cmd)
 
         save_setting('last_action', None)
 

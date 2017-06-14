@@ -7,10 +7,8 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from ..libraries.project_check import ProjectCheck
-from ..libraries.preferences_bridge import PreferencesBridge
-from .run_command import run_command
 
-class Initialize(ProjectCheck, PreferencesBridge):
+class Initialize(ProjectCheck):
     """
     Runs the init command to start working with a new board
     Initialize a new folder you need to know the board id
@@ -54,7 +52,7 @@ class Initialize(ProjectCheck, PreferencesBridge):
             return True
 
         cmd = ['init', '-b ', self.board_id]
-        out = run_command(cmd, self.cwd, realtime=True)
+        self.run_command(cmd)
 
         self.structurize_project()
 
