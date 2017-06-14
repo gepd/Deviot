@@ -24,6 +24,7 @@ class Clean(Initialize):
         in the .pioenvs folder (hidden in unix system)
         """
         if(not self.is_iot()):
+            self.derror("not_iot_{0}", self.get_file_name())
             exit(0)
 
         self.check_board_selected()
@@ -32,11 +33,13 @@ class Clean(Initialize):
 
         envs = self.get_envs_initialized()
         if(envs and self.board_id not in envs):
-            print("not neccesary")
+            self.derror("init_not_possible")
             return
 
         cmd = ['run', '-t', 'clean', '-e ', self.board_id]
         self.run_command(cmd)
+
+        self.dstop()
 
     def nonblock_clean(self):
         """New Thread Execution

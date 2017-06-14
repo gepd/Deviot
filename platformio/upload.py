@@ -31,12 +31,12 @@ class Upload(Initialize):
 
         self.check_board_selected()
         if(not self.board_id):
-            self.dprint("select_board_list")
+            self.derror("select_board_list")
             return
 
         self.check_port_selected()
         if(not self.port_id):
-            self.dprint("select_port_list")
+            self.derror("select_port_list")
             return
 
         cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e ', self.board_id]

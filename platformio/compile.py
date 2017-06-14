@@ -32,7 +32,7 @@ class Compile(Initialize):
         
         self.add_board()
         if(not self.board_id):
-            self.dprint("select_board_list")
+            self.derror("select_board_list")
             return
 
         cmd = ['run', '-e ', self.board_id]
