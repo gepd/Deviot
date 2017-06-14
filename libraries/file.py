@@ -1,5 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import codecs
 
 class File(object):
@@ -18,7 +19,8 @@ class File(object):
         Returns:
             bool -- true if was writed succesuflly
         """
-        with open(self.file_name, 'w') as file:
+        encoding = 'utf-8'
+        with codecs.open(self.file_name, 'w', encoding) as file:
             file.write(text)
             return True
 
@@ -48,12 +50,11 @@ class File(object):
         Returns:
             JSON -- serialized json data
         """
-        from json import loads
 
         file = self.read()
-        json = loads(file)
+        tjson = json.loads(file)
 
-        return json
+        return tjson
 
     def save_json(self, text):
         """Save JSON
@@ -63,7 +64,5 @@ class File(object):
         Arguments:
             text {str} -- json data to stored
         """
-        from json import dumps
-        
-        text = dumps(text, sort_keys=True, indent=4)
+        text = json.dumps(text, sort_keys=True, indent=4)
         self.write(text)
