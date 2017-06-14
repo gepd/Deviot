@@ -15,7 +15,6 @@ from ..platformio.pio_bridge import PioBridge
 class MenuFiles(PioBridge):
     def __init__(self):
         super(MenuFiles, self).__init__()
-        self.create_main_menu()
 
     def get_template_menu(self, file_name):
         """Template Menu
