@@ -54,12 +54,15 @@ class MessageQueue(object):
     def __init__(self, start_header=None, *args):
         super(MessageQueue, self).__init__()
         self.queue = Queue(0)
-        self.console = Console() 
+        self.console = Console().print_screen
         self.is_alive = False
         self.is_first = True
         self.stopping = False
         self.start_header = start_header
         self.header_args = args
+
+    def set_console(self, console):
+        self.console = console
 
     def put(self, text, hide_hour=False, *args):
         """Put new message
@@ -113,7 +116,7 @@ class MessageQueue(object):
         while(self.is_alive):
             while(not self.queue.empty()):
                 text = self.queue.get()
-                self.console.print_screen(text)
+                self.console(text)
                 sleep(0.01)
             sleep(0.01)
 

@@ -462,3 +462,47 @@ msgstr "de"
 
 msgid "not_in_sync"
 msgstr "No sincronizado"
+
+# Platformio Console
+
+msgid "pio_terminal"
+msgstr "[ Deviot ] PlatformIO Terminal\n\nPara obtener información sobre los comandos ofrecidos por PlatformIO (sólo en inglés)\nescribe: 'pio -h', o 'help' para conocer sobre los comandos extras ofrecidos por deviot.\n"
+
+msgid "invalid_command"
+msgstr "Comando Inválido (Intenta con: help)\n"
+
+msgid "invalid_path"
+msgstr "Carpeta no válida.\n"
+
+msgid "created{0}"
+msgstr "'{0}' creada exitosamente.\n"
+
+msgid "error_making_folder"
+msgstr "Error al crear carpeta.\n"
+
+msgid "removed{0}"
+msgstr "{0} Removida exitosamente.\n"
+
+msgid "wrong_folder_name"
+msgstr "Nombre de carpeta incorrecto, corrígelo e intenta nuevamente.\n"
+
+msgid "cmd_cwd"
+msgstr "Muestra el directorio actual de trabajo."
+
+msgid "cmd_cd"
+msgstr "Cambia el directorio actual de trabajo."
+
+msgid "cmd_ls"
+msgstr "Lista todos los archivos y carpetas en el directorio actual de trabajo."
+
+msgid "cmd_mk"
+msgstr "Crea una carpeta en el directorio actual de trabajo."
+
+msgid "cmd_rm"
+msgstr "Elimina una carpeta en el directorio actual de trabajo."
+
+msgid "cmd_clear"
+msgstr "Limpia la ventana de la consola."
+
+msgid "cmd_pio_help"
+msgstr "Para obtener información sobre PlatformIO (sólo en inglés)"

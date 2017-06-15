@@ -5,27 +5,53 @@ import os
 import sublime
 import sublime_plugin
 from threading import Thread
+from time import sleep
 
 from ..libraries import tools, paths
-from .run_command import run_command
-from ..libraries.message import MessageQueue
+from ..libraries.messages import MessageQueue
+from ..platformio.command import Command
 
 
-class PioTerminal(object):
+class PioTerminal(Command):
 
     def __init__(self):
+        super(PioTerminal, self).__init__()
         self.name = 'PlatformIO Terminal'
         self.window, self.view = tools.findInOpendView(self.name)
-        self.Msg = MessageQueue(self.write_in_terminal)
+
+        header = self.check_header()
+        message = MessageQueue(header)
+        message.set_console(self.print_screen)
+        message.start_print()
+        
+        self.dprint = message.put
+        self.dstop = message.stop_print
+
+        self.set_dprint(self.dprint)
+
+    def check_header(self):
+        """Terminal eader
+        
+        When the console is empty, it adds a string at the beginning
+        
+        Returns:
+            str -- header string
+        """
+        header = None
+        if(self.view is None or self.view.size() == 0):
+            header = "pio_terminal"
+
+        return header
 
     def open_terminal(self):
-        """
-        opens a new window, always in a new group at the bottom, and allows
+        """Open Terminal
+        
+        Opens a new window, always in a new group at the bottom, and allows
         to process platformio commands
         """
         if self.view is None:
             options = {'direction': 'down', 'give_focus': True}
-            self.window.run_command('create_pane', options)
+            self.window.run_command('deviot_create_pane', options)
 
             self.view = self.window.new_file()
             self.view.set_name(self.name)
@@ -37,25 +63,26 @@ class PioTerminal(object):
         self.show_input()
 
     def close_terminal(self):
-        """
+        """Close Terminal
+        
         Close the PlatformIO console including the bottom panel
         """
         if self.view is not None:
             self.window.focus_view(self.view)
             self.window.run_command("close")
             self.window.run_command('destroy_pane', {'direction': 'self'})
+            self.dstop()
 
-    def show_input(self):
-        """
-        shows an input to run the commdns
-        """
-        cap = ' # '
-        self.window.show_input_panel(cap, '', self.send_cmd_thread, None, None)
+    def print_screen(self, text):
+        """Print on screen
+        
+        Print all the user interaction in the console (panel)
 
-    def write_in_terminal(self, text):
+        Arguments:
+            text {str} -- texto to append in the console
         """
-        sends a text to the console and adds a new line at te end
-        """
+        if(not self.view):
+            self.window, self.view = tools.findInOpendView(self.name)
 
         self.window.focus_view(self.view)
         self.view.set_read_only(False)
@@ -63,136 +90,191 @@ class PioTerminal(object):
         self.view.set_read_only(True)
         self.view.run_command("move_to", {"extend": False, "to": "eof"})
 
-    def send_cmd(self, cmd):
+    def show_input(self):
+        """Show input
+        
+        Shows an input to run the commands
         """
-        process the given command in a new thread
-        """
-        if(not cmd):
-            return
+        cap = ' $ '
+        self.window.show_input_panel(cap, '', self.nonblock_cmd, None, None)
 
-        # start message queue
-        self.Msg.start_print()
-
-        # header
-        self.write_in_terminal("\nCommand: %s\n" % cmd)
-        self.write_in_terminal("==========================\n")
-
-        # check if the command isn't pio type an try to execute it
-        if(self.terminal_extra_commands(cmd)):
-            self.show_input()
-            return
-
-        if('pio' not in cmd):
-            self.write_in_terminal("command invalid (try: help)\n")
-            return
-
-        # INPROVE THIS #
-        cmd = cmd.replace('pio ', '').replace('platformio ', '')
-        cmd = cmd.split(" ")
-
-        # run command in a new Thread
-        thread = Thread(target=run_command(cmd, callback=self.Msg.put))
-        thread.start()
-
-        self.Msg.stop_print()
-        self.show_input()
-
-    def send_cmd_thread(self, cmd):
-        """
-        runs the 'send_cmd' method in a new thread to avoid crashes
+    def nonblock_cmd(self, cmd):
+        """New thread command
+        
+        Runs the 'send_cmd' method in a new thread to avoid crashes
         and performance problems
+        
+        Arguments:
+            cmd {str} -- command to run
         """
         thread = Thread(target=self.send_cmd, args=(cmd,))
         thread.start()
 
-    def terminal_extra_commands(self, cmd):
+    def send_cmd(self, cmd):
+        """Process command
+        
+        Process the differents commands sended by the user. It first check if the command
+        is a deviot command (remove, create folder, list directory etc). If the command start
+        with 'pio' or 'platformio' executes the command otherwise display a "not found command"
+        
+        Arguments:
+            cmd {str} -- command to execute
         """
-        All extra commands to execute in the terminal
+        if(not cmd):
+            return
+
+        self.dprint("\n$ {0} \n".format(cmd), hide_hour=True)
+        
+        sleep(0.03)
+
+        if(self.deviot_commands(cmd)):
+            self.show_input()
+            return
+
+        cmd = cmd.replace('pio ', '').replace('platformio ', '')
+        cmd = cmd.split(" ")
+
+        self.cwd = os.getcwd()
+        self.run_command(cmd)
+
+        self.show_input()
+
+    def deviot_commands(self, cmd):
+        """Custom commands
+        
+        Custom commands to interact for the system, it includes
+        create and remove a folder, list directories, clear console
+        view, and other. Use the command help to see the complete list
+        
+        Arguments:
+            cmd {str} -- command string
+        
+        Returns:
+            bool -- True if was executed, false if the command wasn't recognised
         """
+        cmd_return = True
 
         if(len(cmd.split(" ")) > 1):
             cmd = cmd.split(" ")
-
-        options = {
-            'help': self.help_terminal,
-            'clear': self.clean_terminal,
-            'cwd': self.show_cwd,
-            'cd': self.set_cwd,
-            'ls': self.list_cwd,
-            'mk': self.mk_cwd,
-            'rm': self.rm_cwd
-        }
-
-        try:
             args = " ".join(cmd[1:])
-            options[cmd[0]](args)
-            return True
-        except:
-            pass
 
-        try:
-            options[cmd]()
-            return True
-        except:
-            pass
+        if('help' == cmd):
+            self.help_cmd()
+        elif('clear' in cmd):
+            self.clear_cmd()
+        elif('cwd' in cmd):
+            self.show_cwd()
+        elif('cd' in cmd):
+            self.set_cwd(cmd[1])
+        elif('ls' in cmd):
+            self.list_cwd()
+        elif('mk' in cmd):
+            self.mk_cwd(cmd[1])
+        elif('rm' in cmd):
+            self.rm_cwd(cmd[1])
+        elif('pio' in cmd or 'platformio' in cmd):
+            cmd_return = False
+        else:
+            self.dprint("invalid_command", hide_hour=True)
+            self.show_input()
 
-    def help_terminal(self):
-        help_string = """cwd         Show the current working dir\n"""
-        help_string += """cd          change directory\n"""
-        help_string += """ls          list all files and folder in the cwd\n"""
-        help_string += """mk          make the folder in the cwd\n"""
-        help_string += """rm          remove the folder in the cwd\n"""
-        help_string += """clear       clear all in the terminal window\n"""
-        help_string += """pio --help  to see info about PlatformIO\n"""
+        return cmd_return
 
-        self.write_in_terminal(help_string)
 
-    def clean_terminal(self):
+    def help_cmd(self):
+        """List of cmomands
+        
+        Shows a list of all commands availables and the description of each one
         """
-        Remove al text in the console
+        from ..libraries.I18n import I18n
+
+        width = 25
+
+        cmd_string = ["cwd", "cd", "ls", "mk", "rm", "clear", "pio --help"]
+        cmd_descript = ["cmd_cwd", "cmd_cd", "cmd_ls", "cmd_mk", "cmd_rm", "cmd_clear", "cmd_pio_help"]
+
+        for cmd, description in zip(cmd_string, cmd_descript):
+            description = I18n().translate(description)
+            self.dprint("{}: {}\n".format(cmd.ljust(width), str(description).ljust(width)), hide_hour=True)
+
+    def clear_cmd(self):
+        """Clean view
+        
+        Cleans the console view
         """
         self.window.focus_view(self.view)
         self.view.set_read_only(False)
-        self.window.run_command('clean_view')
+        self.window.run_command("clean_view")
         self.view.set_read_only(True)
 
-    def show_cwd(self):
-        cwd = os.getcwd()
+        header = self.check_header()
+        self.dprint(header, hide_hour=True)
 
-        self.write_in_terminal(cwd + '\n')
+    def show_cwd(self):
+        """Currente directory
+        
+        Prints the current working directory
+        """
+        cwd = os.getcwd()
+        self.dprint(cwd + '\n', hide_hour=True)
 
     def set_cwd(self, path):
+        """Set directory
+        
+        Sets the current working directory. 
+        
+        Arguments:
+            path {str} -- folder name (not full path)
+        """
         cwd = os.getcwd()
         cwd = os.path.join(cwd, path)
         if(not os.path.isdir(cwd)):
-            self.write_in_terminal('Not valid path\n')
+            self.dprint('invalid_path', hide_hour=True)
             return
         os.chdir(path)
         cwd = os.getcwd()
-        self.write_in_terminal(cwd + '\n')
+        self.dprint(cwd + '\n', hide_hour=True)
 
     def list_cwd(self):
+        """List of files and directories
+        
+        Shows the list of files and directories in the current working path
+        """
         from glob import glob
         cwd = os.getcwd()
         cwd = os.path.join(cwd, '*')
         for current in glob(cwd):
-            self.write_in_terminal(current + '\n')
+            self.dprint(current + '\n', hide_hour=True)
 
     def mk_cwd(self, path):
+        """Make folder
+        
+        Creates a new folder in the current working path
+        
+        Arguments:
+            path {str} -- name of the folder to create (not full path)
+        """
         cwd = os.getcwd()
         cwd = os.path.join(cwd, path)
         try:
             os.makedirs(path)
-            self.write_in_terminal("Folder Created\n")
+            self.dprint("created{0}", True, path)
         except:
-            self.write_in_terminal("Error creating folder\n")
+            self.dprint("error_making_folder", hide_hour=True)
 
     def rm_cwd(self, path):
+        """Remove folder
+        
+        Removes the folder in the current working path
+        
+        Arguments:
+            path {str} -- folder name to remove (not full path)
+        """
         from shutil import rmtree
         cwd = os.getcwd()
         cwd = os.path.join(cwd, path)
         try:
             rmtree(cwd)
-            self.write_in_terminal("Folder Removed\n")
+            self.dprint("removed{0}", True, path)
         except:
-            self.write_in_terminal("check the name of the folder\n")
+            self.dprint("wrong_folder_name", hide_hour=True)
