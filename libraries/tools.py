@@ -12,6 +12,7 @@ import sublime
 from sublime import load_settings, save_settings
 from ..beginning import __version__
 
+ROOT_PATH = 'System Root(/)'
 
 def get_env_paths():
     '''
@@ -165,7 +166,7 @@ def output_in_file(command, file_path):
     return 200
 
 
-def create_sketch(path, sketch_name):
+def create_sketch(sketch_name, path):
     """
     create a new sketch with the name and path given
     the template include a basic code stored in the preset
@@ -229,3 +230,114 @@ def findInOpendView(view_name):
         if found:
             break
     return (window, opened_view)
+
+def list_win_volume():
+    """List Windows Disc
+    
+    Lists the volumes (disc) availables in Windows
+    
+    Returns:
+        list -- list of directories
+    """
+    vol_list = []
+    for label in range(67, 90):
+        vol = chr(label) + ':\\'
+        if os.path.isdir(vol):
+            vol_list.append(vol)
+    return vol_list
+
+
+def list_root_path():
+    """List of paths
+    
+    Lists the volumes (disc) availables according
+    to the operative sistem
+    
+    Returns:
+        list -- list of directories
+    """
+    root_list = []
+    os_name = sublime.platform()
+    if os_name == 'windows':
+        root_list = list_win_volume()
+    else:
+        home_path = os.getenv('HOME')
+        root_list = [home_path, ROOT_PATH]
+    return root_list
+
+def select_dir(window, index=-2, level=0, paths=None, key=None, func=None):
+    """Select a directory
+    
+    Show a quick panel with the list of directories (disc, folders) avaialbles to make and action.
+    you can select a directory and save a file. This function will return the selected directory and
+    will call the 'fuc' argument as callback. The callback will be called like fuc(key, path)
+    
+    Arguments:
+        window {obj} -- sublime text window object
+    
+    Keyword Arguments:
+        index {number} -- Quick panel selection index (default: {-2})
+        level {number} -- Directory index level (default: {0})
+        paths {str} -- Current path (default: {None})
+        key {str} -- key to send in the callback (default: {None})
+        func {obj} -- function that works as callback (default: {None})
+    """
+    from .I18n import I18n
+
+    if index == -1:
+        return ''
+
+    if level > 0 and index == 0:
+        sel_path = paths[0].split('(')[1][:-1]
+        if func:
+            if key:
+                save_path = [sel_path, index, level]
+                if(key == 'default_path'):
+                    sel_path = save_path
+                save_setting('last_path', save_path)
+                func(key, sel_path)
+        return
+
+    else:
+        if index == 1:
+            level -= 1
+        elif index > 1:
+            level += 1
+
+        default_path = get_setting('default_path', False)
+        if(not default_path):
+            default_path = get_setting('last_path', False)
+
+        if(index == -2 and default_path):
+            paths = [default_path[0]]
+            index = default_path[1]
+            level = default_path[2]
+
+        if level <= 0:
+            level = 0
+            dir_path = '.'
+            parent_path = '..'
+
+            paths = list_root_path()
+
+        else:
+            sel_path = paths[index]
+            if sel_path == ROOT_PATH:
+                sel_path = '/'
+            dir_path = os.path.abspath(sel_path)
+            parent_path = os.path.join(dir_path, '..')
+            
+            from .dir import Dir
+            
+            cur_dir = Dir(dir_path)
+            sub_dirs = cur_dir.list_dirs()
+            paths = [d.get_path() for d in sub_dirs]
+
+        _ = I18n().translate
+
+        paths.insert(0, parent_path)
+        paths.insert(0, _('select_cur_dir_{0}', dir_path))
+
+    sublime.set_timeout(lambda: window.show_quick_panel(
+        paths, lambda index: select_dir(
+            window, index, level, paths, key, func)), 5)

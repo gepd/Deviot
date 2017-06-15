@@ -17,8 +17,7 @@ from .platformio.compile import Compile
 from .platformio.upload import Upload
 from .platformio.clean import Clean
 from .libraries.quick_menu import QuickMenu
-from .libraries.top_menu import TopMenu
-from .libraries.tools import get_setting, save_setting
+from .libraries.tools import get_setting, save_setting, create_sketch, select_dir
 from .platformio.initialize import Initialize
 
 from time import sleep
@@ -26,9 +25,28 @@ from time import sleep
 def plugin_loaded():
     compile_lang = get_setting('compile_lang', True)
     if(compile_lang):
+        from .libraries.top_menu import TopMenu
         TopMenu().create_main_menu()
         save_setting('compile_lang', False)
     # PioInstall()
+
+class DeviotListener(sublime_plugin.EventListener):
+    def on_activated(self, view):
+        #
+        pass
+
+class DeviotNewSketch(sublime_plugin.WindowCommand):
+    def run(self):
+        from .libraries.I18n import I18n
+        caption = I18n().translate('caption_new_sketch')
+        self.window.show_input_panel(caption, '', self.on_done, None, None)
+
+    def on_done(self, sketch_name):
+        select_dir(self.window, key=sketch_name, func=create_sketch)
+
+class DeviotSaveBoards(sublime_plugin.WindowCommand):
+    def run(self):
+        PioBridge().save_boards_list()
 
 class DeviotTestCommand(sublime_plugin.WindowCommand):
     def run(self):
