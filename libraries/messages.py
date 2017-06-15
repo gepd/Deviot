@@ -77,9 +77,12 @@ class MessageQueue(object):
             hide_hour {bool} -- avoid to add the hour in the
                                 message (default: {False})
         """ 
+        if(not text):
+            return
+    
         text = I18n().translate(text, *args)
         
-        if '\\n' in text:
+        if ('\\n' in text):
             text = text.replace('\\n', '\n')
 
         empty = False
@@ -98,6 +101,7 @@ class MessageQueue(object):
         Starts a new thread to wait the messages to be shown
         in the console
         """
+
         if(not self.is_alive):
             self.is_alive = True
 
@@ -143,6 +147,14 @@ class MessageQueue(object):
         self.stopping = False
 
     def print_once(self, text, *args):
+        """Print one time
+        
+        Print a message one time and stop the queue
+        
+        Arguments:
+            text {str} -- text to display
+            *args {str} -- text to replace in the 'text' var
+        """
         if(self.is_alive):
             self.put(text, False, *args)
             self.stop_print()
