@@ -6,7 +6,8 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from os import path
+import os
+from glob import glob
 
 from ..libraries import paths
 from ..libraries.file import File
@@ -84,7 +85,7 @@ class PioBridge(Command):
         """
         if(self.is_initialized()):
             ini_path = self.get_ini_path()
-            working_path = path.dirname(ini_path)
+            working_path = os.path.dirname(ini_path)
             return working_path
 
         pio_structure = self.get_structure_option()
@@ -164,4 +165,49 @@ class PioBridge(Command):
             bool -- true to keep working with platformio structure
         """
         return True
+
+    def get_libraries_folders(self, platform='all'):
+        """Libraries availables
+        
+        Find the list of all folders that should have libraries.
+
+        The main folders are .platformio/lib who is the global folder
+        where platformio stores the libraries installed
+
+        The second one are the libraries inside of the package folder
+        .platformio/packages. Each package folder contain a list of
+        default libraries, those libraries are selected according to
+        the selected option.
+        
+        Keyword Arguments:
+            platform {str} -- platform to search (default: {'all'})
+        
+        Returns:
+            [list] -- list of folders with the libraries
+        """
+
+        libraries_folders = []
+
+        pio_packages = paths.getPioPackages(all=True)
+        packages_sub_dirs = glob(pio_packages)
+
+        if(platform == 'atmelavr'):
+            platform = 'avr'
+
+        for path in packages_sub_dirs:
+            if(platform in path or platform == 'all'):
+                
+                for sub_path in glob(path):
+                    packages = os.path.join(sub_path, '*')
+                    packages = glob(packages)
+
+                    for folder in packages:
+                        if('libraries' in folder):
+                            libraries = os.path.join(folder, '*')
+                            libraries_folders.append(libraries)
+
+        pio_lib_path = paths.getPioLibrary(all=True)
+        libraries_folders.insert(0, pio_lib_path)
+
+        return libraries_folders
 

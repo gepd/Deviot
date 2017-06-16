@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import sublime
+from glob import glob
+
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
-from . import paths
+from .paths import getBoardsFileDataPath
 from .tools import get_setting, save_setting
 from .preferences_bridge import PreferencesBridge
 from .serial import serial_port_list
-
+from .I18n import I18n
 
 class QuickMenu(PreferencesBridge):
     def __init__(self):
         super(QuickMenu, self).__init__()
         self.index = 0
+
+        self.tr = I18n().translate
 
     def quick_boards(self):
         """Boards Menu
@@ -60,7 +66,7 @@ class QuickMenu(PreferencesBridge):
         from .file import File
 
         selected_boards = self.get_selected_boards()
-        boards_path = paths.getBoardsFileDataPath()
+        boards_path = getBoardsFileDataPath()
         boards_file = File(boards_path)
         boards = boards_file.read_json()
         boards_list = []
@@ -222,7 +228,6 @@ class QuickMenu(PreferencesBridge):
         if(selected == -1):
             return
 
-        from .I18n import I18n
         from .top_menu import TopMenu
         
         lang_ids = I18n().get_lang_ids()
@@ -231,3 +236,95 @@ class QuickMenu(PreferencesBridge):
         save_setting('lang_id', port_selected)
         save_setting('compile_lang', True)
         self.window.run_command("deviot_reload")
+
+
+    def quick_import(self):
+        """Import Panel
+        
+        Shows a list of libraries to import in the current sketch
+        """
+        libraries_list = self.quick_import_list()
+        quick_panel(libraries_list, self.callback_import)
+
+    def callback_import(self, selected):
+        """Import Callback
+        
+        After select the library it will be inserted by the insert_libary
+        command, it will include the path of the library to includes
+        
+        Arguments:
+            selected {int} -- user index selection
+        """
+        if(selected <= 0):
+            return
+
+        libraries_list = self.quick_import_list()
+        library_import = libraries_list[selected][1]
+
+        window = sublime.active_window()
+        window.run_command('insert_library', {'path': library_import})
+
+    def quick_import_list(self):
+        """Import List
+        
+        To generate the list of libraries, it search first in the two main folder of the plugin
+        the first one in '~/.platformio/packages', that folder contain the libraries includes by default
+        by each platform (avr, expressif, etc). The second folder is located in '~/platformio/lib' there
+        are stored all the libraries installed by the user from the management libraries
+        
+        Returns:
+            [list] -- quick panel list with libraries
+        """
+        import json
+        from .file import File
+
+        user_pio_libs = os.path.join('platformio', 'lib')
+        libraries_folders = self.get_libraries_folders()
+        
+        quick_list = [[self.tr("select_library").upper()]]
+        check_list = []
+
+        for library in libraries_folders:
+            sub_library = glob(library)
+
+            for content in sub_library:
+                if('__cores__' in content):
+                    cores = os.path.join(content, '*')
+                    cores = glob(cores)
+
+                    for sub_core in cores:
+                        libs_core = os.path.join(sub_core, '*')
+                        libs_core = glob(libs_core)
+
+                        for lib_core in libs_core:
+                            caption = os.path.basename(lib_core)
+                            quick_list.append([caption, lib_core])
+                            check_list.append([caption])
+
+                if(user_pio_libs in content):
+                    json_path = os.path.join(content, 'library.json')
+
+                    if not os.path.exists(json_path):
+                        json_path = os.path.join(content, '.library.json')
+
+                    if not os.path.exists(json_path):
+                        json_path = os.path.join(content, 'library.properties')
+
+                    json_data = File(json_path).read()
+                    
+                    if(json_data):
+                        try:
+                            djson_data = json.loads(json_data)
+                            caption = djson_data['name']
+                        except TypeError:
+                            caption = json_data.partition("\n")[0]
+                            caption = caption.split("name=")[1]
+                    
+                    if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
+                        quick_list.append([caption, content])
+                        check_list.append(caption)
+
+        if(len(quick_list) <= 1):
+            quick_list = [[_("menu_not_libraries")]]
+
+        return quick_list

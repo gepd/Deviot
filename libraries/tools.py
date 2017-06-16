@@ -12,7 +12,9 @@ import sublime
 from sublime import load_settings, save_settings
 from ..beginning import __version__
 
+H_EXTS = ['.h']
 ROOT_PATH = 'System Root(/)'
+INCLUDE = r'^\s*#include\s*[<"](\S+)[">]'
 
 def get_env_paths():
     '''
@@ -341,3 +343,69 @@ def select_dir(window, index=-2, level=0, paths=None, key=None, func=None):
     sublime.set_timeout(lambda: window.show_quick_panel(
         paths, lambda index: select_dir(
             window, index, level, paths, key, func)), 5)
+
+
+def add_library_to_sketch(view, edit, lib_path):
+    """Include Library
+
+    Includes a library at the top of the sketch. For example if the
+    path given is of the EEPROM library it will add: #include <EEPROM.h>
+
+    To do that, it looks all files with extension '.h' (defined in the 
+    H_EXTS var) and compares with the includes already inserted in the
+    sketch
+
+    Arguments:
+        view {object} -- ST view
+        edit {object} -- ST object
+        lib_path {string} -- path where library is located
+    """
+    from glob import glob
+
+    lib_src = os.path.join(lib_path, 'src')
+    
+    if os.path.isdir(lib_src):
+        lib_path = lib_src
+    
+    lib_path = os.path.join(lib_path, '*')
+
+    region = sublime.Region(0, view.size())
+    src_text = view.substr(region)
+    headers = headers_from_source(src_text)
+
+    h_files = []
+    sub_files = glob(lib_path)
+    for file in sub_files:
+        file_name = os.path.basename(file)
+        if H_EXTS[0] in file_name:
+            h_files.append(file_name)
+
+    h_files = [f for f in h_files if f not in headers]
+
+    includes = ['#include <%s>' % f for f in h_files]
+    text = '\n'.join(includes)
+    if text:
+        text += '\n'
+
+    position = view.find('#include', 0).a
+    position = (position if position != -1 else 0)
+
+    view.insert(edit, position, text)
+
+
+def headers_from_source(src_text):
+    """Includes in Source
+    
+    Gets the library includes already inserted in the sketch
+
+    Arguments:
+        src_text {string} -- text string with all the sketch
+
+    Returns:
+        [list] -- libraries "include" already existing
+    """
+    import re
+
+    pattern = re.compile(INCLUDE, re.M | re.S)
+    headers = pattern.findall(src_text)
+    return headers
