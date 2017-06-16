@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 from urllib.request import Request
 from urllib.request import urlopen
 
-from .__init__ import __version__ as version
+from . import __version__ as version
 from .tools import get_headers, get_setting, save_setting
 from .progress_bar import ProgressBar
 from .messages import MessageQueue
@@ -22,8 +22,6 @@ from .I18n import I18n
 from ..platformio.command import Command
 from .file import File
 from .paths import getLibrariesFileDataPath
-
-_ = I18n().translate
 
 
 class Libraries(Command):
@@ -38,6 +36,7 @@ class Libraries(Command):
         self.window = sublime.active_window()
         self.view = self.window.active_view()
         self.lib_file_path = getLibrariesFileDataPath()
+        self.tr = I18n().translate
         self.quick_list = []
         self.cwd = None
 
@@ -61,7 +60,7 @@ class Libraries(Command):
         
         Opens the input box to search a library
         """
-        caption = _("search_query")
+        caption = self.tr("search_query")
         self.window.show_input_panel(caption, '', self.download_list_async, None, None)
 
     def download_list_async(self, keyword):
@@ -113,9 +112,10 @@ class Libraries(Command):
                     response_list['items'].append(item_next)
 
         if(len(response_list['items']) == 0):
-            self.quick_list.append([_('none_lib_found')])
+            self.quick_list.append([self.tr('none_lib_found')])
         else:
             self.quicked(response_list['items'])
+            self.quick_list.insert(0, [self.tr('select_library')])
         
         quick_panel(self.quick_list, self.library_install_async)
 
@@ -193,8 +193,9 @@ class Libraries(Command):
         the file is formated in the quick panel way (list)
         """
         quick_list = File(self.lib_file_path).read_json()
-        
+
         self.quick_list = quick_list
+        self.quick_list.insert(0, [self.tr('select_library')])
 
         quick_panel(quick_list, self.remove_library_async)
 
