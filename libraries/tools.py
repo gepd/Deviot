@@ -58,7 +58,7 @@ def save_env_paths(new_path):
     save_setting('env_path', paths)
 
 
-def getHeaders():
+def get_headers():
     """
     headers for urllib request
     """

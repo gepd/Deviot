@@ -52,9 +52,11 @@ class File(object):
         """
 
         file = self.read()
-        tjson = json.loads(file)
+        
+        if(file):
+            return json.loads(file)
 
-        return tjson
+        return []
 
     def save_json(self, text):
         """Save JSON

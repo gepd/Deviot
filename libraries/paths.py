@@ -98,6 +98,15 @@ def getBoardsFileDataPath():
 
     return boards_file
 
+def getLibrariesFileDataPath():
+    """
+    Deviot file in Packages/User/Deviot/pio/libraries.json
+    """
+    user_data = getUserPioPath()
+    libraries_file = os.path.join(user_data, 'libraries.json')
+
+    return libraries_file
+
 
 def getPresetFile(file_name):
     """
