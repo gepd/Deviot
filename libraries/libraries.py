@@ -115,7 +115,7 @@ class Libraries(Command):
             self.quick_list.append([self.tr('none_lib_found')])
         else:
             self.quicked(response_list['items'])
-            self.quick_list.insert(0, [self.tr('select_library')])
+            self.quick_list.insert(0, [self.tr('select_library').upper()])
         
         quick_panel(self.quick_list, self.library_install_async)
 
@@ -195,7 +195,7 @@ class Libraries(Command):
         quick_list = File(self.lib_file_path).read_json()
 
         self.quick_list = quick_list
-        self.quick_list.insert(0, [self.tr('select_library')])
+        self.quick_list.insert(0, [self.tr('select_library').upper()])
 
         quick_panel(quick_list, self.remove_library_async)
 
