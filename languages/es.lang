@@ -140,7 +140,7 @@ msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
 msgid "menu_run"
-msgstr "Iniciar"
+msgstr "Alternar Ejecución"
 
 msgid "menu_send"
 msgstr "Enviar"
@@ -268,17 +268,20 @@ msgstr "{0} No es posible cargar un sketch vacío\n"
 msgid "invalid_file_{0}"
 msgstr "{0} Archivo no válido para procesar\n"
 
-msgid "not_iot_{0}{1}"
-msgstr "{0} {1} No es un archivo IoT\n"
+msgid "not_iot_{0}"
+msgstr "{0} No es un archivo IoT\n"
 
 msgid "select_board_list"
-msgstr "Seleciona una Placa de la Lista"
+msgstr "Seleciona una Placa de la Lista\n"
 
 msgid "select_env_list"
-msgstr "Selecciona un Entorno de Desarrollo"
+msgstr "Selecciona un Entorno de Desarrollo\n"
 
 msgid "select_port_list"
-msgstr "Selecciona un Puerto de la Lista"
+msgstr "Selecciona un Puerto de la Lista\n"
+
+msgid "init_not_possible"
+msgstr "Esta Placa no está inicializada, no es posible limpiar los archivos"
 
 msgid "init_project_{0}"
 msgstr "{0} Inicializando el proyecto | Procesando...\n"
@@ -362,11 +365,14 @@ msgstr "Actualizando PlarformIO...\n"
 msgid "search_query"
 msgstr "Buscar:"
 
+msgid "select_library"
+msgstr "Seleccione una Librería"
+
 msgid "add_ip_caption"
 msgstr "Escribe la Dirección IP:"
 
 msgid "select_cur_dir_{0}"
-msgstr "Seleccionar Directorio Actual ({0})"
+msgstr "Seleccionar Actual ({0})"
 
 msgid "installing_lib_{0}{1}"
 msgstr "{0} Instalando Librería {1} | "
@@ -413,8 +419,14 @@ msgstr "Ninguna librería instalada"
 
 # Monitor Serial
 
+msgid "serial_monitor_header{0}"
+msgstr "[ Deviot {0} ] Monitor Serial | {1}\n\n"
+
 msgid "serial_port_used_{0}"
 msgstr "El puerto serial {0} está en uso. Intenta cerrar cualquier programa que pueda estar usandolo.\n"
+
+msgid "serial_not_available"
+msgstr "El Puerto Serial/IP seleccionado/a no está disponible\n"
 
 msgid "send"
 msgstr "Enviar:"

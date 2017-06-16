@@ -290,7 +290,7 @@ class SerialBase(object):
         was_open = self._isOpen
         if was_open: self.close()
         if port is not None:
-            if isinstance(port, basestring):
+            if isinstance(port, str):
                 self.portstr = port
             else:
                 self.portstr = self.makeDeviceName(port)
