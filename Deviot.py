@@ -10,6 +10,8 @@ import sublime
 import sublime_plugin
 import threading
 
+from os import path
+
 from .commands import *
 from .beginning.pio_install import PioInstall
 from .platformio.project_recognition import ProjectRecognition
@@ -17,18 +19,31 @@ from .platformio.compile import Compile
 from .platformio.upload import Upload
 from .platformio.clean import Clean
 from .libraries.quick_menu import QuickMenu
-from .libraries.tools import get_setting, save_setting, create_sketch, select_dir
+from .libraries.tools import get_setting, save_setting, create_sketch, select_dir, add_library_to_sketch
 from .platformio.initialize import Initialize
+from .libraries.libraries import Libraries
+from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
+from .platformio.pio_bridge import PioBridge
 
 from time import sleep
 
 def plugin_loaded():
+    PioInstall()
+
+    boards_file = getBoardsFileDataPath()
+
+    if(not path.exists(boards_file)):
+        PioBridge().save_boards_list()
+
+    menu_path = getMainMenuPath()
     compile_lang = get_setting('compile_lang', True)
-    if(compile_lang):
+    
+    if(compile_lang or not path.exists(menu_path)):
         from .libraries.top_menu import TopMenu
         TopMenu().create_main_menu()
         save_setting('compile_lang', False)
-    # PioInstall()
+
+
 
 class DeviotListener(sublime_plugin.EventListener):
     def on_activated(self, view):

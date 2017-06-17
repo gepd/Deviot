@@ -33,6 +33,15 @@ def getPackagesPath():
     packages_path = os.path.dirname(plugin_path)
     return packages_path
 
+def getMainMenuPath():
+    """
+    Packages/Deviot/Main.sublime-menu
+    """
+    plugin_path = getPluginPath()
+    menu_path = os.path.join(plugin_path, 'Main.sublime-menu')
+
+    return menu_path
+
 
 def getPresetPath():
     """
