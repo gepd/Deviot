@@ -40,6 +40,8 @@ from collections import OrderedDict
 from . import __version__, __title__
 
 ###
+from ..libraries.tools import get_setting, save_setting
+
 dprint = None
 derror = None
 dstop = None
@@ -56,16 +58,21 @@ class PioInstall(object):
         self.sub_ver = sublime.version()
 
         ###
+        installed = get_setting('installed', False)
+
+        if(installed):
+            return
+
         show_messages()
         dprint("deviot_setup{0}", True, self.dev_ver)
         ###
 
-        self.filePaths()
+        self.file_paths()
 
         thread = Thread(target=self.install)
         thread.start()
 
-    def filePaths(self):
+    def file_paths(self):
         """ Set Initial Values
 
         Set the values for files and paths to install platformIO
@@ -98,12 +105,12 @@ class PioInstall(object):
         self.CACHED_FILE = False
         self.SYMLINK = 'python'
 
-        createPath(CACHE_PATH)
+        create_path(CACHE_PATH)
 
         # defining default env paths
-        environ['PATH'] = getEnvPaths()
+        environ['PATH'] = get_env_paths()
 
-    def cachedFile(self):
+    def cached_file(self):
         """Cached File
 
         Check if the virtualenvfile was already downloaded
@@ -120,24 +127,24 @@ class PioInstall(object):
         is displayed on the console
         '''
 
-        self.checkPython()
+        self.check_python()
 
-        checkPio()
+        check_pio()
 
         dprint("pio_isn_installed")
         dprint("downloading_files")
 
-        self.downloadFile()
+        self.download_file()
 
         dprint("extracting_files")
 
-        self.extractFile()
+        self.extract_file()
 
         # install virtualenv
         dprint("installing_pio")
 
         cmd = [self.SYMLINK, 'virtualenv.py', '"%s"' % self.V_ENV_PATH]
-        out = runCommand(cmd, "error installing virtualenv", self.OUTPUT_PATH)
+        out = run_command(cmd, "error installing virtualenv", self.OUTPUT_PATH)
 
         # Install pio
         if(sublime.platform() is 'osx'):
@@ -147,20 +154,21 @@ class PioInstall(object):
         else:
             executable = path.join(self.V_ENV_BIN_PATH, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
-        out = runCommand(cmd, "error installing platformio")
+        out = run_command(cmd, "error installing platformio")
 
         # save env paths
         env_path = [self.V_ENV_PATH, self.V_ENV_BIN_PATH]
-        self.saveEnvPaths(env_path)
+        save_env_paths(env_path)
 
+        save_setting('installed', True)
         derror("setup_finished")
 
-    def downloadFile(self):
+    def download_file(self):
         """Download File
 
         Download the virtualenv file
         """
-        if(not self.cachedFile()):
+        if(not self.cached_file()):
             try:
                 file_request = Request(self.FILE_URL, headers=self.HEADERS)
                 file_open = urlopen(file_request)
@@ -176,42 +184,21 @@ class PioInstall(object):
             except:
                 derror("error_saving_files")
 
-    def extractFile(self):
+    def extract_file(self):
         """Extract File
 
         Extract the file and rename the output folder
         """
 
         if(not path.isdir(self.OUTPUT_PATH)):
-            extractTar(self.V_ENV_FILE, self.V_ENV_PATH)
+            extract_tar(self.V_ENV_FILE, self.V_ENV_PATH)
 
         # rename folder
         extracted = path.join(self.V_ENV_PATH, 'virtualenv-14.0.6')
         if(not path.isdir(self.OUTPUT_PATH)):
             rename(extracted, self.OUTPUT_PATH)
 
-    def saveEnvPaths(self, new_path):
-        '''Environment
-
-        After install all the necessary dependencies to run the plugin,
-        the environment paths are stored in the preferences file
-
-        Arguments:
-            new_path {[list]} -- list with extra paths to store
-        '''
-        env_paths = getEnvPaths().split(path.pathsep)
-
-        paths = []
-        paths.extend(new_path)
-        paths.extend(env_paths)
-
-        paths = list(OrderedDict.fromkeys(paths))
-        paths = path.pathsep.join(paths)
-
-        # TODO CHECK PREFERENCES
-        # self.Preferences.set('env_path', paths)
-
-    def checkSymlink(self):
+    def check_sym_link(self):
         """Arch Linux
 
         Check if python 2 is used with a symkink it's 
@@ -219,24 +206,25 @@ class PioInstall(object):
         stored in a config file to be used by the plugin
         """
         cmd = ['python2', '--version']
-        out = runCommand(cmd)
+        out = run_command(cmd)
 
         dprint("symlink_detected")
 
         if(out[0] is 0):
             self.SYMLINK = 'python2'
+            save_setting('symkink', True)
             return out
 
-    def checkPython(self):
+    def check_python(self):
         """Python requirement
 
         Check if python 2 is installed
         """
         cmd = [self.SYMLINK, '--version']
-        out = runCommand(cmd)
+        out = run_command(cmd)
 
         if(out[0] > 0):
-            out = self.checkSymlink()
+            out = self.check_sym_link()
 
         version = sub(r'\D', '', out[1])
 
@@ -254,20 +242,23 @@ class PioInstall(object):
             exit(0)
 
 
-def checkPio():
+def check_pio():
     """PlarformIO
 
     Check if platformIO is already installed in the machine
     """
     cmd = ['pio', '--version']
-    out = runCommand(cmd)
+    out = run_command(cmd)
 
     status = out[0]
 
     if(status is 0):
+        env_path = get_env_paths()
+        save_setting('installed', True)
+        save_setting('env_path', env_path)
         derror("pio_is_installed")
 
-def createPath(path):
+def create_path(path):
     """
     Create a specifict path if it doesn't exists
     """
@@ -280,7 +271,7 @@ def createPath(path):
         pass
 
 
-def extractTar(tar_path, extract_path='.'):
+def extract_tar(tar_path, extract_path='.'):
     """Extract File
 
     Extract a tar file in the selected folder
@@ -297,7 +288,7 @@ def extractTar(tar_path, extract_path='.'):
         tar.extract(item, extract_path)
 
 
-def getEnvPaths():
+def get_env_paths():
     '''Environment
 
     All the necessary environment paths are merged to run platformIO
@@ -307,7 +298,7 @@ def getEnvPaths():
         [list] -- paths in a list
     '''
     # default paths
-    default_paths = getDefaultPaths()
+    default_paths = get_default_paths()
     system_paths = environ.get("PATH", "").split(path.pathsep)
 
     env_paths = []
@@ -319,8 +310,28 @@ def getEnvPaths():
 
     return env_paths
 
+def save_env_paths(new_path):
+    '''Environment
 
-def getDefaultPaths():
+    After install all the necessary dependencies to run the plugin,
+    the environment paths are stored in the preferences file
+
+    Arguments:
+        new_path {[list]} -- list with extra paths to store
+    '''
+    env_paths = get_env_paths().split(path.pathsep)
+
+    paths = []
+    paths.extend(new_path)
+    paths.extend(env_paths)
+
+    paths = list(OrderedDict.fromkeys(paths))
+    paths = path.pathsep.join(paths)
+
+    save_setting('env_path', paths)
+
+
+def get_default_paths():
     """Python Paths
 
     Folder where python should be installed in the diferents os
@@ -335,7 +346,7 @@ def getDefaultPaths():
     return default_path
 
 
-def runCommand(command, error='', cwd=None):
+def run_command(command, error='', cwd=None):
     '''Commands
 
     Run all the commands to install the plugin
