@@ -39,8 +39,10 @@ class Upload(Initialize):
             self.derror("select_port_list")
             return
 
+        self.add_board()
+
         cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e ', self.board_id]
-        out = run_command(cmd)
+        out = self.run_command(cmd)
 
         self.dstop()
         save_setting('last_action', None)
