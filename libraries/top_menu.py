@@ -32,7 +32,7 @@ class TopMenu(MenuFiles):
         path = paths.getPluginPath()
 
         for option in menu_preset:
-            option = self.translate_children(option)
+            option = self.translate_childrens(option)
             for sub in option['children']:
                 try:
                     sub = self.translate_childrens(sub)
