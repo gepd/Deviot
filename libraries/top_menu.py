@@ -35,13 +35,13 @@ class TopMenu(MenuFiles):
             option = self.translate_children(option)
             for sub in option['children']:
                 try:
-                    sub = self.translate_children(sub)
+                    sub = self.translate_childrens(sub)
                 except KeyError:
                     pass
 
         self.create_sublime_menu(menu_preset, 'Main', path)
 
-    def translate_children(self, option_dict):
+    def translate_childrens(self, option_dict):
         """Translate Children Menu
         
         Translate a children sublime text menu
@@ -54,6 +54,11 @@ class TopMenu(MenuFiles):
         """
         for children in option_dict['children']:
             children['caption'] = _(children['caption'])
+            try:
+                for children_chil in children['children']:
+                   children_chil['caption'] = _(children_chil['caption'])
+            except:
+                pass
 
         return option_dict
 
