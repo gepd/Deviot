@@ -15,6 +15,7 @@ from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
 from .messages import MessageQueue
+from .I18n import I18n
 
 def serial_port_list():
     """List of Ports
@@ -50,7 +51,14 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
-        message = MessageQueue("serial_monitor_header{0}", version, serial_port)
+        serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
+        type_console = get_setting('type_console', 'exec')
+        
+        if('exec' not in type_console):
+            type_console = serial_header.strip('\\n')
+    
+        message = MessageQueue(serial_header)
+        message.set_console(type_console)
         message.start_print()
 
         self.dprint = message.put
@@ -231,6 +239,8 @@ def toggle_serial_monitor():
     serial_monitor = None
     ports_list = serial_port_list()
     port_id = get_setting('port_id', None)
+
+    print(serials_in_use)
 
     match = port_id in (port[1] for port in ports_list)
 

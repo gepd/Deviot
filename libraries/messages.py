@@ -8,7 +8,7 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 from sys import exit
-
+from ..libraries. tools import findInOpendView
 from .I18n import I18n
 
 class Console(object):
@@ -19,15 +19,15 @@ class Console(object):
     """
     def __init__(self):
         self.window = sublime.active_window()
+        self.panel = None
+        self.name = None
 
-        self.panel = self.window.create_output_panel('exec')
+        self.set_console()
         self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
-        self.panel.set_name('exec')
 
     def print_screen(self, text):
-        view = self.window.find_output_panel('exec')
-
-        if(view.size() < 1):
+        
+        if(self.panel.size() < 1 and self.name == 'exec'):
             self.window.run_command("show_panel", {"panel": "output.exec"})
 
         self.panel.set_read_only(False)
@@ -35,7 +35,32 @@ class Console(object):
         self.panel.run_command("move_to", {"extend": False, "to": "eof"})
         self.panel.set_read_only(True)
 
-class MessageQueue(object):
+    def set_console(self, name='exec'):
+        self.name = name
+        self.window, self.panel = findInOpendView(name)
+
+        if(not self.panel):
+            if(name == 'exec'):
+                self.panel = self.window.create_output_panel(name)
+                self.panel.set_name(name)
+            else:
+                self.open_panel()
+
+    def open_panel(self, direction=False):
+        
+        if(direction):
+            options = {'direction': 'down', 'give_focus': True}
+            self.window.run_command('deviot_create_pane', options)
+
+        self.panel = self.window.new_file()
+        self.panel.set_name(self.name)
+
+        self.panel.run_command('toggle_setting', {'setting': 'word_wrap'})
+        self.panel.set_scratch(True)
+        self.window.focus_view(self.panel)
+            
+
+class MessageQueue(Console):
     """Message Queue
 
     Handles the queue to print messages in the console. To use it
@@ -54,15 +79,11 @@ class MessageQueue(object):
     def __init__(self, start_header=None, *args):
         super(MessageQueue, self).__init__()
         self.queue = Queue(0)
-        self.console = Console().print_screen
         self.is_alive = False
         self.is_first = True
         self.stopping = False
         self.start_header = start_header
         self.header_args = args
-
-    def set_console(self, console):
-        self.console = console
 
     def put(self, text, hide_hour=False, *args):
         """Put new message
@@ -120,7 +141,7 @@ class MessageQueue(object):
         while(self.is_alive):
             while(not self.queue.empty()):
                 text = self.queue.get()
-                self.console(text)
+                self.print_screen(text)
                 sleep(0.01)
             sleep(0.01)
 

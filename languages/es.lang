@@ -419,7 +419,7 @@ msgstr "Ninguna librería instalada"
 
 # Monitor Serial
 
-msgid "serial_monitor_header{0}"
+msgid "serial_monitor_header{0}{1}"
 msgstr "[ Deviot {0} ] Monitor Serial | {1}\n\n"
 
 msgid "serial_port_used_{0}"

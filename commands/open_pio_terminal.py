@@ -8,4 +8,4 @@ from ..platformio.pio_terminal import PioTerminal
 class OpenPioTerminalCommand(sublime_plugin.WindowCommand):
 
     def run(self):
-        PioTerminal().open_terminal()
+        PioTerminal().show_input()

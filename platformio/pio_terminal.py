@@ -16,12 +16,12 @@ class PioTerminal(Command):
 
     def __init__(self):
         super(PioTerminal, self).__init__()
-        self.name = 'PlatformIO Terminal'
-        self.window, self.view = tools.findInOpendView(self.name)
+        name = 'PlatformIO Terminal'
+        self.window, self.view = tools.findInOpendView(name)
 
         header = self.check_header()
         message = MessageQueue(header)
-        message.set_console(self.print_screen)
+        message.set_console(name)
         message.start_print()
         
         self.dprint = message.put
@@ -43,25 +43,6 @@ class PioTerminal(Command):
 
         return header
 
-    def open_terminal(self):
-        """Open Terminal
-        
-        Opens a new window, always in a new group at the bottom, and allows
-        to process platformio commands
-        """
-        if self.view is None:
-            options = {'direction': 'down', 'give_focus': True}
-            self.window.run_command('deviot_create_pane', options)
-
-            self.view = self.window.new_file()
-            self.view.set_name(self.name)
-
-            self.view.run_command('toggle_setting', {'setting': 'word_wrap'})
-            self.view.set_scratch(True)
-            self.window.focus_view(self.view)
-
-        self.show_input()
-
     def close_terminal(self):
         """Close Terminal
         
@@ -81,14 +62,7 @@ class PioTerminal(Command):
         Arguments:
             text {str} -- texto to append in the console
         """
-        if(not self.view):
-            self.window, self.view = tools.findInOpendView(self.name)
-
-        self.window.focus_view(self.view)
-        self.view.set_read_only(False)
-        self.view.run_command("append", {"characters": text})
-        self.view.set_read_only(True)
-        self.view.run_command("move_to", {"extend": False, "to": "eof"})
+        self.dprint(text)
 
     def show_input(self):
         """Show input
