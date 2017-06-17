@@ -30,7 +30,6 @@ class Initialize(ProjectCheck):
         self.dprint = messages.put
         self.derror = messages.print_once
         self.dstop = messages.stop_print
-        self.set_dprint(self.dprint)
 
     def add_board(self):
         """New Board

@@ -27,8 +27,6 @@ class PioTerminal(Command):
         self.dprint = message.put
         self.dstop = message.stop_print
 
-        self.set_dprint(self.dprint)
-
     def check_header(self):
         """Terminal eader
         
