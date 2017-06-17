@@ -361,6 +361,9 @@ msgstr "< Volver"
 msgid "upgrading_pio"
 msgstr "Actualizando PlarformIO...\n"
 
+msgid "select_{0}"
+msgstr "Seleccionar {0}"
+
 
 # Librerías
 

@@ -305,6 +305,9 @@ def folder_explorer(path=None, index=-2, window=None, ls=None, callback=None):
     folder in the given path. To get the selected path
     use the callback argument
     """
+    from .I18n import I18n
+
+    _ = I18n().translate
 
     if(index == -1):
         return
@@ -312,16 +315,10 @@ def folder_explorer(path=None, index=-2, window=None, ls=None, callback=None):
     if(not window):
         window = sublime.active_window()
 
-    if(index == -2 and path):
-        path = [path]
-
     if(index == 0 and callback):
         return callback(path[0])
 
     paths = []
-
-    paths.insert(0, ['< Back'])
-    paths.insert(0, ['SELECT THE CURRENT PATH'])
 
     # if we aren't in the root path
     if(not path and ls is not None and index > 1):
@@ -353,6 +350,9 @@ def folder_explorer(path=None, index=-2, window=None, ls=None, callback=None):
         for dirs in glob.glob(sub_paths):
             if(os.path.isdir(dirs)):
                 paths.append([dirs])
+
+    paths.insert(0, [_('_previous')])
+    paths.insert(0, [_('select_{0}', path)])
 
     sublime.set_timeout(lambda: window.show_quick_panel(
         paths, lambda index: folder_explorer(path, index, window, paths, callback)), 0)
