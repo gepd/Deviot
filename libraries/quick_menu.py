@@ -19,6 +19,7 @@ class QuickMenu(PreferencesBridge):
     def __init__(self):
         super(QuickMenu, self).__init__()
         self.index = 0
+        self.quick_list = []
 
         global _
         _ = I18n().translate
@@ -284,19 +285,109 @@ class QuickMenu(PreferencesBridge):
         Returns:
             [list] -- quick panel list with libraries
         """
-        import json
-        from .file import File
-
         user_pio_libs = os.path.join('platformio', 'lib')
         libraries_folders = self.get_libraries_folders()
         
-        quick_list = [[_("select_library").upper()]]
+        quick_list = self.libraries_list()
+        quick_list.insert(0, [_("select_library").upper()])
+
+        if(len(quick_list) <= 1):
+            quick_list = [[_("menu_not_libraries")]]
+
+        return quick_list
+
+    def quick_libraries(self):
+        """List of libraries
+        
+        Show the list of libraries availables. The callback will show
+        the list of examples.
+        """
+        self.quick_list = self.libraries_list()
+        self.quick_list.insert(0, [_("select_library").upper()])
+
+        if(len(self.quick_list) <= 1):
+            self.quick_list = [[_("menu_not_examples")]]
+        
+        quick_panel(self.quick_list, self.callback_library)
+
+    def callback_library(self, selected):
+        """Show Examples
+        
+        After the previous selection of the library, here will be search
+        all folders inside of the "example" folder and will be considerated
+        an example to open
+        
+        Arguments:
+            selected {int} -- user index selection
+        """
+        if(selected <= 0):
+            return
+
+        library_path = self.quick_list[selected][1]
+        examples_path = os.path.join(library_path, 'examples', '*')
+
+        self.quick_list = [[_("select_library").upper()],[_("_previous")]]
+
+        for files in glob(examples_path):
+            caption = os.path.basename(files)
+            self.quick_list.append([caption, files])
+
+        quick_panel(self.quick_list, self.callback_example)
+
+    def callback_example(self, selected):
+        """Open Example
+        
+        Search the files .ino and .pde in the path of the example selected
+        and open it in a new window
+        
+        Arguments:
+            selected {[type]} -- [description]
+        """
+        if(selected <= 0):
+            return
+
+        if(selected == 1):
+            self.quick_libraries()
+
+        example_path = self.quick_list[selected][1]
+
+        window = sublime.active_window()
+
+        if example_path.endswith(('.ino', '.pde')):
+            window.open_file(example_path)
+
+        files = os.path.join(example_path, '*')
+        files = glob(files)
+
+        for file in files:
+            if file.endswith(('.ino', '.pde')):
+                window.open_file(file)
+
+    def libraries_list(self):
+        """List of Libraries
+        
+        Make a list of the libraries availables. This list is
+        used in the import library and examples.
+        
+        Returns:
+            [list/list] -- name of folder and path [[name, path]]
+        """
+        from re import search
+        
+        libraries_folders = self.get_libraries_folders()
+        
+        quick_list = []
         check_list = []
 
         for library in libraries_folders:
             sub_library = glob(library)
 
             for content in sub_library:
+                caption = os.path.basename(content)
+                new_caption = caption.split("_ID")
+                if(new_caption is not None):
+                    caption = new_caption[0]
+
                 if('__cores__' in content):
                     cores = os.path.join(content, '*')
                     cores = glob(cores)
@@ -309,31 +400,9 @@ class QuickMenu(PreferencesBridge):
                             caption = os.path.basename(lib_core)
                             quick_list.append([caption, lib_core])
                             check_list.append([caption])
-
-                if(user_pio_libs in content):
-                    json_path = os.path.join(content, 'library.json')
-
-                    if not os.path.exists(json_path):
-                        json_path = os.path.join(content, '.library.json')
-
-                    if not os.path.exists(json_path):
-                        json_path = os.path.join(content, 'library.properties')
-
-                    json_data = File(json_path).read()
                     
-                    if(json_data):
-                        try:
-                            djson_data = json.loads(json_data)
-                            caption = djson_data['name']
-                        except TypeError:
-                            caption = json_data.partition("\n")[0]
-                            caption = caption.split("name=")[1]
-                    
-                    if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
-                        quick_list.append([caption, content])
-                        check_list.append(caption)
-
-        if(len(quick_list) <= 1):
-            quick_list = [[_("menu_not_libraries")]]
+                if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
+                    quick_list.append([caption, content])
+                    check_list.append(caption)
 
         return quick_list
