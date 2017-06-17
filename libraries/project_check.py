@@ -9,7 +9,8 @@ from __future__ import unicode_literals
 from os import path
 
 from ..platformio.project_recognition import ProjectRecognition
-from ..libraries.quick_menu import QuickMenu
+from .serial import serial_port_list
+from .quick_menu import QuickMenu
 
 class ProjectCheck(QuickMenu):
     """
@@ -140,9 +141,11 @@ class ProjectCheck(QuickMenu):
         quick panel to select the port
         """
         self.port_id = self.get_serial_port()
+        ports_list = serial_port_list()
 
-        if(not self.port_id):
+        if(not self.port_id or self.port_id not in ports_list):
             QuickMenu().quick_serial_ports()
+            self.port_id = None
 
 
 
