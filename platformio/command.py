@@ -1,7 +1,7 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+from os import getcwd, environ
 import subprocess
 from sys import exit
 
@@ -22,13 +22,18 @@ class Command(ProjectRecognition):
         self.verbose = False
         self.dprint = None
 
+        env_path = tools.get_setting('env_path', None)
+        
+        if(env_path):
+            os.environ['PATH'] = env_path
+
     def run_command(self, command):
         '''
         Run a command with Popen and return the results or print the errors
         '''
 
         if(not self.cwd):
-            self.cwd = os.getcwd()
+            self.cwd = getcwd()
 
         command = self.prepare_command(command)
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
@@ -71,13 +76,3 @@ class Command(ProjectRecognition):
         command = ' '.join(command)
 
         return command
-
-    def load_printer(self):
-        self.start_print()
-        
-        self.print = self.put
-        self.error = self.print_once
-        print("finish config")
-
-    def set_dprint(self, dprint):
-        self.dprint = dprint
