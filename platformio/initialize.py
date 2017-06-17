@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.messages import MessageQueue
 
@@ -23,7 +24,7 @@ class Initialize(ProjectCheck):
     def __init__(self):
         super(Initialize, self).__init__()
 
-        messages = MessageQueue("_deviot_{0}","2.0.0")
+        messages = MessageQueue("_deviot_starting{0}", version)
         messages.start_print()
         
         self.dprint = messages.put

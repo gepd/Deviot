@@ -49,7 +49,7 @@ class Libraries(Command):
         Makes all the instances to start to print in the deviot console.
         It sends a header string as first message
         """
-        message = MessageQueue("[ Deviot ] Library Management\n")
+        message = MessageQueue("deviot_library{0}", version)
         message.start_print()
         
         self.dprint = message.put

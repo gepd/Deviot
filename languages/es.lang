@@ -244,6 +244,9 @@ msgstr "Acerca de PlatformIO"
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
+msgid "_deviot_starting{0}"
+msgstr "[ Deviot {0} ] Iniciando...\n"
+
 msgid "checking_pio_updates"
 msgstr "Buscando actualizaciones de PlatformIO...\n"
 
@@ -361,6 +364,8 @@ msgstr "Actualizando PlarformIO...\n"
 
 # Librerías
 
+msgid "deviot_library{0}"
+msgstr "[ Deviot {0} ] Gestor de Librerías\n"
 
 msgid "search_query"
 msgstr "Buscar:"
