@@ -87,6 +87,7 @@ def create_command(command):
     Edit the command depending of the O.S of the user
     """
     env_path = get_setting('env_path', False)
+    symkink = get_setting('symlink', False)
 
     if(not env_path):
         return command
@@ -97,7 +98,7 @@ def create_command(command):
     _os = sublime.platform()
 
     if(_os is 'osx'):
-        exe = 'python'
+        exe = 'python' if(not symlink) else 'python2'
         options = ['-m', command[0]]
     else:
         exe = command[0]
