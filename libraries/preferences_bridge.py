@@ -83,11 +83,9 @@ class PreferencesBridge(PioBridge):
         Returns:
             str -- environment/board id ex. 'uno'
         """
-        file_hash = self.get_file_hash()
-        settings = get_setting(file_hash, {})
+        settings = get_setting('select_environment', None)
 
-        if('select_environment' in settings):
-            return settings['select_environment']
+        return settings
 
     def get_serial_port(self):
         """Serial Port Selected
