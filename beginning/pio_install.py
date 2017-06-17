@@ -255,6 +255,7 @@ def check_pio():
     if(status is 0):
         env_path = get_env_paths()
         save_setting('installed', True)
+        save_setting('external_bins', True)
         save_setting('env_path', env_path)
         derror("pio_is_installed")
 

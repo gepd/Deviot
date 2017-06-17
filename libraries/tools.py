@@ -86,14 +86,12 @@ def create_command(command):
     """
     Edit the command depending of the O.S of the user
     """
+    external_bins = get_setting('external_bins', False)
     env_path = get_setting('env_path', False)
     symkink = get_setting('symlink', False)
 
     if(not env_path):
         return command
-
-    from . import paths
-    bin_dir = paths.getEnvBinDir()
 
     _os = sublime.platform()
 
@@ -104,7 +102,14 @@ def create_command(command):
         exe = command[0]
         options = []
 
-    executable = os.path.join(bin_dir, exe)
+    executable = exe
+
+    if(not external_bins):
+        from . import paths
+        
+        bin_dir = paths.getEnvBinDir()
+        executable = os.path.join(bin_dir, exe)
+
     cmd = ['"%s"' % (executable)]
     cmd.extend(options)
     cmd.extend(command[1:])
