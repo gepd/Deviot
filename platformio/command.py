@@ -25,7 +25,7 @@ class Command(ProjectRecognition):
         env_path = tools.get_setting('env_path', None)
         
         if(env_path):
-            os.environ['PATH'] = env_path
+            environ['PATH'] = env_path
 
     def run_command(self, command):
         '''
