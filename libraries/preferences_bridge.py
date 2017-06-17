@@ -26,25 +26,25 @@ class PreferencesBridge(PioBridge):
         Arguments:
             board_id {str} -- id of the board ex. 'uno'
         """
-        file_hash = self.get_file_hash()
-        settings = get_setting(file_hash, {})
+        settings = get_setting('boards', [])
         save_flag = True
         
-        if('boards' not in settings):
-            settings['boards'] = []
-            settings['boards'].append(board_id)
+        if(not settings):
+            settings.append(board_id)
         else:
-            if(board_id not in settings['boards']):
-                settings['boards'].append(board_id)
+            if(board_id not in settings):
+                settings.append(board_id)
             else:
-                settings['boards'].remove(board_id)
-                self.remove_ini_environment(board_id)
-                save_flag = False
+                settings.remove(board_id)
+                
+                if(len(settings) > 0):
+                    board_id = settings[-1]
+                else:
+                    board_id = ''
 
-        save_setting(file_hash, settings)
+        save_setting('boards', settings)
         
-        if(save_flag):
-            self.save_environment(board_id)
+        self.save_environment(board_id)
 
     def get_selected_boards(self):
         """Get Board/s
@@ -56,17 +56,13 @@ class PreferencesBridge(PioBridge):
         Returns:
             list -- list of boards
         """
-        file_hash = self.get_file_hash()
-        settings = get_setting(file_hash, [])
+        settings = get_setting('boards', [])
         boards = self.get_envs_initialized()
 
-        if('boards' in settings):
-            extend_boards = settings['boards']
-            extend_boards.extend(boards)
-            extend_boards = list(set(extend_boards))
-            boards = extend_boards
+        if(boards):
+            settings.extend(boards)
 
-        return boards
+        return settings
 
     def save_environment(self, board_id):
         """Save Environment
@@ -77,10 +73,7 @@ class PreferencesBridge(PioBridge):
         Arguments:
             board_id {str} -- id of the board ex. 'uno'
         """
-        file_hash = self.get_file_hash()
-        settings = get_setting(file_hash, {})
-        settings['select_environment'] = board_id
-        save_setting(file_hash, settings)
+        save_setting('select_environment', board_id)
 
     def get_environment(self):
         """Get Environment
