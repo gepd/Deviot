@@ -13,12 +13,15 @@ from .preferences_bridge import PreferencesBridge
 from .serial import serial_port_list
 from .I18n import I18n
 
+_ = None
+
 class QuickMenu(PreferencesBridge):
     def __init__(self):
         super(QuickMenu, self).__init__()
         self.index = 0
 
-        self.tr = I18n().translate
+        global _
+        _ = I18n().translate
 
     def quick_boards(self):
         """Boards Menu
@@ -160,7 +163,13 @@ class QuickMenu(PreferencesBridge):
         
         Show the list of serial ports availables in the quick panel
         """
+        header = _("select_port_list").strip("\\n").upper()
         port_list = serial_port_list()
+        port_list.insert(0, [header])
+
+        if(len(port_list) < 2):
+            port_list = [_("menu_none_serial_mdns").upper()]
+
         quick_panel(port_list, self.callback_serial_ports)
 
     def callback_serial_ports(self, selected):
@@ -171,11 +180,12 @@ class QuickMenu(PreferencesBridge):
         Arguments:
             selected {str} -- Port selected ex. 'COM1'
         """
-        if(selected == -1 or selected == 0):
+        if(selected <= 0):
             save_setting('last_action', None)
             return
 
         port_list = serial_port_list()
+        port_list.insert(0, ["-"])
         port_selected = port_list[selected][1]
         
         save_setting('port_id', port_selected)
@@ -198,7 +208,6 @@ class QuickMenu(PreferencesBridge):
         Returns:
             list -- English language / Language String list
         """
-        from .I18n import I18n
 
         i18n = I18n()
         index = 0
@@ -281,7 +290,7 @@ class QuickMenu(PreferencesBridge):
         user_pio_libs = os.path.join('platformio', 'lib')
         libraries_folders = self.get_libraries_folders()
         
-        quick_list = [[self.tr("select_library").upper()]]
+        quick_list = [[_("select_library").upper()]]
         check_list = []
 
         for library in libraries_folders:
