@@ -34,6 +34,15 @@ class DeviotListener(sublime_plugin.EventListener):
     def on_activated(self, view):
         #
         pass
+    
+    def on_close(self, view):
+        from .libraries import serial
+        if(serial.serials_in_use):
+            for port_id in serial.serials_in_use:
+                serial_monitor = serial.serial_monitor_dict.get(port_id, None)
+                serial_monitor.stop()
+                serial.serials_in_use.remove(port_id)
+                del serial.serial_monitor_dict[port_id]
 
 class DeviotNewSketch(sublime_plugin.WindowCommand):
     def run(self):
