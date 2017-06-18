@@ -176,7 +176,7 @@ class PioTerminal(Command):
         """
         self.window.focus_view(self.view)
         self.view.set_read_only(False)
-        self.window.run_command("clean_view")
+        self.window.run_command("deviot_clean_view")
         self.view.set_read_only(True)
 
         header = self.check_header()
