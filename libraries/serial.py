@@ -138,10 +138,12 @@ class SerialMonitor(object):
         Arguments:
             out_text {str} -- text to send with the line ending
         """
-        line_ending = get_setting('line_ending', '\n')
+        line_ending = get_setting('line_ending', '')
         out_text += line_ending
-        out_text = out_text.encode('utf-8', 'replace')
         
+        self.dprint('sended_{0}', True, out_text)
+
+        out_text = out_text.encode('utf-8', 'replace')
         self.serial.write(out_text)
 
 
