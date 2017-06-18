@@ -18,8 +18,11 @@ from .deviot_hide_terminal import DeviotHideTerminalCommand
 from .deviot_select_port import DeviotSelectPortCommand
 from .deviot_toggle_serial_monitor import DeviotToggleSerialMonitorCommand
 from .deviot_send_serial_monitor import DeviotSendSerialMonitorCommand
+from .deviot_output_console import DeviotOutputConsoleCommand
+from .deviot_automatic_scroll import DeviotAutomaticScrollCommand
 from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
 from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
+from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
 from .deviot_languages import DeviotLanguagesCommand
 from .deviot_clean_view import DeviotCleanViewCommand
 
@@ -47,10 +50,11 @@ __all__ = [
     'DeviotSelectPortCommand',
     'DeviotToggleSerialMonitorCommand',
     'DeviotSendSerialMonitorCommand',
-
+    'DeviotOutputConsoleCommand',
+    'DeviotAutomaticScrollCommand',
     'DeviotChooseBaudrateCommand',
     'DeviotChooseLineEndingCommand',
-
+    'DeviotChooseDisplayModeCommand',
     'DeviotLanguagesCommand',
 
     'DeviotCleanViewCommand'

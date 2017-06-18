@@ -191,7 +191,7 @@ def display_mode(inp_text, str_len=0):
         [string] -- Converted string
     """
     text = u''
-    display_mode = 'Text'
+    display_mode = get_setting("display_mode", 'Text')
     
     if display_mode == 'Ascii':
         for character in inp_text:

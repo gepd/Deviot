@@ -296,28 +296,28 @@
                             {
                                 "caption": "menu_text",
                                 "id": "display_mode_text",
-                                "command": "choose_display_mode_item",
+                                "command": "deviot_choose_display_mode",
                                 "args": {"display_mode_item": "Text"},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_ascii",
                                 "id": "display_mode_sacii",
-                                "command": "choose_display_mode_item",
+                                "command": "deviot_choose_display_mode",
                                 "args": {"display_mode_item": "Ascii"},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_hex",
                                 "id": "display_mode_hex",
-                                "command": "choose_display_mode_item",
+                                "command": "deviot_choose_display_mode",
                                 "args": {"display_mode_item": "Hex"},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_hexascii",
                                 "id": "display_mode_hex",
-                                "command": "choose_display_mode_item",
+                                "command": "deviot_choose_display_mode",
                                 "args": {"display_mode_item": "Mix"},
                                 "checkbox": true
                             }
