@@ -24,6 +24,9 @@ from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
 from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
 from .deviot_languages import DeviotLanguagesCommand
+from .deviot_donate import DeviotDonateCommand
+from .deviot_about import DeviotAboutCommand
+from .deviot_pio_about import DeviotPioAboutCommand
 from .deviot_clean_view import DeviotCleanViewCommand
 
 __all__ = [
@@ -56,6 +59,8 @@ __all__ = [
     'DeviotChooseLineEndingCommand',
     'DeviotChooseDisplayModeCommand',
     'DeviotLanguagesCommand',
-
+    'DeviotDonateCommand',
+    'DeviotAboutCommand',
+    'DeviotPioAboutCommand',
     'DeviotCleanViewCommand'
 ]

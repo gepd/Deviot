@@ -387,18 +387,18 @@
                 "id":"deviot_languages"
             },{
                 "caption": "menu_donate_deviot",
-                "command": "donate_deviot"
+                "command": "deviot_donate"
             },{
                 "caption": "menu_about",
                 "id": "menu_about",
                 "children": [                        
                                 {
                                     "caption": "menu_about_deviot",
-                                    "command": "about_deviot"
+                                    "command": "deviot_about"
                                 },
                                 {
                                     "caption": "menu_about_pio",
-                                    "command": "about_pio"
+                                    "command": "deviot_pio_about"
                                 }
 
                             ]
