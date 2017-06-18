@@ -21,6 +21,7 @@ from .deviot_toggle_serial_monitor import DeviotToggleSerialMonitorCommand
 from .deviot_send_serial_monitor import DeviotSendSerialMonitorCommand
 from .deviot_output_console import DeviotOutputConsoleCommand
 from .deviot_automatic_scroll import DeviotAutomaticScrollCommand
+from .deviot_auto_clean import DeviotAutoCleanCommand
 from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
 from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
@@ -29,6 +30,7 @@ from .deviot_donate import DeviotDonateCommand
 from .deviot_about import DeviotAboutCommand
 from .deviot_pio_about import DeviotPioAboutCommand
 from .deviot_clean_view import DeviotCleanViewCommand
+from .deviot_clean_console import DeviotCleanConsoleCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -57,6 +59,7 @@ __all__ = [
     'DeviotSendSerialMonitorCommand',
     'DeviotOutputConsoleCommand',
     'DeviotAutomaticScrollCommand',
+    'DeviotAutoCleanCommand',
     'DeviotChooseBaudrateCommand',
     'DeviotChooseLineEndingCommand',
     'DeviotChooseDisplayModeCommand',
@@ -64,5 +67,6 @@ __all__ = [
     'DeviotDonateCommand',
     'DeviotAboutCommand',
     'DeviotPioAboutCommand',
-    'DeviotCleanViewCommand'
+    'DeviotCleanViewCommand',
+    'DeviotCleanConsoleCommand'
 ]
