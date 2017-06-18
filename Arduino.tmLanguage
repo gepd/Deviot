@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>ino</string>
+		<string>pde</string>
+		<string>c</string>
+		<string>cpp</string>
+	</array>
+	<key>foldingStartMarker</key>
+	<string>/\*\*|\{\s*$</string>
+	<key>foldingStopMarker</key>
+	<string>\*\*/|^\s*\}</string>
+	<key>name</key>
+	<string>Deviot IoT</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>include</key>
+			<string>source.c++</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(boolean|byte|word)\b</string>
+			<key>name</key>
+			<string>storage.type.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(Scheduler|WiFiUDP|sysexCallbackFunction|ESP8266WiFiMesh|WiFiClient|ESP8266SSDP|YunServer|BridgeSSLClient|ESP8266HTTPUpdateServer|YunClient|EEPROM|ESP8266mDNS|WiFiServer|Mailbox|BridgeClient|WiFiClientSecure|LiquidCrystal|Bridge|File|Tft|ESP8266WebServer|WiFi|Esplora|GSM|GSMModem|SPI|callbackFunction|TFT|GSMServer|GSMPIN|KeyboardController|Mouse|FileSystem|stringCallbackFunction|Preferences|ESPmDNS|IPAddress|Firmata|GSM_SMS|WiFiUdp|TembooYunShield|Stepper|EthernetClient|SDFile|TembooCoAPEdgeDevice|GSMVoiceCall|GSMClient|MDNSResponder|ArduinoOTA|TFTv2|Temboo|GSMScanner|SoftwareSerial|MouseController|SpacebrewYun|SSDP|TembooMQTTEdgeDevice|Update|GSMBand|HID|Keyboard|MDNS|SD|Ethernet|Process|HTTPMethod|Server|BridgeServer|GPRS|Console|HttpClient|Servo|USBHost|EthernetServer|Client|systemResetCallbackFunction)\b</string>
+			<key>name</key>
+			<string>storage.type.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(HTTP_POST|SPI_MODE3|SPI_MODE2|SPI_MODE1|SPI_MODE0|SWITCH_DOWN|GSM_MODE_DCS|FILE_READ|WHITE|CH_JOYSTICK_SW|DIGITALSECURITYCAMERA|HTTP_GET|MAX_SERVOS|PIN_MODE_IGNORE|BLUE|BLACK|REPORT_VERSION|SSDP_FRIENDLY_NAME_SIZE|START_SYSEX|CONNECTING|MAX_CHANNELS|MIN_X|MIN_Y|PIN_MODE_ONEWIRE|PIN_MODE_PWM|SSDP_PORT|WIFI_STA|TFT_BL_ON|SPI_CLOCK_DIV64|DIGITAL_MESSAGE|SSDP_SERIAL_NUMBER_SIZE|TOTAL_PINS|CH_SLIDER|TOTAL_PORTS|GSM_READY|END_SYSEX|STRING_DATA|BRIGHT_RED|ANALOG_PORT|SPI_CLOCK_DIV16|ERROR|JOYSTICK_LEFT|IDLE_CALL|GSM_MODE_GSM850_EGSM_DCS_PCS|GRAY1|GRAY2|PIN_MODE_PULLUP|EsploraTFT|IDLE|CH_LIGHT|NOTIFY|SSDP_MODEL_NAME_SIZE|SPI_CLOCK_DIV128|JOYSTICK_DOWN|CH_MIC|RED|HVAC|FIRMATA_MAJOR_VERSION|MANAGEABLE|TFT_BL_OFF|SSDP_INTERVAL|TRANSPARENT_CONNECTED|TOTAL_PIN_MODES|Y_AXIS|GSM_MODE_EGSM_DCS|SSDP_PRESENTATION_URL_SIZE|SWITCH_4|GPRS_READY|SWITCH_1|SWITCH_3|SWITCH_2|TFT_CS_LOW|CH_JOYSTICK_X|CH_JOYSTICK_Y|SPI_CLOCK_DIV32|DEGREES_C|DEGREES_F|SSDP_BUFFER_SIZE|GSM_MODE_EGSM|PIN_MODE_I2C|JOYSTICK_BASE|FILE_APPEND|SWITCH_LEFT|GSM_MODE_GSM850_PCS|LIGHTINGCONTROL|PIN_MODE_ANALOG|TFT_DC_LOW|HID_TX|TFT_CS_HIGH|PIN_MODE_SERIAL|CYAN|MAX_X|MAX_Y|TALKING|RECEIVINGCALL|SET_PIN_MODE|MAX_DATA_BYTES|TOTAL_DIGITAL_PINS|PIN_MODE_SERVO|REPORT_ANALOG|PIN_MODE_STEPPER|SEARCH|SSDP_MANUFACTURER_URL_SIZE|WIFI_AP_STA|GSM_MODE_UNDEFINED|SSDP_BASE_SIZE|GSM_MODE_PCS|Z_AXIS|TOTAL_ANALOG_PINS|TFT_DC_HIGH|REPORT_FIRMWARE|SYSTEM_RESET|SWITCH_UP|RELEASED|FIRMATA_BUGFIX_VERSION|CH_SWITCH_1|CH_SWITCH_2|CH_SWITCH_3|CH_SWITCH_4|ANALOG_MESSAGE|SSDP_MANUFACTURER_SIZE|YELLOW|SOLARPROTECTIONBLIND|SET_DIGITAL_PIN_VALUE|PRESSED|SPI_CLOCK_DIV4|X_AXIS|SSDP_MODEL_URL_SIZE|SPI_CLOCK_DIV2|SSDP_MODEL_VERSION_SIZE|SWITCH_RIGHT|SPI_CLOCK_DIV8|GREEN|FILE_WRITE|FIRMATA_MINOR_VERSION|REPORT_DIGITAL|CALLING|WIFI_AP|SSDP_URI_SIZE|PIN_MODE_SHIFT|HTTP_ANY|PIN_MODE_ENCODER|BASIC|CH_TEMPERATURE|SSDP_METHOD_SIZE|JOYSTICK_UP)\b</string>
+			<key>name</key>
+			<string>constant.language.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(Scheduler|WiFiUDP|sysexCallbackFunction|ESP8266WiFiMesh|WiFiClient|ESP8266SSDP|YunServer|BridgeSSLClient|ESP8266HTTPUpdateServer|YunClient|EEPROM|ESP8266mDNS|WiFiServer|Mailbox|BridgeClient|WiFiClientSecure|LiquidCrystal|Bridge|File|Tft|ESP8266WebServer|WiFi|Esplora|GSM|GSMModem|SPI|callbackFunction|TFT|GSMServer|GSMPIN|KeyboardController|Mouse|FileSystem|stringCallbackFunction|Preferences|ESPmDNS|IPAddress|Firmata|GSM_SMS|WiFiUdp|TembooYunShield|Stepper|EthernetClient|SDFile|TembooCoAPEdgeDevice|GSMVoiceCall|GSMClient|MDNSResponder|ArduinoOTA|TFTv2|Temboo|GSMScanner|SoftwareSerial|MouseController|SpacebrewYun|SSDP|TembooMQTTEdgeDevice|Update|GSMBand|HID|Keyboard|MDNS|SD|Ethernet|Process|HTTPMethod|Server|BridgeServer|GPRS|Console|HttpClient|Servo|USBHost|EthernetServer|Client|systemResetCallbackFunction)\b</string>
+			<key>name</key>
+			<string>storage.modifier.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(getPinState|keyPressed|press|encryptionType|getvoiceCallStatus|blinkVersion|noBuffer|readJoystickButton|available|addPublish|setAccountName|fillScreen|getXChange|schema|readButton|getSignalStrength|gatVoiceCallStatus|blink|writeMicroseconds|readAccelerometer|softAP|onMessage|endSMS|connectSSL|WiFiClient|tembooAnalogGPIOInit|monitor|onBooleanMessage|checkReg|setBand|sendValueAsTwo7bitBytes|rewindDirectory|BSSID|mkdir|setBitOrder|once_ms|begin|tone|softAPmacAddress|checkPIN|putBool|args|setClockDivider|leftToRight|setSavedInputs|beginSMS|addInputExpression|acceptRequest|shutdown|onStart|isDirectory|onRequest|putUChar|click|destinationIP|run|setSettingsFileToRead|disableArduino|TembooGPIOConfig|mouseReleased|drawChar|setSpeed|readSlider|readMicroseconds|answerCall|accept|stop|writeMessage|getULong|setPinState|drawHorizontalLine|WRITE_Package|Task|getAsynchronously|attachGPRS|remove|onStringMessage|voiceCall|setDeviceName|endTransmission|speed|drawNumber|sendDigital|readPort|putString|sendAnalog|releaseAll|hostByName|putULong|writeGreen|transfer|putULong64|remotePort|createChar|printFirmwareVersion|size|setModelName|beginPacketMulticast|isPressed|drawTraingle|getBool|sendString|mouseMoved|onEnd|getLong64|isPIN|getChar|readRed|setCredential|openNextFile|addParameter|mousePressed|remoteNumber|handleClient|verbose|putChar|setDNS|direction|disableBlinkVersion|RSSI|putUShort|remoteIP|drawVerticalLine|attach|hangCall|setFirmwareNameAndVersion|writeBlue|setSchemaURL|runAsynchronously|position|handle|readTinkerkitInput|addHandler|psk|TFTinit|getPinMode|noTone|setCursor|getShort|getIMEI|endPacket|setModelURL|read|connect|setSerialNumber|ready|getKey|setPINUsed|noBlink|autoscroll|flush|peek|printVersion|drawCircle|name|putBytes|getInt|getResult|sendCMD|setManufacturer|setDataMode|update|setClockStretchLimit|getPINUsed|arg|noCursor|disconnect|attached|setManufacturerURL|getBytes|setChoreo|scanNetworks|setCACert|onError|enableArduino|getUInt|maintain|readJoystickSwitch|getSocket|keyReleased|exists|macAddress|readGreen|fillCircle|noAutoscroll|mouseDragged|getLong|attemptScan|drawLine|version|WRITE_DATA|TembooDS18B20Config|printError|TembooMQTTChoreo|getDouble|hasArg|end|softAPConfig|getString|setPinMode|getOemKey|SendReport|getModifiers|client|getBand|setCertificate|sendDigitalPort|seek|WiFiUDP|Ticker|tembooDS18B20Init|printDiag|File|onCustomMessage|localIP|config|TembooSensor|beginPacket|setAppKey|setModelNumber|SSID|scrollDisplayLeft|running|beginTransmission|endWrite|exitValue|onProgress|addService|noDisplay|setFirmwareVersion|rightToLeft|TembooYunShieldChoreo|readLightSensor|subnetMask|isParsingMessage|argName|beginMulticast|rmdir|setCol|addSensorInput|write|softAPIP|getButton|print|setURL|tembooDigitalGPIOInit|parse|readTinkerkitInputB|onRangeMessage|readTinkerkitInputA|onNotFound|mode|sendSysex|open|setName|send|display|putInt|scrollDisplayRight|addInput|begnWrite|WiFiServer|putLong64|setup|setHTTPPort|setGatewayAddress|drawString|getFloat|putFloat|buffer|putLong|cursor|readTemperature|readNetworks|readMessage|BridgeFile|readBlue|TembooCoAPChoreo|getCurrentCarrier|fillRectangle|setSettingsFileToWrite|method|Read_Register|processInput|get|status|parsePacket|writePort|endSysex|switchPIN|onClose|writeRGB|requestFrom|delete|retrieveCallingNumber|receive|setXY|bool|clear|detach|writeJSON|setRowOffsets|setPrivateKey|put|release|addOutputFilter|runShellCommandAsynchronously|move|sendData|runShellCommand|getUChar|setClock|writeRed|onOpen|putShort|TembooChoreo|uri|setPixel|readMicrophone|putUInt|putDouble|on|close|drawRectangle|startLoop|setPage|readJoystickY|readJoystickX|setDeviceType|once|gatewayIP|AppendDescriptor|checkPUK|onReceive|changePIN|writeStream|firmwareVersion|getUShort|setAppKeyName|getYChange|startSysex|getULong64|addSubscribe|getSocketNumber|step|connected|drawFloat|Wire|attach_ms|home)\b</string>
+			<key>name</key>
+			<string>support.function.iot</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(ESP8266WiFi|WiFiClientSecure|ESP8266WiFiMesh|WiFi)\b</string>
+			<key>name</key>
+			<string>support.class.iot</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.iot</string>
+	<key>uuid</key>
+	<string>c5ee1d74-b8e1-4c85-be16-229944d439e6</string>
+</dict>
+</plist>
