@@ -137,7 +137,7 @@ class SerialMonitor(object):
         Arguments:
             out_text {str} -- text to send with the line ending
         """
-        line_ending = self.Preferences.get('line_ending', '\n')
+        line_ending = get_setting('line_ending', '\n')
         out_text += line_ending
         out_text = out_text.encode('utf-8', 'replace')
         
@@ -239,8 +239,6 @@ def toggle_serial_monitor():
     serial_monitor = None
     ports_list = serial_port_list()
     port_id = get_setting('port_id', None)
-
-    print(serials_in_use)
 
     match = port_id in (port[1] for port in ports_list)
 
