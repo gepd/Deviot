@@ -167,12 +167,12 @@
                     {
                         "caption": "menu_deviot_output",
                         "id": "deviot_output",
-                        "command": "deviot_output"
+                        "command": "deviot_output_console"
                     },
                     {
                         "caption": "menu_auto_scroll",
                         "id": "auto_scroll_monitor",
-                        "command": "auto_scroll_monitor"
+                        "command": "deviot_automatic_scroll"
                     },
                     {
                         "caption": "menu_baudrate",
@@ -261,28 +261,28 @@
                             {
                                 "caption": "menu_none",
                                 "id": "line_ending_none",
-                                "command": "choose_line_ending_item",
-                                "args": {"line_ending_item": ""},
+                                "command": "deviot_choose_line_ending",
+                                "args": {"line_ending_item": null},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_new_line",
                                 "id": "line_ending_new",
-                                "command": "choose_line_ending_item",
+                                "command": "deviot_choose_line_ending",
                                 "args": {"line_ending_item": "\n"},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_cr",
                                 "id": "line_ending_return",
-                                "command": "choose_line_ending_item",
+                                "command": "deviot_choose_line_ending",
                                 "args": {"line_ending_item": "\r"},
                                 "checkbox": true
                             },
                             {
                                 "caption": "menu_nl_cr",
                                 "id": "line_ending_both",
-                                "command": "choose_line_ending_item",
+                                "command": "deviot_choose_line_ending",
                                 "args": {"line_ending_item": "\r\n"},
                                 "checkbox": true
                             }

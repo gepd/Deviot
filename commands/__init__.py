@@ -19,6 +19,7 @@ from .deviot_select_port import DeviotSelectPortCommand
 from .deviot_toggle_serial_monitor import DeviotToggleSerialMonitorCommand
 from .deviot_send_serial_monitor import DeviotSendSerialMonitorCommand
 from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
+from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_languages import DeviotLanguagesCommand
 from .deviot_clean_view import DeviotCleanViewCommand
 
@@ -48,6 +49,7 @@ __all__ = [
     'DeviotSendSerialMonitorCommand',
 
     'DeviotChooseBaudrateCommand',
+    'DeviotChooseLineEndingCommand',
 
     'DeviotLanguagesCommand',
 

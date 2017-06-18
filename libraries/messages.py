@@ -8,8 +8,8 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 from sys import exit
-from ..libraries. tools import findInOpendView
 from .I18n import I18n
+from .tools import findInOpendView, get_setting
 
 class Console(object):
     """Deviot Console
@@ -32,8 +32,11 @@ class Console(object):
 
         self.panel.set_read_only(False)
         self.panel.run_command("append", {"characters": text})
-        self.panel.run_command("move_to", {"extend": False, "to": "eof"})
         self.panel.set_read_only(True)
+
+        automatic_scroll = get_setting('automatic_scroll', True)
+        if(automatic_scroll):
+            self.panel.run_command("move_to", {"extend": False, "to": "eof"})
 
     def set_console(self, name='exec'):
         self.name = name

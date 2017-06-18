@@ -51,10 +51,11 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
+        type_console = 'exec'
         serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
-        type_console = get_setting('type_console', 'exec')
+        output_console = get_setting('output_console', False)
         
-        if('exec' not in type_console):
+        if(not output_console):
             type_console = serial_header.strip('\\n')
     
         message = MessageQueue(serial_header)
