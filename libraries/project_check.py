@@ -143,7 +143,9 @@ class ProjectCheck(QuickMenu):
         self.port_id = self.get_serial_port()
         ports_list = serial_port_list()
 
-        if(not self.port_id or self.port_id not in ports_list):
+        port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
+
+        if(not port_ready):
             QuickMenu().quick_serial_ports()
             self.port_id = None
 
