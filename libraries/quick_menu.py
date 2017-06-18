@@ -302,7 +302,7 @@ class QuickMenu(PreferencesBridge):
         Show the list of libraries availables. The callback will show
         the list of examples.
         """
-        self.quick_list = self.libraries_list()
+        self.quick_list = self.libraries_list(example_list=True)
         self.quick_list.insert(0, [_("select_library").upper()])
 
         if(len(self.quick_list) <= 1):
@@ -363,7 +363,7 @@ class QuickMenu(PreferencesBridge):
             if file.endswith(('.ino', '.pde')):
                 window.open_file(file)
 
-    def libraries_list(self):
+    def libraries_list(self, example_list=False):
         """List of Libraries
         
         Make a list of the libraries availables. This list is
@@ -402,7 +402,13 @@ class QuickMenu(PreferencesBridge):
                             check_list.append([caption])
                     
                 if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
-                    quick_list.append([caption, content])
-                    check_list.append(caption)
+                    store_data = True
+                    if(example_list):
+                        examples_path = os.path.join(content, 'examples')
+                        store_data = True if os.path.exists(examples_path) else False
+                    
+                    if(store_data):
+                        quick_list.append([caption, content])
+                        check_list.append(caption)
 
         return quick_list
