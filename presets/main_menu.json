@@ -28,19 +28,19 @@
             {
                 "caption": "menu_search_lib",
                 "id": "search_library",
-                "command": "search_library"
+                "command": "deviot_search_library"
             },{
                 "caption": "menu_remove_lib",
                 "id": "remove_library",
-                "command": "remove_library"
+                "command": "deviot_remove_library"
             },{
                 "caption": "menu_import_library",
                 "id": "import_library",
-                "command": "import_library"
+                "command": "deviot_import_library"
             },{
                 "caption": "menu_library_examples",
                 "id": "library_examples",
-                "command": "list_library_examples"
+                "command": "deviot_library_examples"
             },{
                 "caption": "menu_option_lib",
                 "id": "library_options",
@@ -71,11 +71,22 @@
             },{
                 "caption": "menu_show_console",
                 "id": "show_console",
-                "command": "show_console"
+                "command": "deviot_show_console"
             },{
                 "caption": "menu_hide_console",
                 "id": "hide_console",
-                "command": "hide_console"
+                "command": "deviot_hide_console"
+            },
+            {"caption": "-"},
+            {
+                "caption": "menu_show_terminal",
+                "id": "show_terminal",
+                "command": "deviot_show_terminal"
+            },
+            {
+                "caption": "menu_hide_terminal",
+                "id": "hide_terminal",
+                "command": "deviot_hide_terminal"
             },
             {"caption": "-"},
             {
@@ -145,13 +156,13 @@
                     {
                         "caption": "menu_run",
                         "id": "serial_monitor_run",
-                        "command": "serial_monitor_run",
+                        "command": "deviot_toggle_serial_monitor",
                         "checkbox": true
                     },
                     {
                         "caption": "menu_send",
                         "id": "send_message_serial",
-                        "command": "send_message_serial"
+                        "command": "deviot_send_serial_monitor"
                     },
                     {
                         "caption": "menu_deviot_output",
@@ -170,73 +181,73 @@
                         [
                             {
                                 "caption": "300",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 300},
                                 "checkbox": true
                             },
                             {
                                 "caption": "1200",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 1200},
                                 "checkbox": true
                             },
                             {
                                 "caption": "2400",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 2400},
                                 "checkbox": true
                             },
                             {
                                 "caption": "4800",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 4800},
                                 "checkbox": true
                             },
                             {
                                 "caption": "9600",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 9600},
                                 "checkbox": true
                             },
                             {
                                 "caption": "14400",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 14400},
                                 "checkbox": true
                             },
                             {
                                 "caption": "19200",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 19200},
                                 "checkbox": true
                             },
                             {
                                 "caption": "28800",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 28800},
                                 "checkbox": true
                             },
                             {
                                 "caption": "38400",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 38400},
                                 "checkbox": true
                             },
                             {
                                 "caption": "57600",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 57600},
                                 "checkbox": true
                             },
                             {
                                 "caption": "115200",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 115200},
                                 "checkbox": true
                             },
                             {
                                 "caption": "230400",
-                                "command": "choose_baudrate_item",
+                                "command": "deviot_choose_baudrate",
                                 "args": {"baudrate_item": 230400},
                                 "checkbox": true
                             }

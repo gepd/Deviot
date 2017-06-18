@@ -1,11 +1,9 @@
-import sublime
-import sublime_plugin
-
+from sublime_plugin import WindowCommand
 from ..libraries.paths import folder_explorer
 from ..libraries.tools import create_sketch, get_setting, save_setting
 
 
-class DeviotNewFileCommand(sublime_plugin.WindowCommand):
+class DeviotNewSketchCommand(WindowCommand):
 
     def run(self):
         from ..libraries.I18n import I18n

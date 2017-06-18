@@ -1,7 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..platformio.pio_terminal import PioTerminal
 
-class DeviotOpenPioTerminalCommand(WindowCommand):
+class DeviotHideTerminalCommand(WindowCommand):
 
     def run(self):
-        PioTerminal().show_input()
+        PioTerminal().close_terminal()
