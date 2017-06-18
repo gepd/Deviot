@@ -20,6 +20,7 @@ class QuickMenu(PreferencesBridge):
         super(QuickMenu, self).__init__()
         self.index = 0
         self.quick_list = []
+        self.deeper = 0
 
         global _
         _ = I18n().translate
@@ -326,7 +327,7 @@ class QuickMenu(PreferencesBridge):
         library_path = self.quick_list[selected][1]
         examples_path = os.path.join(library_path, 'examples', '*')
 
-        self.quick_list = [[_("select_library").upper()],[_("_previous")]]
+        self.quick_list = [[_("select_example").upper()]]
 
         for files in glob(examples_path):
             caption = os.path.basename(files)
@@ -341,26 +342,68 @@ class QuickMenu(PreferencesBridge):
         and open it in a new window
         
         Arguments:
-            selected {[type]} -- [description]
+            selected {int} -- user index selection
         """
         if(selected <= 0):
             return
 
-        if(selected == 1):
-            self.quick_libraries()
+        example_path = self.quick_list[selected][1]
+
+        has_file = True
+        temp_list = []
+        check_path = os.path.join(example_path, '*')
+        
+        for path in glob(check_path):
+            caption = os.path.basename(path)
+            temp_list.append([caption, path])
+            
+            if(not os.path.isfile(path)):
+                has_file = False
+        
+        if(not has_file):
+            self.quick_list = temp_list
+            self.quick_list.insert(0, [_("select_example").upper()])
+            quick_panel(self.quick_list, self.callback_deeper)
+            return
+
+        self.open_file(example_path)
+
+
+    def callback_deeper(self, selected):
+        """Examples
+        
+        If an example folder has more folder (instead of .ino .pde files)
+        this method will be  call to show the extra examples
+        
+        Arguments:
+            selected {int} -- user index selection
+        """
+        if(selected <= 0):
+            return
 
         example_path = self.quick_list[selected][1]
 
+        self.open_file(example_path)
+        
+    def open_file(self, sketch_path):
+        """Open sketch
+        
+        search in the given path a ino or pde file extension
+        and open it in a new windows when it's found
+        
+        Arguments:
+            sketch_path {str} -- path (file/folder) where to search
+        """
         window = sublime.active_window()
 
-        if example_path.endswith(('.ino', '.pde')):
-            window.open_file(example_path)
+        if(sketch_path.endswith(('.ino', '.pde'))):
+            window.open_file(sketch_path)
 
-        files = os.path.join(example_path, '*')
+        files = os.path.join(sketch_path, '*')
         files = glob(files)
 
         for file in files:
-            if file.endswith(('.ino', '.pde')):
+            if(file.endswith(('.ino', '.pde'))):
                 window.open_file(file)
 
     def libraries_list(self, example_list=False):
