@@ -13,7 +13,7 @@
 # references: http://www.easysw.com/~mike/serial/serial.html
 
 import sys, os, fcntl, termios, struct, select, errno, time
-from serial.serialutil import *
+from .serialutil import *
 
 # Do check the Python version as some constants have moved.
 if (sys.hexversion < 0x020100f0):
@@ -61,36 +61,36 @@ if   plat[:5] == 'linux':    # Linux (confirmed)
 
     baudrate_constants = {
         0:       0000000,  # hang up
-        50:      0000001,
-        75:      0000002,
-        110:     0000003,
-        134:     0000004,
-        150:     0000005,
-        200:     0000006,
-        300:     0000007,
-        600:     0000010,
-        1200:    0000011,
-        1800:    0000012,
-        2400:    0000013,
-        4800:    0000014,
-        9600:    0000015,
-        19200:   0000016,
-        38400:   0000017,
-        57600:   0010001,
-        115200:  0010002,
-        230400:  0010003,
-        460800:  0010004,
-        500000:  0010005,
-        576000:  0010006,
-        921600:  0010007,
-        1000000: 0010010,
-        1152000: 0010011,
-        1500000: 0010012,
-        2000000: 0010013,
-        2500000: 0010014,
-        3000000: 0010015,
-        3500000: 0010016,
-        4000000: 0010017
+        50:      1,
+        75:      2,
+        110:     3,
+        134:     4,
+        150:     5,
+        200:     6,
+        300:     7,
+        600:     10,
+        1200:    11,
+        1800:    12,
+        2400:    13,
+        4800:    14,
+        9600:    15,
+        19200:   16,
+        38400:   17,
+        57600:   10001,
+        115200:  10002,
+        230400:  10003,
+        460800:  10004,
+        500000:  10005,
+        576000:  10006,
+        921600:  10007,
+        1000000: 10010,
+        1152000: 10011,
+        1500000: 10012,
+        2000000: 10013,
+        2500000: 10014,
+        3000000: 10015,
+        3500000: 10016,
+        4000000: 10017
     }
 
 elif plat == 'cygwin':       # cygwin/win32 (confirmed)
@@ -273,7 +273,7 @@ class PosixSerial(SerialBase):
         # open
         try:
             self.fd = os.open(self.portstr, os.O_RDWR|os.O_NOCTTY|os.O_NONBLOCK)
-        except Exception, msg:
+        except Exception as msg:
             self.fd = None
             raise SerialException("could not open port %s: %s" % (self._port, msg))
         #~ fcntl.fcntl(self.fd, FCNTL.F_SETFL, 0)  # set blocking
@@ -307,7 +307,7 @@ class PosixSerial(SerialBase):
         try:
             orig_attr = termios.tcgetattr(self.fd)
             iflag, oflag, cflag, lflag, ispeed, ospeed, cc = orig_attr
-        except termios.error, msg:      # if a port is nonexistent but has a /dev file, it'll fail here
+        except termios.error as msg:      # if a port is nonexistent but has a /dev file, it'll fail here
             raise SerialException("Could not configure port: %s" % msg)
         # set up raw mode / no echo / binary
         cflag |=  (TERMIOS.CLOCAL|TERMIOS.CREAD)
@@ -484,7 +484,7 @@ class PosixSerial(SerialBase):
                         raise writeTimeoutError
                 d = d[n:]
                 t = t - n
-            except OSError, v:
+            except OSError as v:
                 if v.errno != errno.EAGAIN:
                     raise SerialException('write failed: %s' % (v,))
         return len(data)
