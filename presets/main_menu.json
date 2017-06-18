@@ -47,7 +47,7 @@
                 "children": [
                                 {
                                     "caption":"menu_open_lib_folder",
-                                    "command":"open_library_folder"
+                                    "command":"deviot_open_library_folder"
                                 }
                             ]
             },
