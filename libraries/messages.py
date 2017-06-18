@@ -26,8 +26,13 @@ class Console(object):
         self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
 
     def print_screen(self, text):
-        
-        if(self.panel.size() < 1 and self.name == 'exec'):
+        size = self.panel.size()
+        auto_clean = get_setting('auto_clean', True)
+
+        if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
+            self.clean_console()
+
+        if(size < 1 and self.name == 'exec'):
             self.window.run_command("show_panel", {"panel": "output.exec"})
 
         self.panel.set_read_only(False)
@@ -48,6 +53,12 @@ class Console(object):
                 self.panel.set_name(name)
             else:
                 self.open_panel()
+
+    def clean_console(self):
+        self.window.focus_view(self.panel)
+        self.panel.set_read_only(False)
+        self.window.run_command("deviot_clean_view")
+        self.panel.set_read_only(True)
 
     def open_panel(self, direction=False):
         

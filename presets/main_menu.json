@@ -165,6 +165,11 @@
                         "command": "deviot_send_serial_monitor"
                     },
                     {
+                        "caption": "menu_clean", 
+                        "command": "deviot_clean_console", 
+                        "id": "clean_console"
+                    },
+                    {
                         "caption": "menu_deviot_output",
                         "id": "deviot_output",
                         "command": "deviot_output_console"
@@ -173,6 +178,10 @@
                         "caption": "menu_auto_scroll",
                         "id": "auto_scroll_monitor",
                         "command": "deviot_automatic_scroll"
+                    },{
+                        "caption": "menu_auto_clean",
+                        "id": "auto_clean_monitor",
+                        "command": "deviot_auto_clean"
                     },
                     {
                         "caption": "menu_baudrate",

@@ -64,6 +64,7 @@ class SerialMonitor(object):
 
         self.dprint = message.put
         self.dstop = message.stop_print
+        self.clean = message.clean_console
 
     def is_running(self):
         """Monitor Running
@@ -100,6 +101,13 @@ class SerialMonitor(object):
         """
         self.is_alive = False
         self.dstop()
+
+    def clean_console(self):
+        """Clean console
+        
+        Clean all text in the current console
+        """
+        self.clean()
 
     def receive(self):
         """Receive Data
