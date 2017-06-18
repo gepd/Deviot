@@ -92,6 +92,10 @@ class PioBridge(Command):
 
         if(pio_structure):
             project_path = self.get_project_path()
+            
+            if(not project_path):
+                return None
+
             if('src' in project_path):
                 project_path = self.get_parent_path()
             return project_path

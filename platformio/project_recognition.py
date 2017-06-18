@@ -55,6 +55,10 @@ class ProjectRecognition(object):
             [str] -- path of the file path/path/
         """
         full_path = self.get_file_path()
+
+        if(not full_path):
+            return None
+
         project_path = os.path.dirname(full_path)
         return project_path
 
@@ -93,8 +97,11 @@ class ProjectRecognition(object):
             [str] -- path/parent_path/
         """
         project_path = self.get_project_path()
-        parent = os.path.dirname(project_path)
 
+        if(not project_path):
+            return None
+
+        parent = os.path.dirname(project_path)
         return parent
 
     def get_file_name(self, ext=True):
@@ -111,6 +118,9 @@ class ProjectRecognition(object):
             [str] -- filename.ext or filename
         """
         full_path = self.get_file_path()
+        if(not full_path):
+            return None
+
         file_name = os.path.basename(full_path)
 
         if(not ext):
@@ -128,6 +138,10 @@ class ProjectRecognition(object):
             [str] -- ext
         """
         file_name = self.get_file_name()
+
+        if(not file_name):
+            return None
+
         extension = file_name.split(".")[1]
         return extension
 
@@ -162,6 +176,10 @@ class ProjectRecognition(object):
             [str/none] -- path/platformio.ini / none
         """
         parent = self.get_parent_path()
+
+        if(not parent):
+            return None
+
         ini_path = self.search_pio_ini(parent)
         
         if(not ini_path):
