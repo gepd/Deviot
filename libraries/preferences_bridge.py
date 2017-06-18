@@ -116,3 +116,61 @@ class PreferencesBridge(PioBridge):
         elif(last_action == self.UPLOAD):
             from ..platformio.upload import Upload
             Upload()
+
+    def programmer(self):
+        """Programmer
+
+        Adds the programmer strings in the platformio.ini file, it considerate
+        environment and programmer selected
+
+        Arguments:
+            programmer {str} -- id of chosen option
+        """
+
+        # list of programmers
+        from .configobj.configobj import ConfigObj
+
+        programmer = get_setting('programmer_id', None)
+        ini_path = self.get_ini_path()
+
+        flags = {
+            'avr':          {"upload_protocol": "stk500v1",
+                             "upload_flags": "-P$UPLOAD_PORT",
+                             "upload_port": self.port_id},
+            'avrmkii':      {"upload_protocol": "stk500v2",
+                             "upload_flags": "-Pusb"},
+            'usbtyni':      {"upload_protocol": "usbtiny"},
+            'arduinoisp':   {"upload_protocol": "arduinoisp"},
+            'usbasp':       {"upload_protocol": "usbasp",
+                             "upload_flags": "-Pusb"},
+            'parallel':     {"upload_protocol": "dapa",
+                             "upload_flags": "-F"},
+            'arduinoasisp': {"upload_protocol": "stk500v1",
+                             "upload_flags": "-P$UPLOAD_PORT -b$UPLOAD_SPEED",
+                             "upload_speed": "19200",
+                             "upload_port": self.port_id}
+        }
+
+        # open platformio.ini and get the environment
+        ini_file = ConfigObj(ini_path, list_values=False)
+        environment = 'env:{0}'.format(self.board_id)
+
+        # stop if environment wasn't initialized yet
+        if(environment not in ini_file):
+            return
+
+        env = ini_file[environment]
+        rm = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']
+
+        # remove previous configuration
+        if(rm[0] in env):
+            for line in rm:
+                if(line in env):
+                    env.pop(line)
+
+        # add programmer option if it was selected
+        if(programmer):
+            env.merge(flags[programmer])
+
+        # save in file
+        ini_file.write()

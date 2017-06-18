@@ -86,43 +86,43 @@
                     {
                         "caption": "None",
                         "checkbox": true,
-                        "args": {"programmer": false},
-                        "command": "programmer_none"
+                        "args": {"programmer_item": false},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "AVR ISP",
                         "checkbox": true,
-                        "args": {"programmer": "avr"},
-                        "command": "programmer_avr"
+                        "args": {"programmer_item": "avr"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "AVRISP mkII",
                         "checkbox": true,
-                        "args": {"programmer": "avrmkii"},
-                        "command": "programmer_avr_mkii"
+                        "args": {"programmer_item": "avrmkii"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "USBtinyISP",
                         "checkbox": true,
-                        "args": {"programmer": "usbtyni"},
-                        "command": "programmer_usb_tyni"
+                        "args": {"programmer_item": "usbtyni"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "ArduinoISP",
                         "checkbox": true,
-                        "args": {"programmer": "arduinoisp"},
-                        "command": "programmer_arduino_isp"
+                        "args": {"programmer_item": "arduinoisp"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "USBasp",
                         "checkbox": true,
-                        "args": {"programmer": "usbasp"},
-                        "command": "programmer_usbasp"
+                        "args": {"programmer_item": "usbasp"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "Parallel Programmer",
                         "checkbox": true,
-                        "args": {"programmer": "parallel"},
-                        "command": "programmer_parallel"
+                        "args": {"programmer_item": "parallel"},
+                        "command": "deviot_choose_programmer"
                     },{
                         "caption": "Arduino as ISP",
                         "checkbox": true,
-                        "args": {"programmer": "arduinoasisp"},
-                        "command": "programmer_arduino_as_isp"
+                        "args": {"programmer_item": "arduinoasisp"},
+                        "command": "deviot_choose_programmer"
                     }
                 ]
             },
