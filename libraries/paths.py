@@ -280,11 +280,11 @@ def listWinVolume():
     for label in range(67, 90):
         vol = chr(label) + ':\\'
         if os.path.isdir(vol):
-            vol_list.append([vol])
+            vol_list.append(vol)
     return vol_list
 
 
-def listRootPath():
+def list_root_path():
     """
     return the system drives in windows or unix
     """
@@ -297,62 +297,107 @@ def listRootPath():
         root_list = [home_path, ROOT_PATH]
     return root_list
 
-
-def folder_explorer(path=None, index=-2, window=None, ls=None, callback=None):
+def globalize(path):
+    """Apply Glob
+    
+    List all files/folders in the given path and return
+    a list with the results
+    
+    Arguments:
+        path {str} -- folder path
+    
+    Returns:
+        [list] -- list with all file/folder inside the path
     """
-    shows the list of files in the system drive(s)
-    if the argument 'path' is set, it will show the
-    folder in the given path. To get the selected path
-    use the callback argument
+    path = os.path.join(path, '*')
+    globalize = glob.glob(path)
+
+    return globalize
+
+def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
+    """Explore a path
+    
+    Using the quick panel, this fuction allows the user to select a path, it will be always
+    a folder.
+
+    When you give a path in the 'path' argument, the explorer will be open it in the
+    given path. If you don't pass any path, the 'last_path' setting will be check to
+    open the explorer in the last path used. If not path is found it will show the
+    root path.
+
+    Callbak is the function that is executed when the 'select current path' option is selected
+    when the 'key' argument is given the callback will be called like callbak(key, path) if
+    there is not key; callback(path). (The key argument is useful to work with the preferences)
+
+    The rest of the arguments are used by the fuction and you don't need worry about it
+    
+    Keyword Arguments:
+        path {str} -- stores the current path selected (default: {None})
+        callback {function} -- callback called when a folder is selected (default: {None})
+        key {str} -- key to use in the callback (default: {None})
+        plist {list} -- list of path handled by the function (default: {None})
+        index {number} -- index of the last selection (default: {-2})
+    
+    Returns:
+        [function] -- callback with the selected path
     """
-    from .I18n import I18n
-
-    _ = I18n().translate
-
     if(index == -1):
         return
 
-    if(not window):
-        window = sublime.active_window()
+    paths_list = []
+    paths_list.append("Select Current Path")
+    paths_list.append("<- Back")
 
-    if(index == 0 and callback):
-        return callback(path[0])
-
-    paths = []
-
-    # if we aren't in the root path
-    if(not path and ls is not None and index > 1):
-        path = ls[index]
-
-    # list the root paths
+    # last path used
     if(not path):
-        root = listRootPath()
-        paths.extend(root)
+        from .tools import get_setting
+        path = get_setting('last_path', None)
 
-    if(index > 0):
-        # when the back option is selected
-        if(index == 1 and path is not None):
-            dir_back = os.path.dirname(path[0])
-            if(path[0] != dir_back):
-                path = [dir_back]
-            else:
-                root = listRootPath()
-                paths.extend(root)
-                path = None
+    # recognize path
+    if(path and not plist):
+        index = -3
+        new_path = globalize(path)
+        paths_list.extend(new_path)
+
+    # select current
+    if(index == 0):
+        # store last path used
+        from .tools import save_setting
+        save_setting('last_path', path)
+
+        if(not key):
+            return callback(path)
+        return callback(key, path)
+
+    # close if can't back anymore
+    if(not path and index == 1):
+        return
+
+    # back
+    if(index == 1 and path):
+        plist = globalize(path)
+        prev = os.path.dirname(path)
+        back_list = globalize(prev)
+        if(path == prev):
+            index = -2
+            path = None
+            plist = None
         else:
-            # when any option (less Current and Back) is selected
-            if(isinstance(path, list)):
-                path = [os.path.join(path[0], ls[index][0])]
+            paths_list.extend(back_list)
+            path = prev
 
-    # list the sub directories from the given path
-    if(path):
-        sub_paths = os.path.join(path[0], '*')
-        for dirs in glob.glob(sub_paths):
-            if(os.path.isdir(dirs)):
-                paths.append([dirs])
+    if(plist and index != 1):
+        path = plist[index]
 
-    paths.insert(0, [_('_previous')])
-    paths.insert(0, [_('select_{0}', path)])
+    # start from root
+    if(index == -2):
+        root_list = list_root_path()
+        paths_list.extend(root_list)
+    # iterate other path
+    elif(index > 1):
+        new_path = globalize(plist[index])
+        paths_list.extend(new_path)
 
-    sublime.set_timeout(lambda: window.show_quick_panel(
-        paths, lambda index: folder_explorer(path, index, window, paths, callback)), 0)
+    from .quick_panel import quick_panel
+
+    sublime.set_timeout(lambda: quick_panel(paths_list, lambda index: folder_explorer(path, callback, key, paths_list, index)), 0)

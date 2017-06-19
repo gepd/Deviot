@@ -15,9 +15,8 @@ class DeviotNewSketchCommand(WindowCommand):
 
     def location(self, name):
         self.name = name
-        last_path = get_setting('last_path', None)
-        folder_explorer(path=last_path, callback=self.on_done)
+        folder_explorer(callback=self.on_done)
 
     def on_done(self, path):
-        create_sketch(path, self.name)
+        create_sketch(self.name, path)
         save_setting('last_path', path)
