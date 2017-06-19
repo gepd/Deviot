@@ -67,6 +67,7 @@ class PioTerminal(Command):
         
         Shows an input to run the commands
         """
+        self.window.focus_view(self.view)
         cap = ' $ '
         self.window.show_input_panel(cap, '', self.nonblock_cmd, None, None)
 
