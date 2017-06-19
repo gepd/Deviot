@@ -44,6 +44,9 @@ class Upload(Initialize):
         # initialize board if it's not
         self.add_board()
 
+        # add extra library board
+        self.add_extra_library()
+
         # check if there is a programmer selected
         self.programmer()
         programmer = get_setting('programmer_id', None)

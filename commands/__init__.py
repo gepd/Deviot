@@ -7,6 +7,8 @@ from .deviot_import_library import DeviotImportLibraryCommand
 from .deviot_insert_library import DeviotInsertLibraryCommand
 from .deviot_libraries_examples import DeviotLibraryExamplesCommand
 from .deviot_open_library_folder import DeviotOpenLibraryFolderCommand
+from .deviot_extra_library_folder import DeviotExtraLibraryFolderCommand
+from .deviot_remove_extra_library_folder import DeviotRemoveExtraLibraryFolderCommand
 from .deviot_compile_sketch import DeviotCompileSketchCommand
 from .deviot_upload_sketch import DeviotUploadSketchCommand
 from .deviot_clean_sketch import DeviotCleanSketchCommand
@@ -42,7 +44,8 @@ __all__ = [
     'DeviotInsertLibraryCommand',
     'DeviotLibraryExamplesCommand',
     'DeviotOpenLibraryFolderCommand',
-
+    'DeviotExtraLibraryFolderCommand',
+    'DeviotRemoveExtraLibraryFolderCommand',
     'DeviotCompileSketchCommand',
     'DeviotUploadSketchCommand',
     'DeviotCleanSketchCommand',

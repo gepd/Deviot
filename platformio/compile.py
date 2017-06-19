@@ -35,6 +35,9 @@ class Compile(Initialize):
             self.derror("select_board_list")
             return
 
+        # add extra library board
+        self.add_extra_library()
+
         cmd = ['run', '-e ', self.board_id]
         self.run_command(cmd)
 

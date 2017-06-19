@@ -7,7 +7,8 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from .tools import get_setting, save_setting
-from ..platformio.pio_bridge import PioBridge 
+from ..platformio.pio_bridge import PioBridge
+from .configobj.configobj import ConfigObj
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -128,7 +129,6 @@ class PreferencesBridge(PioBridge):
         """
 
         # list of programmers
-        from .configobj.configobj import ConfigObj
 
         programmer = get_setting('programmer_id', None)
         ini_path = self.get_ini_path()
@@ -173,4 +173,34 @@ class PreferencesBridge(PioBridge):
             env.merge(flags[programmer])
 
         # save in file
+        ini_file.write()
+
+    def add_extra_library(self):
+        """Add extra library folder
+        
+        Adds an extra folder where to search for user libraries,
+        this option will run before compile the code.
+
+        The path of the folder must be set from the option 
+        `add extra folder` in the library option menu
+        """
+        ini_path = self.get_ini_path()
+        extra = get_setting('extra_library', None)
+
+        ini_file = ConfigObj(ini_path, list_values=False)
+        environment = 'env:{0}'.format(self.board_id)
+
+        if(environment not in ini_file):
+            return
+
+        env = ini_file[environment]
+
+        if(not extra):
+            if('lib_extra_dirs' in env):
+                env.pop('lib_extra_dirs')
+
+        if(extra):
+            extra_option = {'lib_extra_dirs': extra}
+            env.merge(extra_option)
+
         ini_file.write()
