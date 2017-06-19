@@ -341,17 +341,26 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
     Returns:
         [function] -- callback with the selected path
     """
+
     if(index == -1):
         return
 
-    paths_list = []
-    paths_list.append("Select Current Path")
-    paths_list.append("<- Back")
+    # close if can't back anymore
+    if(not path and index == 1):
+        return
 
     # last path used
     if(not path):
         from .tools import get_setting
         path = get_setting('last_path', None)
+
+    from .I18n import I18n
+    _ = I18n().translate
+
+    paths_list = []
+    path_caption = path if(path) else "0"
+    paths_list.append(_("select_cur_dir_{0}", path_caption))
+    paths_list.append(_("_previous"))
 
     # recognize path
     if(path and not plist):
@@ -368,10 +377,6 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
         if(not key):
             return callback(path)
         return callback(key, path)
-
-    # close if can't back anymore
-    if(not path and index == 1):
-        return
 
     # back
     if(index == 1 and path):
