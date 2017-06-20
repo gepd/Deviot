@@ -10,10 +10,17 @@ from sys import exit
 
 from .initialize import Initialize
 from ..libraries.tools import save_setting
+from ..libraries.thread_progress import ThreadProgress
+from ..libraries.I18n import I18n
+
+_ = I18n
 
 class Compile(Initialize):
     def __init__(self):
         super(Compile, self).__init__()
+
+        global _
+        _ = I18n().translate
 
         self.nonblock_compile()
 
@@ -53,3 +60,4 @@ class Compile(Initialize):
 
         thread = Thread(target=self.start_compilation)
         thread.start()
+        ThreadProgress(thread, _('processing'), '')

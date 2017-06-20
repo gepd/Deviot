@@ -22,7 +22,9 @@ from .I18n import I18n
 from ..platformio.command import Command
 from .file import File
 from .paths import getLibrariesFileDataPath
+from .thread_progress import ThreadProgress
 
+_ = None
 
 class Libraries(Command):
     """
@@ -33,10 +35,12 @@ class Libraries(Command):
     def __init__(self, window=None, view=None, feedback=True):
         super(Libraries, self).__init__()
 
+        global _
+        
+        _ = I18n().translate
         self.window = sublime.active_window()
         self.view = self.window.active_view()
         self.lib_file_path = getLibrariesFileDataPath()
-        self.tr = I18n().translate
         self.quick_list = []
         self.cwd = None
 
@@ -60,7 +64,7 @@ class Libraries(Command):
         
         Opens the input box to search a library
         """
-        caption = self.tr("search_query")
+        caption = _("search_query")
         self.window.show_input_panel(caption, '', self.download_list_async, None, None)
 
     def download_list_async(self, keyword):
@@ -74,6 +78,7 @@ class Libraries(Command):
         """
         thread = Thread(target=self.download_list, args=(keyword,))
         thread.start()
+        ThreadProgress(thread, _('searching'), '')
 
     def download_list(self, keyword):
         """PlatformIO API
@@ -112,10 +117,10 @@ class Libraries(Command):
                     response_list['items'].append(item_next)
 
         if(len(response_list['items']) == 0):
-            self.quick_list.append([self.tr('none_lib_found')])
+            self.quick_list.append([_('none_lib_found')])
         else:
             self.quicked(response_list['items'])
-            self.quick_list.insert(0, [self.tr('select_library').upper()])
+            self.quick_list.insert(0, [_('select_library').upper()])
         
         quick_panel(self.quick_list, self.library_install_async)
 
@@ -159,6 +164,7 @@ class Libraries(Command):
 
         thread = Thread(target=self.library_install, args=(selected,))
         thread.start()
+        ThreadProgress(thread, _('installing'), '')
 
     def library_install(self, selected):
         """Library Install
@@ -195,7 +201,7 @@ class Libraries(Command):
         quick_list = File(self.lib_file_path).read_json()
 
         self.quick_list = quick_list
-        self.quick_list.insert(0, [self.tr('select_library').upper()])
+        self.quick_list.insert(0, [_('select_library').upper()])
 
         quick_panel(quick_list, self.remove_library_async)
 
@@ -213,6 +219,7 @@ class Libraries(Command):
 
         thread = Thread(target=self.remove_library, args=(selected,))
         thread.start()
+        ThreadProgress(thread, _('removing'), '')
 
     def remove_library(self, selected):
         """Remove Library

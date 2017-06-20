@@ -10,10 +10,17 @@ from sys import exit
 
 from .initialize import Initialize
 from ..libraries.tools import get_setting, save_setting
+from ..libraries.thread_progress import ThreadProgress
+from ..libraries.I18n import I18n
+
+_ = I18n
 
 class Upload(Initialize):
     def __init__(self):
         super(Upload, self).__init__()
+
+        global _
+        _ = I18n().translate
 
         self.nonblock_upload()
 
@@ -70,3 +77,4 @@ class Upload(Initialize):
 
         thread = Thread(target=self.start_upload)
         thread.start()
+        ThreadProgress(thread, _('processing'), '')
