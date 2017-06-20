@@ -118,7 +118,7 @@
                     },{
                         "caption": "USBtinyISP",
                         "checkbox": true,
-                        "args": {"programmer_item": "usbtyni"},
+                        "args": {"programmer_item": "usbtiny"},
                         "command": "deviot_choose_programmer"
                     },{
                         "caption": "ArduinoISP",
