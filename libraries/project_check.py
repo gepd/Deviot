@@ -209,7 +209,6 @@ class ProjectCheck(QuickMenu):
             serial_monitor = serial.get_serial_monitor(port_id)
 
             serial_monitor.stop()
-            serial.serials_in_use.remove(port_id)
             del serial.serial_monitor_dict[port_id]
 
             save_setting('run_monitor', True)

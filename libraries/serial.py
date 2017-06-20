@@ -76,6 +76,15 @@ class SerialMonitor(object):
         """
         return self.is_alive
 
+    def start_async(self):
+        """Start serial monitor
+        
+        Open the serial monitor in a new thread to avoid block
+        the sublime text UI
+        """
+        monitor_thread = Thread(target=self.start)
+        monitor_thread.start()
+
     def start(self):
         """Start serial monitor
         
@@ -100,6 +109,7 @@ class SerialMonitor(object):
         Stops the loop who is wating for more information from the serial port
         """
         self.is_alive = False
+        serials_in_use.remove(self.port)
         self.dstop()
 
     def clean_console(self):
@@ -286,7 +296,7 @@ def toggle_serial_monitor():
         return
 
     if(not serial_monitor.is_running()):
-        serial_monitor.start()
+        serial_monitor.start_async()
 
         if(port_id not in serials_in_use):
             serials_in_use.append(port_id)
@@ -295,5 +305,4 @@ def toggle_serial_monitor():
     
     else:
         serial_monitor.stop()
-        serials_in_use.remove(port_id)
         del serial_monitor_dict[port_id]
