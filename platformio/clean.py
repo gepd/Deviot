@@ -30,8 +30,7 @@ class Clean(Initialize):
         Starts the cleaning command. This command cleand the binary files
         in the .pioenvs folder (hidden in unix system)
         """
-        if(not self.is_iot()):
-            self.derror("not_iot_{0}", self.get_file_name())
+        if(not self.check_main_requirements()):
             exit(0)
 
         self.check_board_selected()

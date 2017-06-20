@@ -66,6 +66,48 @@ class ProjectCheck(QuickMenu):
         """
         return self.view.is_dirty()
 
+    def check_main_requirements(self):
+        """Main Requirements
+        
+        If a sketch has been never unsaved and it's not empty,
+        this method will save it with a randon name based in 
+        the time in the temp path. If the sketch is empty it
+        will not allow the command (compile/uplaod/clean) to
+        continue.
+
+        It the sketch hasn't the an IOT extension, it will be
+        considerated not IOT so, you can process the file.
+
+        If the file has unsaved changes, it will save it before
+        to process the file
+        
+        Returns:
+            bool -- False if any of the requirements fails.
+        """
+        if(self.is_empty()):
+            self.dprint("not_empty_sketch")
+            return False
+
+        if(not self.get_file_name()):
+            self.save_code_infile()
+
+        if(not self.is_iot()):
+            self.derror("not_iot_{0}", self.get_file_name())
+            return False
+
+        self.check_unsaved_changes()
+
+        return True
+
+    def check_unsaved_changes(self):
+        """Check unsaved changes
+        
+        Saves the changes if the view is dirty (with chages)
+        """
+
+        if(self.is_unsaved()):
+            self.view.run_command('save')
+
     def structurize_project(self):
         """Structure Files
         
@@ -149,7 +191,39 @@ class ProjectCheck(QuickMenu):
             QuickMenu().quick_serial_ports()
             self.port_id = None
 
+    def save_code_infile(self):
+        """Save Code
 
+        If the sketch in the current view has been not saved, it generate
+        a random name and stores in a temp folder.
+
+        Arguments: view {ST Object} -- Object with multiples options of ST
+        """
+        from os import path
+        from time import time
+        from sublime import Region
+        from ..libraries.file import File
+        from ..libraries.tools import make_folder
+
+        ext = '.ino'
+
+        tmppath = self.get_temp_path()
+        filename = str(time()).split('.')[0]
+        filepath = path.join(tmppath, filename, 'src')
+
+        make_folder(filepath)
+
+        fullpath = filename + ext
+        fullpath = path.join(filepath, fullpath)
+
+        region = Region(0, self.view.size())
+        text = self.view.substr(region)
+        file = File(fullpath)
+        file.write(text)
+
+        self.view.set_scratch(True)
+        self.window.run_command('close')
+        self.view = self.window.open_file(fullpath)
 
 def add_folder_to_filepath(src_path, new_folder):
     """Add folder

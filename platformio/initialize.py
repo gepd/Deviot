@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+from sys import exit
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.messages import MessageQueue
@@ -71,4 +72,3 @@ class Initialize(ProjectCheck):
 
         thread = Thread(target=self.add_board)
         thread.start()
-

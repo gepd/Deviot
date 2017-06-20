@@ -34,6 +34,9 @@ class ProjectRecognition(object):
         self.view = self.window.active_view()
         self.native = None
 
+    def get_file_name(self):
+        return self.view.file()
+
     def get_file_path(self):
         """File Path
         

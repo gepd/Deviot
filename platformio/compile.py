@@ -30,9 +30,7 @@ class Compile(Initialize):
         Starts the compilation command, it first checks if the file in the
         current view is a .iot file and if a board (environment) has been selected
         """
-
-        if(not self.is_iot()):
-            self.derror("not_iot_{0}", self.get_file_name())
+        if(not self.check_main_requirements()):
             exit(0)
 
         save_setting('last_action', self.COMPILE)

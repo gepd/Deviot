@@ -30,8 +30,7 @@ class Upload(Initialize):
         Run the upload platformio command checking if a board (environment)
         and a serial port is selected
         """
-        if(not self.is_iot()):
-            self.derror("not_iot_{0}", self.get_file_name())
+        if(not self.check_main_requirements()):
             exit(0)
 
         save_setting('last_action', self.UPLOAD)
