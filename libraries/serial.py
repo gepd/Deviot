@@ -242,29 +242,48 @@ def display_mode(inp_text, str_len=0):
     return text
 
 
+def get_serial_monitor(port_id):
+    """Get Serial Monitor Object
+    
+    Get the serial monitor object. If this is in the serial_monitor_dict
+    will be returned, if not a new serial monitor object will be created
+    
+    Returns:
+        bool/object -- False if port is not in the list of the current
+                    availables port, otherwise a serial monitor object
+    """
+    serial_monitor = None
+    ports_list = serial_port_list()
+    
+
+    match = port_id in (port[1] for port in ports_list)
+
+    if(not match):
+        return False
+
+    if(port_id in serials_in_use):
+        serial_monitor = serial_monitor_dict.get(port_id, None)
+    
+    if(serial_monitor == None):
+        serial_monitor = SerialMonitor(port_id)
+
+    return serial_monitor
+
+
 def toggle_serial_monitor():
     """Open/Close serial monitor
     
     If the serial monitor is closed, it will be opened or the opposite.
     """
-    serial_monitor = None
-    ports_list = serial_port_list()
     port_id = get_setting('port_id', None)
+    serial_monitor = get_serial_monitor(port_id)
 
-    match = port_id in (port[1] for port in ports_list)
-
-    if(not match):
+    if(serial_monitor == False):
         message = MessageQueue("_deviot_{0}", version)
         message.start_print()
         message.put("serial_not_available")
         message.stop_print()
         return
-
-    if(port_id in serials_in_use):
-        serial_monitor = serial_monitor_dict.get(port_id, None)
-
-    if(not serial_monitor):
-        serial_monitor = SerialMonitor(port_id)
 
     if(not serial_monitor.is_running()):
         serial_monitor.start()

@@ -191,6 +191,29 @@ class ProjectCheck(QuickMenu):
             QuickMenu().quick_serial_ports()
             self.port_id = None
 
+    def check_serial_monitor(self):
+        """Check monitor serial
+        
+        Checks if the monitor serial is currently running
+        and close it.
+
+        It will also stores a reference in the preferences (last_action)
+        to run the serial monitor next time
+        """
+        from . import serial
+        from .tools import save_setting
+
+        port_id = self.port_id
+
+        if(port_id in serial.serials_in_use):
+            serial_monitor = serial.get_serial_monitor(port_id)
+
+            serial_monitor.stop()
+            serial.serials_in_use.remove(port_id)
+            del serial.serial_monitor_dict[port_id]
+
+            save_setting('run_monitor', True)
+
     def save_code_infile(self):
         """Save Code
 
