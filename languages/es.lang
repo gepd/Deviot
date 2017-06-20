@@ -265,8 +265,8 @@ msgstr "Nombre para el Sketch:"
 msgid "updating_board_list"
 msgstr "Actualizando Lista de Placas"
 
-msgid "not_empty_sketch_{0}"
-msgstr "{0} No es posible cargar un sketch vacío\n"
+msgid "not_empty_sketch"
+msgstr "No es posible procesar un sketch vacío\n"
 
 msgid "invalid_file_{0}"
 msgstr "{0} Archivo no válido para procesar\n"
