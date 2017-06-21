@@ -456,3 +456,44 @@ msgstr "of"
 
 msgid "not_in_sync"
 msgstr "not in sync"
+
+# Platformio Console
+
+msgid "invalid_command"
+msgstr "Comando Inválido (Intenta con: help)\n"
+
+msgid "invalid_path"
+msgstr "Carpeta no válida.\n"
+
+msgid "created{0}"
+msgstr "'{0}' creada exitosamente.\n"
+
+msgid "error_making_folder"
+msgstr "Error al crear carpeta.\n"
+
+msgid "removed{0}"
+msgstr "{0} Removida exitosamente.\n"
+
+msgid "wrong_folder_name"
+msgstr "Nombre de carpeta incorrecto, corrígelo e intenta nuevamente.\n"
+
+msgid "cmd_cwd"
+msgstr "Shows the current working dir.\n"
+
+msgid "cmd_cd"
+msgstr "Change directory.\n"
+
+msgid "cmd_ls"
+msgstr "List all files and folder in the cwd\n"
+
+msgid "cmd_mk"
+msgstr "Make the folder in the cwd\n"
+
+msgid "cmd_rm"
+msgstr "remove the folder in the cwd\n"
+
+msgid "cmd_clear"
+msgstr "clear all in the terminal window\n"
+
+msgid "cmd_pio_help"
+msgstr "to see info about PlatformIO\n"
