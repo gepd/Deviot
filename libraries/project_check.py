@@ -90,6 +90,7 @@ class ProjectCheck(QuickMenu):
 
         if(not self.get_file_name()):
             self.save_code_infile()
+            self.cwd = self.get_working_project_path()
 
         if(not self.is_iot()):
             self.derror("not_iot_{0}", self.get_file_name())
