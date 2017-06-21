@@ -208,28 +208,30 @@ class PioInstall(object):
         cmd = ['python2', '--version']
         out = run_command(cmd)
 
-        dprint("symlink_detected")
-
-        if(out[0] is 0):
+        if(out[0] == 0):
+            dprint("symlink_detected")
+            self.version = sub(r'\D', '', out[1])
             self.SYMLINK = 'python2'
             save_setting('symkink', True)
-            return out
 
     def check_python(self):
         """Python requirement
 
         Check if python 2 is installed
         """
+        self.version = None
+
         cmd = [self.SYMLINK, '--version']
         out = run_command(cmd)
 
         if(out[0] > 0):
-            out = self.check_sym_link()
+            self.check_sym_link()
 
-        version = sub(r'\D', '', out[1])
+        if(out[0] == 0):
+            self.version = sub(r'\D', '', out[1])
 
         # show error and link to download
-        if(out[0] > 0 or int(version[0]) is 3):
+        if(out[0] > 0 or int(self.version[0]) is 3):
             from ..libraries.I18n import I18n
             _ = I18n().translate
             go_to = sublime.ok_cancel_dialog(
