@@ -35,6 +35,16 @@ class ProjectRecognition(object):
         self.native = None
 
     def get_file_name(self):
+        """Window File Name
+        
+        Gets the name of window, if the user has open a common file
+        it will take the file name, but in the case of a new window
+        the name will be null, or you can change that name using
+        the method set_name of the view.
+        
+        Returns:
+            str -- File name otherwise null
+        """
         return self.view.file()
 
     def get_file_path(self):
@@ -79,13 +89,6 @@ class ProjectRecognition(object):
         
         file_name = self.get_file_hash()
         temp = self.get_temp_path(file_name)
-
-        try:
-            os.makedirs(temp)
-        except OSError as exc:
-            if exc.errno != errno.EEXIST:
-                raise exc
-            pass
 
         return temp
 
