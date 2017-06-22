@@ -63,6 +63,9 @@ class PreferencesBridge(PioBridge):
         if(boards):
             settings.extend(boards)
 
+        if(settings):
+            settings = list(set(settings))
+
         return settings
 
     def save_environment(self, board_id):
