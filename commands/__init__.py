@@ -33,6 +33,7 @@ from .deviot_about import DeviotAboutCommand
 from .deviot_pio_about import DeviotPioAboutCommand
 from .deviot_clean_view import DeviotCleanViewCommand
 from .deviot_clean_console import DeviotCleanConsoleCommand
+from .deviot_reload import DeviotReloadCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -53,10 +54,8 @@ __all__ = [
     'DeviotShowConsoleCommand',
     'DeviotHideConsoleCommand',
     'DeviotChooseProgrammerCommand',
-
     'DeviotShowTerminalCommand',
     'DeviotHideTerminalCommand',
-
     'DeviotSelectPortCommand',
     'DeviotToggleSerialMonitorCommand',
     'DeviotSendSerialMonitorCommand',
@@ -71,5 +70,6 @@ __all__ = [
     'DeviotAboutCommand',
     'DeviotPioAboutCommand',
     'DeviotCleanViewCommand',
-    'DeviotCleanConsoleCommand'
+    'DeviotCleanConsoleCommand',
+    'DeviotReloadCommand'
 ]
