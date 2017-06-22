@@ -27,10 +27,13 @@ def serial_port_list():
                        port_name]['port2 fullname', 'port_name']]
     """
     ports = list(list_ports.comports()) 
-    
+    dev_names = ['ttyACM', 'ttyUSB', 'tty.', 'cu.']
     serial_ports = []
     for port_no, description, address in ports:
-        serial_ports.append([description, port_no])
+        for dev_name in dev_names:
+            if(address != 'n/a' and dev_name in port_no):
+                caption = '{0} ({1})'.format(description, port_no)
+                serial_ports.append([caption, port_no])
 
     return serial_ports
 

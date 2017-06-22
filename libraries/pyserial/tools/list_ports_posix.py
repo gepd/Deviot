@@ -41,6 +41,7 @@ def read_line(filename):
 
 def re_group(regexp, text):
     """search for regexp in text, return 1st group on match"""
+    text = text.decode('utf-8')
     m = re.search(regexp, text)
     if m: return m.group(1)
 
