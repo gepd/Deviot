@@ -282,7 +282,7 @@ msgid "invalid_file_{0}"
 msgstr "{0} File not valid to process\n"
 
 msgid "not_iot_{0}"
-msgstr "{1} is not a IoT File\n"
+msgstr "{0} is not a IoT File\n"
 
 msgid "select_board_list"
 msgstr "Select a Board From The List"
