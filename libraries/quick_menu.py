@@ -165,12 +165,7 @@ class QuickMenu(PreferencesBridge):
         
         Show the list of serial ports availables in the quick panel
         """
-        header = _("select_port_list").strip("\\n").upper()
-        port_list = serial_port_list()
-        port_list.insert(0, [header])
-
-        if(len(port_list) < 2):
-            port_list = [_("menu_none_serial_mdns").upper()]
+        port_list = self.quick_serial_list()
 
         quick_panel(port_list, self.callback_serial_ports)
 
@@ -186,13 +181,46 @@ class QuickMenu(PreferencesBridge):
             save_setting('last_action', None)
             return
 
-        port_list = serial_port_list()
-        port_list.insert(0, ["-"])
+        port_list = self.quick_serial_list()
         port_selected = port_list[selected][1]
         
         save_setting('port_id', port_selected)
 
         self.run_last_action()
+
+    def quick_serial_list(self):
+        """Serial Port List
+        
+        Gets the list of serial ports and mdns services and
+        return it
+        
+        Returns:
+            [type] -- [description]
+        """
+        from .preferences_bridge import get_mdns_services
+
+
+        header = _("select_port_list").upper()
+        port_list = serial_port_list()
+        port_list.insert(0, [header])
+
+        mdns_list = []
+        services = get_mdns_services()
+
+        if(bool(services)):
+            for device in services:
+
+                address = device['address']
+                board = device['board'].capitalize()
+                caption = "{0} ({1})".format(board, address)
+                mdns_list.append([caption, address])
+
+            port_list.extend(mdns_list)
+
+        if(len(port_list) < 2):
+            port_list = [_("menu_none_serial_mdns").upper()]
+
+        return port_list
 
     def quick_language(self):
         """Language Panel

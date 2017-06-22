@@ -207,3 +207,30 @@ class PreferencesBridge(PioBridge):
             env.merge(extra_option)
 
         ini_file.write()
+
+def get_mdns_services():
+    """mDNS services
+    
+    Returns the list of instances found in the multicast dns
+    (local network)
+
+    The list will have the following format:
+    [{
+        'address': 'ip string', 
+        'port': 'port string', 
+        'weight': 'weight string', 
+        'priority': 'priority string'
+        'board': 'board string',
+        'ssh_upload' 'yes/no',
+        'auth_upload': 'yes/no'
+    }]
+    
+    Returns:
+        list -- device info
+    """
+    from .mdns.mdns import MDNSBrowser
+
+    MDNS = MDNSBrowser()
+    MDNS.start()
+
+    return MDNS.services
