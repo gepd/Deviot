@@ -133,6 +133,9 @@ class QuickMenu(PreferencesBridge):
         environments = self.get_selected_boards()
         environment = self.get_environment()
 
+        if(environments):
+            environments = list(set(environments))
+
         index = 0
         total = len(environments)
         count = total
