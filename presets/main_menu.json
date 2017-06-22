@@ -152,7 +152,7 @@
             {
                 "caption": "menu_auth_change",
                 "id": "auth_change",
-                "command": "auth_change"
+                "command": "deviot_set_password"
             },
             {
                 "caption": "menu_monitor_serial",

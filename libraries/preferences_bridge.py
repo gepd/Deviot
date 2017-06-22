@@ -91,6 +91,23 @@ class PreferencesBridge(PioBridge):
 
         return settings
 
+    def get_ports_list(self):
+        """Ports List
+        
+        Get the list of serial port and mdns services and return it
+        
+        Returns:
+            list -- serial ports / mdns services
+        """
+        from .serial import serial_port_list
+
+        ports_list = serial_port_list()
+        services = self.get_mdns_services()
+
+        ports_list.extend(services)
+
+        return ports_list
+
     def get_serial_port(self):
         """Serial Port Selected
         
@@ -208,29 +225,18 @@ class PreferencesBridge(PioBridge):
 
         ini_file.write()
 
-def get_mdns_services():
-    """mDNS services
-    
-    Returns the list of instances found in the multicast dns
-    (local network)
+    def get_mdns_services(self):
+        """mDNS services
+        
+        Returns the list of instances found in the multicast dns
+        (local network)
+        
+        Returns:
+            list -- device info
+        """
+        from .mdns.mdns import MDNSBrowser
 
-    The list will have the following format:
-    [{
-        'address': 'ip string', 
-        'port': 'port string', 
-        'weight': 'weight string', 
-        'priority': 'priority string'
-        'board': 'board string',
-        'ssh_upload' 'yes/no',
-        'auth_upload': 'yes/no'
-    }]
-    
-    Returns:
-        list -- device info
-    """
-    from .mdns.mdns import MDNSBrowser
+        MDNS = MDNSBrowser()
+        MDNS.start()
 
-    MDNS = MDNSBrowser()
-    MDNS.start()
-
-    return MDNS.services
+        return MDNS.formated_list()

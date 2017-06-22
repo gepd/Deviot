@@ -6,17 +6,6 @@ class MDNSBrowser:
     """
     Class for zeroconf multicast DNS service discovery of arduino (esp)
     instances in local network
-
-    The list will have the following format:
-    [{
-        'address': 'ip string', 
-        'port': 'port string', 
-        'weight': 'weight string', 
-        'priority': 'priority string'
-        'board': 'board string',
-        'ssh_upload' 'yes/no',
-        'auth_upload': 'yes/no'
-    }]
     """
 
     def __init__(self):
@@ -40,6 +29,17 @@ class MDNSBrowser:
 
         Runs every time service in MDNS changes state(removed, added, modified).
         On service added, the device will be add to self. services
+
+        The list will have the following format:
+        [{
+            'address': 'ip string', 
+            'port': 'port string', 
+            'weight': 'weight string', 
+            'priority': 'priority string'
+            'board': 'board string',
+            'ssh_upload' 'yes/no',
+            'auth_upload': 'yes/no'
+        }]
         """
         if(state_change is ServiceStateChange.Added):
             device = {}
@@ -56,3 +56,25 @@ class MDNSBrowser:
                     device[key] = value
 
                 self.services.append(device)
+
+    def formated_list(self):
+        """List of services
+        
+        Returns only the neccessary data to work with the plugin
+        
+        Returns:
+            list -- board id and addres (ip)
+        """
+        mdns_list = []
+
+        if(bool(self.services)):
+            for device in self.services:
+
+                address = device['address']
+                board = device['board'].capitalize()
+                auth = device['auth_upload']
+
+                caption = "{0} ({1})".format(board, address)
+                mdns_list.append([caption, address, auth])
+
+        return mdns_list

@@ -19,6 +19,7 @@ from .deviot_choose_programmer import DeviotChooseProgrammerCommand
 from .deviot_show_terminal import DeviotShowTerminalCommand
 from .deviot_hide_terminal import DeviotHideTerminalCommand
 from .deviot_select_port import DeviotSelectPortCommand
+from .deviot_set_password import DeviotSetPasswordCommand
 from .deviot_toggle_serial_monitor import DeviotToggleSerialMonitorCommand
 from .deviot_send_serial_monitor import DeviotSendSerialMonitorCommand
 from .deviot_output_console import DeviotOutputConsoleCommand
@@ -57,6 +58,7 @@ __all__ = [
     'DeviotShowTerminalCommand',
     'DeviotHideTerminalCommand',
     'DeviotSelectPortCommand',
+    'DeviotSetPasswordCommand',
     'DeviotToggleSerialMonitorCommand',
     'DeviotSendSerialMonitorCommand',
     'DeviotOutputConsoleCommand',

@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 from os import path
 
 from ..platformio.project_recognition import ProjectRecognition
-from .serial import serial_port_list
 from .quick_menu import QuickMenu
 
 class ProjectCheck(QuickMenu):
@@ -184,7 +183,7 @@ class ProjectCheck(QuickMenu):
         quick panel to select the port
         """
         self.port_id = self.get_serial_port()
-        ports_list = serial_port_list()
+        ports_list = self.get_ports_list()
 
         port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
 
@@ -213,6 +212,47 @@ class ProjectCheck(QuickMenu):
             del serial.serial_monitor_dict[port_id]
 
             save_setting('run_monitor', True)
+
+    def check_auth_ota(self):
+        """Check auth
+        
+        Checks if the selected port is a mdns service, and if it needs
+        authentification to upload the sketch
+        
+        Returns:
+            bool -- None when not auth, false when none pass is stored
+        """
+        from ..libraries.configobj.configobj import ConfigObj
+        from .tools import get_setting
+
+        auth = None
+        ini_path = self.get_ini_path()
+        config = ConfigObj(ini_path, list_values=False)
+        
+        ports_list = self.get_ports_list()
+
+        for port in ports_list:
+            if(self.port_id == port[1]):
+                auth = port[2]
+                break
+
+        environment = 'env:{0}'.format(self.board_id)
+
+        if(auth == 'no'):
+            if('upload_flags' in config[environment]):
+                config[environment].pop('upload_flags')
+                config.write()
+            return None
+
+        auth_pass = get_setting('auth_pass', None)
+        if(not auth_pass):
+            self.window.run_command("deviot_set_password")
+            return
+        
+        flag = {'upload_flags': '--auth={0}'.format(auth_pass)}
+        config[environment].merge(flag)
+
+        config.write()
 
     def save_code_infile(self):
         """Save Code

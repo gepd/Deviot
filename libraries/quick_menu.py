@@ -195,32 +195,17 @@ class QuickMenu(PreferencesBridge):
         return it
         
         Returns:
-            [type] -- [description]
+            list -- available serial ports/mdns services
         """
-        from .preferences_bridge import get_mdns_services
-
 
         header = _("select_port_list").upper()
-        port_list = serial_port_list()
-        port_list.insert(0, [header])
+        ports_list = self.get_ports_list()
+        ports_list.insert(0, [header])     
 
-        mdns_list = []
-        services = get_mdns_services()
+        if(len(ports_list) < 2):
+            ports_list = [_("menu_none_serial_mdns").upper()]
 
-        if(bool(services)):
-            for device in services:
-
-                address = device['address']
-                board = device['board'].capitalize()
-                caption = "{0} ({1})".format(board, address)
-                mdns_list.append([caption, address])
-
-            port_list.extend(mdns_list)
-
-        if(len(port_list) < 2):
-            port_list = [_("menu_none_serial_mdns").upper()]
-
-        return port_list
+        return ports_list
 
     def quick_language(self):
         """Language Panel

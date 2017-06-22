@@ -62,8 +62,9 @@ class Upload(Initialize):
         else:
             cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e', self.board_id]
 
+        self.check_auth_ota()
         self.check_serial_monitor()
-        
+
         out = self.run_command(cmd)
 
         if(get_setting('run_monitor', None)):
