@@ -1082,7 +1082,7 @@ class Engine(threading.Thread):
         self.daemon = True
         self.zc = zc
         self.readers = {}  # maps socket to reader
-        self.timeout = 5
+        self.timeout = 0.1
         self.condition = threading.Condition()
         self.start()
 
