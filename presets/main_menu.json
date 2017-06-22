@@ -49,10 +49,10 @@
                                     "caption":"menu_open_lib_folder",
                                     "command":"deviot_open_library_folder"
                                 },{
-                                    "caption":"menu_extra_lib_foder",
+                                    "caption":"menu_extra_lib_folder",
                                     "command":"deviot_extra_library_folder"
                                 },{
-                                    "caption":"menu_remove_extra_lib_foder",
+                                    "caption":"menu_remove_extra_lib_folder",
                                     "command":"deviot_remove_extra_library_folder"
                                 }
                             ]
