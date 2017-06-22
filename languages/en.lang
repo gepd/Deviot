@@ -12,41 +12,44 @@ msgstr "Deviot need Python 2.7 to work, please download and install it"
 msgid "button_download_python"
 msgstr "Download Python"
 
+msgid "symlink_detected"
+msgstr "Symlink has been detected"
+
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
 
 msgid "pio_is_installed{0}"
 msgstr "{0} PlatformIO is installed in your system, you can enjoy Deviot now!"
 
-msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO is not installed\nPreparing to installing it, please be patient it may take a while.\n"
+msgid "pio_isn_installed"
+msgstr "PlatformIO is not installed\nPreparing to installing it, please be patient it may take a while.\n"
 
-msgid "downloading_files{0}"
-msgstr "{0} Downloading necessary files...\n"
+msgid "downloading_files"
+msgstr "Downloading necessary files...\n"
 
-msgid "error_downloading_files{0}"
-msgstr "{0} There was an error downloading the necessary files...\n"
+msgid "error_downloading_files"
+msgstr "There was an error downloading the necessary files...\n"
 
-msgid "error_saving_files{0}"
-msgstr "{0} There was an error saving the necessary files...\n"
+msgid "error_saving_files"
+msgstr "There was an error saving the necessary files...\n"
 
-msgid "extracting_files{0}"
-msgstr "{0} Extracting files...\n"
+msgid "extracting_files"
+msgstr "Extracting files...\n"
 
-msgid "installing_pio{0}"
-msgstr "{0} Installing PlatformIO...\n"
+msgid "installing_pio"
+msgstr "Installing PlatformIO...\n"
 
-msgid "uninstall_old_pio{0}"
-msgstr "{0} Uninstalling current version...\n"
+msgid "uninstall_old_pio"
+msgstr "Uninstalling current version...\n"
 
-msgid "installing_dev_pio{0}"
-msgstr "{0} Installing 'develop' PlatformIO version...\n"
+msgid "installing_dev_pio"
+msgstr "Installing 'develop' PlatformIO version...\n"
 
-msgid "installing_stable_pio{0}"
-msgstr "{0} Installing 'stable' PlatformIO version...\n"
+msgid "installing_stable_pio"
+msgstr "Installing 'stable' PlatformIO version...\n"
 
-msgid "setup_finished{0}"
-msgstr "{0} Installation finished, now you can enjoy Deviot!\n"
+msgid "setup_finished"
+msgstr "Installation finished, now you can enjoy Deviot!\n"
 
 msgid "searching_pio_updates"
 msgstr "Searching PlatformIO Upgrades...\n\n"
@@ -92,6 +95,12 @@ msgstr "Not Examples Availables"
 msgid "menu_option_lib"
 msgstr "Library Options"
 
+msgid "menu_extra_lib_folder"
+msgstr "Extra Library Folder"
+
+msgid "menu_remove_extra_lib_folder"
+msgstr "Remove Extra Library Folder"
+
 msgid "menu_open_lib_folder"
 msgstr "Open Libraries Folder"
 
@@ -110,14 +119,20 @@ msgstr "Clean"
 msgid "menu_open_ini_file"
 msgstr "Open Build Config File"
 
+msgid "menu_show_console"
+msgstr "Show Deviot Console"
+
 msgid "menu_hide_console"
 msgstr "Hide Deviot Console"
 
+msgid "menu_show_terminal"
+msgstr "Show Terminal"
+
+msgid "menu_hide_terminal"
+msgstr "Hide Terminal"
+
 msgid "menu_programmer"
 msgstr "Programmer"
-
-msgid "menu_show_console"
-msgstr "Show Deviot Console"
 
 msgid "menu_serial_port"
 msgstr "Serial Port(s)"
@@ -239,6 +254,9 @@ msgstr "About PlatformIO"
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
+msgid "_deviot_starting{0}"
+msgstr "[ Deviot {0} ] Starting...\n"
+
 msgid "checking_pio_updates"
 msgstr "Checking for PlatformIO updates...\n"
 
@@ -257,14 +275,14 @@ msgstr "Name for New Sketch:"
 msgid "updating_board_list"
 msgstr "Updating Board Lists"
 
-msgid "not_empty_sketch_{0}"
-msgstr "{0} Isn't possible to upload an empty sketch\n"
+msgid "not_empty_sketch"
+msgstr "Isn't possible to upload an empty sketch\n"
 
 msgid "invalid_file_{0}"
 msgstr "{0} File not valid to process\n"
 
-msgid "not_iot_{0}{1}"
-msgstr "{0} {1} is not a IoT File\n"
+msgid "not_iot_{0}"
+msgstr "{1} is not a IoT File\n"
 
 msgid "select_board_list"
 msgstr "Select a Board From The List"
@@ -350,9 +368,13 @@ msgstr "< Previous"
 msgid "upgrading_pio"
 msgstr "Upgrading PlarformIO...\n"
 
+msgid "select_{0}"
+msgstr "Choose {0}"
 
 # Libraries
 
+msgid "deviot_library{0}"
+msgstr "[ Deviot {0} ] Library Manager\n"
 
 msgid "search_query"
 msgstr "Search Query:"
