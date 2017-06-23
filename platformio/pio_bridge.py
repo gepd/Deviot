@@ -168,7 +168,8 @@ class PioBridge(Command):
         Returns:
             bool -- true to keep working with platformio structure
         """
-        return True
+
+        return get_setting('pio_structure', False)
 
     def get_libraries_folders(self, platform='all'):
         """Libraries availables

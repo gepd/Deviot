@@ -384,7 +384,7 @@
                                 },
                                 {
                                     "caption":"menu_always_native",
-                                    "command":"use_always_native"
+                                    "command":"deviot_pio_structure"
                                 },
                                 {"caption": "-"},
                                 {
