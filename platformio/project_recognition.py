@@ -87,7 +87,7 @@ class ProjectRecognition(object):
         """
         import errno
         
-        file_name = self.get_file_hash()
+        file_name = self.get_file_name(ext=False)
 
         if(not file_name):
             return None

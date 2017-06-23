@@ -233,12 +233,15 @@ class ProjectCheck(QuickMenu):
 
         for port in ports_list:
             if(self.port_id == port[1]):
-                auth = port[2]
-                break
+                try:
+                    auth = port[2]
+                    break
+                except:
+                    pass
 
         environment = 'env:{0}'.format(self.board_id)
 
-        if(auth == 'no'):
+        if(not auth or auth == 'no'):
             if('upload_flags' in config[environment]):
                 config[environment].pop('upload_flags')
                 config.write()
