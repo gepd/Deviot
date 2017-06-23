@@ -6,7 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-
+from sublime import platform
 from threading import Thread
 from time import sleep
 
@@ -31,9 +31,9 @@ def serial_port_list():
     serial_ports = []
     for port_no, description, address in ports:
         for dev_name in dev_names:
-            if(address != 'n/a' and dev_name in port_no):
-                caption = '{0} ({1})'.format(description, port_no)
-                serial_ports.append([caption, port_no])
+            if(address != 'n/a' and dev_name in port_no or platform() == 'windows'):
+                serial_ports.append([description, port_no])
+                break
 
     return serial_ports
 
