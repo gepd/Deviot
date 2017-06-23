@@ -117,7 +117,7 @@ class MessageQueue(Console):
     
         text = I18n().translate(text, *args)
         
-        if ('\\n' in text):
+        if('\\n' in text[-2:]):
             text = text.replace('\\n', '\n')
 
         empty = False
