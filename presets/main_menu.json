@@ -372,7 +372,7 @@
                                 },
                                 {
                                     "caption":"menu_open_build_folder",
-                                    "command":"open_build_folder"
+                                    "command":"deviot_open_build_folder"
                                 },
                                 {
                                     "caption":"menu_change_build_folder",
@@ -380,7 +380,7 @@
                                 },
                                 {
                                     "caption":"menu_use_cpp_new",
-                                    "command":"use_cpp_template"
+                                    "command":"deviot_cpp_file"
                                 },
                                 {
                                     "caption":"menu_always_native",

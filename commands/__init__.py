@@ -28,6 +28,8 @@ from .deviot_auto_clean import DeviotAutoCleanCommand
 from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
 from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
+from .deviot_open_build_folder import DeviotOpenBuildFolderCommand
+from .deviot_cpp_file import DeviotCppFileCommand
 from .deviot_pio_structure import DeviotPioStructureCommand
 from .deviot_languages import DeviotLanguagesCommand
 from .deviot_donate import DeviotDonateCommand
@@ -68,6 +70,8 @@ __all__ = [
     'DeviotChooseBaudrateCommand',
     'DeviotChooseLineEndingCommand',
     'DeviotChooseDisplayModeCommand',
+    'DeviotOpenBuildFolderCommand',
+    'DeviotCppFileCommand',
     'DeviotPioStructureCommand',
     'DeviotLanguagesCommand',
     'DeviotDonateCommand',

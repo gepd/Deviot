@@ -187,7 +187,7 @@ def create_sketch(sketch_name, path):
         os.makedirs(sketch_path)
 
     # use cpp file/template intead of ino
-    cpp = get_setting('use_cpp', False)
+    cpp = get_setting('cpp_file', False)
     if cpp:
         ext = '.cpp'
     else:
