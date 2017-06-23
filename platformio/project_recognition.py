@@ -88,6 +88,10 @@ class ProjectRecognition(object):
         import errno
         
         file_name = self.get_file_hash()
+
+        if(not file_name):
+            return None
+
         temp = self.get_temp_path(file_name)
 
         return temp
@@ -161,6 +165,10 @@ class ProjectRecognition(object):
         """
         import hashlib
         file_path = self.get_file_path()
+
+        if(not file_path):
+            return None
+
         hash_object = hashlib.md5(file_path.encode('utf-8'))
         return hash_object.hexdigest()
 
