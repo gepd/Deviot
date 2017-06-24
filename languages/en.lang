@@ -433,6 +433,9 @@ msgstr "None library installed"
 msgid "serial_port_used_{0}"
 msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
 
+msgid "serial_not_available"
+msgstr "The serial port selected isn't available"
+
 msgid "send"
 msgstr "Send:"
 
