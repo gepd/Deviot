@@ -18,14 +18,14 @@
 	<key>patterns</key>
 	<array>
 		<dict>
-			<key>include</key>
-			<string>source.c++</string>
+			<key>match</key>
+			<string>\b(boolean|byte|word|String)\b</string>
+			<key>name</key>
+			<string>storage.modifier.iot</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>\b(boolean|byte|word)\b</string>
-			<key>name</key>
-			<string>storage.type.iot</string>
+			<key>include</key>
+			<string>source.c++</string>
 		</dict>
 		<dict>
 			<key>match</key>
