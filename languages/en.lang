@@ -430,6 +430,9 @@ msgstr "None library installed"
 
 # Serial Monitor
 
+msgid "serial_monitor_header{0}{1}"
+msgstr "[ Deviot {0} ] Serial Monitor | {1}\n\n"
+
 msgid "serial_port_used_{0}"
 msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
 

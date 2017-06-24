@@ -67,11 +67,11 @@ class Upload(Initialize):
 
         out = self.run_command(cmd)
 
-        if(get_setting('run_monitor', None)):
+        if(get_setting('run_monitor', None) and out[0] == 0):
             from ..libraries.serial import toggle_serial_monitor
             
             toggle_serial_monitor()
-            save_setting('run_monitor', None)
+        save_setting('run_monitor', None)
 
         self.dstop()
         save_setting('last_action', None)
