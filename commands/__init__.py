@@ -39,6 +39,7 @@ from .deviot_pio_about import DeviotPioAboutCommand
 from .deviot_clean_view import DeviotCleanViewCommand
 from .deviot_clean_console import DeviotCleanConsoleCommand
 from .deviot_reload import DeviotReloadCommand
+from .deviot_set_ip import DeviotSetIpCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -81,5 +82,6 @@ __all__ = [
     'DeviotPioAboutCommand',
     'DeviotCleanViewCommand',
     'DeviotCleanConsoleCommand',
-    'DeviotReloadCommand'
+    'DeviotReloadCommand',
+    'DeviotSetIpCommand'
 ]
