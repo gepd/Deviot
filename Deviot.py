@@ -38,9 +38,13 @@ class DeviotListener(EventListener):
     
     def on_close(self, view):
         from .libraries import serial
-        if(serial.serials_in_use):
-            for port_id in serial.serials_in_use:
-                serial_monitor = serial.serial_monitor_dict.get(port_id, None)
-                serial_monitor.stop()
-                serial.serials_in_use.remove(port_id)
-                del serial.serial_monitor_dict[port_id]
+        
+        window_name = view.name()
+        search_id = window_name.split(" | ")
+
+        if(len(search_id) > 1 and search_id[1] in serial.serials_in_use):
+            port_id = search_id[1]
+            serial_monitor = serial.serial_monitor_dict.get(port_id, None)
+            serial_monitor.stop()
+            del serial.serial_monitor_dict[port_id]
+                
