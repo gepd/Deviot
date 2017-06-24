@@ -5,7 +5,7 @@ from os import getcwd, environ
 import subprocess
 from sys import exit
 
-from ..libraries import tools
+from ..libraries.tools import get_setting, create_command
 from ..platformio.project_recognition import ProjectRecognition
 
 ###
@@ -19,10 +19,10 @@ class Command(ProjectRecognition):
         super(Command, self).__init__()
         self.realtime = True
         self.set_return = False
-        self.verbose = False
+        self.verbose = get_setting('verbose_output', False)
         self.dprint = None
 
-        env_path = tools.get_setting('env_path', None)
+        env_path = get_setting('env_path', None)
         
         if(env_path):
             environ['PATH'] = env_path
@@ -65,7 +65,7 @@ class Command(ProjectRecognition):
 
     def prepare_command(self, post_command):
         cmd = " ".join(post_command)
-        command = tools.create_command(['pio', '-f', '-c', 'sublimetext'])
+        command = create_command(['pio', '-f', '-c', 'sublimetext'])
         command.extend(post_command)
 
         # verbose mode

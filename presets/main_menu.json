@@ -358,7 +358,7 @@
                                 {
                                     "caption":"menu_show_verbose",
                                     "checkbox":true,
-                                    "command":"toggle_verbose"
+                                    "command":"deviot_verbose_output"
                                 },
                                 {"caption": "-"},
                                 {
