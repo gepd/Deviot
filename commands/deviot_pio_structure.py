@@ -9,7 +9,7 @@ class DeviotPioStructureCommand(WindowCommand):
     """
     pio_structure = None
     def run(self):
-        save_setting('pio_structure', self.pio_structure)
+        save_setting('pio_structure', not self.pio_structure)
 
     def is_checked(self):
         self.pio_structure = get_setting('pio_structure', False)
