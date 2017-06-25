@@ -187,6 +187,9 @@ class QuickMenu(PreferencesBridge):
 
         port_list = self.quick_serial_list()
         port_selected = port_list[selected][1]
+
+        print(port_list)
+        print(port_selected)
         
         save_setting('port_id', port_selected)
 
@@ -205,7 +208,7 @@ class QuickMenu(PreferencesBridge):
         header = _("select_port_list").upper()
         ports_list = self.get_ports_list()
         ports_list.insert(0, [header])
-        ports_list.insert(1, _("menu_add_ip"))     
+        ports_list.insert(1, [_("menu_add_ip")])     
 
         if(len(ports_list) < 2):
             ports_list = [_("menu_none_serial_mdns").upper()]
