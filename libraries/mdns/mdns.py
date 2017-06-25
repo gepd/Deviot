@@ -21,7 +21,7 @@ class MDNSBrowser:
         self._zeroconf = Zeroconf()
         self._browser = ServiceBrowser(self._zeroconf, '_arduino._tcp.local.',
                                        handlers=[self.on_service_state_change])
-        sleep(0.15)
+        sleep(0.20)
         self._zeroconf.close()
 
     def on_service_state_change(self, zeroconf, service_type, name, state_change):
