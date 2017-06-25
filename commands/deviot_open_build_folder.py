@@ -11,4 +11,4 @@ class DeviotOpenBuildFolderCommand(WindowCommand):
 
     def run(self):
         temp_path = getTempPath()
-        run_command('open_url', {'url': temp_path})
+        self.window.run_command('open_dir', {'dir': temp_path})

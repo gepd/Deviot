@@ -1,21 +1,17 @@
-from sublime_plugin import TextCommand
-from sublime import run_command
+from sublime_plugin import WindowCommand
+from sublime import run_command, active_window
 
 from os import path
 from ..libraries.tools import make_folder
 from ..libraries.paths import getPioLibrary
 
-class DeviotOpenLibraryFolderCommand(TextCommand):
+class DeviotOpenLibraryFolderCommand(WindowCommand):
     """
     Open a new window where the user libreries must be installed
 
     Extends: sublime_plugin.TextCommand
     """
 
-    def run(self, edit):
+    def run(self):
         pio_library = getPioLibrary()
-        
-        if(not path.exists(pio_library)):
-            make_folder(pio_library)
-
-        run_command('open_url', {'url': pio_library})
+        self.window.run_command('open_dir', {'dir': pio_library})
