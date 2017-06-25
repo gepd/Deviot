@@ -165,9 +165,9 @@ class QuickMenu(PreferencesBridge):
         
         Show the list of serial ports availables in the quick panel
         """
-        port_list = self.quick_serial_list()
+        self.quick_list = self.quick_serial_list()
 
-        quick_panel(port_list, self.callback_serial_ports)
+        quick_panel(self.quick_list, self.callback_serial_ports)
 
     def callback_serial_ports(self, selected):
         """Selected Port Callback
@@ -185,11 +185,7 @@ class QuickMenu(PreferencesBridge):
             self.window.run_command('deviot_set_ip')
             return
 
-        port_list = self.quick_serial_list()
-        print(port_list)
-        print(selected)
-        port_selected = port_list[selected][1]
-        
+        port_selected = self.quick_list[selected][1]
         save_setting('port_id', port_selected)
 
         self.run_last_action()
