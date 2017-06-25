@@ -186,10 +186,9 @@ class QuickMenu(PreferencesBridge):
             return
 
         port_list = self.quick_serial_list()
-        port_selected = port_list[selected][1]
-
         print(port_list)
-        print(port_selected)
+        print(selected)
+        port_selected = port_list[selected][1]
         
         save_setting('port_id', port_selected)
 
