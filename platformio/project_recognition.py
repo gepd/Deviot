@@ -92,6 +92,19 @@ class ProjectRecognition(object):
         if(not file_name):
             return None
 
+        ext = self.get_file_extension()
+        if(ext and ext != 'ino'):
+            from glob import glob
+            
+            project_path = self.get_project_path()
+            project_path = os.path.join(project_path, '*')
+            project_path = glob(project_path)
+
+            for file in project_path:
+                if(file.endswith('ino')):
+                    file_name = self.get_file_name(custom_path=file, ext=False)
+                    break
+
         temp = self.get_temp_path(file_name)
 
         return temp
@@ -114,12 +127,14 @@ class ProjectRecognition(object):
         parent = os.path.dirname(project_path)
         return parent
 
-    def get_file_name(self, ext=True):
+    def get_file_name(self, custom_path=None, ext=True):
         """File Name
         
         Name of the file loaded in the current view. 
         
         Keyword Arguments:
+            custom_path {str} -- custom path to get the file name
+
             ext {bool} -- if is set to false removes the 
                           extension of the filename 
                           (default: {True})
@@ -130,6 +145,9 @@ class ProjectRecognition(object):
         full_path = self.get_file_path()
         if(not full_path):
             return None
+
+        if(custom_path):
+            full_path = custom_path
 
         file_name = os.path.basename(full_path)
 
