@@ -91,6 +91,27 @@ class PreferencesBridge(PioBridge):
 
         return settings
 
+    def get_platform(self):
+        """Get Platform
+        
+        Gets the platform from the current selected environment (board)
+        
+        Returns:
+            str -- platform name
+        """
+        from .file import File
+        from .paths import getBoardsFileDataPath
+
+        environment = self.get_environment()
+
+        boards_path = getBoardsFileDataPath()
+        boards_file = File(boards_path)
+        boards = boards_file.read_json()
+
+        for board in boards:
+            if(board['id'] == environment):
+                return board['platform']
+
     def get_ports_list(self):
         """Ports List
         

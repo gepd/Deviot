@@ -433,7 +433,8 @@ class QuickMenu(PreferencesBridge):
         """
         from re import search
         
-        libraries_folders = self.get_libraries_folders()
+        platform = self.get_platform()
+        libraries_folders = self.get_libraries_folders(platform)
         
         quick_list = []
         check_list = []
