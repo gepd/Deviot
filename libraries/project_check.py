@@ -240,19 +240,21 @@ class ProjectCheck(QuickMenu):
                     auth = port[2]
                     break
                 except:
-                    pass
+                    return
 
         environment = 'env:{0}'.format(self.board_id)
+        auth_pass = get_setting('auth_pass', None)
 
-        if(not auth or auth == 'no'):
+        if(auth == 'no' or not auth_pass):
             if('upload_flags' in config[environment]):
                 config[environment].pop('upload_flags')
                 config.write()
             return None
 
-        auth_pass = get_setting('auth_pass', None)
-        if(not auth_pass):
+        
+        if(auth == 'yes' and not auth_pass):
             self.window.run_command("deviot_set_password")
+            save_setting('last_action', 3)
             return
         
         flag = {'upload_flags': '--auth={0}'.format(auth_pass)}
