@@ -1542,17 +1542,11 @@ class ServiceInfo(object):
         )
 
 
-def normalize_interface_choice(choice, address_family):
-    if choice is InterfaceChoice.Default:
-        choice = ['0.0.0.0']
-    elif choice is InterfaceChoice.All:
-        #choice = [u'192.168.144.1', u'192.168.0.10', u'127.0.0.1', u'192.168.70.1']
-        
-        choise = []
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.connect(("8.8.8.8", 80))
-        
-        choice = [sock.getsockname()[0]]
+def normalize_interface_choice():       
+    choise = []
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(("8.8.8.8", 80))
+    choice = [sock.getsockname()[0]]
     return choice
 
 
@@ -1610,7 +1604,7 @@ class Zeroconf(QuietLogger):
         self._GLOBAL_DONE = False
 
         self._listen_socket = new_socket()
-        interfaces = normalize_interface_choice(interfaces, socket.AF_INET)
+        interfaces = normalize_interface_choice()
 
         self._respond_sockets = []
 
