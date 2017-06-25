@@ -487,23 +487,26 @@ msgstr "not in sync"
 
 # Platformio Console
 
+msgid "pio_terminal"
+msgstr "[ Deviot ] PlatformIO Terminal\n\nTo get information about the PlatformIO command writes: 'pio -h'\nor 'help' to know about the Deviot commands.\n"
+
 msgid "invalid_command"
-msgstr "Comando Inválido (Intenta con: help)\n"
+msgstr "Invalid command (Try with: help)\n"
 
 msgid "invalid_path"
-msgstr "Carpeta no válida.\n"
+msgstr "Folder name not valid.\n"
 
 msgid "created{0}"
-msgstr "'{0}' creada exitosamente.\n"
+msgstr "'{0}' created successfully.\n"
 
 msgid "error_making_folder"
-msgstr "Error al crear carpeta.\n"
+msgstr "Error creating the folder.\n"
 
 msgid "removed{0}"
-msgstr "{0} Removida exitosamente.\n"
+msgstr "{0} Deleted successfully.\n"
 
 msgid "wrong_folder_name"
-msgstr "Nombre de carpeta incorrecto, corrígelo e intenta nuevamente.\n"
+msgstr "The name of the folder is wrong, fix it and try again.\n"
 
 msgid "cmd_cwd"
 msgstr "Shows the current working dir.\n"
