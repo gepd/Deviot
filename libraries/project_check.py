@@ -227,6 +227,18 @@ class ProjectCheck(QuickMenu):
         """
         from ..libraries.configobj.configobj import ConfigObj
         from .tools import get_setting
+        from re import search
+
+        ended = True
+
+        platform = self.get_platform()
+        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
+
+        if('espressif' not in platform and ip_device is not None):
+            return False
+
+        if('espressif' not in platform):
+            return ended
 
         auth = None
         ini_path = self.get_ini_path()
@@ -240,7 +252,7 @@ class ProjectCheck(QuickMenu):
                     auth = port[2]
                     break
                 except:
-                    return
+                    return anded
 
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
@@ -249,18 +261,19 @@ class ProjectCheck(QuickMenu):
             if('upload_flags' in config[environment]):
                 config[environment].pop('upload_flags')
                 config.write()
-            return None
+            return ended
 
         
         if(auth == 'yes' and not auth_pass):
             self.window.run_command("deviot_set_password")
             save_setting('last_action', 3)
-            return
+            return ended
         
         flag = {'upload_flags': '--auth={0}'.format(auth_pass)}
         config[environment].merge(flag)
 
         config.write()
+        return ended
 
     def save_code_infile(self):
         """Save Code

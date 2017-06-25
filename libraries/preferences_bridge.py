@@ -110,7 +110,7 @@ class PreferencesBridge(PioBridge):
 
         for board in boards:
             if(board['id'] == environment):
-                return board['platform']
+                return board['platform'].lower()
 
     def get_ports_list(self):
         """Ports List

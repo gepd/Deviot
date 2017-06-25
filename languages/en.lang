@@ -354,7 +354,7 @@ msgid "continue_button"
 msgstr "Continue"
 
 msgid "ota_error_platform"
-msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
+msgstr "OTA Upload is only available for Espressif (ESP8266) platform."
 
 msgid "select_library"
 msgstr "Select a Library"

@@ -62,7 +62,11 @@ class Upload(Initialize):
         else:
             cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e', self.board_id]
 
-        self.check_auth_ota()
+        if(not self.check_auth_ota()):
+            self.derror("ota_error_platform")
+            save_setting('last_action', None)
+            return
+
         self.check_serial_monitor()
 
         out = self.run_command(cmd)
