@@ -148,6 +148,7 @@ def make_folder(path):
     """
     Make a folder with the given path
     """
+    import errno
     try:
         os.makedirs(path)
     except OSError as exc:
