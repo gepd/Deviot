@@ -376,7 +376,7 @@
                                 },
                                 {
                                     "caption":"menu_change_build_folder",
-                                    "command":"change_build_folder"
+                                    "command":"deviot_change_build_folder"
                                 },
                                 {
                                     "caption":"menu_use_cpp_new",

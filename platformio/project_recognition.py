@@ -85,8 +85,6 @@ class ProjectRecognition(object):
         Returns:
             [str] -- temp_path/project_name/
         """
-        import errno
-        
         file_name = self.get_file_name(ext=False)
 
         if(not file_name):
@@ -337,12 +335,18 @@ class ProjectRecognition(object):
         Returns:
             [str] -- temp_path | temp_path/extra_str
         """
+        from ..libraries.tools import get_setting
+
         tmp_path = '/tmp'
         os_name = sublime.platform()
         if os_name == 'windows':
             tmp_path = os.environ['tmp']
 
         tmp_path = os.path.join(tmp_path, 'Deviot')
+
+        custom_folder = get_setting('build_folder', None)
+        if(custom_folder):
+            tmp_path = custom_folder
 
         if(extra_str):
             tmp_path = os.path.join(tmp_path, extra_str)

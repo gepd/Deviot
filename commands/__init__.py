@@ -30,6 +30,7 @@ from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
 from .deviot_verbose_output import DeviotVerboseOutputCommand
 from .deviot_open_build_folder import DeviotOpenBuildFolderCommand
+from .deviot_change_build_folder import DeviotChangeBuildFolderCommand
 from .deviot_cpp_file import DeviotCppFileCommand
 from .deviot_pio_structure import DeviotPioStructureCommand
 from .deviot_languages import DeviotLanguagesCommand
@@ -74,6 +75,7 @@ __all__ = [
     'DeviotChooseDisplayModeCommand',
     'DeviotVerboseOutputCommand',
     'DeviotOpenBuildFolderCommand',
+    'DeviotChangeBuildFolderCommand',
     'DeviotCppFileCommand',
     'DeviotPioStructureCommand',
     'DeviotLanguagesCommand',

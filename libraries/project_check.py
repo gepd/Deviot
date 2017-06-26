@@ -97,6 +97,11 @@ class ProjectCheck(QuickMenu):
 
         self.check_unsaved_changes()
 
+        if(not path.exists(self.cwd)):
+            from .tools import make_folder
+
+            make_folder(self.cwd)
+
         return True
 
     def check_unsaved_changes(self):
