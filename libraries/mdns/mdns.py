@@ -74,7 +74,7 @@ class MDNSBrowser:
         With the use of two global variables, it will stop to show a device only
         if it is not found the number of time in the "threshold" variable.
         """
-        threshold = 5
+        threshold = 8
 
         counter = count_services.keys()
         removed = list(set(counter) - set(self.temp_addresses))
