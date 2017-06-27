@@ -15,6 +15,7 @@ from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting
 from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
 from .platformio.pio_bridge import PioBridge
+from .libraries.preferences_bridge import PreferencesBridge
 
 def plugin_loaded():
     PioInstall()
@@ -35,8 +36,7 @@ def plugin_loaded():
 
 class DeviotListener(EventListener):
     def on_activated(self, view):
-        #
-        pass
+        PreferencesBridge().set_status_information()
     
     def on_close(self, view):
         from .libraries import serial

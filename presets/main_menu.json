@@ -362,6 +362,11 @@
                                 },
                                 {"caption": "-"},
                                 {
+                                    "caption":"menu_status_information",
+                                    "checkbox":true,
+                                    "command":"deviot_status_information"
+                                },
+                                {
                                     "caption":"menu_open_build_folder",
                                     "command":"deviot_open_build_folder"
                                 },

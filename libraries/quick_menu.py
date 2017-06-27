@@ -57,6 +57,7 @@ class QuickMenu(PreferencesBridge):
 
         self.save_selected_board(board_id)
         self.run_last_action()
+        self.set_status_information()
 
     def quick_boards_list(self):
         """Boards List
@@ -120,6 +121,7 @@ class QuickMenu(PreferencesBridge):
 
         self.save_environment(environment)
         self.run_last_action()
+        self.set_status_information()
 
     def quick_environment_list(self):
         """
@@ -189,6 +191,7 @@ class QuickMenu(PreferencesBridge):
         save_setting('port_id', port_selected)
 
         self.run_last_action()
+        self.set_status_information()
 
     def quick_serial_list(self):
         """Serial Port List

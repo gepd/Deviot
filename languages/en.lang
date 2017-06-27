@@ -158,6 +158,9 @@ msgstr "Send"
 msgid "menu_deviot_output"
 msgstr "Output in Deviot Console"
 
+msgid "menu_status_information"
+msgstr "Show Information in the Status Bar"
+
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
 

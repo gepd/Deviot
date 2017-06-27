@@ -261,3 +261,17 @@ class PreferencesBridge(PioBridge):
         MDNS.start()
 
         return MDNS.formated_list()
+
+    def set_status_information(self):
+        from ..libraries.project_check import ProjectCheck
+        
+        show_info = get_setting('status_information', True)
+
+        if(ProjectCheck().is_iot() and show_info):
+            board_id = self.get_environment().upper()
+            port_id = self.get_serial_port().upper()
+
+            info = "{0} | {1}".format(board_id, port_id)
+            self.view.set_status('_deviot_extra',  info)
+        else:
+            self.view.erase_status('_deviot_extra')

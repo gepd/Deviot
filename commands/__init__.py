@@ -31,6 +31,7 @@ from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
 from .deviot_upgrade_pio import DeviotUpgradePioCommand
 from .deviot_developer_pio import DeviotDeveloperPio
 from .deviot_verbose_output import DeviotVerboseOutputCommand
+from .deviot_status_information import DeviotStatusInformationCommand
 from .deviot_open_build_folder import DeviotOpenBuildFolderCommand
 from .deviot_change_build_folder import DeviotChangeBuildFolderCommand
 from .deviot_cpp_file import DeviotCppFileCommand
@@ -70,6 +71,7 @@ __all__ = [
     'DeviotToggleSerialMonitorCommand',
     'DeviotSendSerialMonitorCommand',
     'DeviotOutputConsoleCommand',
+    'DeviotStatusInformationCommand',
     'DeviotAutomaticScrollCommand',
     'DeviotAutoCleanCommand',
     'DeviotChooseBaudrateCommand',
