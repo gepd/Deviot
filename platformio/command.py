@@ -27,7 +27,7 @@ class Command(ProjectRecognition):
         if(env_path):
             environ['PATH'] = env_path
 
-    def run_command(self, command):
+    def run_command(self, command, prepare=True):
         '''
         Run a command with Popen and return the results or print the errors
         '''
@@ -35,7 +35,9 @@ class Command(ProjectRecognition):
         if(not self.cwd):
             self.cwd = getcwd()
 
-        command = self.prepare_command(command)
+        if(prepare):
+            command = self.prepare_command(command)
+
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, cwd=self.cwd,
                                    universal_newlines=True, shell=True)
