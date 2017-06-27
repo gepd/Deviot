@@ -10,7 +10,7 @@ import os
 import sublime
 
 from sublime import load_settings, save_settings
-from ..beginning import __version__
+from ..libraries import __version__
 
 H_EXTS = ['.h']
 ROOT_PATH = 'System Root(/)'

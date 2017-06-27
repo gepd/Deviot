@@ -37,10 +37,12 @@ from re import match, sub
 from urllib.request import Request
 from urllib.request import urlopen
 from collections import OrderedDict
-from . import __version__, __title__
+from ..libraries import __version__, __title__
 
 ###
 from ..libraries.tools import get_setting, save_setting
+from ..libraries.thread_progress import ThreadProgress
+from ..libraries.I18n import I18n
 
 dprint = None
 derror = None
@@ -69,8 +71,10 @@ class PioInstall(object):
 
         self.file_paths()
 
+        caption = I18n().translate('processing')
         thread = Thread(target=self.install)
         thread.start()
+        ThreadProgress(thread, caption, '')
 
     def file_paths(self):
         """ Set Initial Values
