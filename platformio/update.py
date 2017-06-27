@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from .command import Command
 from ..libraries import __version__ as version
-from ..libraries.tools import create_command, get_setting
+from ..libraries.tools import create_command, get_setting, save_setting
 from ..libraries.messages import MessageQueue
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
@@ -33,10 +33,15 @@ class Update(Command):
         
         _ = I18n().translate
 
+        self.cwd = None
+        self.dprint = None
+        self.derror = None
+        self.dstop = None
+
+    def show_feedback(self):
         messages = MessageQueue("_deviot_starting{0}", version)
         messages.start_print()
-        
-        self.cwd = None
+
         self.dprint = messages.put
         self.derror = messages.print_once
         self.dstop = messages.stop_print
@@ -46,6 +51,8 @@ class Update(Command):
         
         Update platformIO to the last version (block thread)
         """
+        self.show_feedback()
+
         cmd = ['pio','upgrade']
         out = self.run_command(cmd, prepare=False)
 
@@ -78,6 +85,8 @@ class Update(Command):
         a version based in the preference of the user, it can be
         the stable or developer version
         """
+        self.show_feedback()
+
         cmd = ['pip','uninstall', '--yes','platformio']
         out = self.run_command(cmd, prepare=False)
 
@@ -89,3 +98,76 @@ class Update(Command):
 
         cmd = ['pip','install', '-U', option]
         out = self.run_command(cmd, prepare=False)
+
+    def check_update_async(self):
+        """New Thread Execution
+        
+        Starts a new thread to run the check_update method
+        """
+        from threading import Thread
+
+        thread = Thread(target=self.check_update)
+        thread.start()
+        ThreadProgress(thread, _('processing'), '')
+
+    def check_update(self):
+        """Check update
+        
+        Checks for platformio updates each 5 days.
+        To know what is the last version of platformio
+        pypi is checked
+        """
+        from datetime import datetime, timedelta
+
+        date_now = datetime.now()
+        date_update = get_setting('last_check_update', False)
+        
+        try:
+            date_update = datetime.strptime(date_update, '%Y-%m-%d %H:%M:%S.%f')
+
+            if(date_now < date_update):
+                return
+        except:
+            pass
+
+        if(not date_update or date_now > date_update):
+            date_update = date_now + timedelta(5, 0) # 5 días
+            save_setting('last_check_update', str(date_update))
+
+        from ..libraries.tools import get_headers
+        from urllib.request import Request
+        from urllib.request import urlopen
+        from json import loads
+        from re import sub
+
+        self.realtime = False
+        cmd = ['--version']
+        out = self.run_command(cmd)
+
+        pio_version = out[1]
+        pio_version_int = int(sub(r'\D', '', pio_version))
+
+        try:
+            url = 'https://pypi.python.org/pypi/platformio/json'
+            req = Request(url, headers=get_headers())
+            response = urlopen(req)
+            pypi_list = loads(response.read().decode())
+            last_pio_version = pypi_list['info']['version']
+            last_pio_version_int = int(sub(r'\D', '', last_pio_version))
+        except:
+            return
+
+        if(pio_version_int < last_pio_version_int):
+            from sublime import ok_cancel_dialog
+
+            update = ok_cancel_dialog(_('new_pio_update{0}{1}',
+                last_pio_version,
+                pio_version),
+                _('update_button'))
+
+            if(update):
+                self.show_feedback()
+                self.realtime = True
+
+                cmd = ['pio','upgrade']
+                out = self.run_command(cmd, prepare=False)

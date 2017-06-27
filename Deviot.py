@@ -10,6 +10,7 @@ from os import path
 from sublime_plugin import EventListener
 
 from .commands import *
+from .platformio.update import Update
 from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting
 from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
@@ -17,6 +18,7 @@ from .platformio.pio_bridge import PioBridge
 
 def plugin_loaded():
     PioInstall()
+    Update().check_update_async()
 
     boards_file = getBoardsFileDataPath()
 
