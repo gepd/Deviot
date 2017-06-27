@@ -26,6 +26,7 @@ class PioBridge(Command):
         Gets the list of all boards availables in platformIO and
         stores it in a json file
         """
+        self.cwd = None
         self.set_return = True
         self.realtime = False
         
