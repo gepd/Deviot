@@ -37,6 +37,7 @@ class Command(ProjectRecognition):
 
         if(prepare):
             command = self.prepare_command(command)
+        command = ' '.join(command)
 
         process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, cwd=self.cwd,
@@ -75,6 +76,5 @@ class Command(ProjectRecognition):
             command.extend(['-vvv'])
 
         command.append("2>&1")
-        command = ' '.join(command)
 
         return command
