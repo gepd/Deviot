@@ -362,15 +362,6 @@
                                 },
                                 {"caption": "-"},
                                 {
-                                    "caption":"menu_remove_user_files",
-                                    "command":"remove_user_files"
-                                },
-                                {
-                                    "caption":"menu_keep_temp_files",
-                                    "checkbox":true,
-                                    "command":"keep_temp_files"
-                                },
-                                {
                                     "caption":"menu_open_build_folder",
                                     "command":"deviot_open_build_folder"
                                 },
@@ -385,15 +376,6 @@
                                 {
                                     "caption":"menu_always_native",
                                     "command":"deviot_pio_structure"
-                                },
-                                {"caption": "-"},
-                                {
-                                    "caption":"menu_change_default_path",
-                                    "command":"change_default_path"
-                                },
-                                {
-                                    "caption":"menu_remove_default_path",
-                                    "command":"remove_default_path"
                                 }
                             ]
             },{

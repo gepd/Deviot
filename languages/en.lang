@@ -18,8 +18,8 @@ msgstr "Symlink has been detected"
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
 
-msgid "pio_is_installed{0}"
-msgstr "{0} PlatformIO is installed in your system, you can enjoy Deviot now!"
+msgid "pio_is_installed"
+msgstr "PlatformIO is installed in your system, you can enjoy Deviot now!"
 
 msgid "pio_isn_installed"
 msgstr "PlatformIO is not installed\nPreparing to installing it, please be patient it may take a while.\n"
@@ -161,6 +161,9 @@ msgstr "Output in Deviot Console"
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
 
+msgid "menu_auto_clean"
+msgstr "Auto-Clean View"
+
 msgid "menu_baudrate"
 msgstr "Baudrate"
 
@@ -207,13 +210,7 @@ msgid "menu_update_board_list"
 msgstr "Update Board List"
 
 msgid "menu_show_verbose"
-msgstr "Full Verbose Output When Build"
-
-msgid "menu_remove_user_files"
-msgstr "Remove Preferences Files"
-
-msgid "menu_keep_temp_files"
-msgstr "Keep Temp Files"
+msgstr "Full Verbose Output At Build"
 
 msgid "menu_open_build_folder"
 msgstr "Open Build Folder"
@@ -226,12 +223,6 @@ msgstr "Use CPP File on New File"
 
 msgid "menu_always_native"
 msgstr "Use PlatformIO Structure"
-
-msgid "menu_change_default_path"
-msgstr "Change Default Path"
-
-msgid "menu_remove_default_path"
-msgstr "Remove Default Path"
 
 msgid "menu_languages"
 msgstr "Language"
@@ -354,7 +345,7 @@ msgid "continue_button"
 msgstr "Continue"
 
 msgid "ota_error_platform"
-msgstr "OTA Upload is only available for Espressif (ESP8266) platform."
+msgstr "OTA Upload is only available for Espressif (ESP8266) platform. Select other serial port or change the current environment"
 
 msgid "select_library"
 msgstr "Select a Library"
