@@ -88,7 +88,7 @@ def create_command(command):
     """
     external_bins = get_setting('external_bins', False)
     env_path = get_setting('env_path', False)
-    symkink = get_setting('symlink', False)
+    symlink = get_setting('symlink', False)
 
     if(not env_path):
         return command
