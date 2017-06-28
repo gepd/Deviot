@@ -1,0 +1,11 @@
+<snippet>
+    <content><![CDATA[
+do{
+    ${1:// statement block}
+} while (${2:test condition});
+
+]]></content>
+    <tabTrigger>dowhile</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot do-while</description>
+</snippet>

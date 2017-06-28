@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.write(${1:data});
+]]></content>
+    <tabTrigger>swrite</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.write()</description>
+</snippet>

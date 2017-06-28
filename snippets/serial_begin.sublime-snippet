@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.begin(${1:9600});
+]]></content>
+    <tabTrigger>sbegin</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.begin()</description>
+</snippet>

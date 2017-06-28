@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+void serialEvent(){
+    ${1://statements}
+}
+]]></content>
+    <tabTrigger>sevent</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot serialEvent()</description>
+</snippet>

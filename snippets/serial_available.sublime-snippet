@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+if (Serial.available() > ${1:0}) {
+    ${2}
+}
+]]></content>
+    <tabTrigger>savailable</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.available()</description>
+</snippet>

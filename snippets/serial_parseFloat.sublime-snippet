@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.parseFloat();
+]]></content>
+    <tabTrigger>spfloat</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.parseFloat()</description>
+</snippet>

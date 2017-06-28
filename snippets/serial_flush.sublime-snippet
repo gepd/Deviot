@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.flush();
+]]></content>
+    <tabTrigger>sflush</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.flush()</description>
+</snippet>

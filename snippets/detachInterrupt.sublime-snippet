@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+detachInterrupt(${1:interrupt});
+]]></content>
+    <tabTrigger>detachInterrupt</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot detachInterrupt()</description>
+</snippet>

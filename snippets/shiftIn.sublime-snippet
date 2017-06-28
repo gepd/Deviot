@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+shiftIn(${1:dataPin}, ${2:clockPin}, ${3:bitOrder});
+]]></content>
+    <tabTrigger>shiftIn</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot shiftIn()</description>
+</snippet>

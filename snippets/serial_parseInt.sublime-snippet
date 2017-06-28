@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+Serial.parseInt();
+]]></content>
+    <tabTrigger>spint</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot Serial.parseInt()</description>
+</snippet>
