@@ -205,7 +205,7 @@ class PioInstall(object):
     def check_sym_link(self):
         """Arch Linux
 
-        Check if python 2 is used with a symkink it's 
+        Check if python 2 is used with a symlink it's
         commonly used in python2. When it's used it's
         stored in a config file to be used by the plugin
         """
@@ -216,7 +216,7 @@ class PioInstall(object):
             dprint("symlink_detected")
             self.version = sub(r'\D', '', out[1])
             self.SYMLINK = 'python2'
-            save_setting('symkink', True)
+            save_setting('symlink', True)
 
     def check_python(self):
         """Python requirement
