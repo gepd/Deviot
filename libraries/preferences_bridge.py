@@ -263,15 +263,23 @@ class PreferencesBridge(PioBridge):
         return MDNS.formated_list()
 
     def set_status_information(self):
+        """Status bar Information
+        
+        Show the board and serial port selected by the user
+        """
         from ..libraries.project_check import ProjectCheck
         
         show_info = get_setting('status_information', True)
 
         if(ProjectCheck().is_iot() and show_info):
-            board_id = self.get_environment().upper()
-            port_id = self.get_serial_port().upper()
+            board_id = self.get_environment()
+            port_id = self.get_serial_port()
 
-            info = "{0} | {1}".format(board_id, port_id)
-            self.view.set_status('_deviot_extra',  info)
+            board_id = board_id.upper() if (board_id) else None
+            port_id = port_id.upper() if (port_id) else None
+
+            if(board_id or port_id):
+                info = "{0} | {1}".format(board_id, port_id)
+                self.view.set_status('_deviot_extra',  info)
         else:
             self.view.erase_status('_deviot_extra')
