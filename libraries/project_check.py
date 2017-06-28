@@ -154,6 +154,25 @@ class ProjectCheck(QuickMenu):
         
         config.write()
 
+    def fix_src(self):
+        """Fix src path
+        
+        If platformio.ini is using the src_dir flag and the sketch
+        has been moved to another path, this will be fixed to that
+        new path.
+        """
+        from ..libraries.configobj.configobj import ConfigObj
+
+        ini_path = self.get_ini_path()
+        config = ConfigObj(ini_path)
+        try:
+            src_dir = config['platformio']['src_dir']
+        except:
+            return
+
+        if(src_dir != self.get_project_path()):
+            self. override_src()
+
     def close_file(self):
         """Close File Window
         
