@@ -6,10 +6,9 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-import os
-import sublime
-
-from sublime import load_settings, save_settings
+from re import search
+from os import environ, path, makedirs, getenv
+from sublime import load_settings, save_settings, platform, version, active_window, windows, Region, LAYOUT_BELOW
 from ..libraries import __version__
 
 H_EXTS = ['.h']
@@ -24,19 +23,19 @@ def get_env_paths():
     from collections import OrderedDict
 
     # default paths
-    if(sublime.platform() == 'windows'):
+    if(platform() == 'windows'):
         default_paths = ["C:\Python27\\", "C:\Python27\Scripts"]
     else:
         default_paths = ["/usr/bin", "/usr/local/bin"]
 
-    system_paths = os.environ.get("PATH", "").split(os.path.pathsep)
+    system_paths = environ.get("PATH", "").split(path.pathsep)
 
     env_paths = []
     env_paths.extend(default_paths)
     env_paths.extend(system_paths)
 
     env_paths = list(OrderedDict.fromkeys(env_paths))
-    env_paths = os.path.pathsep.join(env_paths)
+    env_paths = path.pathsep.join(env_paths)
 
     return env_paths
 
@@ -48,14 +47,14 @@ def save_env_paths(new_path):
     '''
     from collections import OrderedDict
 
-    env_paths = get_env_paths().split(os.path.pathsep)
+    env_paths = get_env_paths().split(path.pathsep)
 
     paths = []
     paths.extend(new_path)
     paths.extend(env_paths)
 
     paths = list(OrderedDict.fromkeys(paths))
-    paths = os.path.pathsep.join(paths)
+    paths = path.pathsep.join(paths)
 
     save_setting('env_path', paths)
 
@@ -65,8 +64,7 @@ def get_headers():
     headers for urllib request
     """
 
-    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (__version__,
-                                                  sublime.version())
+    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (__version__, version())
     headers = {'User-Agent': user_agent}
     return headers
 
@@ -93,7 +91,7 @@ def create_command(command):
     if(not env_path):
         return command
 
-    _os = sublime.platform()
+    _os = platform()
 
     if(_os is 'osx'):
         exe = 'python' if(not symlink) else 'python2'
@@ -108,7 +106,7 @@ def create_command(command):
         from . import paths
         
         bin_dir = paths.getEnvBinDir()
-        executable = os.path.join(bin_dir, exe)
+        executable = path.join(bin_dir, exe)
 
     cmd = ['"%s"' % (executable)]
     cmd.extend(options)
@@ -150,7 +148,7 @@ def make_folder(path):
     """
     import errno
     try:
-        os.makedirs(path)
+        makedirs(path)
     except OSError as exc:
         if exc.errno != errno.EEXIST:
             raise exc
@@ -183,9 +181,9 @@ def create_sketch(sketch_name, path):
     """
     from . import paths
     # file path
-    sketch_path = os.path.join(path, sketch_name)
-    if not os.path.exists(sketch_path):
-        os.makedirs(sketch_path)
+    sketch_path = path.join(path, sketch_name)
+    if not path.exists(sketch_path):
+        makedirs(sketch_path)
 
     # use cpp file/template intead of ino
     cpp = get_setting('cpp_file', False)
@@ -210,7 +208,7 @@ def create_sketch(sketch_name, path):
 
     # open new file
     views = []
-    window = sublime.active_window()
+    window = active_window()
     view = window.open_file(src_file_path)
     views.append(view)
     if views:
@@ -227,8 +225,8 @@ def findInOpendView(view_name):
     """
     opened_view = None
     found = False
-    windows = sublime.windows()
-    for window in windows:
+    fwindows = windows()
+    for window in fwindows:
         views = window.views()
         for view in views:
             name = view.name()
@@ -266,7 +264,7 @@ def list_root_path():
         list -- list of directories
     """
     root_list = []
-    os_name = sublime.platform()
+    os_name = platform()
     if os_name == 'windows':
         root_list = list_win_volume()
     else:
@@ -298,7 +296,7 @@ def add_library_to_sketch(view, edit, lib_path):
     
     lib_path = os.path.join(lib_path, '*')
 
-    region = sublime.Region(0, view.size())
+    region = Region(0, view.size())
     src_text = view.substr(region)
     headers = headers_from_source(src_text)
 
