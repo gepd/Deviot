@@ -202,40 +202,28 @@ class PioInstall(object):
         if(not path.isdir(self.OUTPUT_PATH)):
             rename(extracted, self.OUTPUT_PATH)
 
-    def check_sym_link(self):
-        """Arch Linux
-
-        Check if python 2 is used with a symlink it's
-        commonly used in python2. When it's used it's
-        stored in a config file to be used by the plugin
-        """
-        cmd = ['python2', '--version']
-        out = run_command(cmd)
-
-        if(out[0] == 0):
-            dprint("symlink_detected")
-            self.version = sub(r'\D', '', out[1])
-            self.SYMLINK = 'python2'
-            save_setting('symlink', True)
 
     def check_python(self):
         """Python requirement
 
-        Check if python 2 is installed
+        Check if python 2 is installed and detect which symlink is used.
+        It's stored in a config file to be used by the plugin
         """
         self.version = None
 
         cmd = [self.SYMLINK, '--version']
         out = run_command(cmd)
 
-        if(out[0] > 0):
-            self.check_sym_link()
-
         if(out[0] == 0):
             self.version = sub(r'\D', '', out[1])
 
+        if(int(self.version[0]) is not 2):
+            self.SYMLINK = 'python2'
+
+            check_python()
+
         # show error and link to download
-        if(out[0] > 0 or int(self.version[0]) is 3):
+        if(out[0] > 0):
             from ..libraries.I18n import I18n
             _ = I18n().translate
             go_to = sublime.ok_cancel_dialog(
@@ -246,6 +234,8 @@ class PioInstall(object):
                     'open_url', {'url': 'https://www.python.org/downloads/'})
             
             exit(0)
+
+        save_setting('python_symlink', self.SYMLINK)
 
 
 def check_pio():
