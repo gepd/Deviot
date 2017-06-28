@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sublime
+from sublime import active_window
 from time import strftime
 from sys import exit
 from queue import Queue
@@ -9,7 +9,7 @@ from threading import Thread
 from time import sleep
 from sys import exit
 from .I18n import I18n
-from .tools import findInOpendView, get_setting
+from .tools import findInOpendView, get_setting, show_phanthom
 
 class Console(object):
     """Deviot Console
@@ -18,7 +18,8 @@ class Console(object):
     message queue
     """
     def __init__(self):
-        self.window = sublime.active_window()
+        self.window = active_window()
+        self.view = self.window.active_view()
         self.panel = None
         self.name = None
 
@@ -158,6 +159,10 @@ class MessageQueue(Console):
         while(self.is_alive):
             while(not self.queue.empty()):
                 text = self.queue.get()
+                
+                if(': error:' in text):
+                    show_phanthom(self.view, text)
+                
                 self.print_screen(text)
                 sleep(0.01)
             sleep(0.01)

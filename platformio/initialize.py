@@ -10,6 +10,7 @@ from sys import exit
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.messages import MessageQueue
+from ..libraries.tools import reset_phantoms
 
 class Initialize(ProjectCheck):
     """
@@ -24,6 +25,8 @@ class Initialize(ProjectCheck):
     """
     def __init__(self):
         super(Initialize, self).__init__()
+
+        reset_phantoms()
 
         messages = MessageQueue("_deviot_starting{0}", version)
         messages.set_console('exec')

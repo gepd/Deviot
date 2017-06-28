@@ -12,10 +12,11 @@ from sublime_plugin import EventListener
 from .commands import *
 from .platformio.update import Update
 from .beginning.pio_install import PioInstall
-from .libraries.tools import get_setting, save_setting
+from .libraries.tools import get_setting, save_setting, get_phantoms, del_phantom
 from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
 from .platformio.pio_bridge import PioBridge
 from .libraries.preferences_bridge import PreferencesBridge
+from .libraries.project_check import ProjectCheck
 
 def plugin_loaded():
     PioInstall()
@@ -49,4 +50,24 @@ class DeviotListener(EventListener):
             serial_monitor = serial.serial_monitor_dict.get(port_id, None)
             serial_monitor.stop()
             del serial.serial_monitor_dict[port_id]
-                
+
+    def on_modified(self, view):
+        """On modify file
+        
+        checks the phantoms in the current view and remove it
+        when it's neccesary
+        
+        Arguments:
+            view {obj} -- sublime text object
+        """
+        phantoms = get_phantoms()
+        is_iot = ProjectCheck().is_iot()
+
+        if(not len(phantoms) and not is_iot):
+            return
+
+        line, column = view.rowcol(view.sel()[0].begin())
+        pname = 'error' + str(line + 1)
+
+        if(pname in phantoms):
+            del_phantom(pname)
