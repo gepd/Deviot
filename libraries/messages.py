@@ -22,9 +22,6 @@ class Console(object):
         self.panel = None
         self.name = None
 
-        self.set_console()
-        self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
-
     def print_screen(self, text):
         size = self.panel.size()
         auto_clean = get_setting('auto_clean', True)
@@ -48,9 +45,15 @@ class Console(object):
         self.window, self.panel = findInOpendView(name)
 
         if(not self.panel):
-            if(name == 'exec'):
-                self.panel = self.window.create_output_panel(name)
-                self.panel.set_name(name)
+            if(name == 'exec' or name == 'sexec'):
+                self.panel = self.window.create_output_panel('exec')
+                self.panel.set_name('exec')
+
+                if(name == 'exec'):
+                    self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
+                else:
+                    self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
+
             else:
                 self.open_panel()
 

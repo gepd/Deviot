@@ -26,6 +26,7 @@ class Initialize(ProjectCheck):
         super(Initialize, self).__init__()
 
         messages = MessageQueue("_deviot_starting{0}", version)
+        messages.set_console('exec')
         messages.start_print()
         
         self.dprint = messages.put

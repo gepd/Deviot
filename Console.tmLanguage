@@ -14,26 +14,9 @@
     <string>zConsole</string>
     <key>patterns</key>
     <array>
-        <dict> <!-- [ deviot x.x.x ] filename.ext -->
-            <key>match</key>
-            <string>(\[\s.+\s\]) ([\w]+\.[a-zA-Z]{3}$)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-            </dict>
-        </dict>
         <dict> <!-- [ deviot x.x.x ] string -->
             <key>match</key>
-            <string>(\[\s.+\s\]) ([\w]+)</string>
+            <string>(\[\s.+\s\]) ([[\w]+\s]+\.*)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
@@ -48,31 +31,15 @@
                 </dict>
             </dict>
         </dict>
-        <dict> <!-- 00:00:00 string | status... -->
+        <dict>
             <key>match</key>
-            <string>(^[\d+:\d+]+)\s([a-zA-Z\s]+) \| ([[:alpha:]]+\.{3}$)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-            </dict>
+            <string>src |lib |platformio.ini |Compiling|Archiving|Updating|Uninstalling|Indexing|Downloading...|Unpacking...|Converting|Linking|Building|Calculating size|Collected|Processing|LibraryManager:|Library Storage:|\`[a-zA-Z\s\-\%\_\,\.]*\`*</string>
+            <key>name</key>
+            <string>entity.name.function</string>
         </dict>
-        <dict> <!-- 00:00:00 [INFO]: string(.) -->
+        <dict>
             <key>match</key>
-            <string>(^[\d+:\d+]+) \[INFO\]: ([[:alpha:]\s.]+)</string>
+            <string>(platform:|board:|framework:) (\S+)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
@@ -87,9 +54,9 @@
                 </dict>
             </dict>
         </dict>
-        <dict>  <!-- 00:00:00 string | STATE -->
+        <dict>
             <key>match</key>
-            <string>(^[\d+:\d+]+)\s([a-zA-Z\s]+) \| ([A-Z]+) \|</string>
+            <string>(In function|error:) (\'[\S+\s]+\')</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
@@ -102,358 +69,25 @@
                     <key>name</key>
                     <string>entity.name.tag.xml</string>
                 </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
             </dict>
         </dict>
-        <dict> <!-- 00:00:00 [INFO]: string | -->
+        <dict>
             <key>match</key>
-            <string>(^[\d+:\d+]+) ([[:alpha:][0-9]\.,\¡\!\s]*)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- :00: string -->
-            <key>match</key>
-            <string>(.+\w+\.\w{3}):(\d+:*\d*:*) ([\w\s]+:) ()</string>
-            <key>captures</key>
-            <dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>4</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>            
-            </dict>
-        </dict>
-        <dict> <!-- (file.ext): string -->
-            <key>match</key>
-            <string>(.+\(*\w+\.\w*\)*:) ([\w+\s]+)</string>
-            <key>captures</key>
-            <dict>                
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>            
-            </dict>
-        </dict>
-        <dict> <!-- paths(file.ext): string -->
-            <key>match</key>
-            <string>( \w+:) ('\w+') ([\w+\s]+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict> 
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>         
-            </dict>
-        </dict>
-        <dict> <!-- paths(file.ext): string -->
-            <key>match</key>
-            <string>:([\d+:]*)\s(\w+:)*</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict> 
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>         
-            </dict>
-        </dict>
-        <dict> <!-- <mail@mail.xxx> -->
-            <key>match</key>
-            <string>.+ &lt;.+@.+&gt;.*</string>
+            <string>\[\S+\]</string>
             <key>name</key>
             <string>entity.name.class</string>
         </dict>
-        <dict> <!-- Processing: string-->
+        <dict>
             <key>match</key>
-            <string>(Processing) (\w+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- string: string-->
-            <key>match</key>
-            <string>(\w+:) (\w+,)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- string: string digits bytes -->
-            <key>match</key>
-            <string>(^\w+:) (\w+) (\d+ bytes)\s([\w\s]+$)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-                <key>4</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- 'string': -->
-            <key>match</key>
-            <string>size:|address:</string>
-            <key>name</key>
-            <string>entity.name.function</string>
-        </dict>
-        <dict> <!-- string: string -->
-            <key>match</key>
-            <string>([Manually ]*\w+: )([\w+\.*\s]+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- alphanumeric .pioenvs -->
-            <key>match</key>
-            <string>([0-9\s]+) (\w+\s.pioenvs.*)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.tag.xml</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- from digit to digit -->
-            <key>match</key>
-            <string>(from) (\w+) (to) (\w+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>4</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- string : string -->
-            <key>match</key>
-            <string>([\w+\s*]+)\s*:\s([\w+\.*\s*\w*]*)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>4</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- avr header -->
-            <key>match</key>
-            <string>Block|Polled|Paged|#*Pages|Page|Poll|Memory|Type|Mode|Delay|Size|Indx|MinW|MaxW|ReadBack|AVR|Usage</string>
+            <string>\@\s[[0-9]\.\:]+</string>
             <key>name</key>
             <string>entity.name.tag.xml</string>
         </dict>
-        <dict> <!-- avr header -->
+        <dict>
             <key>match</key>
-            <string>(eeprom|flash|lfuse|hfuse|efuse|lock|calibration|signature)\s+(.+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- [STATUS] Took x.x seconds -->
-            <key>match</key>
-            <string>(\[[a-zA-Z]+\])\sTook\s([0-9]+\.[0-9]+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- string=alpha-->
-            <key>match</key>
-            <string>([-\w+]+)=(\w+\+*\w+)</string>
-            <key>captures</key>
-            <dict>
-                <key>1</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-                <key>2</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.class</string>
-                </dict>
-                <key>3</key>
-                <dict>
-                    <key>name</key>
-                    <string>entity.name.function</string>
-                </dict>
-            </dict>
-        </dict>
-        <dict> <!-- 'string': -->
-            <key>match</key>
-            <string>\\\"[\w+\s*]+\\\"\"*</string>
+            <string>[a-zA-Z\-]+\s\@\s[[0-9]\.\:]+</string>
             <key>name</key>
             <string>entity.name.tag.xml</string>
-        </dict>
-        <dict> <!-- 'string': -->
-            <key>match</key>
-            <string>'.':*</string>
-            <key>name</key>
-            <string>entity.name.function</string>
-        </dict>
-        <dict> <!-- 'string': -->
-            <key>match</key>
-            <string>'\D+':*</string>
-            <key>name</key>
-            <string>entity.name.function</string>
         </dict>
         <dict> <!-- ^ -->
             <key>match</key>
@@ -461,68 +95,18 @@
             <key>name</key>
             <string>entity.name.tag.xml</string>
         </dict>
-        <dict> <!-- only header -->
+        <dict> <!-- took time -->
             <key>match</key>
-            <string>^\[\s.+\s\]$</string>
+            <string>(Took) ([\d\.*]+) </string>
             <key>name</key>
             <string>entity.name.class</string>
         </dict>
-        <dict> <!-- status... -->
+        <dict>
             <key>match</key>
-            <string>[\w+\s+\/]+\.{3}$</string>
-            <key>name</key>
-            <string>entity.name.function</string>
-        </dict>
-        <dict> <!-- Compile Status -->
-            <key>match</key>
-            <string>^[[:alpha:]]+\s(?=\|)</string>
-            <key>name</key>
-            <string>storage.type</string>
-        </dict>
-        <dict> <!-- tooked time -->
-            <key>match</key>
-            <string>[\d\.\d]+s$</string>
-            <key>name</key>
-            <string>entity.name.class</string>
-        </dict>
-        <dict> <!-- : numbers -->
-            <key>match</key>
-            <string>\s\d+$</string>
-            <key>name</key>
-            <string>entity.name.class</string>
-        </dict>
-        <dict> <!-- address -->
-            <key>match</key>
-            <string>[\d+\.]+:\d+$</string>
-            <key>name</key>
-            <string>entity.name.class</string>
-        </dict>
-        <dict> <!-- address -->
-            <key>match</key>
-            <string>[a-zA-Z0-9-]+.local</string>
-            <key>name</key>
-            <string>entity.name.class</string>
-        </dict>
-        <dict> <!-- text data bss dec hex filename -->
-            <key>match</key>
-            <string>.+hex\sfilename</string>
-            <key>name</key>
-            <string>entity.name.function</string>
-        </dict>
-        <dict> <!-- digit ms -->
-            <key>match</key>
-            <string>[\d+]+\sms</string>
-            <key>name</key>
-            <string>entity.name.class</string>
-        </dict>
-        <!--
-        <dict>  string 
-            <key>match</key>
-            <string>^[[:alpha:]\s\.]+$</string>
+            <string>text|data|bss|dec|hex|filename</string>
             <key>name</key>
             <string>entity.name.tag.xml</string>
         </dict>
-        -->
     </array>
     <key>scopeName</key>
     <string>source.iot</string>

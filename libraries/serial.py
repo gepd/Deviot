@@ -54,7 +54,7 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
-        type_console = 'exec'
+        type_console = 'sexec'
         serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
         output_console = get_setting('output_console', False)
         

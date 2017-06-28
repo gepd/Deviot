@@ -54,6 +54,7 @@ class Libraries(Command):
         It sends a header string as first message
         """
         message = MessageQueue("deviot_library{0}", version)
+        message.set_console("exec")
         message.start_print()
         
         self.dprint = message.put
