@@ -103,7 +103,7 @@
         </dict>
         <dict>
             <key>match</key>
-            <string>[\d{2}]+:*\s*</string>
+            <string>^[\d{2}]+[:*\d{2}]+</string>
             <key>name</key>
             <string>entity.name.class</string>
         </dict>
