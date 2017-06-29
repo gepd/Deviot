@@ -29,7 +29,6 @@ class Initialize(ProjectCheck):
         reset_phantoms()
 
         messages = MessageQueue("_deviot_starting{0}", version)
-        messages.set_console('exec')
         messages.start_print()
         
         self.dprint = messages.put

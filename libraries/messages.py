@@ -140,6 +140,8 @@ class MessageQueue(Console):
         Starts a new thread to wait the messages to be shown
         in the console
         """
+        if(not self.panel):
+            self.set_console()
 
         if(not self.is_alive):
             self.is_alive = True
