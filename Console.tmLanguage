@@ -33,7 +33,7 @@
         </dict>
         <dict>
             <key>match</key>
-            <string>src |lib |platformio.ini |Compiling|Archiving|Updating|Uninstalling|Indexing|Downloading...|Unpacking...|Converting|Linking|Building|Calculating size|Collected|Processing|LibraryManager:|Library Storage:|\`[a-zA-Z\s\-\%\_\,\.]*\`*</string>
+            <string>src |lib |platformio.ini |Compiling|Archiving|Updating|Uninstalling|Indexing|Downloading.{3}|Unpacking.{3}|Converting|Linking|Building|Calculating size|Collected|Processing|LibraryManager:|Library Storage:|\`[a-zA-Z\s\-\%\_\,\.]*\`*</string>
             <key>name</key>
             <string>entity.name.function</string>
         </dict>
@@ -103,7 +103,7 @@
         </dict>
         <dict>
             <key>match</key>
-            <string>text|data|bss|dec|hex|filename</string>
+            <string>text |data |bss |dec |hex |filename </string>
             <key>name</key>
             <string>entity.name.tag.xml</string>
         </dict>
