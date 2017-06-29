@@ -117,6 +117,11 @@ class Update(Command):
         To know what is the last version of platformio
         pypi is checked
         """
+        installed = get_setting('installed', False)
+
+        if(not installed):
+            return
+
         from datetime import datetime, timedelta
 
         date_now = datetime.now()
