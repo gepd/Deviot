@@ -1,0 +1,12 @@
+<snippet>
+    <content><![CDATA[
+void setup(){
+    ${1}
+}
+void loop(){
+}
+]]></content>
+    <tabTrigger>inotem</tabTrigger>
+    <scope>source.iot</scope>
+    <description>Deviot template</description>
+</snippet>
