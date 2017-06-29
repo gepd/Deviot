@@ -83,13 +83,13 @@ msgstr "删除库"
 msgid "menu_import_library"
 msgstr "导入库"
 
-msgid "menu_not_libraries"
+msgid "menu_no_libraries"
 msgstr "没有库"
 
 msgid "menu_library_examples"
 msgstr "示例"
 
-msgid "menu_not_examples"
+msgid "menu_no_examples"
 msgstr "没有示例"
 
 msgid "menu_option_lib"
@@ -128,7 +128,7 @@ msgstr "串口"
 msgid "menu_auth_change"
 msgstr "更改密码"
 
-msgid "menu_none_serial_mdns"
+msgid "menu_no_serial_mdns"
 msgstr "没有串口或mDNS服务"
 
 msgid "menu_add_ip"

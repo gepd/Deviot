@@ -209,7 +209,7 @@ class QuickMenu(PreferencesBridge):
         ports_list.insert(1, [_("menu_add_ip")])     
 
         if(len(ports_list) < 2):
-            ports_list = [_("menu_none_serial_mdns").upper()]
+            ports_list = [_("menu_no_serial_mdns").upper()]
 
         return ports_list
 
@@ -312,7 +312,7 @@ class QuickMenu(PreferencesBridge):
         quick_list.insert(0, [_("select_library").upper()])
 
         if(len(quick_list) <= 1):
-            quick_list = [[_("menu_not_libraries")]]
+            quick_list = [[_("menu_no_libraries")]]
 
         return quick_list
 
@@ -326,8 +326,8 @@ class QuickMenu(PreferencesBridge):
         self.quick_list.insert(0, [_("select_library").upper()])
 
         if(len(self.quick_list) <= 1):
-            self.quick_list = [[_("menu_not_examples")]]
-        
+            self.quick_list = [[_("menu_no_examples")]]
+
         quick_panel(self.quick_list, self.callback_library)
 
     def callback_library(self, selected):
