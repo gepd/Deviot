@@ -80,14 +80,14 @@ msgstr "라이브러리 삭제하기"
 msgid "menu_import_library"
 msgstr "라이브러리 가져오기"
 
-msgid "menu_not_libraries"
-msgstr "Not Libraries Availables"
+msgid "menu_no_libraries"
+msgstr "No Libraries Availables"
 
 msgid "menu_library_examples"
 msgstr "예제"
 
-msgid "menu_not_examples"
-msgstr "Not Examples Availables"
+msgid "menu_no_examples"
+msgstr "No Examples Availables"
 
 msgid "menu_option_lib"
 msgstr "라이브러리 설정"
@@ -125,8 +125,8 @@ msgstr "시리얼 포트"
 msgid "menu_auth_change"
 msgstr "Change OTA Password"
 
-msgid "menu_none_serial_mdns"
-msgstr "None serial port or mDNS service available"
+msgid "menu_no_serial_mdns"
+msgstr "No serial port or mDNS service available"
 
 msgid "menu_add_ip"
 msgstr "IP 추가하기"

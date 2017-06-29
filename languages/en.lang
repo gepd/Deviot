@@ -83,14 +83,14 @@ msgstr "Remove Library"
 msgid "menu_import_library"
 msgstr "Import Library"
 
-msgid "menu_not_libraries"
-msgstr "Not Libraries Availables"
+msgid "menu_no_libraries"
+msgstr "No Libraries Availables"
 
 msgid "menu_library_examples"
 msgstr "Examples"
 
-msgid "menu_not_examples"
-msgstr "Not Examples Availables"
+msgid "menu_no_examples"
+msgstr "No Examples Availables"
 
 msgid "menu_option_lib"
 msgstr "Library Options"
@@ -140,8 +140,8 @@ msgstr "Serial Port(s)"
 msgid "menu_auth_change"
 msgstr "Change OTA Password"
 
-msgid "menu_none_serial_mdns"
-msgstr "None serial port or mDNS services available"
+msgid "menu_no_serial_mdns"
+msgstr "No serial port or mDNS services available"
 
 msgid "menu_add_ip"
 msgstr "Add IP Manually"

@@ -85,13 +85,13 @@ msgstr "Eliminar Librería"
 msgid "menu_import_library"
 msgstr "Importar Librería"
 
-msgid "menu_not_libraries"
+msgid "menu_no_libraries"
 msgstr "No Hay Librerias Disponibles"
 
 msgid "menu_library_examples"
 msgstr "Ejemplos"
 
-msgid "menu_not_examples"
+msgid "menu_no_examples"
 msgstr "No Hay Ejemplos Disponibles"
 
 msgid "menu_option_lib"
@@ -130,7 +130,7 @@ msgstr "Puerto(s) Serial"
 msgid "menu_auth_change"
 msgstr "Cambiar Contraseña OTA"
 
-msgid "menu_none_serial_mdns"
+msgid "menu_no_serial_mdns"
 msgstr "Ningún puerto o servicio disponible"
 
 msgid "menu_add_ip"
