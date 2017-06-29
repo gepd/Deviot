@@ -175,7 +175,7 @@ def output_in_file(command, file_path):
     return 200
 
 
-def create_sketch(sketch_name, path):
+def create_sketch(sketch_name, select_path):
     """
     create a new sketch with the name and path given
     the template include a basic code stored in the preset
@@ -183,7 +183,7 @@ def create_sketch(sketch_name, path):
     """
     from . import paths
     # file path
-    sketch_path = path.join(path, sketch_name)
+    sketch_path = path.join(select_path, sketch_name)
     if not path.exists(sketch_path):
         makedirs(sketch_path)
 
@@ -197,11 +197,11 @@ def create_sketch(sketch_name, path):
     # get template
     template_file_name = 'template' + ext
     preset_path = paths.getPresetPath()
-    template_file_path = os.path.join(preset_path, template_file_name)
+    template_file_path = path.join(preset_path, template_file_name)
     with open(template_file_path) as file:
         src_code = file.read()
     src_file_name = sketch_name + ext
-    src_file_path = os.path.join(sketch_path, src_file_name)
+    src_file_path = path.join(sketch_path, src_file_name)
 
     # save new file
     with open(src_file_path, 'w') as src_file:

@@ -358,25 +358,12 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
     _ = I18n().translate
 
     paths_list = []
-    path_caption = path if(path) else "0"
-    paths_list.append(_("select_cur_dir_{0}", path_caption))
-    paths_list.append(_("_previous"))
 
     # recognize path
     if(path and not plist):
         index = -3
         new_path = globalize(path)
         paths_list.extend(new_path)
-
-    # select current
-    if(index == 0):
-        # store last path used
-        from .tools import save_setting
-        save_setting('last_path', path)
-
-        if(not key):
-            return callback(path)
-        return callback(key, path)
 
     # back
     if(index == 1 and path):
@@ -391,8 +378,22 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
             paths_list.extend(back_list)
             path = prev
 
+    # select current
+    if(index == 0):
+        # store last path used
+        from .tools import save_setting
+        save_setting('last_path', path)
+
+        if(not key):
+            return callback(path)
+        return callback(key, path)
+
     if(plist and index != 1):
         path = plist[index]
+
+    path_caption = path if(path) else "0"
+    paths_list.insert(0, _("select_cur_dir_{0}", path_caption))
+    paths_list.insert(1, _("_previous"))
 
     # start from root
     if(index == -2):
