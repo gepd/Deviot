@@ -228,11 +228,11 @@ class PioInstall(object):
         cmd = [self.SYMLINK, '--version']
         out = run_command(cmd)
 
-        if(out[0] > 0):
-            self.check_sym_link()
-
         if(out[0] == 0):
             self.version = sub(r'\D', '', out[1])
+
+        if(int(self.version[0]) is 3):
+            self.check_sym_link()
 
         # show error and link to download
         if(out[0] > 0 or int(self.version[0]) is 3):
