@@ -354,6 +354,14 @@
                                     "checkbox":true,
                                     "command":"deviot_developer_pio"
                                 },
+                                {
+                                    "caption":"menu_always_native",
+                                    "command":"deviot_pio_structure"
+                                },
+                                {
+                                    "caption":"menu_rebuild_boards",
+                                    "command":"deviot_rebuild_boards"
+                                },
                                 {"caption": "-"},
                                 {
                                     "caption":"menu_show_verbose",
@@ -377,10 +385,6 @@
                                 {
                                     "caption":"menu_use_cpp_new",
                                     "command":"deviot_cpp_file"
-                                },
-                                {
-                                    "caption":"menu_always_native",
-                                    "command":"deviot_pio_structure"
                                 }
                             ]
             },{

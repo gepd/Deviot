@@ -13,7 +13,7 @@ msgid "button_download_python"
 msgstr "Download Python"
 
 msgid "symlink_detected"
-msgstr "Symlink has been detected"
+msgstr "Symlink has been detected\n"
 
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
@@ -209,6 +209,12 @@ msgstr "Upgrade PlatformIO"
 msgid "menu_developer_pio"
 msgstr "Use Development Pio Version"
 
+msgid "menu_always_native"
+msgstr "Use PlatformIO Structure"
+
+msgid "menu_rebuild_boards"
+msgstr "Rebuild Boards File"
+
 msgid "menu_update_board_list"
 msgstr "Update Board List"
 
@@ -223,9 +229,6 @@ msgstr "Change Build Folder"
 
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
-
-msgid "menu_always_native"
-msgstr "Use PlatformIO Structure"
 
 msgid "menu_languages"
 msgstr "Language"

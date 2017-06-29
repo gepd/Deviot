@@ -43,6 +43,7 @@ from ..libraries import __version__, __title__
 from ..libraries.tools import get_setting, save_setting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
+from ..platformio.pio_bridge import PioBridge
 
 dprint = None
 derror = None
@@ -165,6 +166,8 @@ class PioInstall(object):
         save_env_paths(env_path)
 
         save_setting('installed', True)
+        PioBridge().save_boards_list()
+
         derror("setup_finished")
 
     def download_file(self):
@@ -263,6 +266,7 @@ def check_pio():
         save_setting('installed', True)
         save_setting('external_bins', True)
         save_setting('env_path', env_path)
+        PioBridge().save_boards_list()
         derror("pio_is_installed")
 
 def create_path(path):

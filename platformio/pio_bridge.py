@@ -36,6 +36,23 @@ class PioBridge(Command):
         board_file_path = paths.getBoardsFileDataPath()
         File(board_file_path).write(boards)
 
+    def save_boards_list_async(self):
+        """Save boards list async
+        
+        Stores the board list file in a new thread to avoid
+        block the Sublime Text UI
+        """
+        from threading import Thread
+        from ..libraries.thread_progress import ThreadProgress
+        from ..libraries.I18n import I18n
+
+        txt = I18n().translate('processing')
+
+        thread = Thread(target=self.save_boards_list)
+        thread.start()
+        ThreadProgress(thread, txt, '')
+
+
     def get_boards_list(self):
         """Board List
         

@@ -14,7 +14,6 @@ from .platformio.update import Update
 from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting, get_phantoms, del_phantom
 from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
-from .platformio.pio_bridge import PioBridge
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
 
@@ -23,9 +22,6 @@ def plugin_loaded():
     Update().check_update_async()
 
     boards_file = getBoardsFileDataPath()
-
-    if(not path.exists(boards_file)):
-        PioBridge().save_boards_list()
 
     menu_path = getMainMenuPath()
     compile_lang = get_setting('compile_lang', True)

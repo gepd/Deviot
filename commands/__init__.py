@@ -30,12 +30,13 @@ from .deviot_choose_line_ending import DeviotChooseLineEndingCommand
 from .deviot_choose_display_mode import DeviotChooseDisplayModeCommand
 from .deviot_upgrade_pio import DeviotUpgradePioCommand
 from .deviot_developer_pio import DeviotDeveloperPio
+from .deviot_pio_structure import DeviotPioStructureCommand
+from .deviot_rebuild_boards import DeviotRebuildBoardsCommand
 from .deviot_verbose_output import DeviotVerboseOutputCommand
 from .deviot_status_information import DeviotStatusInformationCommand
 from .deviot_open_build_folder import DeviotOpenBuildFolderCommand
 from .deviot_change_build_folder import DeviotChangeBuildFolderCommand
 from .deviot_cpp_file import DeviotCppFileCommand
-from .deviot_pio_structure import DeviotPioStructureCommand
 from .deviot_languages import DeviotLanguagesCommand
 from .deviot_donate import DeviotDonateCommand
 from .deviot_about import DeviotAboutCommand
@@ -79,11 +80,12 @@ __all__ = [
     'DeviotChooseDisplayModeCommand',
     'DeviotUpgradePioCommand',
     'DeviotDeveloperPio',
+    'DeviotPioStructureCommand',
+    'DeviotRebuildBoardsCommand',
     'DeviotVerboseOutputCommand',
     'DeviotOpenBuildFolderCommand',
     'DeviotChangeBuildFolderCommand',
     'DeviotCppFileCommand',
-    'DeviotPioStructureCommand',
     'DeviotLanguagesCommand',
     'DeviotDonateCommand',
     'DeviotAboutCommand',
