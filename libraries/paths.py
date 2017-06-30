@@ -392,7 +392,7 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
         path = plist[index]
 
     path_caption = path if(path) else "0"
-    paths_list.insert(0, _("select_cur_dir_{0}", path_caption))
+    paths_list.insert(0, _("select_{0}", path_caption))
     paths_list.insert(1, _("_previous"))
 
     # start from root
