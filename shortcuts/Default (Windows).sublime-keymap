@@ -7,7 +7,115 @@
                     "text": "Deviot: "
                 }
     },{
-        "keys": ["ctrl+shift+n"],
-        "command": "deviot_new_file"
+        "keys": ["alt+n", "alt+s"], 
+        "command": "deviot_new_sketch"
+    },{
+        "keys": ["alt+s", "alt+b"], 
+        "command": "deviot_select_boards"
+    },{
+        "keys": ["alt+s", "alt+e"], 
+        "command": "deviot_select_environment"
+    },{
+        "keys": ["alt+f", "alt+l"], 
+        "command": "deviot_search_library"
+    },{
+        "keys": ["alt+r", "alt+l"], 
+        "command": "deviot_remove_library"
+    },{
+        "keys": ["alt+i", "alt+l"], 
+        "command": "deviot_import_library"
+    },{
+        "keys": ["alt+e", "alt+l"], 
+        "command": "deviot_library_examples"
+    },{
+        "keys": ["alt+o", "alt+l"], 
+        "command": "deviot_open_library_folder"
+    },{
+        "keys": ["alt+e", "alt+f"], 
+        "command": "deviot_extra_library_folder"
+    },{
+        "keys": ["alt+r", "alt+f"], 
+        "command": "deviot_remove_extra_library_folder"
+    },{
+        "keys": ["alt+d", "alt+c"], 
+        "command": "deviot_compile_sketch"
+    },{
+        "keys": ["alt+d", "alt+u"], 
+        "command": "deviot_upload_sketch"
+    },{
+        "keys": ["alt+o", "alt+s"], 
+        "command": "deviot_overwrite_upload_baud"
+    },{
+        "keys": ["alt+d", "alt+c"], 
+        "command": "deviot_clean_sketch"
+    },{
+        "keys": ["alt+o", "alt+i"], 
+        "command": "deviot_open_ini_file"
+    },{
+        "keys": ["alt+d", "alt+p"], 
+        "command": "deviot_select_port"
+    },{
+        "keys": ["alt+c", "alt+s"], 
+        "command": "deviot_show_console"
+    },{
+        "keys": ["alt+c", "alt+h"], 
+        "command": "deviot_hide_console"
+    },{
+        "keys": ["alt+t", "alt+s"], 
+        "command": "deviot_show_terminal"
+    },{
+        "keys": ["alt+t", "alt+h"], 
+        "command": "deviot_hide_terminal"
+    },{
+        "keys": ["alt+o", "alt+p"], 
+        "command": "deviot_set_password"
+    },{
+        "keys": ["alt+m", "alt+t"], 
+        "command": "deviot_toggle_serial_monitor"
+    },{
+        "keys": ["alt+m", "alt+s"], 
+        "command": "deviot_send_serial_monitor"
+    },{
+        "keys": ["alt+m", "alt+c"], 
+        "command": "deviot_clean_console"
+    },{
+        "keys": ["alt+m", "alt+d"], 
+        "command": "deviot_output_console"
+    },{
+        "keys": ["alt+m", "alt+l"], 
+        "command": "deviot_automatic_scroll"
+    },{
+        "keys": ["alt+m", "alt+n"], 
+        "command": "deviot_auto_clean"
+    },{
+        "keys": ["alt+p", "alt+u"], 
+        "command": "deviot_upgrade_pio"
+    },{
+        "keys": ["alt+p", "alt+d"], 
+        "command": "deviot_developer_pio"
+    },{
+        "keys": ["alt+p", "alt+n"], 
+        "command": "deviot_pio_structure"
+    },{
+        "keys": ["alt+p", "alt+r"], 
+        "command": "deviot_rebuild_boards"
+    },{
+        "keys": ["alt+v", "alt+o"], 
+        "command": "deviot_verbose_output"
+    },{
+        "keys": ["alt+s", "alt+i"], 
+        "command": "deviot_status_information"
+    },{
+        "keys": ["alt+o", "alt+b"], 
+        "command": "deviot_open_build_folder"
+    },{
+        "keys": ["alt+c", "alt+b"], 
+        "command": "deviot_change_build_folder"
+    },{
+        "keys": ["alt+c", "alt+p"], 
+        "command": "deviot_cpp_file"
+    },{
+        "keys": ["alt+d", "alt+l"], 
+        "command": "deviot_languages"
     }
 ]
