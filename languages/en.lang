@@ -1,5 +1,6 @@
 # LANGUAGE: English (English)
-# Spanish translations for Deviot Plugin.
+# English translations for Deviot Plugin.
+# Translators: GEPD, Marcus van Dam, Scott Lahteine
 # Copyright (C) 2015-2016 GEPD
 # This file is distributed under the same license as the Deviot Plugin.
 #
@@ -7,7 +8,7 @@
 # Setup Process
 
 msgid "deviot_need_python"
-msgstr "Deviot need Python 2.7 to work, please download and install it"
+msgstr "Deviot needs Python 2.7 to work, please download and install it"
 
 msgid "button_download_python"
 msgstr "Download Python"
@@ -19,10 +20,10 @@ msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
 
 msgid "pio_is_installed"
-msgstr "PlatformIO is installed in your system, you can enjoy Deviot now!"
+msgstr "PlatformIO is installed in your system. You can enjoy Deviot now!"
 
 msgid "pio_isn_installed"
-msgstr "PlatformIO is not installed\nPreparing to installing it, please be patient it may take a while.\n"
+msgstr "PlatformIO is not installed\nPreparing to install it. Please be patient it; may take a while.\n"
 
 msgid "downloading_files"
 msgstr "Downloading necessary files...\n"
@@ -52,10 +53,10 @@ msgid "setup_finished"
 msgstr "Installation finished, now you can enjoy Deviot!\n"
 
 msgid "searching_pio_updates"
-msgstr "Searching PlatformIO Upgrades...\n\n"
+msgstr "Searching for PlatformIO Updates...\n\n"
 
 msgid "new_pio_update{0}{1}"
-msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+msgstr "Version {0} of PlatformIO is available Your current version is {1}. Do you want to update it?"
 
 msgid "update_button"
 msgstr "Update Now"
@@ -69,13 +70,13 @@ msgid "menu_new_sketch"
 msgstr "New Sketch"
 
 msgid "menu_select_boards"
-msgstr "Select board"
+msgstr "Select Board"
 
 msgid "menu_select_env"
 msgstr "Select Environment"
 
 msgid "menu_search_lib"
-msgstr "Search Library"
+msgstr "Find/Install Library"
 
 msgid "menu_remove_lib"
 msgstr "Remove Library"
@@ -84,13 +85,13 @@ msgid "menu_import_library"
 msgstr "Import Library"
 
 msgid "menu_no_libraries"
-msgstr "No Libraries Availables"
+msgstr "No Libraries Available"
 
 msgid "menu_library_examples"
 msgstr "Examples"
 
 msgid "menu_no_examples"
-msgstr "No Examples Availables"
+msgstr "No Examples Available"
 
 msgid "menu_option_lib"
 msgstr "Library Options"
@@ -102,10 +103,7 @@ msgid "menu_remove_extra_lib_folder"
 msgstr "Remove Extra Library Folder"
 
 msgid "menu_open_lib_folder"
-msgstr "Open Libraries Folder"
-
-msgid "menu_change_user_lib_path"
-msgstr "Change Folder Library Path"
+msgstr "Open Library Folder"
 
 msgid "menu_build"
 msgstr "Build"
@@ -150,16 +148,16 @@ msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
 msgid "menu_run"
-msgstr "Run"
+msgstr "Start/Stop"
 
 msgid "menu_send"
 msgstr "Send"
 
+msgid "menu_clean_view"
+msgstr "Clean Monitor View"
+
 msgid "menu_deviot_output"
 msgstr "Output in Deviot Console"
-
-msgid "menu_status_information"
-msgstr "Show Information in the Status Bar"
 
 msgid "menu_auto_scroll"
 msgstr "Auto-Scroll"
@@ -171,7 +169,7 @@ msgid "menu_baudrate"
 msgstr "Baudrate"
 
 msgid "menu_line_ending"
-msgstr "Line Ending"
+msgstr "Line Endings"
 
 msgid "menu_none"
 msgstr "None"
@@ -219,7 +217,10 @@ msgid "menu_update_board_list"
 msgstr "Update Board List"
 
 msgid "menu_show_verbose"
-msgstr "Full Verbose Output At Build"
+msgstr "Full Verbose Output When Building"
+
+msgid "menu_status_information"
+msgstr "Show Information in the Status Bar"
 
 msgid "menu_open_build_folder"
 msgstr "Open Build Folder"
@@ -246,7 +247,7 @@ msgid "menu_about_pio"
 msgstr "About PlatformIO"
 
 
-# Mensajes y errores
+# Messages and errors
 
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
@@ -254,32 +255,14 @@ msgstr "[ Deviot {0} ]\n"
 msgid "_deviot_starting{0}"
 msgstr "[ Deviot {0} ] Starting...\n"
 
-msgid "checking_pio_updates"
-msgstr "Checking for PlatformIO updates...\n"
-
-msgid "error_pio_updates"
-msgstr "There was an error updating PlatformIO\n"
-
-msgid "pio_up_date{0}"
-msgstr "PlatformIO is up to date ({0})\n"
-
-msgid "pio_new_updated_installed{0}"
-msgstr "A new version was found and installed ({0})\n"
-
 msgid "caption_new_sketch"
 msgstr "Name for New Sketch:"
 
-msgid "updating_board_list"
-msgstr "Updating Board Lists"
-
 msgid "not_empty_sketch"
-msgstr "Isn't possible to upload an empty sketch\n"
-
-msgid "invalid_file_{0}"
-msgstr "{0} File not valid to process\n"
+msgstr "Not possible to upload an empty sketch\n"
 
 msgid "not_iot_{0}"
-msgstr "{0} is not a IoT File\n"
+msgstr "{0} is not an IoT File\n"
 
 msgid "select_board_list"
 msgstr "Select a Board From The List"
@@ -289,66 +272,6 @@ msgstr "Select an Environment From The List"
 
 msgid "select_port_list"
 msgstr "Select a Port From The List"
-
-msgid "init_project_{0}"
-msgstr "{0} Initializing the project | Processing...\n"
-
-msgid "built_project_{0}"
-msgstr "{0} Building the project | Processing...\n"
-
-msgid "error_installing_env_{0}"
-msgstr "{0} Error Installing virtualenv\n"
-
-msgid "error_making_env_{0}"
-msgstr "{0} Error Creating the virtualenv\n"
-
-msgid "error_installing_pio_{0}"
-msgstr "{0} Error Installing PlatformIO\n"
-
-msgid "uploading_firmware_{0}"
-msgstr "{0} Uploading firmware | "
-
-msgid "clean_built_files__{0}"
-msgstr "{0} Cleaning built files | "
-
-msgid "success_took_{1}"
-msgstr "SUCCESS | it took {1}s\n"
-
-msgid "success_took_{0}{1}"
-msgstr "{0} SUCCESS | it took {1}s\n"
-
-msgid "success_warnings_took__{0}{1}"
-msgstr "{0} SUCCESS but with WARNING(s) | it took {1}s\n"
-
-msgid "error_took_{0}{1}"
-msgstr "{0} ERROR | it took {1}s\n"
-
-msgid "continue"
-msgstr "Continue"
-
-msgid "confirm_del_pref"
-msgstr "After this, you will need to restart Sublime Text. Do you want to continue?"
-
-msgid "success"
-msgstr "Success"
-
-msgid "error"
-msgstr "Error"
-
-msgid "success_warnings"
-msgstr "Success with warning(s)"
-
-msgid "processing"
-msgstr "Processing"
-
-msgid "done"
-msgstr "Done"
-
-msgid "restart_deviot"
-msgstr "This action required to restart Sublime Text. Do you want to continue?"
-
-msgid "continue_button"
-msgstr "Continue"
 
 msgid "ota_error_platform"
 msgstr "OTA Upload is only available for Espressif (ESP8266) platform. Select other serial port or change the current environment"
@@ -362,9 +285,6 @@ msgstr "Select an Example"
 msgid "_previous"
 msgstr "< Previous"
 
-msgid "upgrading_pio"
-msgstr "Upgrading PlarformIO...\n"
-
 msgid "select_{0}"
 msgstr "Choose {0}"
 
@@ -377,40 +297,22 @@ msgid "search_query"
 msgstr "Search Query:"
 
 msgid "add_ip_caption"
-msgstr "Write the IP Address:"
+msgstr "Enter the IP Address:"
 
 msgid "select_cur_dir_{0}"
 msgstr "Select Current Dir ({0})"
-
-msgid "installing_lib_{0}{1}"
-msgstr "{0} Installing Library {1} | "
-
-msgid "uninstalling_lib_{0}{1}"
-msgstr "{0} Uninstalling Library {1} | "
-
-msgid "download_lib"
-msgstr "Downloading...\n"
-
-msgid "searching"
-msgstr "Searching"
-
-msgid "installing"
-msgstr "Installing"
-
-msgid "install_package_{0}"
-msgstr "\nInstalling {0} package: "
 
 msgid "already_installed{0}"
 msgstr "{0} already installed\n"
 
 msgid "downloading_package{0}"
-msgstr "Downloading package {0}\n\nIt may take a while, please be patient.\n"
+msgstr "Downloading package {0}\n\nIt may take a while; please be patient.\n"
 
 msgid "unpacking"
 msgstr "Unpacking...\n"
 
 msgid "download_dependece"
-msgstr "Downloading dependence\n"
+msgstr "Downloading dependencies\n"
 
 msgid "preparing_list"
 msgstr "Preparing List"
@@ -419,10 +321,10 @@ msgid "removing"
 msgstr "Removing"
 
 msgid "none_lib_found"
-msgstr "None Library Found"
+msgstr "No Libraries Found"
 
 msgid "none_lib_installed"
-msgstr "None library installed"
+msgstr "No Libraries Installed"
 
 
 # Serial Monitor
@@ -431,7 +333,7 @@ msgid "serial_monitor_header{0}{1}"
 msgstr "[ Deviot {0} ] Serial Monitor | {1}\n\n"
 
 msgid "serial_port_used_{0}"
-msgstr "Serial port {0} already in use. Try stopping any programs that may be using it.\n"
+msgstr "Serial port {0} already in use. Try quitting any programs that may be using it.\n"
 
 msgid "serial_not_available"
 msgstr "The serial port selected isn't available"
@@ -440,7 +342,7 @@ msgid "send"
 msgstr "Send:"
 
 msgid "sended_{0}"
-msgstr "\n[SENDED] {0}\n"
+msgstr "\n[SENT] {0}\n"
 
 # Auth OTA
 
