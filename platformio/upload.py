@@ -71,7 +71,7 @@ class Upload(Initialize):
             return
 
         self.check_serial_monitor()
-        return
+
         out = self.run_command(cmd)
 
         if(get_setting('run_monitor', None) and out[0] == 0):
