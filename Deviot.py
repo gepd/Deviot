@@ -21,14 +21,12 @@ def plugin_loaded():
     PioInstall()
     Update().check_update_async()
 
-    boards_file = getBoardsFileDataPath()
-
     menu_path = getMainMenuPath()
     compile_lang = get_setting('compile_lang', True)
     
     if(compile_lang or not path.exists(menu_path)):
         from .libraries.top_menu import TopMenu
-        TopMenu().create_main_menu()
+        TopMenu().make_menu_files()
         save_setting('compile_lang', False)
 
 class DeviotListener(EventListener):

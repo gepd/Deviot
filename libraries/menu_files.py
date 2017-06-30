@@ -11,6 +11,9 @@ import os
 from . import paths
 from .file import File
 from ..platformio.pio_bridge import PioBridge
+from .I18n import I18n
+
+_ = I18n().translate
 
 class MenuFiles(PioBridge):
     def __init__(self):
@@ -54,3 +57,23 @@ class MenuFiles(PioBridge):
         file = File(menu_path)
         data = dumps(data, sort_keys=True, indent=4)
         file.write(data)
+
+    def create_quick_commands(self):
+        """Quick Commands
+        
+        Makes the quick command file and translate it
+        to the current language selected
+        """
+        quick_path = paths.getQuickPath()
+        plugin_path = paths.getPluginPath()
+        output_path = os.path.join(plugin_path, 'Default.sublime-commands')
+
+        quick_json = File(quick_path)
+        quick_json = quick_json.read_json()
+
+        for items in quick_json:
+            items['caption'] = "Deviot: " + _(items['caption'])
+
+        quick_file = File(output_path)
+        quick_file.save_json(quick_json)
+

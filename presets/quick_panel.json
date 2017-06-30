@@ -1,0 +1,120 @@
+[
+    {
+        "caption": "menu_new_sketch",
+        "command": "deviot_new_sketch"
+    },{
+        "caption": "menu_select_boards",
+        "command": "deviot_select_boards"
+    },{
+        "caption": "menu_select_env",
+        "command": "deviot_select_environment"
+    },{
+        "caption": "menu_search_lib",
+        "command": "deviot_search_library"
+    },{
+        "caption": "menu_remove_lib",
+        "command": "deviot_remove_library"
+    },{
+        "caption": "menu_import_library",
+        "command": "deviot_import_library"
+    },{
+        "caption": "menu_library_examples",
+        "command": "deviot_library_examples"
+    },{
+        "caption": "menu_open_lib_folder",
+        "command": "deviot_open_library_folder"
+    },{
+        "caption": "menu_extra_lib_folder",
+        "command": "deviot_extra_library_folder"
+    },{
+        "caption": "menu_remove_extra_lib_folder",
+        "command": "deviot_remove_extra_library_folder"
+    },{
+        "caption": "menu_build",
+        "command": "deviot_compile_sketch"
+    },{
+        "caption": "menu_upload",
+        "command": "deviot_upload_sketch"
+    },{
+        "caption": "menu_clean",
+        "command": "deviot_clean_sketch"
+    },{
+        "caption": "menu_open_ini_file",
+        "command": "deviot_open_ini_file"
+    },{
+        "caption": "menu_show_console",
+        "command": "deviot_show_console"
+    },{
+        "caption": "menu_hide_console",
+        "command": "deviot_hide_console"
+    },{
+        "caption": "menu_show_terminal",
+        "command": "deviot_show_terminal"
+    },{
+        "caption": "menu_hide_terminal",
+        "command": "deviot_hide_terminal"
+    },{
+        "caption": "menu_serial_port",
+        "command": "deviot_select_port"
+    },{
+        "caption": "menu_auth_change",
+        "command": "deviot_set_password"
+    },{
+        "caption": "menu_run",
+        "command": "deviot_toggle_serial_monitor"
+    },{
+        "caption": "menu_send",
+        "command": "deviot_send_serial_monitor"
+    },{
+        "caption": "menu_clean",
+        "command": "deviot_clean_console"
+    },{
+        "caption": "menu_deviot_output",
+        "command": "deviot_output_console"
+    },{
+        "caption": "menu_auto_scroll",
+        "command": "deviot_automatic_scroll"
+    },{
+        "caption": "menu_auto_clean",
+        "command": "deviot_auto_clean"
+    },{
+        "caption": "menu_upgrade_pio",
+        "command": "deviot_upgrade_pio"
+    },{
+        "caption": "menu_developer_pio",
+        "command": "deviot_developer_pio"
+    },{
+        "caption": "menu_always_native",
+        "command": "deviot_pio_structure"
+    },{
+        "caption": "menu_rebuild_boards",
+        "command": "deviot_rebuild_boards"
+    },{
+        "caption": "menu_show_verbose",
+        "command": "deviot_verbose_output"
+    },{
+        "caption": "menu_status_information",
+        "command": "deviot_status_information"
+    },{
+        "caption": "menu_open_build_folder",
+        "command": "deviot_open_build_folder"
+    },{
+        "caption": "menu_change_build_folder",
+        "command": "deviot_change_build_folder"
+    },{
+        "caption": "menu_use_cpp_new",
+        "command": "deviot_cpp_file"
+    },{
+        "caption": "menu_languages",
+        "command": "deviot_languages"
+    },{
+        "caption": "menu_donate_deviot",
+        "command": "deviot_donate"
+    },{
+        "caption": "menu_about_deviot",
+        "command": "deviot_about"
+    },{
+        "caption": "menu_about_pio",
+        "command": "deviot_pio_about"
+    }
+]

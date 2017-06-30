@@ -62,3 +62,11 @@ class TopMenu(MenuFiles):
 
         return option_dict
 
+    def make_menu_files(self):
+        """Menu Files
+        
+        Makes each file who needs to be translated like
+        the main menu, quick panel, contextual menu
+        """
+        self.create_main_menu()
+        self.create_quick_commands()
