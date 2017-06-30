@@ -64,8 +64,12 @@
                 "command": "deviot_compile_sketch"
             },{
                 "caption": "menu_upload",
-                "id": "upload_sketch",
+                "id": "menu_upload",
                 "command": "deviot_upload_sketch"
+            },{
+                "caption": "menu_overwrite_upload_baud",
+                "id": "menu_overwrite_upload_baud",
+                "command": "deviot_overwrite_upload_baud"
             },{
                 "caption": "menu_clean",
                 "id": "clean_sketch",

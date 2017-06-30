@@ -162,6 +162,48 @@ class QuickMenu(PreferencesBridge):
 
         return environments_list
 
+    def quick_overwrite_baud(self):
+        """Upload baud rate
+        
+        Shows the list of baud rates to override when 
+        upload an sketch to a device
+        """
+        self.quick_list = self.quick_overwrite_baud_list()
+        
+        quick_panel(self.quick_list, self.callback_overwrite_baud)
+
+    def callback_overwrite_baud(self, selected):
+        """Baud rate callback
+        
+        Stores the option selected in the preferences file
+        
+        Arguments:
+            selected {int} -- index of the selected baud rate
+        """
+        if(selected == -1):
+            return
+
+        selected = self.quick_list[selected]
+
+        if(selected == 'None'):
+            selected = None
+
+        save_setting('upload_baudrate', selected)
+
+    def quick_overwrite_baud_list(self):
+        """Baud rate list
+        
+        List of baud rates used to overwrite the upload speed
+        
+        Returns:
+            list -- list of baud rates
+        """
+        baudrate_list = ["None", "1200", "1800", "2400", "4800", "9600", "19200", "38400", 
+                        "57600", "115200", "230400", "460800", "500000", "576000",
+                        "921600", "1000000", "1152000"]
+
+        return baudrate_list
+
     def quick_serial_ports(self):
         """List of Serial Ports
         

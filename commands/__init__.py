@@ -11,6 +11,7 @@ from .deviot_extra_library_folder import DeviotExtraLibraryFolderCommand
 from .deviot_remove_extra_library_folder import DeviotRemoveExtraLibraryFolderCommand
 from .deviot_compile_sketch import DeviotCompileSketchCommand
 from .deviot_upload_sketch import DeviotUploadSketchCommand
+from .deviot_overwrite_upload_baud import DeviotOverwriteUploadBaudCommand
 from .deviot_clean_sketch import DeviotCleanSketchCommand
 from .deviot_open_ini_file import DeviotOpenIniFile
 from .deviot_show_console import DeviotShowConsoleCommand
@@ -60,6 +61,7 @@ __all__ = [
     'DeviotRemoveExtraLibraryFolderCommand',
     'DeviotCompileSketchCommand',
     'DeviotUploadSketchCommand',
+    'DeviotOverwriteUploadBaudCommand',
     'DeviotCleanSketchCommand',
     'DeviotOpenIniFile',
     'DeviotShowConsoleCommand',

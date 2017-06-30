@@ -53,6 +53,9 @@ class Upload(Initialize):
         # add extra library board
         self.add_extra_library()
 
+        # check if there is a new speed to overwrite
+        self.overwrite_baudrate()
+
         # check if there is a programmer selected
         self.programmer()
         programmer = get_setting('programmer_id', None)
@@ -68,7 +71,7 @@ class Upload(Initialize):
             return
 
         self.check_serial_monitor()
-
+        return
         out = self.run_command(cmd)
 
         if(get_setting('run_monitor', None) and out[0] == 0):
