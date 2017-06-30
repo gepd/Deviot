@@ -148,7 +148,7 @@ msgid "menu_monitor_serial"
 msgstr "시리얼 모니터"
 
 msgid "menu_run"
-msgstr "Start/Stop"
+msgstr "Start/Stop Monitor"
 
 msgid "menu_send"
 msgstr "전송하기"
@@ -229,7 +229,7 @@ msgid "menu_use_cpp_new"
 msgstr "새 스케치를 CPP File로 생성"
 
 msgid "menu_languages"
-msgstr "언어"
+msgstr "언어 (Languages)"
 
 msgid "menu_donate_deviot"
 msgstr "❤ 기부하기"

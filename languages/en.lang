@@ -151,7 +151,7 @@ msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
 msgid "menu_run"
-msgstr "Start/Stop"
+msgstr "Start/Stop Monitor"
 
 msgid "menu_send"
 msgstr "Send"

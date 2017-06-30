@@ -147,8 +147,8 @@ msgstr "Ajouter IP Manuelle"
 msgid "menu_monitor_serial"
 msgstr "Moniteur Serie"
 
-msgid "menu_run" #translate
-msgstr "Start/Stop"
+msgid "menu_run"
+msgstr "Start/Stop Monitor"
 
 msgid "menu_send"
 msgstr "Envoyer"
@@ -229,7 +229,7 @@ msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
 
 msgid "menu_languages"
-msgstr "Langue"
+msgstr "Langue (Languages)"
 
 msgid "menu_donate_deviot"
 msgstr "❤ Soutenir"

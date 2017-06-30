@@ -148,7 +148,7 @@ msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
 msgid "menu_run"
-msgstr "Start/Stop"
+msgstr "Start/Stop Monitor"
 
 msgid "menu_send"
 msgstr "Wyślij"
@@ -229,7 +229,7 @@ msgid "menu_use_cpp_new"
 msgstr "Użyj Pliku CPP w Nowym Pliku"
 
 msgid "menu_languages"
-msgstr "Język"
+msgstr "Język (Languages)"
 
 msgid "menu_donate_deviot"
 msgstr "❤ Wesprzyj"

@@ -148,7 +148,7 @@ msgid "menu_monitor_serial"
 msgstr "串口监视器"
 
 msgid "menu_run"
-msgstr "Start/Stop"
+msgstr "Start/Stop Monitor"
 
 msgid "menu_send"
 msgstr "发送"
@@ -229,7 +229,7 @@ msgid "menu_use_cpp_new"
 msgstr "使用 .CPP 新建文件"
 
 msgid "menu_languages"
-msgstr "语言"
+msgstr "语言 (Languages)"
 
 msgid "menu_donate_deviot"
 msgstr "捐赠"
