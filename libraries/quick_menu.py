@@ -134,6 +134,7 @@ class QuickMenu(PreferencesBridge):
         boards = self.quick_boards_list()
         environments = self.get_selected_boards()
         environment = self.get_environment()
+        new_environments = environments
 
         index = 0
         total = len(environments)
@@ -150,6 +151,7 @@ class QuickMenu(PreferencesBridge):
                     if(listed == id):
                         vendor = "%s | %s" % (vendor, id)
                         environments_list.append([caption, vendor])
+                        new_environments.remove(listed)
                         count -= 1
 
                         if(environment == listed):
@@ -159,6 +161,12 @@ class QuickMenu(PreferencesBridge):
 
                 if(not count):
                     break
+
+        if(new_environments):
+            for board in new_environments:
+                caption = board
+                vendor = "Unknown | {0}".format(board)
+                environments_list.append([caption, vendor])
 
         return environments_list
 

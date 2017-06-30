@@ -258,10 +258,10 @@ class ProjectCheck(QuickMenu):
         platform = self.get_platform()
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
 
-        if('espressif' not in platform and ip_device is not None):
+        if(platform and 'espressif' not in platform and ip_device is not None):
             return False
 
-        if('espressif' not in platform):
+        if(platform and 'espressif' not in platform):
             return ended
 
         auth = None
