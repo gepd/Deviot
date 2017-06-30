@@ -52,6 +52,7 @@ class Update(Command):
         Update platformIO to the last version (block thread)
         """
         self.show_feedback()
+        self.dprint("searching_pio_updates")
 
         cmd = ['pio','upgrade']
         out = self.run_command(cmd, prepare=False)
@@ -86,14 +87,17 @@ class Update(Command):
         the stable or developer version
         """
         self.show_feedback()
+        self.dprint("uninstall_old_pio")
 
         cmd = ['pip','uninstall', '--yes','platformio']
         out = self.run_command(cmd, prepare=False)
 
         if(get_setting('pio_developer', False)):
+            self.dprint("installing_dev_pio")
             option = 'https://github.com/platformio/' \
             'platformio/archive/develop.zip'
         else:
+            self.dprint("installing_stable_pio")
             option = 'platformio'
 
         cmd = ['pip','install', '-U', option]
