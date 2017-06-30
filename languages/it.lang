@@ -1,0 +1,423 @@
+# LANGUAGE: Italian (Italian)
+# Italian translations for Deviot Plugin.
+# Copyright (C) 2015-2017 GEPD
+# This file is distributed under the same license as the Deviot Plugin.
+# Translators: davide-dv
+#
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot necessita di Python 2.7 per funzionare, per favore scaricalo e installalo"
+
+msgid "button_download_python"
+msgstr "Scarica Python"
+
+msgid "symlink_detected"
+msgstr "Symlink has been detected\n"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Installazione\n"
+
+msgid "pio_is_installed"
+msgstr "PlatformIO è installato nel tuo sistema, goditi Deviot!"
+
+msgid "pio_isn_installed"
+msgstr "PlatformIO non è installato\nPreparazione all'installazione, Potrebbe volerci un po'.\n"
+
+msgid "downloading_files"
+msgstr "Scaricamento dei file necessari...\n"
+
+msgid "error_downloading_files"
+msgstr "C'è stato un errore durante lo scaricamento dei file necessari...\n"
+
+msgid "error_saving_files"
+msgstr "C'è stato un errore durante il salvataggio dei file necessari...\n"
+
+msgid "extracting_files"
+msgstr "Estrazione dei file...\n"
+
+msgid "installing_pio"
+msgstr "Installazione di PlatformIO...\n"
+
+msgid "uninstall_old_pio"
+msgstr "Disinstallazione della versione corrente...\n"
+
+msgid "installing_dev_pio"
+msgstr "Installazione della versione 'develop' di PlatformIO...\n"
+
+msgid "installing_stable_pio"
+msgstr "Installazione della versione 'stable' di PlatformIO...\n"
+
+msgid "setup_finished"
+msgstr "Installazione completata, buon divertimento con Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Ricerca aggiornamenti per PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "La versione {0} di PlatformIO è disponibile, la tua versione corrente è {1} Vuoi aggiornarla?"
+
+msgid "update_button"
+msgstr "Aggiorna Ora"
+
+# Menu
+
+msgid "menu_quick_panel"
+msgstr "Quick Panel"
+
+msgid "menu_new_sketch"
+msgstr "Nuovo Sketch"
+
+msgid "menu_select_boards"
+msgstr "Scegli scheda"
+
+msgid "menu_select_env"
+msgstr "Scegli Ambiente"
+
+msgid "menu_search_lib"
+msgstr "Cerca Libreria"
+
+msgid "menu_remove_lib"
+msgstr "Rimuovi Libreria"
+
+msgid "menu_import_library"
+msgstr "Importa Libreria"
+
+msgid "menu_not_libraries"
+msgstr "Nessuna Libreria Disponibile"
+
+msgid "menu_library_examples"
+msgstr "Esempi"
+
+msgid "menu_not_examples"
+msgstr "Nessun esempio disponibile"
+
+msgid "menu_option_lib"
+msgstr "Opzioni di Libreria"
+
+msgid "menu_extra_lib_folder"
+msgstr "Extra Library Folder"
+
+msgid "menu_remove_extra_lib_folder"
+msgstr "Remove Extra Library Folder"
+
+msgid "menu_open_lib_folder"
+msgstr "Apri Cartella delle librerie"
+
+msgid "menu_build"
+msgstr "Compila"
+
+msgid "menu_upload"
+msgstr "Carica"
+
+msgid "menu_clean"
+msgstr "Pulisci"
+
+msgid "menu_open_ini_file"
+msgstr "Apri Config File di Compilazione"
+
+msgid "menu_show_console"
+msgstr "Mostra Deviot Console"
+
+msgid "menu_hide_console"
+msgstr "Nascondi Deviot Console"
+
+msgid "menu_show_terminal"
+msgstr "Show Terminal"
+
+msgid "menu_hide_terminal"
+msgstr "Hide Terminal"
+
+msgid "menu_programmer"
+msgstr "Programmatore"
+
+msgid "menu_serial_port"
+msgstr "Porte Seriali"
+
+msgid "menu_auth_change"
+msgstr "Cambia OTA Password"
+
+msgid "menu_none_serial_mdns"
+msgstr "Porta seriale o servizio mDNS non disponibile"
+
+msgid "menu_add_ip"
+msgstr "Aggiungi IP Manualmente"
+
+msgid "menu_monitor_serial"
+msgstr "Monitor Seriale"
+
+msgid "menu_run"
+msgstr "Start/Stop"
+
+msgid "menu_send"
+msgstr "Invia"
+
+msgid "menu_clean_view"
+msgstr "Clean Monitor View"
+
+msgid "menu_deviot_output"
+msgstr "Output nella console Deviot"
+
+msgid "menu_auto_scroll"
+msgstr "Auto-Scroll"
+
+msgid "menu_auto_clean"
+msgstr "Auto-Clean View"
+
+msgid "menu_baudrate"
+msgstr "Baudrate"
+
+msgid "menu_line_ending"
+msgstr "Terminatore di riga"
+
+msgid "menu_none"
+msgstr "Nessuno"
+
+msgid "menu_new_line"
+msgstr "Nuova linea"
+
+msgid "menu_cr"
+msgstr "Ritorno a capo"
+
+msgid "menu_nl_cr"
+msgstr "Entrambi NL & CR"
+
+msgid "menu_display_mode"
+msgstr "Modalità Display"
+
+msgid "menu_text"
+msgstr "Testo"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
+
+msgid "menu_option"
+msgstr "Opzioni"
+
+msgid "menu_upgrade_pio"
+msgstr "Aggiorna PlatformIO"
+
+msgid "menu_developer_pio"
+msgstr "Usa la versione Development di PlatformIO"
+
+msgid "menu_always_native"
+msgstr "Usa struttura di PlatformIO"
+
+msgid "menu_rebuild_boards"
+msgstr "Rebuild Boards File"
+
+msgid "menu_show_verbose"
+msgstr "Mostra output dettagliato durante la Compilazione"
+
+msgid "menu_status_information"
+msgstr "Information in the Status Bar"
+
+msgid "menu_open_build_folder"
+msgstr "Apri cartella di Compilazione"
+
+msgid "menu_change_build_folder"
+msgstr "Cambia cartella di Compilazione"
+
+msgid "menu_use_cpp_new"
+msgstr "Usa CPP File con New File"
+
+msgid "menu_languages"
+msgstr "Lingua"
+
+msgid "menu_donate_deviot"
+msgstr "❤ Fai una donazione"
+
+msgid "menu_about"
+msgstr "Informazioni"
+
+msgid "menu_about_deviot"
+msgstr "Su Deviot"
+
+msgid "menu_about_pio"
+msgstr "Su PlatformIO"
+
+
+# Messages and Errors
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "_deviot_starting{0}"
+msgstr "[ Deviot {0} ] Starting...\n"
+
+msgid "caption_new_sketch"
+msgstr "Nome per il Nuovo Sketch:"
+
+msgid "not_empty_sketch"
+msgstr "Impossibile caricare uno sketch vuoto\n"
+
+msgid "not_iot_{0}"
+msgstr "{0} non è un File IoT\n"
+
+msgid "select_board_list"
+msgstr "Scegli una Scheda dalla lista"
+
+msgid "select_env_list"
+msgstr "Scegli un Ambiente dalla lista"
+
+msgid "select_port_list"
+msgstr "Scegli una Porta dalla lista"
+
+msgid "ota_error_platform"
+msgstr "Gli aggiornamenti OTA sono al momento disponibili solo per piattaforme Espressif (ESP8266)"
+
+msgid "select_library"
+msgstr "Scegli una Libreria"
+
+msgid "select_example"
+msgstr "Scegli un Esempio"
+
+msgid "_previous"
+msgstr "< Indietro"
+
+msgid "select_{0}"
+msgstr "Choose {0}"
+
+# Libraries
+
+msgid "deviot_library{0}"
+msgstr "[ Deviot {0} ] Library Manager\n"
+
+msgid "search_query"
+msgstr "Query di ricerca:"
+
+msgid "add_ip_caption"
+msgstr "Scrivi l'Indirizzo IP:"
+
+msgid "already_installed{0}"
+msgstr "{0} già installato\n"
+
+msgid "downloading_package{0}"
+msgstr "Scaricamento pacchetto {0}\n\nPotrebbe volerci un po'.\n"
+
+msgid "unpacking"
+msgstr "Elaborazione pacchetti...\n"
+
+msgid "download_dependece"
+msgstr "Scaricamento dipendenza\n"
+
+msgid "preparing_list"
+msgstr "Preparazione Lista"
+
+msgid "removing"
+msgstr "Rimozione in corso"
+
+msgid "none_lib_found"
+msgstr "Nessuna Libreria Trovata"
+
+msgid "none_lib_installed"
+msgstr "Nessuna Libreria Installata"
+
+
+# Serial Monitor
+
+msgid "serial_monitor_header{0}{1}"
+msgstr "[ Deviot {0} ] Serial Monitor | {1}\n\n"
+
+msgid "serial_port_used_{0}"
+msgstr "Porta seriale {0} già in uso. Chiudi qualsiasi programma che la potrebbe usare.\n"
+
+msgid "serial_not_available"
+msgstr "The serial port selected isn't available"
+
+msgid "send"
+msgstr "Invia:"
+
+msgid "sended_{0}"
+msgstr "\n[INVIATO] {0}\n"
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Password:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Iniziando con"
+
+msgid "upload_size"
+msgstr "Dimensione Caricamento"
+
+msgid "sending_invitation"
+msgstr "Invio invito a"
+
+msgid "waiting_device"
+msgstr "In attesa del dispositivo"
+
+msgid "waiting_result"
+msgstr "In attesa del risultato"
+
+msgid "result"
+msgstr "Risultato"
+
+msgid "authentication"
+msgstr "Autenticazione"
+
+msgid "failed"
+msgstr "Fallito"
+
+msgid "attempt"
+msgstr "tentativo"
+
+msgid "of"
+msgstr "di"
+
+msgid "not_in_sync"
+msgstr "non in sincrono"
+
+# Platformio Console
+
+msgid "pio_terminal"
+msgstr "[ Deviot ] PlatformIO Terminal\n\nTo get information about the PlatformIO command writes: 'pio -h'\nor 'help' to know about the Deviot commands.\n"
+
+msgid "invalid_command"
+msgstr "Invalid command (Try with: help)\n"
+
+msgid "invalid_path"
+msgstr "Folder name not valid.\n"
+
+msgid "created{0}"
+msgstr "'{0}' created successfully.\n"
+
+msgid "error_making_folder"
+msgstr "Error creating the folder.\n"
+
+msgid "removed{0}"
+msgstr "{0} Deleted successfully.\n"
+
+msgid "wrong_folder_name"
+msgstr "The name of the folder is wrong, fix it and try again.\n"
+
+msgid "cmd_cwd"
+msgstr "Shows the current working dir.\n"
+
+msgid "cmd_cd"
+msgstr "Change directory.\n"
+
+msgid "cmd_ls"
+msgstr "List all files and folder in the cwd\n"
+
+msgid "cmd_mk"
+msgstr "Make the folder in the cwd\n"
+
+msgid "cmd_rm"
+msgstr "remove the folder in the cwd\n"
+
+msgid "cmd_clear"
+msgstr "clear all in the terminal window\n"
+
+msgid "cmd_pio_help"
+msgstr "to see info about PlatformIO\n"
