@@ -39,7 +39,7 @@
         </dict>
         <dict>
             <key>match</key>
-            <string>(platform:|board:|framework:) (\S+)</string>
+            <string>(platform:|board:|framework:|build_flags:|upload_port:) (\S+)</string>
             <key>captures</key>
             <dict>
                 <key>1</key>
