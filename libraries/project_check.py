@@ -212,7 +212,7 @@ class ProjectCheck(QuickMenu):
         ports_list = self.get_ports_list()
 
         port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
-        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
+        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
         if(not port_ready and ip_device is None):
             QuickMenu().quick_serial_ports()
@@ -276,7 +276,7 @@ class ProjectCheck(QuickMenu):
                     auth = port[2]
                     break
                 except:
-                    return anded
+                    return ended
 
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
