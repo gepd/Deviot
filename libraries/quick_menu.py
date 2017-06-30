@@ -487,6 +487,8 @@ class QuickMenu(PreferencesBridge):
         from re import search
         
         platform = self.get_platform()
+
+        platform = platform if(platform) else "all"
         libraries_folders = self.get_libraries_folders(platform)
         
         quick_list = []
