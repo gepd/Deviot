@@ -255,7 +255,7 @@ msgstr "[ Deviot {0} ] Starting...\n"
 msgid "caption_new_sketch"
 msgstr "名称："
 
-msgid "not_empty_sketch_"
+msgid "not_empty_sketch"
 msgstr "不能下载空程序\n"
 
 msgid "not_iot_{0}{1}"

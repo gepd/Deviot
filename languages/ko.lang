@@ -255,7 +255,7 @@ msgstr "[ Deviot {0} ] Starting...\n"
 msgid "caption_new_sketch"
 msgstr "새 스케치에 이름을 지어주세요:"
 
-msgid "not_empty_sketch_"
+msgid "not_empty_sketch"
 msgstr "빈 스케치라서 업로드할 수 없네요\n"
 
 msgid "not_iot_{0}"

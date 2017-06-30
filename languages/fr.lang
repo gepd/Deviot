@@ -255,7 +255,7 @@ msgstr "[ Deviot {0} ] Starting...\n"
 msgid "caption_new_sketch"
 msgstr "Nom pour le nouveau Sketch:"
 
-msgid "not_empty_sketch_"
+msgid "not_empty_sketch"
 msgstr "Impossible de charger un sketch vide\n"
 
 msgid "not_iot_{0}"
