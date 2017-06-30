@@ -1,8 +1,9 @@
 # LANGUAGE: Korean (Korean)
 # Korean translations for Deviot Plugin.
-# Copyright (C) 2015-2016 GEPD
+# Copyright (C) 2015-2017 GEPD
 # This file is distributed under the same license as the Deviot Plugin.
 # Translator: gro
+#
 
 # Setup Process
 
@@ -12,41 +13,44 @@ msgstr "Deviot이 동작하려면 Python 2.7이 필요합니다, 다운로드 �
 msgid "button_download_python"
 msgstr "Python 다운로드하기"
 
+msgid "symlink_detected"
+msgstr "Symlink has been detected\n"
+
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] 설정\n"
 
-msgid "pio_is_installed{0}"
-msgstr "{0} PlatformIO가 설치되었습니다, 이제 Deviot을 사용하실 수 있어요!"
+msgid "pio_is_installed"
+msgstr "PlatformIO가 설치되었습니다, 이제 Deviot을 사용하실 수 있어요!"
 
-msgid "pio_isn_installed{0}"
-msgstr "{0} PlatformIO가 설치되지 않았습니다\n설치 준비중입니다, 시간이 좀 걸릴 수 있으니 조금 기다려 주세요.\n"
+msgid "pio_isn_installed"
+msgstr "PlatformIO가 설치되지 않았습니다\n설치 준비중입니다, 시간이 좀 걸릴 수 있으니 조금 기다려 주세요.\n"
 
-msgid "downloading_files{0}"
-msgstr "{0} 필요한 파일들을 다운로드합니다...\n"
+msgid "downloading_files"
+msgstr "필요한 파일들을 다운로드합니다...\n"
 
-msgid "error_downloading_files{0}"
-msgstr "{0} 필요한 파일들을 다운로드 중에 오류가 발생했습니다...\n"
+msgid "error_downloading_files"
+msgstr "필요한 파일들을 다운로드 중에 오류가 발생했습니다...\n"
 
-msgid "error_saving_files{0}"
-msgstr "{0} 필요한 파일들을 저장하는 중에 오류가 발생했습니다...\n"
+msgid "error_saving_files"
+msgstr "필요한 파일들을 저장하는 중에 오류가 발생했습니다...\n"
 
-msgid "extracting_files{0}"
-msgstr "{0} 압축 해제 중입니다...\n"
+msgid "extracting_files"
+msgstr "압축 해제 중입니다...\n"
 
-msgid "installing_pio{0}"
-msgstr "{0} PlatformIO를 설치합니다...\n"
+msgid "installing_pio"
+msgstr "PlatformIO를 설치합니다...\n"
 
-msgid "uninstall_old_pio{0}"
-msgstr "{0} Uninstalling current version...\n"
+msgid "uninstall_old_pio"
+msgstr "Uninstalling current version...\n"
 
-msgid "installing_dev_pio{0}"
-msgstr "{0} Installing 'develop' PlatformIO version...\n"
+msgid "installing_dev_pio"
+msgstr "Installing 'develop' PlatformIO version...\n"
 
-msgid "installing_stable_pio{0}"
-msgstr "{0} Installing 'stable' PlatformIO version...\n"
+msgid "installing_stable_pio"
+msgstr "Installing 'stable' PlatformIO version...\n"
 
-msgid "setup_finished{0}"
-msgstr "{0} 설치가 끝났습니다, 이제 Deviot을 사용하실 수 있어요!"
+msgid "setup_finished"
+msgstr "설치가 끝났습니다, 이제 Deviot을 사용하실 수 있어요!"
 
 msgid "searching_pio_updates"
 msgstr "PlatformIO 업그레이드를 확인합니다...\n\n"
@@ -92,11 +96,14 @@ msgstr "No Examples Availables"
 msgid "menu_option_lib"
 msgstr "라이브러리 설정"
 
+msgid "menu_extra_lib_folder"
+msgstr "Extra Library Folder"
+
+msgid "menu_remove_extra_lib_folder"
+msgstr "Remove Extra Library Folder"
+
 msgid "menu_open_lib_folder"
 msgstr "라이브러리 폴더 열기"
-
-msgid "menu_change_user_lib_path"
-msgstr "사용자 라이브러리 폴더 경로 바꾸기"
 
 msgid "menu_build"
 msgstr "빌드"
@@ -110,14 +117,20 @@ msgstr "클린"
 msgid "menu_open_ini_file"
 msgstr "Open Build Config File"
 
+msgid "menu_show_console"
+msgstr "Show Deviot Console"
+
 msgid "menu_hide_console"
 msgstr "Deviot 콘솔 숨김"
 
+msgid "menu_show_terminal"
+msgstr "Show Terminal"
+
+msgid "menu_hide_terminal"
+msgstr "Hide Terminal"
+
 msgid "menu_programmer"
 msgstr "Programmer"
-
-msgid "menu_show_console"
-msgstr "Show Deviot Console"
 
 msgid "menu_serial_port"
 msgstr "시리얼 포트"
@@ -135,16 +148,22 @@ msgid "menu_monitor_serial"
 msgstr "시리얼 모니터"
 
 msgid "menu_run"
-msgstr "실행하기"
+msgstr "Start/Stop"
 
 msgid "menu_send"
 msgstr "전송하기"
+
+msgid "menu_clean_view"
+msgstr "Clean Monitor View"
 
 msgid "menu_deviot_output"
 msgstr "Output in Deviot Console"
 
 msgid "menu_auto_scroll"
 msgstr "자동-스크롤"
+
+msgid "menu_auto_clean"
+msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
 msgstr "통신 속도"
@@ -185,20 +204,20 @@ msgstr "환경설정"
 msgid "menu_upgrade_pio"
 msgstr "PlatformIO 업그레이드"
 
-msgid "menu_update_board_list"
-msgstr "보드 목록 업데이트"
-
 msgid "menu_developer_pio"
 msgstr "Use Development Pio Version"
+
+msgid "menu_always_native"
+msgstr "Use PlatformIO Structure"
+
+msgid "menu_rebuild_boards"
+msgstr "Rebuild Boards File"
 
 msgid "menu_show_verbose"
 msgstr "빌드 시 모든 메시지 보임"
 
-msgid "menu_remove_user_files"
-msgstr "유저 선택 설정 파일 삭제"
-
-msgid "menu_keep_temp_files"
-msgstr "Temp 파일 유지"
+msgid "menu_status_information"
+msgstr "Information in the Status Bar"
 
 msgid "menu_open_build_folder"
 msgstr "빌드 폴더 열기"
@@ -208,15 +227,6 @@ msgstr "빌드 폴더 변경하기"
 
 msgid "menu_use_cpp_new"
 msgstr "새 스케치를 CPP File로 생성"
-
-msgid "menu_always_native"
-msgstr "Use PlatformIO Structure"
-
-msgid "menu_change_default_path"
-msgstr "Change Default Path"
-
-msgid "menu_remove_default_path"
-msgstr "Remove Default Path"
 
 msgid "menu_languages"
 msgstr "언어"
@@ -239,32 +249,17 @@ msgstr "PlatformIO에 관하여"
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
-msgid "checking_pio_updates"
-msgstr "PlatformIO 업데이트 확인중...\n"
-
-msgid "error_pio_updates"
-msgstr "PlatformIO를 업데이트하는 중 오류가 발생했습니다\n"
-
-msgid "pio_up_date{0}"
-msgstr "PlatformIO가 최신 버젼이네요 ({0})\n"
-
-msgid "pio_new_updated_installed{0}"
-msgstr "새 버젼을 찾아서 설치했습니다 ({0})\n"
+msgid "_deviot_starting{0}"
+msgstr "[ Deviot {0} ] Starting...\n"
 
 msgid "caption_new_sketch"
 msgstr "새 스케치에 이름을 지어주세요:"
 
-msgid "updating_board_list"
-msgstr "보드 목록 업데이트"
+msgid "not_empty_sketch_"
+msgstr "빈 스케치라서 업로드할 수 없네요\n"
 
-msgid "not_empty_sketch_{0}"
-msgstr "{0} 빈 스케치라서 업로드할 수 없네요\n"
-
-msgid "invalid_file_{0}"
-msgstr "{0} 파일은 업로드할 수 없습니다\n"
-
-msgid "not_iot_{0}{1}"
-msgstr "{0} {1}은(는) IoT 파일이 아닙니다\n"
+msgid "not_iot_{0}"
+msgstr "{0} 은(는) IoT 파일이 아닙니다\n"
 
 msgid "select_board_list"
 msgstr "Select a Board From The List"
@@ -274,66 +269,6 @@ msgstr "Select an Environment From The List"
 
 msgid "select_port_list"
 msgstr "Select a Port From The List"
-
-msgid "init_project_{0}"
-msgstr "{0} 프로젝트를 초기화합니다 | 진행중...\n"
-
-msgid "built_project_{0}"
-msgstr "{0} 프로젝트를 빌드합니다 | 진행중...\n"
-
-msgid "error_installing_env_{0}"
-msgstr "{0} virtualenv 설치 오류\n"
-
-msgid "error_making_env_{0}"
-msgstr "{0} virtualenv 생성 오류\n"
-
-msgid "error_installing_pio_{0}"
-msgstr "{0} PlatformIO 설치 오류\n"
-
-msgid "uploading_firmware_{0}"
-msgstr "{0} 펌웨어 업로드중 | "
-
-msgid "clean_built_files__{0}"
-msgstr "{0} 빌드 파일 청소중 | "
-
-msgid "success_took_{1}"
-msgstr "SUCCESS | {1}초 걸렸어요\n"
-
-msgid "success_took_{0}{1}"
-msgstr "{0} SUCCESS | {1}초 걸렸어요\n"
-
-msgid "success_warnings_took__{0}{1}"
-msgstr "{0} SUCCESS 되었지만 WARNING이 있어요 | {1}초 걸렸어요\n"
-
-msgid "error_took_{0}{1}"
-msgstr "{0} ERROR | {1}초 걸렸어요\n"
-
-msgid "continue"
-msgstr "Continue"
-
-msgid "confirm_del_pref"
-msgstr "이 후에, Sublime Text를 재시작해야 합니다. 계속 하시겠습니다?"
-
-msgid "success"
-msgstr "성공"
-
-msgid "error"
-msgstr "실패"
-
-msgid "success_warnings"
-msgstr "Success with warning(s)"
-
-msgid "processing"
-msgstr "Processing"
-
-msgid "done"
-msgstr "완료"
-
-msgid "restart_deviot"
-msgstr "This action required to restart Sublime Text. Do you want to continue?"
-
-msgid "continue_button"
-msgstr "Continue"
 
 msgid "ota_error_platform"
 msgstr "OTA Upload are only available for Espressif (ESP8266) platforms currently"
@@ -347,38 +282,19 @@ msgstr "Select an Example"
 msgid "_previous"
 msgstr "< Previous"
 
-msgid "upgrading_pio"
-msgstr "Upgrading PlarformIO...\n"
+msgid "select_{0}"
+msgstr "Choose {0}"
 
 # Libraries
 
+msgid "deviot_library{0}"
+msgstr "[ Deviot {0} ] Library Manager\n"
 
 msgid "search_query"
 msgstr "찾을 쿼리:"
 
 msgid "add_ip_caption"
 msgstr "Write the IP Address:"
-
-msgid "select_cur_dir_{0}"
-msgstr "Select Current Dir ({0})"
-
-msgid "installing_lib_{0}{1}"
-msgstr "{0} 라이브러리 {1} 설치중 | "
-
-msgid "uninstalling_lib_{0}{1}"
-msgstr "{0} 라이브러리 {1} 삭제중 | "
-
-msgid "download_lib"
-msgstr "다운로드중...\n"
-
-msgid "searching"
-msgstr "검색중"
-
-msgid "installing"
-msgstr "설치중"
-
-msgid "install_package_{0}"
-msgstr "\n{0} package 설치중: "
 
 msgid "already_installed{0}"
 msgstr "{0}이(가) 이미 설치되어있네요\n"
@@ -407,8 +323,14 @@ msgstr "라이브러리가 설치되지 않았습니다"
 
 # Serial Monitor
 
+msgid "serial_monitor_header{0}{1}"
+msgstr "[ Deviot {0} ] Serial Monitor | {1}\n\n"
+
 msgid "serial_port_used_{0}"
 msgstr "시리얼 포트 {0}이(가) 이미 점유되어 있습니다. 해당 포트를 점유하고 있는 프로그램을 종료해 보세요.\n"
+
+msgid "serial_not_available"
+msgstr "The serial port selected isn't available"
 
 msgid "send"
 msgstr "전송:"
@@ -455,3 +377,47 @@ msgstr "of"
 
 msgid "not_in_sync"
 msgstr "not in sync"
+
+# Platformio Console
+
+msgid "pio_terminal"
+msgstr "[ Deviot ] PlatformIO Terminal\n\nTo get information about the PlatformIO command writes: 'pio -h'\nor 'help' to know about the Deviot commands.\n"
+
+msgid "invalid_command"
+msgstr "Invalid command (Try with: help)\n"
+
+msgid "invalid_path"
+msgstr "Folder name not valid.\n"
+
+msgid "created{0}"
+msgstr "'{0}' created successfully.\n"
+
+msgid "error_making_folder"
+msgstr "Error creating the folder.\n"
+
+msgid "removed{0}"
+msgstr "{0} Deleted successfully.\n"
+
+msgid "wrong_folder_name"
+msgstr "The name of the folder is wrong, fix it and try again.\n"
+
+msgid "cmd_cwd"
+msgstr "Shows the current working dir.\n"
+
+msgid "cmd_cd"
+msgstr "Change directory.\n"
+
+msgid "cmd_ls"
+msgstr "List all files and folder in the cwd\n"
+
+msgid "cmd_mk"
+msgstr "Make the folder in the cwd\n"
+
+msgid "cmd_rm"
+msgstr "remove the folder in the cwd\n"
+
+msgid "cmd_clear"
+msgstr "clear all in the terminal window\n"
+
+msgid "cmd_pio_help"
+msgstr "to see info about PlatformIO\n"

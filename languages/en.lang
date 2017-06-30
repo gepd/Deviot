@@ -106,7 +106,7 @@ msgid "menu_open_lib_folder"
 msgstr "Open Library Folder"
 
 msgid "menu_build"
-msgstr "Build"
+msgstr "Compile"
 
 msgid "menu_upload"
 msgstr "Upload"
@@ -213,14 +213,11 @@ msgstr "Use PlatformIO Structure"
 msgid "menu_rebuild_boards"
 msgstr "Rebuild Boards File"
 
-msgid "menu_update_board_list"
-msgstr "Update Board List"
-
 msgid "menu_show_verbose"
 msgstr "Full Verbose Output When Building"
 
 msgid "menu_status_information"
-msgstr "Show Information in the Status Bar"
+msgstr "Information in the Status Bar"
 
 msgid "menu_open_build_folder"
 msgstr "Open Build Folder"
@@ -298,9 +295,6 @@ msgstr "Search Query:"
 
 msgid "add_ip_caption"
 msgstr "Enter the IP Address:"
-
-msgid "select_cur_dir_{0}"
-msgstr "Select Current Dir ({0})"
 
 msgid "already_installed{0}"
 msgstr "{0} already installed\n"
