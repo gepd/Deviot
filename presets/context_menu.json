@@ -1,0 +1,44 @@
+[
+    {
+        "caption": "-"
+    }, 
+    {
+        "caption": "menu_select_boards", 
+        "command": "deviot_select_boards"
+    }, 
+    {
+        "caption": "menu_select_env", 
+        "command": "deviot_select_environment"
+    }, 
+    {
+        "caption": "menu_build", 
+        "command": "deviot_compile_sketch"
+    }, 
+    {
+        "caption": "menu_upload", 
+        "command": "deviot_upload_sketch"
+    }, 
+    {
+        "caption": "menu_show_console", 
+        "command": "deviot_show_console"
+    },
+    {
+        "caption": "menu_show_terminal", 
+        "command": "deviot_show_terminal"
+    }, 
+    {
+        "caption": "menu_serial_port", 
+        "command": "deviot_select_port"
+    },
+    {
+        "caption": "menu_run", 
+        "command": "deviot_toggle_serial_monitor"
+    },
+    {
+        "caption": "menu_search_lib", 
+        "command": "deviot_search_library"
+    }, 
+    {
+        "caption": "-"
+    }
+]

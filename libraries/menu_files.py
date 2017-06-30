@@ -77,3 +77,22 @@ class MenuFiles(PioBridge):
         quick_file = File(output_path)
         quick_file.save_json(quick_json)
 
+    def create_context_menu(self):
+        """Quick Commands
+        
+        Makes the quick command file and translate it
+        to the current language selected
+        """
+        context_path = paths.getContextPath()
+        plugin_path = paths.getPluginPath()
+        output_path = os.path.join(plugin_path, 'Context.sublime-menu')
+
+        context_json = File(context_path)
+        context_json = context_json.read_json()
+
+        for items in context_json:
+            items['caption'] = _(items['caption'])
+
+        context_file = File(output_path)
+        context_file.save_json(context_json)
+

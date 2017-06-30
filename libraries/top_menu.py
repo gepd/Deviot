@@ -70,3 +70,4 @@ class TopMenu(MenuFiles):
         """
         self.create_main_menu()
         self.create_quick_commands()
+        self.create_context_menu()

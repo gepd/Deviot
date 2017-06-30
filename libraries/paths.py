@@ -64,6 +64,12 @@ def getQuickPath():
 
     return quick_path
 
+def getContextPath():
+    path = getPresetPath()
+    context_path = os.path.join(path, 'context_menu.json')
+
+    return context_path
+
 def getLangPath():
     path = getPluginPath()
     lang_path = os.path.join(path, 'languages')
