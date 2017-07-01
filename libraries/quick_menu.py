@@ -342,7 +342,7 @@ class QuickMenu(PreferencesBridge):
         library_import = libraries_list[selected][1]
 
         window = sublime.active_window()
-        window.run_command('insert_library', {'path': library_import})
+        window.run_command('deviot_insert_library', {'path': library_import})
 
     def quick_import_list(self):
         """Import List

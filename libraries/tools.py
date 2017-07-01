@@ -291,12 +291,12 @@ def add_library_to_sketch(view, edit, lib_path):
     """
     from glob import glob
 
-    lib_src = os.path.join(lib_path, 'src')
+    lib_src = path.join(lib_path, 'src')
     
-    if os.path.isdir(lib_src):
+    if path.isdir(lib_src):
         lib_path = lib_src
     
-    lib_path = os.path.join(lib_path, '*')
+    lib_path = path.join(lib_path, '*')
 
     region = Region(0, view.size())
     src_text = view.substr(region)
@@ -305,7 +305,7 @@ def add_library_to_sketch(view, edit, lib_path):
     h_files = []
     sub_files = glob(lib_path)
     for file in sub_files:
-        file_name = os.path.basename(file)
+        file_name = path.basename(file)
         if H_EXTS[0] in file_name:
             h_files.append(file_name)
 
