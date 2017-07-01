@@ -13,11 +13,13 @@ from .file import File
 from ..platformio.pio_bridge import PioBridge
 from .I18n import I18n
 
-_ = I18n().translate
+_ = None
 
 class MenuFiles(PioBridge):
     def __init__(self):
         super(MenuFiles, self).__init__()
+        global _
+        _ = I18n().translate
 
     def get_template_menu(self, file_name):
         """Template Menu

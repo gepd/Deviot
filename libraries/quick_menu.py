@@ -355,10 +355,12 @@ class QuickMenu(PreferencesBridge):
         Returns:
             [list] -- quick panel list with libraries
         """
-        user_pio_libs = os.path.join('platformio', 'lib')
-        libraries_folders = self.get_libraries_folders()
-        
-        quick_list = self.libraries_list()
+        from .libraries import get_library_list
+
+        platform = self.get_platform()
+        platform = platform if(platform) else "all"
+
+        quick_list = get_library_list(platform)
         quick_list.insert(0, [_("select_library").upper()])
 
         if(len(quick_list) <= 1):
@@ -372,7 +374,12 @@ class QuickMenu(PreferencesBridge):
         Show the list of libraries availables. The callback will show
         the list of examples.
         """
-        self.quick_list = self.libraries_list(example_list=True)
+        from .libraries import get_library_list
+        
+        platform = self.get_platform()
+        platform = platform if(platform) else "all"
+
+        self.quick_list = get_library_list(example_list=True, platform=platform)
         self.quick_list.insert(0, [_("select_library").upper()])
 
         if(len(self.quick_list) <= 1):
@@ -474,56 +481,3 @@ class QuickMenu(PreferencesBridge):
         for file in files:
             if(file.endswith(('.ino', '.pde'))):
                 window.open_file(file)
-
-    def libraries_list(self, example_list=False):
-        """List of Libraries
-        
-        Make a list of the libraries availables. This list is
-        used in the import library and examples.
-        
-        Returns:
-            [list/list] -- name of folder and path [[name, path]]
-        """
-        from re import search
-        
-        platform = self.get_platform()
-
-        platform = platform if(platform) else "all"
-        libraries_folders = self.get_libraries_folders(platform)
-        
-        quick_list = []
-        check_list = []
-
-        for library in libraries_folders:
-            sub_library = glob(library)
-
-            for content in sub_library:
-                caption = os.path.basename(content)
-                new_caption = caption.split("_ID")
-                if(new_caption is not None):
-                    caption = new_caption[0]
-
-                if('__cores__' in content):
-                    cores = os.path.join(content, '*')
-                    cores = glob(cores)
-
-                    for sub_core in cores:
-                        libs_core = os.path.join(sub_core, '*')
-                        libs_core = glob(libs_core)
-
-                        for lib_core in libs_core:
-                            caption = os.path.basename(lib_core)
-                            quick_list.append([caption, lib_core])
-                            check_list.append([caption])
-                    
-                if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
-                    store_data = True
-                    if(example_list):
-                        examples_path = os.path.join(content, 'examples')
-                        store_data = True if os.path.exists(examples_path) else False
-                    
-                    if(store_data):
-                        quick_list.append([caption, content])
-                        check_list.append(caption)
-
-        return quick_list

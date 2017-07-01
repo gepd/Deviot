@@ -55,9 +55,8 @@ class DeviotListener(EventListener):
             view {obj} -- sublime text object
         """
         phantoms = get_phantoms()
-        is_iot = ProjectCheck().is_iot()
 
-        if(not len(phantoms) and not is_iot):
+        if(not len(phantoms) and not ProjectCheck().is_iot()):
             return
 
         line, column = view.rowcol(view.sel()[0].begin())

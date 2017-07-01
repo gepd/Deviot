@@ -6,8 +6,10 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-import sublime
+from sublime import active_window
+from os import path
 from json import loads
+from glob import glob
 from threading import Thread
 from urllib.parse import urlencode
 from urllib.request import Request
@@ -21,7 +23,7 @@ from .quick_panel import quick_panel
 from .I18n import I18n
 from ..platformio.command import Command
 from .file import File
-from .paths import getLibrariesFileDataPath
+from .paths import getLibrariesFileDataPath, getPioPackages, getPioLibrary
 from .thread_progress import ThreadProgress
 
 _ = None
@@ -38,7 +40,7 @@ class Libraries(Command):
         global _
         
         _ = I18n().translate
-        self.window = sublime.active_window()
+        self.window = active_window()
         self.view = self.window.active_view()
         self.lib_file_path = getLibrariesFileDataPath()
         self.quick_list = []
@@ -264,3 +266,103 @@ class Libraries(Command):
         self.quicked(out)
 
         File(self.lib_file_path).save_json(self.quick_list)
+
+def get_library_folders(platform='all'):
+    """Libraries availables
+    
+    Find the list of all folders that should have libraries.
+
+    The main folders are .platformio/lib who is the global folder
+    where platformio stores the libraries installed
+
+    The second one are the libraries inside of the package folder
+    .platformio/packages. Each package folder contain a list of
+    default libraries, those libraries are selected according to
+    the selected option.
+    
+    Keyword Arguments:
+        platform {str} -- platform to search (default: {'all'})
+    
+    Returns:
+        [list] -- list of folders with the libraries
+    """
+    libraries_folders = []
+
+    pio_packages = getPioPackages(all=True)
+    packages_sub_dirs = glob(pio_packages)
+
+    if(platform == 'atmelavr'):
+        platform = 'avr'
+
+    for sub_path in packages_sub_dirs:
+        if(platform in sub_path or platform == 'all'):
+            
+            for sub_path in glob(sub_path):
+                packages = path.join(sub_path, '*')
+                packages = glob(packages)
+
+                for folder in packages:
+                    if('libraries' in folder):
+                        libraries = path.join(folder, '*')
+                        libraries_folders.append(libraries)
+
+    pio_lib_path = getPioLibrary(all=True)
+    libraries_folders.insert(0, pio_lib_path)
+
+    return libraries_folders
+
+def get_library_list(example_list=False, platform="all"):
+    """List of Libraries
+    
+    Make a list of the libraries availables. This list is
+    used in the import library and examples.
+
+    Keyword Arguments:
+        example_list {bool} -- if it's True, returns a list of examples 
+                                inside of the library (default: {False})
+
+        platform {str} -- results only in the given platform (default: {"all"})
+    
+    Returns:
+        [list/list] -- name of folder and path [[name, path]]
+    """
+    from re import search
+
+    libraries_folders = get_library_folders(platform)
+    
+    quick_list = []
+    check_list = []
+
+    for library in libraries_folders:
+        sub_library = glob(library)
+
+        for content in sub_library:
+            caption = path.basename(content)
+            new_caption = caption.split("_ID")
+            if(new_caption is not None):
+                caption = new_caption[0]
+
+            if('__cores__' in content):
+                cores = path.join(content, '*')
+                cores = glob(cores)
+
+                for sub_core in cores:
+                    libs_core = path.join(sub_core, '*')
+                    libs_core = glob(libs_core)
+
+                    for lib_core in libs_core:
+                        caption = path.basename(lib_core)
+                        quick_list.append([caption, lib_core])
+                        check_list.append([caption])
+                
+            if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
+                store_data = True
+                if(example_list):
+                    examples_path = path.join(content, 'examples')
+                    store_data = True if path.exists(examples_path) else False
+                
+                if(store_data):
+                    quick_list.append([caption, content])
+                    check_list.append(caption)
+
+    return quick_list
