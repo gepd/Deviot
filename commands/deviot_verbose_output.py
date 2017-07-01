@@ -9,7 +9,7 @@ class DeviotVerboseOutputCommand(WindowCommand):
     """
     verbose_output = None
     def run(self):
-        save_setting('verbose_output', self.verbose_output)
+        save_setting('verbose_output', not self.verbose_output)
 
     def is_checked(self):
         self.verbose_output = get_setting('verbose_output', False)
