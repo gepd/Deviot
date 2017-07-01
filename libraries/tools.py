@@ -251,7 +251,7 @@ def list_win_volume():
     vol_list = []
     for label in range(67, 90):
         vol = chr(label) + ':\\'
-        if os.path.isdir(vol):
+        if path.isdir(vol):
             vol_list.append(vol)
     return vol_list
 
