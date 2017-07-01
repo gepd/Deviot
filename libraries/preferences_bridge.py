@@ -251,7 +251,7 @@ class PreferencesBridge(PioBridge):
         
         When a new speed is selected, the 'upload_speed' 
         flag is add into the platformio.ini file with
-        the new speed, it will override the default speed
+        the new speed, it will overwrite the default speed
         """
         ini_path = self.get_ini_path()
         baudrate = get_setting('upload_baudrate', None)
@@ -295,7 +295,7 @@ class PreferencesBridge(PioBridge):
         
         Show the board and serial port selected by the user
         """
-        from ..libraries.project_check import ProjectCheck
+        from .project_check import ProjectCheck
         
         show_info = get_setting('status_information', True)
 
