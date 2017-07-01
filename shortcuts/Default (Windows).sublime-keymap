@@ -37,10 +37,10 @@
         "keys": ["alt+r", "alt+f"], 
         "command": "deviot_remove_extra_library_folder"
     },{
-        "keys": ["alt+d", "alt+c"], 
+        "keys": ["alt+d", "alt+f"], 
         "command": "deviot_compile_sketch"
     },{
-        "keys": ["alt+d", "alt+u"], 
+        "keys": ["alt+d", "alt+e"], 
         "command": "deviot_upload_sketch"
     },{
         "keys": ["alt+o", "alt+s"], 
