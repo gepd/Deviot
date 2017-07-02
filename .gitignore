@@ -1,3 +1,5 @@
 Main.sublime-menu
 Context.sublime-menu
 Default.sublime-commands
+deviot.sublime-syntax
+deviot.sublime-completions
