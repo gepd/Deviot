@@ -375,10 +375,11 @@ def show_phanthom(view, text):
     stylesheet = '''
             <style>
                 div.error {
-                    padding: 0.4rem 0.4rem 0.4rem 0.7rem;
+                    padding: 0.45rem 0.45rem 0.45rem 0.7rem;
                     margin: 0.2rem 0;
                     border-radius: 2px;
                     border: 1px solid white;
+                    background-color: #bc0101;
                 }
                 div.error span.message {
                     color: white;
