@@ -13,7 +13,7 @@ from ..libraries.tools import save_setting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
-_ = I18n
+_ = None
 
 class Compile(Initialize):
     def __init__(self):
