@@ -67,7 +67,7 @@
         "keys": ["ctrl+shift+s"], 
         "command": "deviot_select_port"
     },{
-        "keys": ["ctrl+shift+p"], 
+        "keys": ["ctrl+shift+w"], 
         "command": "deviot_set_password"
     },{
         "keys": ["ctrl+shift+m"], 
