@@ -228,6 +228,9 @@ msgstr "更改编译文件夹"
 msgid "menu_use_cpp_new"
 msgstr "使用 .CPP 新建文件"
 
+msgid "menu_rebuild_syntax"
+msgstr "Rebuild Syntax and Completions Files"
+
 msgid "menu_languages"
 msgstr "语言 (Languages)"
 

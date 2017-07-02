@@ -231,6 +231,9 @@ msgstr "Change Build Folder"
 msgid "menu_use_cpp_new"
 msgstr "Use CPP File on New File"
 
+msgid "menu_rebuild_syntax"
+msgstr "Rebuild Syntax and Completions Files"
+
 msgid "menu_languages"
 msgstr "Language"
 

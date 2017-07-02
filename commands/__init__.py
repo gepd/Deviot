@@ -38,6 +38,7 @@ from .deviot_status_information import DeviotStatusInformationCommand
 from .deviot_open_build_folder import DeviotOpenBuildFolderCommand
 from .deviot_change_build_folder import DeviotChangeBuildFolderCommand
 from .deviot_cpp_file import DeviotCppFileCommand
+from .deviot_rebuild_syntax import DeviotRebuildSyntaxCommand
 from .deviot_languages import DeviotLanguagesCommand
 from .deviot_donate import DeviotDonateCommand
 from .deviot_about import DeviotAboutCommand
@@ -88,6 +89,7 @@ __all__ = [
     'DeviotOpenBuildFolderCommand',
     'DeviotChangeBuildFolderCommand',
     'DeviotCppFileCommand',
+    'DeviotRebuildSyntaxCommand',
     'DeviotLanguagesCommand',
     'DeviotDonateCommand',
     'DeviotAboutCommand',

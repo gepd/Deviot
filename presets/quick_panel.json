@@ -105,6 +105,9 @@
         "caption": "menu_use_cpp_new",
         "command": "deviot_cpp_file"
     },{
+        "caption": "menu_rebuild_syntax",
+        "command": "deviot_rebuild_syntax"
+    },{
         "caption": "menu_languages",
         "command": "deviot_languages"
     },{
