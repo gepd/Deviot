@@ -9,29 +9,28 @@
     <a href="https://github.com/gepd/Deviot/blob/master/README.md">English</a> | Español
 </p>
 
+# Deviot
 
 <p align="center">
-    <img src="https://github.com/gepd/Deviot/blob/master/Docs/deviot_2.png?raw=true">
+    <img src="https://github.com/gepd/Deviot/blob/master/docs/deviot_2.png?raw=true">
+    <p align="center" style="font-size: 9pt">Tema ST de la imagen: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
 </p>
-
-
-# Deviot
 
 **Deviot** es un plugin inspirado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 3 en el que puedes desarrollar aplicacion para dispositivos IoT, usa el ecosistema [PlatformIO](http://platformio.org/) que soporta ¡más de **~400** placas!
 
 # Características
 
-- **Más de 400 placas** Gracias a *[PlatformIO](http://platformio.org/)*, Deviot puede controlar muchas tarjetas de desarrollo.
-- **Administrador de Librerías** Busca, instala y elimina cualquier librería con solo unos clicks.
-- **Cargas OTA** Cargas inalámbricas (Over The Air) a cualquier placa ***espressif***.
-- **Terminal PlatformIO** Para los amantes de la consola y los conocedores de *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*.
-- **Monitor Serial** Visualiza y envía información a través del puerto serial.
-- **Quick Search** Todas las funciones de Deviot en un lugar.
-- **Fragmentos** Escribe rápidamente utilizando los fragmentos pre-establecidos. [Leer Más](https://github.com/gepd/Deviot/wiki/Snippets-(Fragmentos))
-- **Consola de Salida Coloreada** No te pierdas entre tanta información, la salida de carga/compilación/limpieza totalmente colorida.
-- **Multi-Lenguaje** ¡Elige el idioma que más te acomode!
+- **Más de 400 placas**, gracias a *[PlatformIO](http://platformio.org/)*, Deviot puede controlar muchas tarjetas de desarrollo.
+- **Administrador de Librerías**, busca, instala y elimina cualquier librería con solo unos clicks.
+- **Cargas OTA**, cargas inalámbricas (Over The Air) a cualquier placa ***espressif***.
+- **Terminal PlatformIO**, para los amantes de la consola y los conocedores de *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*.
+- **Monitor Serial**, visualiza y envía información a través del puerto serial.
+- **Quick Search**, todas las funciones de Deviot en un lugar.
+- **Fragmentos**, escribe rápidamente utilizando los fragmentos pre-establecidos. [Leer Más](https://github.com/gepd/Deviot/wiki/Snippets-(Fragmentos))
+- **Consola de Salida Coloreada**, no te pierdas entre tanta información, la salida de carga/compilación/limpieza totalmente colorida.
+- **Multi-Lenguaje**, ¡elige el idioma que más te acomode!
 
-Quieres saber más? [**Busca en la wiki &#8594;**][wiki].
+Quieres saber más? [**Busca en la wiki &#8594;**](https://github.com/gepd/Deviot/wiki).
 
 
 ## - Idiomas

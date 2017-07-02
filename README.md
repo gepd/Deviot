@@ -6,30 +6,31 @@
 </p>
 
 <p align="center">
-    English | <a href="https://github.com/gepd/Deviot/blob/master/Docs/README-es.md">Español</a>
+    English | <a href="https://github.com/gepd/Deviot/blob/master/docs/README-es.md">Español</a>
 </p>
 
 # Deviot
 
 <p align="center">
-    <img src="https://github.com/gepd/Deviot/blob/master/Docs/deviot_2.png?raw=true">
+    <img src="https://github.com/gepd/Deviot/blob/master/docs/deviot_2.png?raw=true">
+    <p align="center" style="font-size: 9pt">Sublime theme used: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
 </p>
 
 **Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **400** boards.
 
 
 # Features
-- **400+ Embedded Boards** Thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
-- **Library Manager** Find, Install and Remove any Library
-- **OTA Upload** Upload Over The Air to any ***espressif*** board
-- **PlatformIO Terminal** If you are a CLI guy and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
-- **Serial Monitor** Display and Send data through a serial port
-- **Quick Search** All Deviot features at one step
-- **Snippets** Code quickly with this shortcuts. [Read more](https://github.com/gepd/Deviot/wiki/Snippets-(Fragmentos))
-- **Colored Output Console** Easier to understand the compilation/upload process
-- **Multi-Language** Choose the available language that best suits you
+- **400+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
+- **Library Manager**, find, install and remove any Library
+- **OTA Upload** Sends your firmware Over The Air to any ***espressif*** board
+- **PlatformIO Terminal**, if you are a CLI guy and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
+- **Serial Monitor**, display and Send data through a serial port
+- **Quick Search**, all Deviot features at one step
+- **Snippets**, code quickly with this shortcuts. [Read more](https://github.com/gepd/Deviot/wiki/Snippets-(Fragmentos))
+- **Colored Output Console**, easier to understand the compilation/upload process
+- **Multi-Language**, choose the available language that best suits you
 
-Want to learn more? [**See the wiki &#8594;**][wiki].
+Want to learn more? [**See the wiki &#8594;**](https://github.com/gepd/Deviot/wiki).
 
 
 ## Languages
