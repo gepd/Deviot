@@ -237,6 +237,9 @@ msgstr "Usar CPP con Nuevo Archivo"
 msgid "menu_rebuild_syntax"
 msgstr "Reconstruir Archivos de Syntax y Completions"
 
+msgid "menu_remove_settings"
+msgstr "Eliminar Archivos de Preferencias"
+
 msgid "menu_languages"
 msgstr "Idioma (Languages)"
 
@@ -294,6 +297,11 @@ msgstr "< Volver"
 msgid "select_{0}"
 msgstr "Seleccionar {0}"
 
+msgid "restart_sublime"
+msgstr "Por favor reinicie Sublime Text"
+
+msgid "button_ok"
+msgstr "OK"
 
 # Librerías
 

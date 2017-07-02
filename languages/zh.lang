@@ -237,6 +237,9 @@ msgstr "使用 .CPP 新建文件"
 msgid "menu_rebuild_syntax"
 msgstr "Rebuild Syntax and Completions Files"
 
+msgid "menu_remove_settings"
+msgstr "删除参数文件"
+
 msgid "menu_languages"
 msgstr "语言 (Languages)"
 
@@ -293,6 +296,12 @@ msgstr "< 以前"
 
 msgid "select_{0}"
 msgstr "Choose {0}"
+
+msgid "restart_sublime"
+msgstr "Please Restart Sublime Text"
+
+msgid "button_ok"
+msgstr "OK"
 
 # 库
 

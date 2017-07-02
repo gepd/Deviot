@@ -111,6 +111,9 @@
         "caption": "menu_rebuild_syntax",
         "command": "deviot_rebuild_syntax"
     },{
+        "caption":"menu_remove_settings",
+        "command":"deviot_remove_settings"
+    },{
         "caption": "menu_languages",
         "command": "deviot_languages"
     },{

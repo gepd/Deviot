@@ -7,7 +7,8 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from re import search
-from os import environ, path, makedirs, getenv
+from shutil import rmtree
+from os import environ, path, makedirs, getenv, remove
 from sublime import load_settings, save_settings, platform, version, active_window, windows, Region, LAYOUT_BELOW
 from ..libraries import __version__
 
@@ -70,18 +71,6 @@ def get_headers():
     headers = {'User-Agent': user_agent}
     return headers
 
-
-def extractTar(tar_path, extract_path='.'):
-    """
-    Extrack tar files in a custom path
-    """
-
-    import tarfile
-    tar = tarfile.open(tar_path, 'r:gz')
-    for item in tar:
-        tar.extract(item, extract_path)
-
-
 def create_command(command):
     """
     Edit the command depending of the O.S of the user
@@ -132,6 +121,36 @@ def save_setting(key, value):
     settings.set(key, value)
     save_settings("deviot.sublime-settings")
 
+def remove_settings():
+    """
+    Removes the deviot.sublime-settings and
+    Packages/User/Deviot folder
+    """
+    from .paths import getPackagesPath, getDeviotUserPath
+
+    packages_path = getPackagesPath()
+    deviot_user_path = getDeviotUserPath()
+
+    deviot_settings = path.join(packages_path, 'User', 'deviot.sublime-settings')
+    print(deviot_settings)
+
+    if(path.exists(deviot_settings)):
+        remove(deviot_settings)
+
+    if(path.exists(deviot_user_path)):
+        rmtree(deviot_user_path)
+
+    from .I18n import I18n
+    from sublime import message_dialog
+    
+    _ = I18n().translate
+
+    text = _('restart_sublime')
+
+    message_dialog(text)
+
+
+
 def singleton(cls):
     """
     restricts the instantiation of a class to one object
@@ -155,25 +174,6 @@ def make_folder(path):
         if exc.errno != errno.EEXIST:
             raise exc
         pass
-
-
-def output_in_file(command, file_path):
-    """
-    run a command who return and output in a json format
-    and store it in a file
-    """
-    from .file import File
-    from ..platformio.run_command import run_command
-
-    out = run_command(command)
-    boards = out[1]
-
-    # save in file
-    file_board = File(file_path)
-    file_board.write(boards)
-
-    return 200
-
 
 def create_sketch(sketch_name, select_path):
     """

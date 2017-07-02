@@ -237,6 +237,9 @@ msgstr "새 스케치를 CPP File로 생성"
 msgid "menu_rebuild_syntax"
 msgstr "Rebuild Syntax and Completions Files"
 
+msgid "menu_remove_settings"
+msgstr "유저 선택 설정 파일 삭제"
+
 msgid "menu_languages"
 msgstr "언어 (Languages)"
 
@@ -293,6 +296,12 @@ msgstr "< Previous"
 
 msgid "select_{0}"
 msgstr "Choose {0}"
+
+msgid "restart_sublime"
+msgstr "Please Restart Sublime Text"
+
+msgid "button_ok"
+msgstr "OK"
 
 # Libraries
 
