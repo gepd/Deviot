@@ -96,6 +96,9 @@ msgstr "No Examples Availables"
 msgid "menu_option_lib"
 msgstr "라이브러리 설정"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Rebuild Library List"
+
 msgid "menu_extra_lib_folder"
 msgstr "Extra Library Folder"
 

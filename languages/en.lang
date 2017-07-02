@@ -96,6 +96,9 @@ msgstr "No Examples Available"
 msgid "menu_option_lib"
 msgstr "Library Options"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Rebuild Library List"
+
 msgid "menu_extra_lib_folder"
 msgstr "Extra Library Folder"
 
@@ -104,9 +107,6 @@ msgstr "Remove Extra Library Folder"
 
 msgid "menu_open_lib_folder"
 msgstr "Open Library Folder"
-
-msgid "menu_rebuild_lib_list"
-msgstr "Rebuild Library List"
 
 msgid "menu_build"
 msgstr "Compile"
