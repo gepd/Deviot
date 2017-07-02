@@ -114,6 +114,9 @@ msgstr "编译"
 msgid "menu_upload"
 msgstr "下载"
 
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
+
 msgid "menu_clean"
 msgstr "清除"
 

@@ -114,6 +114,9 @@ msgstr "Compilar"
 msgid "menu_upload"
 msgstr "Cargar"
 
+msgid "menu_overwrite_upload_baud"
+msgstr "Sobre Escribir Velocidad de Carga"
+
 msgid "menu_clean"
 msgstr "Limpiar"
 

@@ -114,6 +114,9 @@ msgstr "Zbuduj"
 msgid "menu_upload"
 msgstr "Wgraj"
 
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
+
 msgid "menu_clean"
 msgstr "Wyczyść"
 
