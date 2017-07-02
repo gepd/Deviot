@@ -16,15 +16,15 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 from . import __version__ as version
-from .tools import get_headers, get_setting, save_setting
-from .progress_bar import ProgressBar
+from .file import File
+from .I18n import I18n
+from .syntax import Syntax
 from .messages import MessageQueue
 from .quick_panel import quick_panel
-from .I18n import I18n
 from ..platformio.command import Command
-from .file import File
-from .paths import getLibrariesFileDataPath, getPioPackages, getPioLibrary
 from .thread_progress import ThreadProgress
+from .tools import get_headers, get_setting, save_setting
+from .paths import getLibrariesFileDataPath, getPioPackages, getPioLibrary
 
 _ = None
 
@@ -191,6 +191,7 @@ class Libraries(Command):
             quick_list.append(self.quick_list[selected])
 
             File(self.lib_file_path).save_json(quick_list)
+            Syntax()
 
 
     def get_installed_list(self):
@@ -246,6 +247,7 @@ class Libraries(Command):
             self.quick_list.remove(self.quick_list[selected])
             
             File(self.lib_file_path).save_json(self.quick_list)
+            Syntax()
 
     def save_installed_list(self):
         """Save installed list
@@ -266,6 +268,7 @@ class Libraries(Command):
         self.quicked(out)
 
         File(self.lib_file_path).save_json(self.quick_list)
+        Syntax()
 
 def get_library_folders(platform='all'):
     """Libraries availables

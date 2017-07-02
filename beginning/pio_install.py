@@ -11,7 +11,7 @@ proceed with the installation.
 This code is intended to work as a standalone, so you can call to the
 "PioInstall" class and it will run in a new thread and will install all 
 the necessary files to run platformio. (replace or remove dprint, derror,
-show_message() and show_error())
+show_message() and show_error()) all inside ### are external libraries
 
 Version: 1.0.0
 Author: Guillermo Díaz
@@ -40,6 +40,7 @@ from collections import OrderedDict
 from ..libraries import __version__, __title__
 
 ###
+from ..libraries.syntax import Syntax
 from ..libraries.tools import get_setting, save_setting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
@@ -49,9 +50,6 @@ dprint = None
 derror = None
 dstop = None
 ###
-
-# TODO
-# Add symlink to a config file
 
 
 class PioInstall(object):
@@ -167,6 +165,7 @@ class PioInstall(object):
 
         save_setting('installed', True)
         PioBridge().save_boards_list()
+        Syntax()
 
         derror("setup_finished")
 
@@ -267,6 +266,7 @@ def check_pio():
         save_setting('external_bins', True)
         save_setting('env_path', env_path)
         PioBridge().save_boards_list()
+        Syntax()
         derror("pio_is_installed")
 
 def create_path(path):
