@@ -18,7 +18,6 @@ from urllib.request import urlopen
 from . import __version__ as version
 from .file import File
 from .I18n import I18n
-from .syntax import Syntax
 from .messages import MessageQueue
 from .quick_panel import quick_panel
 from ..platformio.command import Command
@@ -186,11 +185,14 @@ class Libraries(Command):
         cmd = ['lib', '--global', 'install', lib_id]
         out = self.run_command(cmd)
 
+        self.dstop()
+
         if(out[0] == 0):
             quick_list = File(self.lib_file_path).read_json()
             quick_list.append(self.quick_list[selected])
 
             File(self.lib_file_path).save_json(quick_list)
+            from .syntax import Syntax
             Syntax()
 
 
@@ -243,10 +245,13 @@ class Libraries(Command):
         cmd = ['lib', '--global', 'uninstall', lib_id]
         out = self.run_command(cmd)
 
+        self.dstop()
+
         if(out[0] == 0):
             self.quick_list.remove(self.quick_list[selected])
             
             File(self.lib_file_path).save_json(self.quick_list)
+            from .syntax import Syntax
             Syntax()
 
     def save_installed_list(self):
@@ -258,6 +263,7 @@ class Libraries(Command):
         of libraries are corrupted or out of date, this method will updated
         the file to get the most recent information
         """
+        self.dstop()
         self.set_return = True
         self.realtime = False
 
@@ -268,6 +274,7 @@ class Libraries(Command):
         self.quicked(out)
 
         File(self.lib_file_path).save_json(self.quick_list)
+        from .syntax import Syntax
         Syntax()
 
 def get_library_folders(platform='all'):

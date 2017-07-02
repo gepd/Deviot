@@ -110,6 +110,7 @@ class PioTerminal(Command):
         self.cwd = os.getcwd()
         self.run_command(cmd)
 
+        self.dstop()
         self.show_input()
 
     def deviot_commands(self, cmd):
