@@ -96,6 +96,9 @@ msgstr "Nessun esempio disponibile"
 msgid "menu_option_lib"
 msgstr "Opzioni di Libreria"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Rebuild Library List"
+
 msgid "menu_extra_lib_folder"
 msgstr "Extra Library Folder"
 

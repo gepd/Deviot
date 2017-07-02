@@ -105,6 +105,9 @@ msgstr "Remove Extra Library Folder"
 msgid "menu_open_lib_folder"
 msgstr "Open Library Folder"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Rebuild Library List"
+
 msgid "menu_build"
 msgstr "Compile"
 

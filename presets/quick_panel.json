@@ -24,6 +24,9 @@
         "caption": "menu_open_lib_folder",
         "command": "deviot_open_library_folder"
     },{
+        "caption": "menu_rebuild_lib_list",
+        "command": "deviot_rebuild_lib_list"
+    },{
         "caption": "menu_extra_lib_folder",
         "command": "deviot_extra_library_folder"
     },{

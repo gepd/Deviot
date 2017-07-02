@@ -96,6 +96,9 @@ msgstr "Brak Dostępnych Przykładów"
 msgid "menu_option_lib"
 msgstr "Opcje Bibliotek"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Rebuild Library List"
+
 msgid "menu_open_lib_folder"
 msgstr "Otwórz Folder z Bibliotekami"
 

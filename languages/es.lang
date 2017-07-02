@@ -96,6 +96,9 @@ msgstr "No Hay Ejemplos Disponibles"
 msgid "menu_option_lib"
 msgstr "Opciones de Librerías"
 
+msgid "menu_rebuild_lib_list"
+msgstr "Reconstruir Lista de Librerías"
+
 msgid "menu_extra_lib_folder"
 msgstr "Carpeta Extra Para Librerías"
 

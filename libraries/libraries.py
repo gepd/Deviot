@@ -254,6 +254,17 @@ class Libraries(Command):
             from .syntax import Syntax
             Syntax()
 
+    def save_installed_list_async(self):
+        """Save in thread
+        
+        Runs the save_installed_list method to avoid block the main
+        thread of sublime text
+        """
+
+        thread = Thread(target=self.save_installed_list)
+        thread.start()
+        ThreadProgress(thread, _('processing'), '')
+
     def save_installed_list(self):
         """Save installed list
         
@@ -263,7 +274,6 @@ class Libraries(Command):
         of libraries are corrupted or out of date, this method will updated
         the file to get the most recent information
         """
-        self.dstop()
         self.set_return = True
         self.realtime = False
 
