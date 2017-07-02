@@ -1542,7 +1542,10 @@ class ServiceInfo(object):
         )
 
 
-def normalize_interface_choice():       
+def normalize_interface_choice():
+    # function updated to avoid netifaces dependence
+    # the information to get the machine IP was discused here:
+    # https://stackoverflow.com/a/166589/3769629
     choise = []
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.connect(("8.8.8.8", 80))
