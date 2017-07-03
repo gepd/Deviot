@@ -64,6 +64,8 @@ class PioInstall(object):
         if(installed):
             return
 
+        Syntax()
+
         show_messages()
         dprint("deviot_setup{0}", True, self.dev_ver)
         ###
@@ -165,7 +167,6 @@ class PioInstall(object):
 
         save_setting('installed', True)
         PioBridge().save_boards_list()
-        Syntax()
 
         derror("setup_finished")
 
@@ -266,7 +267,6 @@ def check_pio():
         save_setting('external_bins', True)
         save_setting('env_path', env_path)
         PioBridge().save_boards_list()
-        Syntax()
         derror("pio_is_installed")
 
 def create_path(path):
