@@ -126,18 +126,27 @@ def remove_settings():
     Removes the deviot.sublime-settings and
     Packages/User/Deviot folder
     """
-    from .paths import getPackagesPath, getDeviotUserPath
-
+    from .paths import getPluginPath, getPackagesPath, getDenvPath 
+    
+    plugin_path = getPluginPath()
     packages_path = getPackagesPath()
-    deviot_user_path = getDeviotUserPath()
+    deviot_penv = getDenvPath()
 
+    deviot_menu = path.join(plugin_path, 'Main.sublime-menu')
+    deviot_context = path.join(plugin_path, 'Context.sublime-menu')
+    deviot_commands = path.join(plugin_path, 'Default.sublime-commands')
     deviot_settings = path.join(packages_path, 'User', 'deviot.sublime-settings')
 
-    if(path.exists(deviot_settings)):
-        remove(deviot_settings)
+    files = [deviot_menu, deviot_context, deviot_commands, deviot_settings]
+    folders = [deviot_penv]
 
-    if(path.exists(deviot_user_path)):
-        rmtree(deviot_user_path)
+    for file in files:
+        if(path.exists(file)):
+            remove(file)
+
+    for folder in folders:
+        if(path.exists(folder)):
+            rmtree(folder, ignore_errors=True)
 
     from .I18n import I18n
     from sublime import message_dialog
