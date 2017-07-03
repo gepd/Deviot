@@ -1,4 +1,11 @@
 # Deviot Release Notes
+## Version 2.0.1 | 03 Jul 2017
+* Improvement Syntax is created even if the PlatformIO setup fails (Issue: https://github.com/gepd/Deviot/issues/125)
+* Improvement Force Sublime Text to assign deviot syntax when it's a IOT file (Issue: https://github.com/gepd/Deviot/issues/125)
+* Improvement The console will print the error when installation fails
+* Bug fix removing the preferences files who was making  crashing Sublime Text
+* Multiples Bug fixes installing PlatformIO in macOS (Issue: https://github.com/gepd/Deviot/issues/124)
+
 ## Version 2.0.0 | 02 Jul 2017
 * Plugin totally rewritten
 * New PlatformIO console
