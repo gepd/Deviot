@@ -132,7 +132,6 @@ def remove_settings():
     deviot_user_path = getDeviotUserPath()
 
     deviot_settings = path.join(packages_path, 'User', 'deviot.sublime-settings')
-    print(deviot_settings)
 
     if(path.exists(deviot_settings)):
         remove(deviot_settings)
