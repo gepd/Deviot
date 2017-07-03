@@ -1,4 +1,4 @@
-VERSION = (2, 0, 0)
+VERSION = (2, 0, 1, 'dev')
 __version__ = ".".join([str(s) for s in VERSION])
 
 __title__ = "Deviot"
@@ -11,4 +11,4 @@ __url__ = "https://github.com/gepd/Deviot"
 __author__ = "GEPD"
 __email__ = "guillermoepd@gmail.com"
 
-__copyright__ = "Copyright 2015 GEPD"
+__copyright__ = "Copyright 2017 GEPD"
