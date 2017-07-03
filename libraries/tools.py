@@ -82,9 +82,9 @@ def create_command(command):
     if(not env_path):
         return command
 
-    _os = platform()
+    os = platform()
 
-    if(_os is 'osx'):
+    if(os == 'osx'):
         exe = 'python' if(not symlink) else 'python2'
         options = ['-m', command[0]]
     else:

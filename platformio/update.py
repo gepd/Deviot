@@ -54,8 +54,8 @@ class Update(Command):
         self.show_feedback()
         self.dprint("searching_pio_updates")
 
-        cmd = ['pio','upgrade']
-        out = self.run_command(cmd, prepare=False)
+        cmd = ['upgrade']
+        out = self.run_command(cmd)
 
     def update_async(self):
         """New Thread Execution
@@ -100,7 +100,7 @@ class Update(Command):
             self.dprint("installing_stable_pio")
             option = 'platformio'
 
-        cmd = ['pip','install', '-U', option]
+        cmd = create_command(['pip','install', '-U', option])
         out = self.run_command(cmd, prepare=False)
 
     def check_update_async(self):
@@ -178,5 +178,5 @@ class Update(Command):
                 self.show_feedback()
                 self.realtime = True
 
-                cmd = ['pio','upgrade']
-                out = self.run_command(cmd, prepare=False)
+                cmd = ['upgrade']
+                out = self.run_command(cmd)

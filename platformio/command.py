@@ -68,7 +68,7 @@ class Command(ProjectRecognition):
 
     def prepare_command(self, post_command):
         cmd = " ".join(post_command)
-        command = create_command(['pio', '-f', '-c', 'sublimetext'])
+        command = create_command(['platformio', '-f', '-c', 'sublimetext'])
         command.extend(post_command)
 
         # verbose mode

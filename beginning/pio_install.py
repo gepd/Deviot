@@ -152,7 +152,7 @@ class PioInstall(object):
         out = run_command(cmd, "setup_error", self.OUTPUT_PATH)
 
         # Install pio
-        if(sublime.platform() is 'osx'):
+        if(sublime.platform() == 'osx'):
             executable = path.join(self.V_ENV_BIN_PATH, self.SYMLINK)
             cmd = ['"%s"' % (executable), '-m', 'pip',
                    'install', '-U', 'platformio']
