@@ -149,7 +149,7 @@ class PioInstall(object):
         dprint("installing_pio")
 
         cmd = [self.SYMLINK, 'virtualenv.py', '"%s"' % self.V_ENV_PATH]
-        out = run_command(cmd, "error installing virtualenv", self.OUTPUT_PATH)
+        out = run_command(cmd, "setup_error", self.OUTPUT_PATH)
 
         # Install pio
         if(sublime.platform() is 'osx'):
@@ -159,7 +159,7 @@ class PioInstall(object):
         else:
             executable = path.join(self.V_ENV_BIN_PATH, 'pip')
             cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
-        out = run_command(cmd, "error installing platformio")
+        out = run_command(cmd, "setup_error")
 
         # save env paths
         env_path = [self.V_ENV_PATH, self.V_ENV_BIN_PATH]
@@ -385,7 +385,8 @@ def run_command(command, error='', cwd=None):
     return_code = process.returncode
 
     if(return_code > 0 and error is not ''):
-        derror(error)
+        dprint(error)
+        derror(stdout)
 
     return (return_code, stdout)
 

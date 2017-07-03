@@ -34,6 +34,9 @@ msgstr "下载所需文件时出错 ...\n"
 msgid "error_saving_files"
 msgstr "保存所需文件时出错...\n"
 
+msgid "setup_error"
+msgstr "There was an error\n"
+
 msgid "extracting_files"
 msgstr "提取文件...\n"
 

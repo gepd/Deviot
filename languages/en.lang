@@ -34,6 +34,9 @@ msgstr "There was an error downloading the necessary files...\n"
 msgid "error_saving_files"
 msgstr "There was an error saving the necessary files...\n"
 
+msgid "setup_error"
+msgstr "There was an error\n"
+
 msgid "extracting_files"
 msgstr "Extracting files...\n"
 
