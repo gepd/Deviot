@@ -12,7 +12,7 @@ from sublime_plugin import EventListener
 from .commands import *
 from .platformio.update import Update
 from .beginning.pio_install import PioInstall
-from .libraries.tools import get_setting, save_setting, get_phantoms, del_phantom
+from .libraries.tools import get_setting, save_setting, get_phantoms, del_phantom, set_deviot_syntax
 from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
@@ -30,6 +30,9 @@ def plugin_loaded():
         save_setting('compile_lang', False)
 
 class DeviotListener(EventListener):
+    def on_load(self, view):
+        set_deviot_syntax(view)
+
     def on_activated(self, view):
         PreferencesBridge().set_status_information()
     

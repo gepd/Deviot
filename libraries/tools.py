@@ -149,6 +149,26 @@ def remove_settings():
 
     message_dialog(text)
 
+def set_deviot_syntax(view):
+    """
+    Force sublime text to assign deviot syntax when its
+    a iot file
+    """
+    from .project_check import ProjectCheck
+
+    if(not ProjectCheck().is_iot()):
+        return
+
+    syntax = view.settings().get('syntax')
+
+    if(not syntax or not syntax.endswith('/deviot.sublime-syntax')):
+        from .path import getPluginPath
+
+        deviot_syntax = getPluginPath()
+        deviot_syntax = path.join(deviot_syntax, 'deviot.sublime-syntax')
+
+        if(path.exists(deviot_syntax)):
+            view.settings().set('syntax', 'Packages/Deviot/deviot.sublime-syntax')
 
 
 def singleton(cls):
