@@ -10,12 +10,16 @@ from time import sleep
 from ..libraries import tools, paths
 from ..libraries.messages import MessageQueue
 from ..platformio.command import Command
-
+from ..libraries.thread_progress import ThreadProgress
+from ..libraries.I18n import I18n
 
 class PioTerminal(Command):
 
     def __init__(self):
         super(PioTerminal, self).__init__()
+        global _
+        _ = I18n().translate
+
         name = 'PlatformIO Terminal'
         self.window, self.view = tools.findInOpendView(name)
 
@@ -69,7 +73,7 @@ class PioTerminal(Command):
         """
         self.window.focus_view(self.view)
         cap = ' $ '
-        self.window.show_input_panel(cap, '', self.nonblock_cmd, None, None)
+        self.window.show_input_panel(cap, '', self.nonblock_cmd, None, self.cancel_input)
 
     def nonblock_cmd(self, cmd):
         """New thread command
@@ -82,6 +86,14 @@ class PioTerminal(Command):
         """
         thread = Thread(target=self.send_cmd, args=(cmd,))
         thread.start()
+        ThreadProgress(thread, _('processing'), '')
+
+    def cancel_input(self):
+        """Cancel queue
+        
+        Cancel the message queue when the input panel is cancel (esc key)
+        """
+        self.dstop()
 
     def send_cmd(self, cmd):
         """Process command
@@ -94,6 +106,7 @@ class PioTerminal(Command):
             cmd {str} -- command to execute
         """
         if(not cmd):
+            self.dstop()
             return
 
         self.dprint("\n$ {0} \n".format(cmd), hide_hour=True)
@@ -110,7 +123,6 @@ class PioTerminal(Command):
         self.cwd = os.getcwd()
         self.run_command(cmd)
 
-        self.dstop()
         self.show_input()
 
     def deviot_commands(self, cmd):
