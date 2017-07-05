@@ -448,6 +448,7 @@ def show_phanthom(view, text):
     
     PHANTOMS.append(phantom_name)
     VPHANTOMS[phantom_name] = view
+    PHANTOMS = list(set(PHANTOMS))
 
 def get_phantoms():
     """Phantom names
