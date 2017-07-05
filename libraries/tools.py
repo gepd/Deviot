@@ -386,7 +386,7 @@ def show_phanthom(view, text):
     global PHANTOMS
     global VPHANTOMS
 
-    result = search("(.+)\:(\d+)\:(\d+):\s\S+\: (.+)", text)
+    result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
 
     if(not result):
         return

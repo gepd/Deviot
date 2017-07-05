@@ -162,7 +162,7 @@ class MessageQueue(Console):
             while(not self.queue.empty()):
                 text = self.queue.get()
                 
-                if(': error:' in text):
+                if(': error:' in text or ': fatal error:' in text):
                     show_phanthom(self.view, text)
                 
                 self.print_screen(text)

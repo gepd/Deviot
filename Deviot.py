@@ -57,13 +57,14 @@ class DeviotListener(EventListener):
         Arguments:
             view {obj} -- sublime text object
         """
+        is_iot = ProjectCheck().is_iot()
         phantoms = get_phantoms()
 
-        if(not len(phantoms) and not ProjectCheck().is_iot()):
+        if(not len(phantoms) and not is_iot):
             return
 
         line, column = view.rowcol(view.sel()[0].begin())
         pname = 'error' + str(line + 1)
 
-        if(pname in phantoms):
+        if(pname in phantoms and view.file_name()):
             del_phantom(pname)
