@@ -11,7 +11,7 @@ msgid "deviot_need_python"
 msgstr "O Deviot precisa do Python 2.7 para funcionar, faça o download e instale-o"
 
 msgid "button_download_python"
-msgstr "Baixar Python"
+msgstr "Baixar o Python"
 
 msgid "symlink_detected"
 msgstr "Symlink foi detectado\n"
@@ -67,3 +67,194 @@ msgstr "Atualizar Agora"
 
 # Menu
 
+msgid "menu_quick_panel"
+msgstr "Painel Rápido"
+
+msgid "menu_new_sketch"
+msgstr "Novo Esboço"
+
+msgid "menu_select_boards"
+msgstr "Selecione a Placa"
+
+msgid "menu_select_env"
+msgstr "Selecione o Ambiente"
+
+msgid "menu_search_lib"
+msgstr "Procurar/Instalar Biblioteca"
+
+msgid "menu_remove_lib"
+msgstr "Remover Biblioteca"
+
+msgid "menu_import_library"
+msgstr "Importar Biblioteca"
+
+msgid "menu_no_libraries"
+msgstr "Não há bibliotecas Disponíveis"
+
+msgid "menu_library_examples"
+msgstr "Exemplos"
+
+msgid "menu_no_examples"
+msgstr "Nenhum Exemplo Disponível"
+
+msgid "menu_option_lib"
+msgstr "Opções de Bibliotecas"
+
+msgid "menu_rebuild_lib_list"
+msgstr "Reconstruir a Lista de Bibliotecas"
+
+msgid "menu_extra_lib_folder"
+msgstr "Pasta de Biblioteca Extra"
+
+msgid "menu_remove_extra_lib_folder"
+msgstr "Remover Pasta de Biblioteca Extra"
+
+msgid "menu_open_lib_folder"
+msgstr "Abrir Pasta de Bibliotecas"
+
+msgid "menu_build"
+msgstr "Compilar"
+
+msgid "menu_upload"
+msgstr "Enviar"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Excesso de Velocidade de Upload"
+
+msgid "menu_clean"
+msgstr "Limpar"
+
+msgid "menu_open_ini_file"
+msgstr "Open Build Config File"
+
+msgid "menu_show_console"
+msgstr "Mostrar Console Deviot"
+
+msgid "menu_hide_console"
+msgstr "Ocultar Console Deviot"
+
+msgid "menu_show_terminal"
+msgstr "Mostrar Terminal"
+
+msgid "menu_hide_terminal"
+msgstr "Ocultar Terminal"
+
+msgid "menu_programmer"
+msgstr "Programador"
+
+msgid "menu_serial_port"
+msgstr "Portas Seriais"
+
+msgid "menu_auth_change"
+msgstr "Alterar a Senha da OTA"
+
+msgid "menu_no_serial_mdns"
+msgstr "Não há Serviços de Porta serial ou mDNS Disponíveis"
+
+msgid "menu_add_ip"
+msgstr "Adicionar IP Manual"
+
+msgid "menu_monitor_serial"
+msgstr "Monitor Serial"
+
+msgid "menu_run"
+msgstr "Iniciar/Parar Monitor"
+
+msgid "menu_send"
+msgstr "Enviar"
+
+msgid "menu_clean_view"
+msgstr "Limpar a Vista do Monitor"
+
+msgid "menu_deviot_output"
+msgstr "Saída no Console Deviot"
+
+msgid "menu_auto_scroll"
+msgstr "Auto rolagem"
+
+msgid "menu_auto_clean"
+msgstr "Vista de Limpeza Automática"
+
+msgid "menu_baudrate"
+msgstr "Taxa de Transmissão"
+
+msgid "menu_line_ending"
+msgstr "Terminais de Linha"
+
+msgid "menu_none"
+msgstr "Nenhum"
+
+msgid "menu_new_line"
+msgstr "Nova Linha"
+
+msgid "menu_cr"
+msgstr "Retorno de Carro"
+
+msgid "menu_nl_cr"
+msgstr "Ambos os NL & CR"
+
+msgid "menu_display_mode"
+msgstr "Modo de Exibição"
+
+msgid "menu_text"
+msgstr "Texto"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
+
+msgid "menu_option"
+msgstr "Opções"
+
+msgid "menu_upgrade_pio"
+msgstr "Atualizar PlatformIO"
+
+msgid "menu_developer_pio"
+msgstr "Use a Versão Pio de Desenvolvimento"
+
+msgid "menu_always_native"
+msgstr "Use a Estrutura do PlatformIO"
+
+msgid "menu_rebuild_boards"
+msgstr "Reconstruir Arquivo de Placas"
+
+msgid "menu_show_verbose"
+msgstr "Verbose Completa ao Sair"
+
+msgid "menu_status_information"
+msgstr "Informação na Barra de Status"
+
+msgid "menu_open_build_folder"
+msgstr "Abrir Diretorio de Compilação"
+
+msgid "menu_change_build_folder"
+msgstr "Alterar Pasta de Compilação"
+
+msgid "menu_use_cpp_new"
+msgstr "Use o Arquivo CPP no Novo Arquivo"
+
+msgid "menu_rebuild_syntax"
+msgstr "Reconstruir Arquivos de Sintaxe e Finalizações"
+
+msgid "menu_remove_settings"
+msgstr "Remover Arquivos de Preferências"
+
+msgid "menu_languages"
+msgstr "Linguagens"
+
+msgid "menu_donate_deviot"
+msgstr "❤ Doar"
+
+msgid "menu_about"
+msgstr "Sobre"
+
+msgid "menu_about_deviot"
+msgstr "Sobre o Deviot"
+
+msgid "menu_about_pio"
+msgstr "Sobre o PlatformIO"
