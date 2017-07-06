@@ -1,0 +1,69 @@
+# LANGUAGE: Portuguese (Brasil)
+# Portuguese translations for Deviot Plugin.
+# Translator: Alexandre Fernandes
+# Copyright (C) 2017 Alexandre Fernandes
+# This file is distributed under the same license as the Deviot Plugin.
+#
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "O Deviot precisa do Python 2.7 para funcionar, faça o download e instale-o"
+
+msgid "button_download_python"
+msgstr "Baixar Python"
+
+msgid "symlink_detected"
+msgstr "Symlink foi detectado\n"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Configuração\n"
+
+msgid "pio_is_installed"
+msgstr "O PlatformIO está instalado no seu sistema. Você pode desfrutar do Deviot agora!"
+
+msgid "pio_isn_installed"
+msgstr "PlatformIO não está instalado\nPreparando para instalá-lo. Seja paciente; Pode demorar um pouco.\n"
+
+
+msgid "downloading_files"
+msgstr "Baixando Arquivos Necessarios...\n"
+
+msgid "error_downloading_files"
+msgstr "Ocorreu um erro ao baixar os arquivos necessários...\n"
+
+msgid "error_saving_files"
+msgstr "Ocorreu um erro ao salvar os arquivos necessários...\n"
+
+msgid "setup_error"
+msgstr "Havia um erro\n"
+
+msgid "extracting_files"
+msgstr "Extraindo arquivos...\n"
+
+msgid "installing_pio"
+msgstr "Instalando o PlatformIO...\n"
+
+msgid "uninstall_old_pio"
+msgstr "Desinstalando a versão atual...\n"
+
+msgid "installing_dev_pio"
+msgstr "Instalando versão de 'Desenvolvimento' do PlatformIO...\n"
+
+msgid "installing_stable_pio"
+msgstr "Instalando versão 'Estavel' do PlatformIO...\n"
+
+msgid "setup_finished"
+msgstr "Instalação concluída, agora você pode desfrutar do Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Procurando por atualizações do PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "A versão {0} do PlatformIO está disponível. Sua versão atual é {1}. Deseja atualizá-lo?"
+
+msgid "update_button"
+msgstr "Atualizar Agora"
+
+# Menu
+
