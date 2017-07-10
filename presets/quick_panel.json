@@ -69,7 +69,7 @@
         "caption": "menu_send",
         "command": "deviot_send_serial_monitor"
     },{
-        "caption": "menu_clean",
+        "caption": "menu_clean_view",
         "command": "deviot_clean_console"
     },{
         "caption": "menu_deviot_output",
