@@ -360,7 +360,7 @@ class QuickMenu(PreferencesBridge):
         platform = self.get_platform()
         platform = platform if(platform) else "all"
 
-        quick_list = get_library_list(platform)
+        quick_list = get_library_list(platform=platform)
         quick_list.insert(0, [_("select_library").upper()])
 
         if(len(quick_list) <= 1):
