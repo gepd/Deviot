@@ -15,7 +15,7 @@
             { "key": "setting.deviotInputText", "operator": "equal", "operand": true }
         ]
     },{
-        "keys": ["alt+q"],
+        "keys": ["ctrl+shift+q"],
         "command": "show_overlay",
                 "args": {
                     "overlay": "command_palette", 

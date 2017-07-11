@@ -15,14 +15,14 @@
             { "key": "setting.deviotInputText", "operator": "equal", "operand": true }
         ]
     },{
-        "keys": ["alt+q"],
+        "keys": ["ctrl+shift+q"],
         "command": "show_overlay",
                 "args": {
                     "overlay": "command_palette", 
                     "text": "Deviot: "
                 }
     },{
-        "keys": ["ctrl+shift+n"], 
+        "keys": ["alt+n"], 
         "command": "deviot_new_sketch"
     },{
         "keys": ["ctrl+shift+b"], 
@@ -31,7 +31,7 @@
         "keys": ["ctrl+shift+e"], 
         "command": "deviot_select_environment"
     },{
-        "keys": ["ctrl+shift+f"], 
+        "keys": ["ctrl+shift+alt+f"], 
         "command": "deviot_search_library"
     },{
         "keys": ["ctrl+shift+r"], 
@@ -52,16 +52,16 @@
         "keys": ["ctrl+alt+r"], 
         "command": "deviot_remove_extra_library_folder"
     },{
-        "keys": ["ctrl+shift+c"], 
+        "keys": ["alt+d"], 
         "command": "deviot_compile_sketch"
     },{
-        "keys": ["ctrl+shift+u"], 
+        "keys": ["alt+e"], 
         "command": "deviot_upload_sketch"
     },{
         "keys": ["ctrl+shift+o"], 
         "command": "deviot_overwrite_upload_baud"
     },{
-        "keys": ["ctrl+shift+l"], 
+        "keys": ["alt+x"], 
         "command": "deviot_clean_sketch"
     },{
         "keys": ["ctrl+shift+i"], 
@@ -73,19 +73,19 @@
         "keys": ["ctrl+alt+c"], 
         "command": "deviot_hide_console"
     },{
-        "keys": ["ctrl+shift+t"], 
+        "keys": ["alt+shift+t"], 
         "command": "deviot_show_terminal"
     },{
-        "keys": ["ctrl+alt+t"], 
+        "keys": ["alt+shift+h"], 
         "command": "deviot_hide_terminal"
     },{
-        "keys": ["ctrl+shift+s"], 
+        "keys": ["alt+shift+s"], 
         "command": "deviot_select_port"
     },{
-        "keys": ["ctrl+shift+w"], 
+        "keys": ["alt+shift+p"], 
         "command": "deviot_set_password"
     },{
-        "keys": ["ctrl+shift+m"], 
+        "keys": ["alt+m"], 
         "command": "deviot_toggle_serial_monitor"
     },{
         "keys": ["ctrl+alt+s"], 
@@ -103,7 +103,7 @@
         "keys": ["ctrl+alt+a"], 
         "command": "deviot_auto_clean"
     },{
-        "keys": ["ctrl+alt+p"], 
+        "keys": ["ctrl+shift+alt+p"], 
         "command": "deviot_upgrade_pio"
     },{
         "keys": ["ctrl+alt+d"], 
