@@ -49,6 +49,7 @@ from .deviot_clean_view import DeviotCleanViewCommand
 from .deviot_clean_console import DeviotCleanConsoleCommand
 from .deviot_reload import DeviotReloadCommand
 from .deviot_set_ip import DeviotSetIpCommand
+from .deviot_history import InputTextHistoryCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -101,5 +102,6 @@ __all__ = [
     'DeviotCleanViewCommand',
     'DeviotCleanConsoleCommand',
     'DeviotReloadCommand',
-    'DeviotSetIpCommand'
+    'DeviotSetIpCommand',
+    'InputTextHistoryCommand'
 ]
