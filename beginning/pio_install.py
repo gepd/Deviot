@@ -256,7 +256,7 @@ def check_pio():
 
     Check if platformIO is already installed in the machine
     """
-    cmd = ['pio', '--version']
+    cmd = ['platformio', '--version']
     out = run_command(cmd)
 
     status = out[0]
