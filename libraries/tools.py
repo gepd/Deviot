@@ -162,16 +162,22 @@ def set_deviot_syntax(view):
     if(not ProjectCheck().is_iot()):
         return
 
+    d_syntax = 'Packages/Deviot/deviot.sublime-syntax'
+
     syntax = view.settings().get('syntax')
 
+    if(syntax.endswith('Arduino.tmLanguage')):
+        view.settings().set('syntax', d_syntax)
+        return
+
     if(not syntax or not syntax.endswith('/deviot.sublime-syntax')):
-        from .path import getPluginPath
+        from .paths import getPluginPath
 
         deviot_syntax = getPluginPath()
         deviot_syntax = path.join(deviot_syntax, 'deviot.sublime-syntax')
 
         if(path.exists(deviot_syntax)):
-            view.settings().set('syntax', 'Packages/Deviot/deviot.sublime-syntax')
+            view.settings().set('syntax', d_syntax)
 
 
 def singleton(cls):

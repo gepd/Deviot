@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from os import path
+from sublime import windows
 from sublime_plugin import EventListener
 
 from .commands import *
@@ -18,7 +19,15 @@ from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
 
 def plugin_loaded():
+    # Load or fix the right deviot syntax file 
+    for window in windows():
+        for view in window.views():
+            set_deviot_syntax(view)
+
+    # Install PlatformIO
     PioInstall()
+
+    # Search updates
     Update().check_update_async()
 
     menu_path = getMainMenuPath()
