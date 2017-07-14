@@ -8,4 +8,8 @@ class DeviotExtraLibraryFolderCommand(WindowCommand):
     """
 
     def run(self):
-        folder_explorer(key='extra_library', callback=save_setting)
+        folder_explorer(key='extra_library', callback=self.done)
+
+    def done(self, key, value):
+        save_setting(key, value)
+        self.window.run_command('deviot_rebuild_syntax')
