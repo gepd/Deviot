@@ -79,25 +79,20 @@ def create_command(command):
     env_path = get_setting('env_path', False)
     symlink = get_setting('symlink', False)
 
-    if(not env_path):
+    if(not env_path or external_bins):
         return command
 
-    os = platform()
+    from .paths import getEnvBinDir
 
-    if(os == 'osx'):
+    if(platform() == 'osx'):
         exe = 'python' if(not symlink) else 'python2'
         options = ['-m', command[0]]
     else:
         exe = command[0]
         options = []
 
-    executable = exe
-
-    if(not external_bins):
-        from . import paths
-        
-        bin_dir = paths.getEnvBinDir()
-        executable = path.join(bin_dir, exe)
+    bin_dir = getEnvBinDir()
+    executable = path.join(bin_dir, exe)
 
     cmd = ['"%s"' % (executable)]
     cmd.extend(options)
