@@ -145,7 +145,7 @@ def save_setting(key, value=None, sys_options=False):
     """
     settings = load_settings("deviot.sublime-settings")
 
-    if(not value):
+    if(value == None):
         settings.erase(key)
     else:
         settings.set(key, value)
