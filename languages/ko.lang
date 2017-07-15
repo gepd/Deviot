@@ -162,6 +162,9 @@ msgstr "Start/Stop Monitor"
 msgid "menu_send"
 msgstr "전송하기"
 
+msgid "menu_send_persistent"
+msgstr "Send Persistent"
+
 msgid "menu_clean_view"
 msgstr "Clean Monitor View"
 

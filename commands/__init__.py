@@ -25,6 +25,7 @@ from .deviot_set_password import DeviotSetPasswordCommand
 from .deviot_toggle_serial_monitor import DeviotToggleSerialMonitorCommand
 from .deviot_send_serial_monitor import DeviotSendSerialMonitorCommand
 from .deviot_output_console import DeviotOutputConsoleCommand
+from .deviot_send_persistent import DeviotSendPersistentCommand
 from .deviot_automatic_scroll import DeviotAutomaticScrollCommand
 from .deviot_auto_clean import DeviotAutoCleanCommand
 from .deviot_choose_baudrate import DeviotChooseBaudrateCommand
@@ -78,6 +79,7 @@ __all__ = [
     'DeviotSetPasswordCommand',
     'DeviotToggleSerialMonitorCommand',
     'DeviotSendSerialMonitorCommand',
+    'DeviotSendPersistentCommand',
     'DeviotOutputConsoleCommand',
     'DeviotStatusInformationCommand',
     'DeviotAutomaticScrollCommand',

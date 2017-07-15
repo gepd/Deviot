@@ -17,6 +17,7 @@ class DeviotSendSerialMonitorCommand(TextCommand):
     def on_done(self, text):
         history.insert(text)
         self.text_send(text)
+        self.window.run_command('deviot_send_serial_monitor')
         
         if(self.output_console):
             self.window.run_command('deviot_show_console')

@@ -162,6 +162,9 @@ msgstr "Start/Stop Monitor"
 msgid "menu_send"
 msgstr "Envoyer"
 
+msgid "menu_send_persistent"
+msgstr "Send Persistent"
+
 msgid "menu_clean_view"
 msgstr "Clean Monitor View"
 
