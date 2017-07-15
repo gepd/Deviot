@@ -12,7 +12,6 @@ class DeviotSendPersistentCommand(WindowCommand):
 
     def run(self):
         send_persistent = get_setting('send_persistent', True)
-        print(send_persistent)
         save_setting('send_persistent', not send_persistent)
 
 
