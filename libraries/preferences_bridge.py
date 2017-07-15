@@ -151,8 +151,9 @@ class PreferencesBridge(PioBridge):
         """
         from .tools import get_sysetting
         last_action = get_sysetting('last_action', None)
+        last_action = int(last_action) if last_action else None
 
-        if(int(last_action) == self.COMPILE):
+        if(last_action == self.COMPILE):
             from ..platformio.compile import Compile
             Compile()
         elif(last_action == self.UPLOAD):
