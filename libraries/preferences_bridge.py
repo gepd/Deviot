@@ -149,10 +149,10 @@ class PreferencesBridge(PioBridge):
         As the quick panel is a async method, the compilation or upload will not
         continue. Before upload or compile a flag is stored to what run after the selection
         """
+        from .tools import get_sysetting
+        last_action = get_sysetting('last_action', None)
 
-        last_action = get_setting('last_action', None)
-
-        if(last_action == self.COMPILE):
+        if(int(last_action) == self.COMPILE):
             from ..platformio.compile import Compile
             Compile()
         elif(last_action == self.UPLOAD):

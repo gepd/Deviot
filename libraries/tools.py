@@ -75,17 +75,17 @@ def create_command(command):
     """
     Edit the command depending of the O.S of the user
     """
-    external_bins = get_setting('external_bins', False)
-    env_path = get_setting('env_path', False)
-    symlink = get_setting('symlink', False)
+    external_bins = get_sysetting('external_bins', False)
+    env_path = get_sysetting('env_path', False)
+    symlink = get_sysetting('symlink', False)
 
-    if(not env_path or external_bins):
+    if(not env_path or bool(external_bins)):
         return command
 
     from .paths import getEnvBinDir
 
     if(platform() == 'osx'):
-        exe = 'python' if(not symlink) else 'python2'
+        exe = 'python' if(not bool(symlink)) else 'python2'
         options = ['-m', command[0]]
     else:
         exe = command[0]
@@ -100,6 +100,37 @@ def create_command(command):
 
     return cmd
 
+def get_sysetting(key, default=None):
+    """
+    Stores the setting in the file:
+    Packages/User/Deviot/deviot.ini
+    """
+    from .configobj.configobj import ConfigObj
+    from .paths import getSystemIniPath
+    
+    sys_path = getSystemIniPath()
+    ini_file = ConfigObj(sys_path, list_values=False)
+    
+    if(not key in ini_file):
+        return default
+    
+    return ini_file[key]
+
+def save_sysetting(key, value):
+    """
+    Gets the setting stored in the file 
+    Packages/User/Deviot/deviot.ini
+    """
+    from .configobj.configobj import ConfigObj
+    from .paths import getSystemIniPath
+    
+    opt = {key:value}
+    
+    sys_path = getSystemIniPath()
+    ini_file = ConfigObj(sys_path, list_values=False)
+    ini_file.merge(opt)
+    ini_file.write()
+
 def get_setting(key, default=None):
     """
     get setting handled by ST
@@ -108,12 +139,17 @@ def get_setting(key, default=None):
     return settings.get(key, default)
 
 
-def save_setting(key, value):
+def save_setting(key, value=None, sys_options=False):
     """
     save setting handled by ST
     """
     settings = load_settings("deviot.sublime-settings")
-    settings.set(key, value)
+
+    if(not value):
+        settings.erase(key)
+    else:
+        settings.set(key, value)
+
     save_settings("deviot.sublime-settings")
 
 def remove_settings():

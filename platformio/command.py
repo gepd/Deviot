@@ -5,7 +5,7 @@ from os import getcwd, environ
 import subprocess
 from sys import exit
 
-from ..libraries.tools import get_setting, create_command
+from ..libraries.tools import get_setting, get_sysetting, create_command
 from ..platformio.project_recognition import ProjectRecognition
 
 ###
@@ -22,7 +22,7 @@ class Command(ProjectRecognition):
         self.verbose = get_setting('verbose_output', False)
         self.dprint = None
 
-        env_path = get_setting('env_path', None)
+        env_path = get_sysetting('env_path', None)
         
         if(env_path):
             environ['PATH'] = env_path

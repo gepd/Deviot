@@ -8,7 +8,7 @@ from glob import glob
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
 from .paths import getBoardsFileDataPath
-from .tools import get_setting, save_setting
+from .tools import get_setting, save_setting, save_sysetting
 from .preferences_bridge import PreferencesBridge
 from .serial import serial_port_list
 from .I18n import I18n
@@ -48,7 +48,7 @@ class QuickMenu(PreferencesBridge):
             selected {int} -- index of the selected board
         """
         if(selected == -1):
-            save_setting('last_action', None)
+            save_sysetting('last_action', None)
             return
 
         boards_list = self.quick_boards_list()
@@ -112,7 +112,7 @@ class QuickMenu(PreferencesBridge):
             selected {int} -- option selected (index)
         """
         if(selected == -1):
-            save_setting('last_action', None)
+            save_sysetting('last_action', None)
             return
 
         environments_list = self.quick_environment_list()
@@ -230,7 +230,7 @@ class QuickMenu(PreferencesBridge):
             selected {str} -- Port selected ex. 'COM1'
         """
         if(selected <= 0):
-            save_setting('last_action', None)
+            save_sysetting('last_action', None)
             return
 
         if(selected == 1):

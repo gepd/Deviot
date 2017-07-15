@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from sys import exit
 
 from .initialize import Initialize
-from ..libraries.tools import get_setting, save_setting
+from ..libraries.tools import get_setting, save_setting, save_sysetting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
@@ -33,7 +33,7 @@ class Upload(Initialize):
         if(not self.check_main_requirements()):
             exit(0)
 
-        save_setting('last_action', self.UPLOAD)
+        save_sysetting('last_action', self.UPLOAD)
 
         # check board selected or make select it
         self.check_board_selected()
@@ -67,7 +67,7 @@ class Upload(Initialize):
 
         if(not self.check_auth_ota()):
             self.derror("ota_error_platform")
-            save_setting('last_action', None)
+            save_sysetting('last_action', None)
             return
 
         self.check_serial_monitor()
@@ -81,7 +81,7 @@ class Upload(Initialize):
         save_setting('run_monitor', None)
 
         self.dstop()
-        save_setting('last_action', None)
+        save_sysetting('last_action', None)
 
     def nonblock_upload(self):
         """New Thread Execution

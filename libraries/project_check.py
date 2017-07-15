@@ -289,8 +289,9 @@ class ProjectCheck(QuickMenu):
 
         
         if(auth == 'yes' and not auth_pass):
+            from .tools import save_sysetting
             self.window.run_command("deviot_set_password")
-            save_setting('last_action', 3)
+            save_sysetting('last_action', 3)
             return ended
         
         flag = {'upload_flags': '--auth={0}'.format(auth_pass)}

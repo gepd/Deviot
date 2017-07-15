@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from sys import exit
 
 from .initialize import Initialize
-from ..libraries.tools import save_setting
+from ..libraries.tools import save_sysetting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
@@ -33,7 +33,7 @@ class Compile(Initialize):
         if(not self.check_main_requirements()):
             exit(0)
 
-        save_setting('last_action', self.COMPILE)
+        save_sysetting('last_action', self.COMPILE)
         
         self.add_board()
         if(not self.board_id):
@@ -47,7 +47,7 @@ class Compile(Initialize):
         self.run_command(cmd)
 
         self.dstop()
-        save_setting('last_action', None)
+        save_sysetting('last_action', None)
 
     def nonblock_compile(self):
         """New Thread Execution
