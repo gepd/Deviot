@@ -14,7 +14,7 @@ from .commands import *
 from .platformio.update import Update
 from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting, get_phantoms, del_phantom, set_deviot_syntax
-from .libraries.paths import getBoardsFileDataPath, getMainMenuPath
+from .libraries.paths import getBoardsFileDataPath, getMainMenuPath, getPluginPath
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
 
@@ -37,6 +37,14 @@ def plugin_loaded():
         from .libraries.top_menu import TopMenu
         TopMenu().make_menu_files()
         save_setting('compile_lang', False)
+
+    # check if the syntax file exist
+    deviot_syntax = getPluginPath()
+    syntax_path = path.join(deviot_syntax, 'deviot.sublime-syntax')
+
+    if(not path.exists(syntax_path)):
+        active_window().run_command('deviot_rebuild_syntax')
+
 
 class DeviotListener(EventListener):
     def on_load(self, view):
