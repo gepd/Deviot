@@ -200,8 +200,6 @@ def set_deviot_syntax(view):
     Force sublime text to assign deviot syntax when its
     a iot file
     """
-    from .project_check import ProjectCheck
-
     accepted = accepted_extensions()
 
     try:
