@@ -18,6 +18,13 @@ INCLUDE = r'^\s*#include\s*[<"](\S+)[">]'
 PHANTOMS = []
 VPHANTOMS = {}
 
+def accepted_extensions():
+    """
+    Files accepted to be processed by deviot
+    """
+    accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+    return accepted
+
 def get_env_paths():
     '''
     All the necessary environment paths are merged to run platformIO
@@ -195,7 +202,15 @@ def set_deviot_syntax(view):
     """
     from .project_check import ProjectCheck
 
-    if(not ProjectCheck().is_iot()):
+    accepted = accepted_extensions()
+
+    try:
+        file = view.file_name()
+        ext = file.split(".")[-1]
+        
+        if(ext not in accepted):
+            return
+    except:
         return
 
     d_syntax = 'Packages/Deviot/deviot.sublime-syntax'

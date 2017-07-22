@@ -7,6 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from os import path
+from .tools import accepted_extensions
 
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
@@ -35,7 +36,7 @@ class ProjectCheck(QuickMenu):
             bool -- true if is in the list false if not
         """
         ext = self.get_file_extension()
-        accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+        accepted = accepted_extensions()
 
         if(ext not in accepted):
             return False
