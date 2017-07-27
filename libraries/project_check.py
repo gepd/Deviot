@@ -163,9 +163,20 @@ class ProjectCheck(QuickMenu):
         new path.
         """
         from ..libraries.configobj.configobj import ConfigObj
+        pio_structure = self.get_structure_option()
 
         ini_path = self.get_ini_path()
         config = ConfigObj(ini_path)
+
+        if(pio_structure):
+            try:
+                config['platformio'].pop('src_dir')
+                if(not config['platformio']):
+                    config.pop('platformio')
+                config.write()
+            except:
+                return
+
         try:
             src_dir = config['platformio']['src_dir']
         except:

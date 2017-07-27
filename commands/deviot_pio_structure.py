@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 from ..libraries.tools import get_setting, save_setting
+from ..libraries.project_check import ProjectCheck
 
 class DeviotPioStructureCommand(WindowCommand):
     """
@@ -10,6 +11,9 @@ class DeviotPioStructureCommand(WindowCommand):
     pio_structure = None
     def run(self):
         save_setting('pio_structure', not self.pio_structure)
+        
+        if(not self.pio_structure):
+            ProjectCheck().fix_src()
 
     def is_checked(self):
         self.pio_structure = get_setting('pio_structure', False)
