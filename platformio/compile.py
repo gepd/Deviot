@@ -43,8 +43,14 @@ class Compile(Initialize):
         # add extra library board
         self.add_extra_library()
 
+        # add src_dir flag if it's neccesary
+        self.override_src()
+
         cmd = ['run', '-e ', self.board_id]
         self.run_command(cmd)
+
+        # remove src_dir flag
+        self.remove_src()
 
         self.dstop()
         save_sysetting('last_action', None)

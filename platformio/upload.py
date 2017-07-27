@@ -72,7 +72,13 @@ class Upload(Initialize):
 
         self.check_serial_monitor()
 
+        # add src_dir flag if it's neccesary
+        self.override_src()
+
         out = self.run_command(cmd)
+
+        # remove src_dir flag
+        self.remove_src()
 
         if(get_setting('run_monitor', None) and out[0] == 0):
             from ..libraries.serial import toggle_serial_monitor

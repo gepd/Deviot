@@ -101,11 +101,6 @@ class PioBridge(Command):
         Returns:
             str -- path/working_path
         """
-        if(self.is_initialized()):
-            ini_path = self.get_ini_path()
-            working_path = os.path.dirname(ini_path)
-            return working_path
-
         pio_structure = self.get_structure_option()
 
         if(pio_structure):
@@ -117,6 +112,11 @@ class PioBridge(Command):
             if('src' in project_path):
                 project_path = self.get_parent_path()
             return project_path
+
+        if(self.is_initialized()):
+            ini_path = self.get_ini_path()
+            working_path = os.path.dirname(ini_path)
+            return working_path
         
         return self.get_temp_project_path()
 

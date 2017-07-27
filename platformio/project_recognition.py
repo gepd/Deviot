@@ -205,13 +205,19 @@ class ProjectRecognition(object):
         Returns:
             [str/none] -- path/platformio.ini / none
         """
+        from ..libraries.tools import get_setting
+
         parent = self.get_parent_path()
+        pio_structure = get_setting('pio_structure', False)
 
         if(not parent):
             return None
 
         ini_path = self.search_pio_ini(parent)
         
+        if(not ini_path and pio_structure):
+            return None
+                
         if(not ini_path):
             temp = self.get_temp_project_path()
             ini_path = self.search_pio_ini(temp)

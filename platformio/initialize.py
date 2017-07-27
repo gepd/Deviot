@@ -35,8 +35,6 @@ class Initialize(ProjectCheck):
         self.derror = messages.print_once
         self.dstop = messages.stop_print
 
-        self.fix_src()
-
     def add_board(self):
         """New Board
         
