@@ -168,7 +168,7 @@ class ProjectRecognition(object):
         if(not file_name):
             return None
 
-        extension = file_name.split(".")[1]
+        extension = file_name.split(".")[-1]
         return extension
 
     def get_file_hash(self):
