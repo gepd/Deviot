@@ -112,7 +112,8 @@ class SerialMonitor(object):
         Stops the loop who is wating for more information from the serial port
         """
         self.is_alive = False
-        serials_in_use.remove(self.port)
+        if(self.port in serials_in_use):
+            serials_in_use.remove(self.port)
         self.dstop()
 
     def clean_console(self):
