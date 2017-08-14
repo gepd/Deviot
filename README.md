@@ -39,6 +39,7 @@ Deviot is available in:
 
 * **English**
 * **Spanish**
+* **Portuguese**
 * **French** (Incomplete)
 * **Italian** (Incomplete)
 * **Polish** (Incomplete)
@@ -59,6 +60,7 @@ You should let the `msgid` as is, and paste your translated string in `msgstr`. 
 * **French Translation:** @Alnoa, @TrakJohnson
 * **Italian Translation** @davide-dv, @avivace
 * **Polish Translation** @jacek-c
+* **Portuguese Translation** @alexandrefernandesjs
 * **Code Contributor:** @goolic, @thinkyhead
 
 
