@@ -46,14 +46,12 @@ class Compile(Initialize):
         # add src_dir flag if it's neccesary
         self.override_src()
 
+        self.make_cpp_temp()
+
         cmd = ['run', '-e ', self.board_id]
         self.run_command(cmd)
 
-        # remove src_dir flag
-        self.remove_src()
-
-        self.dstop()
-        save_sysetting('last_action', None)
+        self.after_complete()
 
     def nonblock_compile(self):
         """New Thread Execution

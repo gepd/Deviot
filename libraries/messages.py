@@ -173,7 +173,7 @@ class MessageQueue(Console):
                 
                 if(': error:' in text or ': fatal error:' in text):
                     self.service_text_queue(text)
-                
+                    text = self.change_cpp_name(text)
                 self.print_screen(text)
                 sleep(0.01)
             sleep(0.01)
@@ -354,3 +354,25 @@ class MessageQueue(Console):
             url {str} -- attribute of the link clicked.
         """
         self.hide_phantoms()
+
+    def change_cpp_name(self, text):
+        """Ino instead cpp
+        
+        Platformio has an undesired behavior with ino files, deviot
+        creates a cpp file to be proccessed, instead of the ino file,
+        this function will replace the filename by filename.ino in the
+        deviot consoleto to avoid by the user. It will replaced only
+        if the ino file exists.
+        
+        Arguments: 
+            text {str} -- error string with the possible cpp file
+        
+        Returns:
+            str -- error edited or untouched
+        """
+        if('.cpp' in text):
+            file_name = self.file_name
+            ino_path = file_name.replace('.cpp', '.ino')
+            if(path.exists(ino_path)):
+                text = text.replace('.cpp', '.ino')
+        return text
