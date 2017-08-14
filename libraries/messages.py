@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from sublime import active_window
+import sublime
+import html
+from os import path
+from re import search
 from time import strftime
 from sys import exit
 from queue import Queue
@@ -9,7 +11,11 @@ from threading import Thread
 from time import sleep
 from sys import exit
 from .I18n import I18n
-from .tools import findInOpendView, get_setting, show_phanthom
+from .tools import findInOpendView, get_setting
+
+errs_by_file = {}
+phantom_sets_by_buffer = {}
+first_scroll = False
 
 class Console(object):
     """Deviot Console
@@ -17,9 +23,11 @@ class Console(object):
     Shows the message int he deiot console, it's use with
     message queue
     """
+
     def __init__(self):
-        self.window = active_window()
+        self.window = sublime.active_window()
         self.view = self.window.active_view()
+        self.file_name = self.view.file_name()
         self.panel = None
         self.name = None
 
@@ -76,7 +84,6 @@ class Console(object):
         self.panel.run_command('toggle_setting', {'setting': 'word_wrap'})
         self.panel.set_scratch(True)
         self.window.focus_view(self.panel)
-            
 
 class MessageQueue(Console):
     """Message Queue
@@ -140,6 +147,8 @@ class MessageQueue(Console):
         Starts a new thread to wait the messages to be shown
         in the console
         """
+        self.hide_phantoms()
+        
         if(not self.panel):
             self.set_console()
 
@@ -163,7 +172,7 @@ class MessageQueue(Console):
                 text = self.queue.get()
                 
                 if(': error:' in text or ': fatal error:' in text):
-                    show_phanthom(self.view, text)
+                    self.service_text_queue(text)
                 
                 self.print_screen(text)
                 sleep(0.01)
@@ -219,3 +228,129 @@ class MessageQueue(Console):
         txt = time + ' ' + txt
 
         return txt
+
+    def service_text_queue(self, text):
+        """error data
+        
+        search the data of the error: file affected, column, line
+        and error text and store it in the global var errs_by_file
+        
+        Arguments:
+            text {str} -- line with the error
+        """
+        global errs_by_file
+        
+        result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
+
+        if(not result):
+            return
+
+        file = self.file_name
+        file_in_line = path.normpath(result.group(1))
+        line = result.group(2)
+        column = result.group(3)
+        txt = result.group(4)
+
+        if(file not in errs_by_file):
+            errs_by_file[file] = []
+
+        errs_by_file[file].append((int(line), int(column), txt))
+        self.update_phantoms()
+
+    def update_phantoms(self):
+        """show phantom
+
+        Show the error in the phantom
+        """
+        global first_scroll
+
+        stylesheet = '''
+            <style>
+                div.error {
+                    padding: 0.45rem 0.45rem 0.45rem 0.7rem;
+                    margin: 0.2rem 0;
+                    border-radius: 2px;
+                    border: 1px solid white;
+                    background-color: #bc0101;
+                }
+                div.error span.message {
+                    color: white;
+                    padding-right: 0.7rem;
+                }
+
+                div.error a {
+                    text-decoration: inherit;
+                    padding: 0.35rem 0.7rem 0.45rem 0.8rem;
+                    position: relative;
+                    bottom: 0.05rem;
+                    border-radius: 0 2px 2px 0;
+                    font-weight: bold;
+                }
+                html.dark div.error a {
+                    background-color: #00000018;
+                }
+                html.light div.error a {
+                    background-color: #ffffff18;
+                }
+            </style>
+        '''
+
+        for file, errs in errs_by_file.items():
+            view = self.window.find_open_file(file)
+            if view:
+                buffer_id = view.buffer_id()
+                if buffer_id not in phantom_sets_by_buffer:
+                    phantom_set = sublime.PhantomSet(view, "exec")
+                    phantom_sets_by_buffer[buffer_id] = phantom_set
+                else:
+                    phantom_set = phantom_sets_by_buffer[buffer_id]
+
+                phantoms = []
+
+                for line, column, text in errs:
+                    pt = view.text_point(line - 1, column - 1)
+                    phantoms.append(sublime.Phantom(
+                        sublime.Region(pt, view.line(pt).b),
+                        ('<body id=inline-error>' + stylesheet + \
+                            '<div class="error">' + \
+                            '<span class="message">' + text + '</span>' + \
+                            '<a href=hide>' + chr(0x00D7) + '</a></div>' + \
+                            '</body>'),
+                        sublime.LAYOUT_BELOW,
+                        on_navigate=self.on_phantom_navigate))
+
+                    if(not first_scroll):
+                        view.sel().clear()
+                        view.sel().add(sublime.Region(pt))
+                        view.show(pt)
+                        first_scroll = True
+
+                phantom_set.update(phantoms)
+
+    def hide_phantoms(self):
+        """hide phantom
+        
+        erase the phantom from the view
+        """
+        global errs_by_file
+        global phantom_sets_by_buffer
+        global first_scroll
+
+        for file, errs in errs_by_file.items():
+            view = self.window.find_open_file(file)
+            if view:
+                view.erase_phantoms("exec")
+
+        errs_by_file = {}
+        phantom_sets_by_buffer = {}
+        first_scroll = False
+
+    def on_phantom_navigate(self, url):
+        """on close
+        
+        Hide the phantom when the "x" is pressed
+        
+        Arguments:
+            url {str} -- attribute of the link clicked.
+        """
+        self.hide_phantoms()
