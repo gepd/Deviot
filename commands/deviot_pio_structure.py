@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 from ..libraries.tools import get_setting, save_setting
+from ..libraries.project_check import ProjectCheck
 
 class DeviotPioStructureCommand(WindowCommand):
     """

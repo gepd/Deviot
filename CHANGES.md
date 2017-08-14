@@ -1,4 +1,35 @@
 # Deviot Release Notes
+
+## Version 2.1.0 | 14 Aug 2017
+
+#### New
+* Text history in the "Send" Serial Monitor input panel (Issue: https://github.com/gepd/Deviot/issues/84)
+* Deviot fala Portugues (Thanks to Alexandre Fernandes)
+* Experimental feature to avoid wrong line number with ino files
+
+#### Improvements
+* Show a progress bar when the PlatformIO terminal is used
+* Updated caption for "Clean Monitor" to avoid confusion when the quick panel use
+* Updated shortcuts to avoid override sublime text hot keys in Linux and OSX (Issue: https://github.com/gepd/Deviot/issues/132)
+* QuickPanel shorcut will be the same in all platforms (ctrl+alt+q)
+* Rebuild the syntax file after add/remove an extra library folder
+* Highlight improvements
+* Changed the setup settings to a new file to make the plugin compatible with the sync plugin(s). This change will allow to exclude the deviot.ini file locate in Package/User/Deviot in the sync plugin (Issue: https://github.com/gepd/Deviot/issues/127)
+* Bring back the persistence in the "send" input text (Issue: https://github.com/gepd/Deviot/issues/135)
+* Improved the way to implement the phantom (create and hide)
+
+#### Bugs
+* Avoid to stop the message queue after use the first command in the platformIO terminal
+* Search libraries in the extra library folder if it's set
+* Show the list of examples instead of "Import Library" list
+* Some Linux distro and OSX versions are not working well, when "pio" command is use. "plaformio" will be used instead.
+* Make sure the serial port is in use before to remove it
+* Check the last action when not IOT file is in the buffer
+* When PlatformIO is already installed and accessible. The command won't be modified (Issue: https://github.com/gepd/Deviot/issues/133)
+* Check and replace the old syntax file after load the plugin (Issue: https://github.com/gepd/Deviot/issues/133)
+* Make sure to get the extension of the file in buffer (Issue: https://github.com/gepd/Deviot/issues/139)
+* Force to initialize the sketch even if it already exitst in the temp folder when "Use PlatformIO Structure" is activated. The 'src_dir' flag will be add before compile/upload the sketch and removed after the task is finished (issue: https://github.com/gepd/Deviot/issues/137)
+
 ## Version 2.0.1 | 03 Jul 2017
 * Improvement Syntax is created even if the PlatformIO setup fails (Issue: https://github.com/gepd/Deviot/issues/125)
 * Improvement Force Sublime Text to assign deviot syntax when it's a IOT file (Issue: https://github.com/gepd/Deviot/issues/125)

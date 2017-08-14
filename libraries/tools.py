@@ -18,6 +18,13 @@ INCLUDE = r'^\s*#include\s*[<"](\S+)[">]'
 PHANTOMS = []
 VPHANTOMS = {}
 
+def accepted_extensions():
+    """
+    Files accepted to be processed by deviot
+    """
+    accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+    return accepted
+
 def get_env_paths():
     '''
     All the necessary environment paths are merged to run platformIO
@@ -75,35 +82,61 @@ def create_command(command):
     """
     Edit the command depending of the O.S of the user
     """
-    external_bins = get_setting('external_bins', False)
-    env_path = get_setting('env_path', False)
-    symlink = get_setting('symlink', False)
+    external_bins = get_sysetting('external_bins', False)
+    env_path = get_sysetting('env_path', False)
+    symlink = get_sysetting('symlink', False)
 
-    if(not env_path):
+    if(not env_path or bool(external_bins)):
         return command
 
-    os = platform()
+    from .paths import getEnvBinDir
 
-    if(os == 'osx'):
-        exe = 'python' if(not symlink) else 'python2'
+    if(platform() == 'osx'):
+        exe = 'python' if(not bool(symlink)) else 'python2'
         options = ['-m', command[0]]
     else:
         exe = command[0]
         options = []
 
-    executable = exe
-
-    if(not external_bins):
-        from . import paths
-        
-        bin_dir = paths.getEnvBinDir()
-        executable = path.join(bin_dir, exe)
+    bin_dir = getEnvBinDir()
+    executable = path.join(bin_dir, exe)
 
     cmd = ['"%s"' % (executable)]
     cmd.extend(options)
     cmd.extend(command[1:])
 
     return cmd
+
+def get_sysetting(key, default=None):
+    """
+    Stores the setting in the file:
+    Packages/User/Deviot/deviot.ini
+    """
+    from .configobj.configobj import ConfigObj
+    from .paths import getSystemIniPath
+    
+    sys_path = getSystemIniPath()
+    ini_file = ConfigObj(sys_path, list_values=False)
+    
+    if(not key in ini_file):
+        return default
+    
+    return ini_file[key]
+
+def save_sysetting(key, value):
+    """
+    Gets the setting stored in the file 
+    Packages/User/Deviot/deviot.ini
+    """
+    from .configobj.configobj import ConfigObj
+    from .paths import getSystemIniPath
+    
+    opt = {key:value}
+    
+    sys_path = getSystemIniPath()
+    ini_file = ConfigObj(sys_path, list_values=False)
+    ini_file.merge(opt)
+    ini_file.write()
 
 def get_setting(key, default=None):
     """
@@ -113,12 +146,17 @@ def get_setting(key, default=None):
     return settings.get(key, default)
 
 
-def save_setting(key, value):
+def save_setting(key, value=None, sys_options=False):
     """
     save setting handled by ST
     """
     settings = load_settings("deviot.sublime-settings")
-    settings.set(key, value)
+
+    if(value == None):
+        settings.erase(key)
+    else:
+        settings.set(key, value)
+
     save_settings("deviot.sublime-settings")
 
 def remove_settings():
@@ -162,21 +200,33 @@ def set_deviot_syntax(view):
     Force sublime text to assign deviot syntax when its
     a iot file
     """
-    from .project_check import ProjectCheck
+    accepted = accepted_extensions()
 
-    if(not ProjectCheck().is_iot()):
+    try:
+        file = view.file_name()
+        ext = file.split(".")[-1]
+        
+        if(ext not in accepted):
+            return
+    except:
         return
+
+    d_syntax = 'Packages/Deviot/deviot.sublime-syntax'
 
     syntax = view.settings().get('syntax')
 
+    if(syntax.endswith('Arduino.tmLanguage')):
+        view.settings().set('syntax', d_syntax)
+        return
+
     if(not syntax or not syntax.endswith('/deviot.sublime-syntax')):
-        from .path import getPluginPath
+        from .paths import getPluginPath
 
         deviot_syntax = getPluginPath()
         deviot_syntax = path.join(deviot_syntax, 'deviot.sublime-syntax')
 
         if(path.exists(deviot_syntax)):
-            view.settings().set('syntax', 'Packages/Deviot/deviot.sublime-syntax')
+            view.settings().set('syntax', d_syntax)
 
 
 def singleton(cls):
@@ -366,129 +416,3 @@ def headers_from_source(src_text):
     pattern = re.compile(INCLUDE, re.M | re.S)
     headers = pattern.findall(src_text)
     return headers
-
-def show_phanthom(view, text):
-    """Display phantom
-    
-    Given a error text, this function extract the file name,
-    line and colum error and the error message and display it
-    with a phantom.
-
-    The PHANTOM global var stores the name of all phantoms added
-    so it can be removed anytime.
-
-    VPHANTOM stores the view corresponding to the phantom added
-    
-    Arguments:
-        view {obj} -- sublime text view object
-        text {str} -- error text extracted from PlatformIO
-    """
-    global PHANTOMS
-    global VPHANTOMS
-
-    result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
-
-    if(not result):
-        return
-    
-    err_file = view.file_name()
-    file = path.normpath(result.group(1))
-    line = result.group(2)
-    column = result.group(3)
-    txt = result.group(4)
-
-    if(err_file != file):
-        view = active_window().open_file(file)
-
-    stylesheet = '''
-            <style>
-                div.error {
-                    padding: 0.45rem 0.45rem 0.45rem 0.7rem;
-                    margin: 0.2rem 0;
-                    border-radius: 2px;
-                    border: 1px solid white;
-                    background-color: #bc0101;
-                }
-                div.error span.message {
-                    color: white;
-                    padding-right: 0.7rem;
-                }
-
-                div.error a {
-                    text-decoration: inherit;
-                    padding: 0.35rem 0.7rem 0.45rem 0.8rem;
-                    position: relative;
-                    bottom: 0.05rem;
-                    border-radius: 0 2px 2px 0;
-                    font-weight: bold;
-                }
-                html.dark div.error a {
-                    background-color: #00000018;
-                }
-                html.light div.error a {
-                    background-color: #ffffff18;
-                }
-            </style>
-        '''
-
-    phantom_name = str('error' + line)
-    content = '<body id=deviot-error>' + \
-                stylesheet + \
-                '<div class="error"><span class="message">' + \
-                txt + \
-                '</span> <a href=hide>' + \
-                chr(0x00D7) + \
-                '</a></div><body>'
-    
-    tp = view.text_point(int(line) - 1, int(column) - 1)
-    region = Region(tp, view.line(tp).b)
-    
-    erase = lambda href: view.erase_phantoms(phantom_name)
-    view.add_phantom(phantom_name, region, content, LAYOUT_BELOW, on_navigate=erase)
-    
-    PHANTOMS.append(phantom_name)
-    VPHANTOMS[phantom_name] = view
-    PHANTOMS = list(set(PHANTOMS))
-
-def get_phantoms():
-    """Phantom names
-    
-    Get the name (id) of all phantoms, stored in the global PHANTOM
-    variable, (currently showing)
-    
-    Returns:
-        list -- phantom names (id)
-    """
-    global PHANTOMS
-    
-    return PHANTOMS
-
-def del_phantom(phantom_id):
-    """Remove phantom
-    
-    Removes from the PHANTOMS and VPHANTOMS global variables the
-    references to the given phantom
-    
-    Arguments:
-        phantom_id {str} -- phantom name
-    """
-    global PHANTOMS
-    global VPHANTOMS
-    
-    view = VPHANTOMS[phantom_id]
-    view.erase_phantoms(phantom_id)
-    
-    PHANTOMS.remove(phantom_id)
-    del VPHANTOMS[phantom_id]
-
-def reset_phantoms():
-    """Clean view
-    
-    Removes all phantoms showing in the current view
-    and also cleans PHANTOM and PHANTOMS global variables
-    """
-    global PHANTOMS
-    global VPHANTOMS
-
-    for pname in PHANTOMS:
-        del_phantom(pname)

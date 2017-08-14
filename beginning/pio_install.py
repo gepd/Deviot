@@ -42,6 +42,8 @@ from ..libraries import __version__, __title__
 ###
 from ..libraries.syntax import Syntax
 from ..libraries.tools import get_setting, save_setting
+from ..libraries.tools import get_sysetting, save_sysetting
+from ..libraries.paths import getSystemIniPath
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 from ..platformio.pio_bridge import PioBridge
@@ -59,9 +61,13 @@ class PioInstall(object):
         self.sub_ver = sublime.version()
 
         ###
-        installed = get_setting('installed', False)
+        installed = get_sysetting('installed', False)
+        if(not installed):
+            found = self.check_old_settings()
+            if(found):
+                return
 
-        if(installed):
+        if(bool(installed)):
             return
 
         Syntax()
@@ -76,6 +82,27 @@ class PioInstall(object):
         thread = Thread(target=self.install)
         thread.start()
         ThreadProgress(thread, caption, '')
+
+    def check_old_settings(self):
+        """
+        All the dynamic settings are being stored in the 
+        deviot.ini file instead of the deviot.sublime-settings.
+        To avoid make the user remove all the preferences and
+        run the setup process again, this function will move the
+        preferences automatically
+        """
+        found = False
+        settings = ['env_path', 'symlink', 'external_bins', 'last_check_update',
+                    'last_action', 'installed']
+
+        for setting in settings:
+            current = get_setting(setting)
+            if(current):
+                save_sysetting(setting, current)
+                save_setting(setting)
+                found = True
+
+        return found
 
     def file_paths(self):
         """ Set Initial Values
@@ -165,7 +192,7 @@ class PioInstall(object):
         env_path = [self.V_ENV_PATH, self.V_ENV_BIN_PATH]
         save_env_paths(env_path)
 
-        save_setting('installed', True)
+        save_sysetting('installed', True)
         PioBridge().save_boards_list()
 
         derror("setup_finished")
@@ -219,7 +246,7 @@ class PioInstall(object):
             dprint("symlink_detected")
             self.version = sub(r'\D', '', out[1])
             self.SYMLINK = 'python2'
-            save_setting('symlink', True)
+            save_sysetting('symlink', True)
 
     def check_python(self):
         """Python requirement
@@ -256,16 +283,16 @@ def check_pio():
 
     Check if platformIO is already installed in the machine
     """
-    cmd = ['pio', '--version']
+    cmd = ['platformio', '--version']
     out = run_command(cmd)
 
     status = out[0]
 
     if(status is 0):
         env_path = get_env_paths()
-        save_setting('installed', True)
-        save_setting('external_bins', True)
-        save_setting('env_path', env_path)
+        save_sysetting('installed', True)
+        save_sysetting('external_bins', True)
+        save_sysetting('env_path', env_path)
         PioBridge().save_boards_list()
         derror("pio_is_installed")
 
@@ -339,7 +366,7 @@ def save_env_paths(new_path):
     paths = list(OrderedDict.fromkeys(paths))
     paths = path.pathsep.join(paths)
 
-    save_setting('env_path', paths)
+    save_sysetting('env_path', paths)
 
 
 def get_default_paths():

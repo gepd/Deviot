@@ -163,6 +163,9 @@ msgstr "Iniciar/Parar Monitor"
 msgid "menu_send"
 msgstr "Enviar"
 
+msgid "menu_send_persistent"
+msgstr "Envio Persistente"
+
 msgid "menu_clean_view"
 msgstr "Limpar a Vista do Monitor"
 

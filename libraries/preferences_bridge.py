@@ -149,8 +149,12 @@ class PreferencesBridge(PioBridge):
         As the quick panel is a async method, the compilation or upload will not
         continue. Before upload or compile a flag is stored to what run after the selection
         """
-
-        last_action = get_setting('last_action', None)
+        from .tools import get_sysetting
+        last_action = get_sysetting('last_action', None)
+        try:
+            last_action = int(last_action)
+        except:
+            pass
 
         if(last_action == self.COMPILE):
             from ..platformio.compile import Compile
@@ -243,6 +247,36 @@ class PreferencesBridge(PioBridge):
         if(extra):
             extra_option = {'lib_extra_dirs': extra}
             env.merge(extra_option)
+
+        ini_file.write()
+
+    def exclude_ino(self, file_name=None):
+        """Add extra library folder
+        
+        Adds an extra folder where to search for user libraries,
+        this option will run before compile the code.
+
+        The path of the folder must be set from the option 
+        `add extra folder` in the library option menu
+        """
+        ini_path = self.get_ini_path()
+
+        ini_file = ConfigObj(ini_path, list_values=False)
+        environment = 'env:{0}'.format(self.board_id)
+
+        if(environment not in ini_file):
+            return
+
+        env = ini_file[environment]
+
+        if(not file_name):
+            if('src_filter' in env):
+                env.pop('src_filter')
+
+        if(file_name):
+            cpp_name = file_name.replace('.ino', '.cpp')
+            src_filter = {'src_filter': '-<{0}> +<{1}>'.format(file_name, cpp_name)}
+            env.merge(src_filter)
 
         ini_file.write()
 

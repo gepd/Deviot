@@ -178,7 +178,12 @@
                         "command": "deviot_send_serial_monitor"
                     },
                     {
-                        "caption": "menu_clean", 
+                        "caption": "menu_send_persistent",
+                        "id": "deviot_send_persistent",
+                        "command": "deviot_send_persistent"
+                    },
+                    {
+                        "caption": "menu_clean_view", 
                         "command": "deviot_clean_console", 
                         "id": "clean_console"
                     },

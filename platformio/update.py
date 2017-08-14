@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from .command import Command
 from ..libraries import __version__ as version
-from ..libraries.tools import create_command, get_setting, save_setting
+from ..libraries.tools import create_command, get_sysetting, save_sysetting
 from ..libraries.messages import MessageQueue
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
@@ -92,7 +92,7 @@ class Update(Command):
         cmd = ['pip','uninstall', '--yes','platformio']
         out = self.run_command(cmd, prepare=False)
 
-        if(get_setting('pio_developer', False)):
+        if(get_sysetting('pio_developer', False)):
             self.dprint("installing_dev_pio")
             option = 'https://github.com/platformio/' \
             'platformio/archive/develop.zip'
@@ -121,7 +121,7 @@ class Update(Command):
         To know what is the last version of platformio
         pypi is checked
         """
-        installed = get_setting('installed', False)
+        installed = get_sysetting('installed', False)
 
         if(not installed):
             return
@@ -129,7 +129,7 @@ class Update(Command):
         from datetime import datetime, timedelta
 
         date_now = datetime.now()
-        date_update = get_setting('last_check_update', False)
+        date_update = get_sysetting('last_check_update', False)
         
         try:
             date_update = datetime.strptime(date_update, '%Y-%m-%d %H:%M:%S.%f')
@@ -141,7 +141,7 @@ class Update(Command):
 
         if(not date_update or date_now > date_update):
             date_update = date_now + timedelta(5, 0) # 5 días
-            save_setting('last_check_update', str(date_update))
+            save_sysetting('last_check_update', str(date_update))
 
         from ..libraries.tools import get_headers
         from urllib.request import Request

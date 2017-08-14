@@ -329,6 +329,12 @@ def get_library_folders(platform='all'):
     pio_lib_path = getPioLibrary(all=True)
     libraries_folders.insert(0, pio_lib_path)
 
+    # Add the extra folder if it was set by thes user
+    extra_folder = get_setting('extra_library', None)
+    if(extra_folder):
+        extra_folder = path.join(extra_folder, '*')
+        libraries_folders.insert(1, extra_folder)
+
     return libraries_folders
 
 def get_library_list(example_list=False, platform="all"):

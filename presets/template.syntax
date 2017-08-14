@@ -64,6 +64,10 @@ contexts:
       captures: 
             1: storage.modifier.iot
             2: entity.name.class.iot
+    - match: (^[a-zA-z]{1}[0-9a-zA-Z]*)\s([a-zA-z]{1}[0-9a-zA-Z]*;$)
+      captures:
+        1: storage.modifier.iot
+        2: entity.name.function.c++
 
   unique-variables:
     - match: \bthis\b

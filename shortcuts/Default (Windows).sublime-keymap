@@ -1,6 +1,21 @@
 [
     {
-        "keys": ["alt+q"],
+        "keys": ["up"], "command": "input_text_history",
+        "args": {
+            "backwards": true
+        },
+        "context":
+        [
+            { "key": "setting.deviotInputText", "operator": "equal", "operand": true }
+        ]
+    },{
+        "keys": ["down"], "command": "input_text_history",
+        "context":
+        [
+            { "key": "setting.deviotInputText", "operator": "equal", "operand": true }
+        ]
+    },{
+        "keys": ["ctrl+shift+q"],
         "command": "show_overlay",
                 "args": {
                     "overlay": "command_palette", 

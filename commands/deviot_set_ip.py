@@ -1,5 +1,5 @@
 from sublime_plugin import WindowCommand
-from ..libraries.tools import get_setting, save_setting
+from ..libraries.tools import get_sysetting, save_setting
 
 class DeviotSetIpCommand(WindowCommand):
     """
@@ -17,5 +17,5 @@ class DeviotSetIpCommand(WindowCommand):
 
     def on_done(self, ip):
         save_setting('port_id', ip)
-        if(get_setting('last_action', None)):
+        if(get_sysetting('last_action', None)):
             self.window.run_command("deviot_upload_sketch")

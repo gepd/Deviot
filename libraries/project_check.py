@@ -7,7 +7,8 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from os import path
-
+from .tools import accepted_extensions
+from ..libraries.configobj.configobj import ConfigObj
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
 
@@ -35,7 +36,7 @@ class ProjectCheck(QuickMenu):
             bool -- true if is in the list false if not
         """
         ext = self.get_file_extension()
-        accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+        accepted = accepted_extensions()
 
         if(ext not in accepted):
             return False
@@ -135,8 +136,6 @@ class ProjectCheck(QuickMenu):
                 self.window.open_file(dst)
                 return
 
-        self.override_src()
-
     def override_src(self):
         """Adds src_dir
         
@@ -144,8 +143,12 @@ class ProjectCheck(QuickMenu):
         the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
         Here we add that option when platformio structure is not enabled
         """
-        from ..libraries.configobj.configobj import ConfigObj
-        
+        pio_structure = self.get_structure_option()
+
+        if(pio_structure):
+            self.remove_src()
+            return
+
         source = {'src_dir': self.get_project_path()}
         ini_path = self.get_ini_path()
         config = ConfigObj(ini_path)
@@ -154,24 +157,23 @@ class ProjectCheck(QuickMenu):
         
         config.write()
 
-    def fix_src(self):
-        """Fix src path
+    def remove_src(self):
+        """Remove src_dir
         
-        If platformio.ini is using the src_dir flag and the sketch
-        has been moved to another path, this will be fixed to that
-        new path.
+        Remove the src_dir flag from the platformio.ini file
         """
-        from ..libraries.configobj.configobj import ConfigObj
 
         ini_path = self.get_ini_path()
         config = ConfigObj(ini_path)
+
         try:
-            src_dir = config['platformio']['src_dir']
+            config['platformio'].pop('src_dir')
+            if(not config['platformio']):
+                config.pop('platformio')
+            config.write()
+            return
         except:
             return
-
-        if(src_dir != self.get_project_path()):
-            self. override_src()
 
     def close_file(self):
         """Close File Window
@@ -249,7 +251,7 @@ class ProjectCheck(QuickMenu):
         Returns:
             bool -- None when not auth, false when none pass is stored
         """
-        from ..libraries.configobj.configobj import ConfigObj
+    
         from .tools import get_setting
         from re import search
 
@@ -289,8 +291,9 @@ class ProjectCheck(QuickMenu):
 
         
         if(auth == 'yes' and not auth_pass):
+            from .tools import save_sysetting
             self.window.run_command("deviot_set_password")
-            save_setting('last_action', 3)
+            save_sysetting('last_action', 3)
             return ended
         
         flag = {'upload_flags': '--auth={0}'.format(auth_pass)}

@@ -107,7 +107,7 @@ class Syntax(object):
         Generates the completions file with the keywords extracts from
         the libraries install in the machine
         """
-        keyword_ids = []
+        keyword_ids = ['DEC','OCT','DEC','HEX','HIGH','LOW','INPUT','OUTPUT','INPUT_PULLUP','INPUT_PULLDOWN','LED_BUILTIN']
         keywords = self.get_keywords()
 
         for keys in keywords:
