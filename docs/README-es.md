@@ -36,13 +36,14 @@ Quieres saber más? [**Busca en la wiki &#8594;**](https://github.com/gepd/Devio
 ## - Idiomas
 Deviot está disponible en 
 
-* **English**
-* **Spanish**
-* **French** (Incompleto)
-* **Italian** (Incompleto)
-* **Polish** (Incompleto)
-* **Korean** (Incompleto)
-* **Chinese** (Incompleto)
+* **Inglés**
+* **Español**
+* **Portugues**
+* **Francés** (Incompleto)
+* **Italiano** (Incompleto)
+* **Polaco** (Incompleto)
+* **Koreano** (Incompleto)
+* **Chino** (Incompleto)
 
  Si deseas ayudar y traducir el plugin a tu idioma, usa [esta pantilla](https://github.com/gepd/Deviot/blob/master/Languages/es.lang) y cualquier otro archivo de idioma como referencia. ([Idiomas disponibles](https://github.com/gepd/Deviot/tree/master/Languages))
 
@@ -57,6 +58,7 @@ Debes dejar la cadena `msgid` como está, y pegar tu palabra/oración traducido/
 * **Traducción al Francés:** @Alnoa, @TrakJohnson
 * **Traducción al Italiano** @davide-dv, @avivace
 * **Traducción al Polaco** @jacek-c
+* **Traducción al Portugués** @alexandrefernandesjs
 * **Contribuidores de código:** @goolic, @thinkyhead
 
 
