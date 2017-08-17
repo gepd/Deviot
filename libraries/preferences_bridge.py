@@ -250,7 +250,7 @@ class PreferencesBridge(PioBridge):
 
         ini_file.write()
 
-    def exclude_ino(self, file_name=None):
+    def exclude_ino(self, remove=False):
         """Add extra library folder
         
         Adds an extra folder where to search for user libraries,
@@ -259,7 +259,11 @@ class PreferencesBridge(PioBridge):
         The path of the folder must be set from the option 
         `add extra folder` in the library option menu
         """
+        file_path = self.get_file_path()
         ini_path = self.get_ini_path()
+        
+        cpp_name = file_path.replace('.ino', '.cpp')
+        filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
 
         ini_file = ConfigObj(ini_path, list_values=False)
         environment = 'env:{0}'.format(self.board_id)
@@ -269,16 +273,40 @@ class PreferencesBridge(PioBridge):
 
         env = ini_file[environment]
 
-        if(not file_name):
+        if(remove):
             if('src_filter' in env):
-                env.pop('src_filter')
-
-        if(file_name):
-            cpp_name = file_name.replace('.ino', '.cpp')
-            src_filter = {'src_filter': '-<{0}> +<{1}>'.format(file_name, cpp_name)}
+                src_filter = env['src_filter']
+                if(src_filter == filters):
+                    env.pop('src_filter')
+                else:
+                    env['src_filter'] = src_filter.replace(filters, '')
+        else:
+            if('src_filter' in env):
+                filters = env['src_filter'] + ' ' + filters
+            src_filter = {'src_filter': filters}
             env.merge(src_filter)
 
         ini_file.write()
+
+    def add_arduino_lib(self, path):
+        """Arduino Library
+        
+        Adds "#include <Arduino.h>"" at the begining of the given file
+        
+        Arguments:
+            path {str} -- path of the file where the header will be included
+        """
+        sketch = None
+
+        with open(path, "r") as file:
+            sketch = file.read()
+
+        with open(path, "w+") as file:
+            include = '#include <Arduino.h>\n'
+            
+            if(include not in sketch):
+                sketch = include + sketch
+                file.write(sketch)
 
     def overwrite_baudrate(self):
         """Add new speed
