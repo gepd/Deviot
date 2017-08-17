@@ -280,6 +280,26 @@ class PreferencesBridge(PioBridge):
 
         ini_file.write()
 
+    def add_arduino_lib(self, path):
+        """Arduino Library
+        
+        Adds "#include <Arduino.h>"" at the begining of the given file
+        
+        Arguments:
+            path {str} -- path of the file where the header will be included
+        """
+        sketch = None
+
+        with open(path, "r") as file:
+            sketch = file.read()
+
+        with open(path, "w+") as file:
+            include = '#include <Arduino.h>\n'
+            
+            if(include not in sketch):
+                sketch = include + sketch
+                file.write(sketch)
+
     def overwrite_baudrate(self):
         """Add new speed
         

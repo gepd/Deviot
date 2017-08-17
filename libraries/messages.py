@@ -254,7 +254,7 @@ class MessageQueue(Console):
         if(file not in errs_by_file):
             errs_by_file[file] = []
 
-        errs_by_file[file].append((int(line), int(column), txt))
+        errs_by_file[file].append((int(line) -1, int(column), txt))
         self.update_phantoms()
 
     def update_phantoms(self):
@@ -370,9 +370,17 @@ class MessageQueue(Console):
         Returns:
             str -- error edited or untouched
         """
+
         if('.cpp' in text):
             file_name = self.file_name
             ino_path = file_name.replace('.cpp', '.ino')
+            
             if(path.exists(ino_path)):
                 text = text.replace('.cpp', '.ino')
+
+            result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
+            line = int(result.group(2))
+            old_line = ":{0}:".format(line)
+            new_line = ":{0}:".format(line - 1)
+            text = text.replace(old_line, new_line)
         return text

@@ -110,6 +110,7 @@ class Initialize(ProjectCheck):
             cpp_file = file_path.replace('.ino', '.cpp')
             
             copyfile(file_path, cpp_file)
+            self.add_arduino_lib(cpp_file)
             self.exclude_ino(file_path)
 
     def del_cpp_temp(self):
