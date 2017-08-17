@@ -1,5 +1,11 @@
 # Deviot Release Notes
 
+## Version 2.1.1 | 17 Aug 2017
+
+#### Bugs
+* Avoid to remove previous filters (src_filters) in platformio.ini
+* Add Arduino.h library at the beginning of the sketch to avoid errors when compiled (Issue: https://github.com/gepd/Deviot/issues/142)
+
 ## Version 2.1.0 | 14 Aug 2017
 
 #### New
