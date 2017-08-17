@@ -87,7 +87,7 @@ class Initialize(ProjectCheck):
         self.del_cpp_temp()
 
         # remove src_filter from platformio.ini
-        self.exclude_ino()
+        self.exclude_ino(remove=True)
 
         # remove src_dir flag from platformio.ini
         self.remove_src()
@@ -111,7 +111,7 @@ class Initialize(ProjectCheck):
             
             copyfile(file_path, cpp_file)
             self.add_arduino_lib(cpp_file)
-            self.exclude_ino(file_path)
+            self.exclude_ino()
 
     def del_cpp_temp(self):
         """remove cpp
