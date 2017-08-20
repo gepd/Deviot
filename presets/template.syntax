@@ -60,10 +60,10 @@ contexts:
   unique-modifiers:
     - match: \b({{modifiers}})\b
       scope: storage.modifier.c++
-    - match: \b(Serial|Stream|Keyboard|Mouse|{KEYWORD1}|{KEYWORD3})\.(print|println|{KEYWORD2})*\b
-      captures: 
-            1: storage.modifier.iot
-            2: entity.name.class.iot
+    - match: \b(Serial|Wire|Stream|Keyboard|Mouse|{KEYWORD1}|{KEYWORD3})\.(print|println)*\b
+      captures:
+        1: storage.modifier.iot
+        2: entity.name.class.iot
     - match: (^[a-zA-z]{1}[0-9a-zA-Z]*)\s([a-zA-z]{1}[0-9a-zA-Z]*;$)
       captures:
         1: storage.modifier.iot
