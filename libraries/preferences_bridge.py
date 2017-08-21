@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
-from .configobj.configobj import ConfigObj
+from ..libraries.configparser import ConfigParser
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -198,7 +198,8 @@ class PreferencesBridge(PioBridge):
         }
 
         # open platformio.ini and get the environment
-        ini_file = ConfigObj(ini_path, list_values=False)
+        Config = ConfigParser()
+        ini_file = Config.read(ini_path)
         environment = 'env:{0}'.format(self.board_id)
 
         # stop if environment wasn't initialized yet
@@ -233,7 +234,8 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
         extra = get_setting('extra_library', None)
 
-        ini_file = ConfigObj(ini_path, list_values=False)
+        Config = ConfigParser()
+        ini_file = Config.read(ini_path)
         environment = 'env:{0}'.format(self.board_id)
 
         if(environment not in ini_file):
@@ -266,28 +268,29 @@ class PreferencesBridge(PioBridge):
         cpp_name = file_path.replace('.ino', '.cpp')
         filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
 
-        ini_file = ConfigObj(ini_path, list_values=False)
+        config = ConfigParser()
+        config.read(ini_path)
+
         environment = 'env:{0}'.format(self.board_id)
 
-        if(environment not in ini_file):
+        if(not config.has_section(environment)):
             return
 
-        env = ini_file[environment]
-
         if(remove):
-            if('src_filter' in env):
-                src_filter = env['src_filter']
+            if(config.has_option(environment, 'src_filter')):
+                src_filter = config.get(environment, 'src_filter')
                 if(src_filter == filters):
-                    env.pop('src_filter')
+                    config.remove_option(environment, 'src_filter')
                 else:
-                    env['src_filter'] = src_filter.replace(filters, '')
+                    new_filter = src_filter.replace(filters, '')
+                    config.set(environment, 'src_filter', new_filter)                    
         else:
-            if('src_filter' in env):
-                filters = env['src_filter'] + ' ' + filters
-            src_filter = {'src_filter': filters}
-            env.merge(src_filter)
+            if(config.has_option(environment, 'src_filter')):
+                filters = config.get(environment, 'src_filter') + ' ' + filters
+            config.set(environment, 'src_filter', filters)
 
-        ini_file.write()
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
 
     def add_arduino_lib(self, path):
         """Arduino Library
@@ -319,7 +322,8 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
         baudrate = get_setting('upload_baudrate', None)
 
-        ini_file = ConfigObj(ini_path)
+        Config = ConfigParser()
+        ini_file = Config.read(ini_path)
         environment = 'env:{0}'.format(self.board_id)
 
         if(environment not in ini_file):

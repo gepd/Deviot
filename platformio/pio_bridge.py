@@ -83,14 +83,19 @@ class PioBridge(Command):
             board_id {[type]} -- [description]
         """
         if(self.is_initialized):
+            from ..libraries import configparser
 
-            key = 'env:' + board_id
-            pio_file = self.get_config(full=True)
+            file_path = self.get_ini_path()
+            config = configparser.RawConfigParser()
+            config.read(file_path)
 
-            if(key in pio_file):
-                pio_file.pop(key, None)
+            environment = 'env:' + board_id
 
-            self.save_config(pio_file, full=True)
+            if(config.has_section(environment)):
+                config.remove_section(environment)
+
+            with open(file_path, 'w') as configfile:
+                config.write(configfile)
 
     def get_working_project_path(self):
         """Working Path
@@ -119,63 +124,6 @@ class PioBridge(Command):
             return working_path
         
         return self.get_temp_project_path()
-
-    def get_config(self, key=None, default=None, full=False):
-        """Gets platformio.ini Configs
-        
-        Gets the platformio.ini file of the project loaded in the
-        current view and return the value of the key requested.
-        You can use the full parameter to retrieve the full file
-        
-        Keyword Arguments:
-            key {str} -- key of the option (default: {None})
-            default {str} -- default value if the key value
-                             is not found (default: {None})
-            full {bool} -- to return the full file (default: {False})
-        
-        Returns:
-            str -- found or default value
-        """
-        from ..libraries.configobj.configobj import ConfigObj
-
-        file_config = self.get_ini_path()
-        config = ConfigObj(file_config)
-
-        if(full):
-            return config
-
-        if(key in config):
-            return config[key]
-        return default
-
-
-    def save_config(self, key=None, value=None, full=False):
-        """Save in platformio.ini
-        
-        Stores the key and value in platfirmio.ini file, this
-        file is the one asociated with current open sketch
-        
-        Keyword Arguments:
-            key {str} -- key of the option/config (default: {None})
-            value {str} -- value of the option/config (default: {None})
-            full {bool} -- when is true write key in the file (default: {False})
-        
-        Returns:
-            bool -- True if the file was write, False if not
-        """
-        from ..libraries.configobj.configobj import ConfigObj
-
-        file_config = self.get_ini_path()
-        config = ConfigObj(file_config)
-
-        if(full):
-            key.write()
-            return True
-
-        config[key] = value
-        
-        config.write()
-        return True
 
     def get_structure_option(self):
         """Pio Structure Option
