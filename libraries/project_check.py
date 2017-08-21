@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from os import path
 from .tools import accepted_extensions
-from ..libraries.configobj.configobj import ConfigObj
+from ..libraries import configparser
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
 
@@ -143,37 +143,46 @@ class ProjectCheck(QuickMenu):
         the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
         Here we add that option when platformio structure is not enabled
         """
+        platformio_head = 'platformio'
         pio_structure = self.get_structure_option()
 
         if(pio_structure):
             self.remove_src()
             return
 
-        source = {'src_dir': self.get_project_path()}
+        project_path = self.get_project_path()
         ini_path = self.get_ini_path()
-        config = ConfigObj(ini_path)
 
-        config['platformio'] = source
+        config = configparser.RawConfigParser()
+        config.read(ini_path)
         
-        config.write()
+        if(not config.has_section(platformio_head)):
+            config.add_section(platformio_head)
+
+        config.set(platformio_head, 'src_dir', project_path)
+
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
 
     def remove_src(self):
         """Remove src_dir
         
         Remove the src_dir flag from the platformio.ini file
         """
+        platformio_head = 'platformio'
 
         ini_path = self.get_ini_path()
-        config = ConfigObj(ini_path)
+        config = configparser.RawConfigParser()
+        config.read(ini_path)
 
-        try:
-            config['platformio'].pop('src_dir')
-            if(not config['platformio']):
-                config.pop('platformio')
-            config.write()
-            return
-        except:
-            return
+        if(config.has_option(platformio_head, 'src_dir')):
+            config.remove_option(platformio_head, 'src_dir')
+
+            if(not config.options(platformio_head)):
+                config.remove_section(platformio_head)
+
+            with open(ini_path, 'w') as configfile:
+                config.write(configfile)
 
     def close_file(self):
         """Close File Window
@@ -268,7 +277,8 @@ class ProjectCheck(QuickMenu):
 
         auth = None
         ini_path = self.get_ini_path()
-        config = ConfigObj(ini_path, list_values=False)
+        config = configparser.RawConfigParser()
+        config.read(ini_path)
         
         ports_list = self.get_ports_list()
 
@@ -283,23 +293,27 @@ class ProjectCheck(QuickMenu):
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
 
-        if(auth == 'no' or not auth_pass):
-            if('upload_flags' in config[environment]):
-                config[environment].pop('upload_flags')
-                config.write()
+        if(auth == 'no'):
+            if(not auth_pass):
+                if(config.has_option(environment, 'upload_flags')):
+                    config.remove_option(environment, 'upload_flags')
+
+                    with open(ini_path, 'w') as configfile:
+                        config.write(configfile)
             return ended
 
-        
         if(auth == 'yes' and not auth_pass):
             from .tools import save_sysetting
             self.window.run_command("deviot_set_password")
             save_sysetting('last_action', 3)
             return ended
         
-        flag = {'upload_flags': '--auth={0}'.format(auth_pass)}
-        config[environment].merge(flag)
+        flag = '--auth={0}'.format(auth_pass)
+        config.set(environment, 'upload_flags', flag)
 
-        config.write()
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
+
         return ended
 
     def save_code_infile(self):
