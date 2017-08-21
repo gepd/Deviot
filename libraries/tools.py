@@ -112,31 +112,39 @@ def get_sysetting(key, default=None):
     Stores the setting in the file:
     Packages/User/Deviot/deviot.ini
     """
-    from .configobj.configobj import ConfigObj
+    from ..libraries import configparser
     from .paths import getSystemIniPath
-    
+ 
+    section = "config"
     sys_path = getSystemIniPath()
-    ini_file = ConfigObj(sys_path, list_values=False)
+    config = configparser.RawConfigParser()
+    config.read(sys_path)
     
-    if(not key in ini_file):
+    if(not config.has_option(section, key)):
         return default
     
-    return ini_file[key]
+    return config.get(section, key)
 
 def save_sysetting(key, value):
     """
     Gets the setting stored in the file 
     Packages/User/Deviot/deviot.ini
     """
-    from .configobj.configobj import ConfigObj
+    from ..libraries import configparser
     from .paths import getSystemIniPath
-    
-    opt = {key:value}
-    
+
+    section = "config"
     sys_path = getSystemIniPath()
-    ini_file = ConfigObj(sys_path, list_values=False)
-    ini_file.merge(opt)
-    ini_file.write()
+    config = configparser.RawConfigParser()
+    config.read(sys_path)
+
+    if(not config.has_section(section)):
+        config.add_section(section)
+
+    config.set(section, key, value)
+
+    with open(sys_path, 'w') as configfile:
+        config.write(configfile)
 
 def get_setting(key, default=None):
     """

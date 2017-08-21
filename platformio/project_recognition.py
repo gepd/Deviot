@@ -239,11 +239,12 @@ class ProjectRecognition(object):
         environments = []
 
         if(ini_path and os.path.exists(ini_path)):
-            from ..libraries.configobj.configobj import ConfigObj
+            from ..libraries.configparser import ConfigParser
+            
+            Config = ConfigParser()
+            Config.read(ini_path)
 
-            ini_file = ConfigObj(ini_path)
-
-            for pio_env in ini_file:
+            for pio_env in Config.sections():
                 if('env:' in pio_env):
                     environments.append(pio_env.split(":")[1])
 
@@ -266,13 +267,14 @@ class ProjectRecognition(object):
         ini_path = self.get_ini_path()
 
         if(ini_path and os.path.exists(ini_path)):
-            from .configobj.configobj import ConfigObj
+            from ..libraries import configparser
 
-            ini_file = ConfigObj(ini_path)
+            config = configparser.RawConfigParser()
+            config.read(ini_path)
 
-            if('platformio' in ini_file):
-                if('src_dir' in ini_file['platformio']):
-                    return ini_file['platformio']['src_dir']
+            if(config.has_option('platformio', 'src_dir')):
+                return config.get('platformio', 'src_dir')
+
             return None
 
     def is_initialized(self):
