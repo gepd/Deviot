@@ -127,11 +127,13 @@ def get_sysetting(key, default=None):
         with open(sys_path) as file:
             d_conf = file.read()
 
-        with open(sys_path, 'w+') as file:
-            d_conf = '[config]\n' + d_conf
-            file.write(d_conf)
+        d_header = '[config]\n'
 
-        config.read(sys_path)
+        if(d_header not in d_conf):
+            with open(sys_path, 'w+') as file:
+                file.write(d_conf)
+
+            config.read(sys_path)
     
     if(not config.has_option(section, key)):
         return default
