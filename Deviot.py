@@ -6,7 +6,8 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from os import path
+from os import path, remove
+from shutil import rmtree
 from sublime import windows
 from sublime_plugin import EventListener
 
@@ -15,9 +16,12 @@ from .platformio.update import Update
 from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting, set_deviot_syntax
 from .libraries.syntax import Syntax
-from .libraries.paths import getBoardsFileDataPath, getMainMenuPath, getPluginPath
+from .libraries.paths import getMainMenuPath, getPackagesPath
+from .libraries.paths import getDeviotUserPath
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
+
+package_name = 'Deviot'
 
 def plugin_loaded():
     # Load or fix the right deviot syntax file 
@@ -41,6 +45,21 @@ def plugin_loaded():
         from .libraries.top_menu import TopMenu
         TopMenu().make_menu_files()
         save_setting('compile_lang', False)
+
+def plugin_unloaded():
+    from package_control import events
+
+    if events.remove(package_name):
+        # remove settings
+        packages = getPackagesPath()
+        st_settings = path.join(packages, 'User', 'deviot.sublime-settings')
+        if(path.exists(st_settings)):
+            remove(st_settings)
+
+        # remove deviot user folder
+        user = getDeviotUserPath()
+        if(path.isdir(user)):
+            rmtree(user)
 
 class DeviotListener(EventListener):
     def on_load(self, view):
