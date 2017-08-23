@@ -49,7 +49,7 @@ def plugin_loaded():
     from package_control import events
     # alert when deviot was updated
     if(events.post_upgrade(package_name)):
-        from .I18n import I18n
+        from .libraries.I18n import I18n
         message = I18n().translate("reset_after_upgrade")
         message_dialog(message)
 
