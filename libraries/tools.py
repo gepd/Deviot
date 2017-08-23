@@ -118,7 +118,20 @@ def get_sysetting(key, default=None):
     section = "config"
     sys_path = getSystemIniPath()
     config = configparser.RawConfigParser()
-    config.read(sys_path)
+
+    try:
+        config.read(sys_path)
+    except:
+        d_conf = ''
+        
+        with open(sys_path) as file:
+            d_conf = file.read()
+
+        with open(sys_path, 'w+') as file:
+            d_conf = '[config]\n' + d_conf
+            file.write(d_conf)
+
+        config.read(sys_path)
     
     if(not config.has_option(section, key)):
         return default
