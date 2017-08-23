@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from os import path, remove
 from shutil import rmtree
-from sublime import windows
+from sublime import windows, message_dialog
 from sublime_plugin import EventListener
 
 from .commands import *
@@ -45,6 +45,13 @@ def plugin_loaded():
         from .libraries.top_menu import TopMenu
         TopMenu().make_menu_files()
         save_setting('compile_lang', False)
+
+    from package_control import events
+    # alert when deviot was updated
+    if(events.post_upgrade(package_name)):
+        from .I18n import I18n
+        message = I18n().translate("reset_after_upgrade")
+        message_dialog(message)
 
 def plugin_unloaded():
     from package_control import events
