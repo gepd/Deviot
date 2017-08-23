@@ -130,6 +130,7 @@ def get_sysetting(key, default=None):
         d_header = '[config]\n'
 
         if(d_header not in d_conf):
+            d_conf = d_header + d_conf
             with open(sys_path, 'w+') as file:
                 file.write(d_conf)
 
