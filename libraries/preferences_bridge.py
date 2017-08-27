@@ -179,48 +179,51 @@ class PreferencesBridge(PioBridge):
         programmer = get_setting('programmer_id', None)
         ini_path = self.get_ini_path()
 
-        flags = {
-            'avr':          {"upload_protocol": "stk500v1",
-                             "upload_flags": "-P$UPLOAD_PORT",
-                             "upload_port": self.port_id},
-            'avrmkii':      {"upload_protocol": "stk500v2",
-                             "upload_flags": "-Pusb"},
-            'usbtiny':      {"upload_protocol": "usbtiny"},
-            'arduinoisp':   {"upload_protocol": "arduinoisp"},
-            'usbasp':       {"upload_protocol": "usbasp",
-                             "upload_flags": "-Pusb"},
-            'parallel':     {"upload_protocol": "dapa",
-                             "upload_flags": "-F"},
-            'arduinoasisp': {"upload_protocol": "stk500v1",
-                             "upload_flags": "-P$UPLOAD_PORT -b$UPLOAD_SPEED",
-                             "upload_speed": "19200",
-                             "upload_port": self.port_id}
-        }
-
         # open platformio.ini and get the environment
-        Config = ConfigParser()
-        ini_file = Config.read(ini_path)
-        environment = 'env:{0}'.format(self.board_id)
+        config = ConfigParser()
+        ini_file = config.read(ini_path)
+
+        environment = 'env:' + self.board_id
 
         # stop if environment wasn't initialized yet
-        if(environment not in ini_file):
+        if(not config.has_section(environment)):
             return
 
-        env = ini_file[environment]
-        rm = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']
+        options = ['upload_protocol', 'upload_flags', 'upload_speed', 'upload_port']
 
         # remove previous configuration
-        if(rm[0] in env):
-            for line in rm:
-                if(line in env):
-                    env.pop(line)
+        if(config.has_option(environment, options[0])):
+            for option in options:
+                config.remove_option(environment, option)
 
         # add programmer option if it was selected
         if(programmer):
-            env.merge(flags[programmer])
+            if(programmer == 'avr'):
+                config.set(environment, 'upload_protocol', 'stk500v1')
+                config.set(environment, 'upload_flags', '-P$UPLOAD_PORT')
+                config.set(environment, 'upload_port', self.port_id)
+            elif(programmer == 'avrmkii'):
+                config.set(environment, 'upload_protocol', 'stk500v2')
+                config.set(environment, 'upload_flags', '-Pusb')
+            elif(programmer == 'usbtiny'):
+                config.set(environment, 'upload_protocol', 'usbtiny')
+            elif(programmer == 'arduinoisp'):
+                config.set(environment, 'upload_protocol', 'arduinoisp')
+            elif(programmer == 'usbasp'):
+                config.set(environment, 'upload_protocol', 'usbasp')
+                config.set(environment, 'upload_flags', '-Pusb') 
+            elif(programmer == 'parallel'):
+                config.set(environment, 'upload_protocol', 'dapa')
+                config.set(environment, 'upload_flags', '-F')
+            elif(programmer == 'arduinoasisp'):
+                config.set(environment, 'upload_protocol', 'stk500v1')
+                config.set(environment, 'upload_flags', '-P$UPLOAD_PORT -b$UPLOAD_SPEED')
+                config.set(environment, 'upload_speed', '19200')
+                config.set(environment, 'upload_port', self.port_id)
 
         # save in file
-        ini_file.write()
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
 
     def add_extra_library(self):
         """Add extra library folder
