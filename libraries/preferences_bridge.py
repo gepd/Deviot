@@ -253,65 +253,6 @@ class PreferencesBridge(PioBridge):
 
         ini_file.write()
 
-    def exclude_ino(self, remove=False):
-        """Add extra library folder
-        
-        Adds an extra folder where to search for user libraries,
-        this option will run before compile the code.
-
-        The path of the folder must be set from the option 
-        `add extra folder` in the library option menu
-        """
-        file_path = self.get_file_path()
-        ini_path = self.get_ini_path()
-        
-        cpp_name = file_path.replace('.ino', '.cpp')
-        filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
-
-        config = ConfigParser()
-        config.read(ini_path)
-
-        environment = 'env:{0}'.format(self.board_id)
-
-        if(not config.has_section(environment)):
-            return
-
-        if(remove):
-            if(config.has_option(environment, 'src_filter')):
-                src_filter = config.get(environment, 'src_filter')
-                if(src_filter == filters):
-                    config.remove_option(environment, 'src_filter')
-                else:
-                    new_filter = src_filter.replace(filters, '')
-                    config.set(environment, 'src_filter', new_filter)                    
-        else:
-            if(config.has_option(environment, 'src_filter')):
-                filters = config.get(environment, 'src_filter') + ' ' + filters
-            config.set(environment, 'src_filter', filters)
-
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
-
-    def add_arduino_lib(self, path):
-        """Arduino Library
-        
-        Adds "#include <Arduino.h>"" at the begining of the given file
-        
-        Arguments:
-            path {str} -- path of the file where the header will be included
-        """
-        sketch = None
-
-        with open(path, "r") as file:
-            sketch = file.read()
-
-        with open(path, "w+") as file:
-            include = '#include <Arduino.h>\n'
-            
-            if(include not in sketch):
-                sketch = include + sketch
-                file.write(sketch)
-
     def overwrite_baudrate(self):
         """Add new speed
         

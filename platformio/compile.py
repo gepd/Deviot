@@ -46,8 +46,6 @@ class Compile(Initialize):
         # add src_dir flag if it's neccesary
         self.override_src()
 
-        self.make_cpp_temp()
-
         cmd = ['run', '-e ', self.board_id]
         self.run_command(cmd)
 

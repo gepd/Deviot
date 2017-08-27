@@ -6,12 +6,9 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from os import path, remove
-from shutil import copyfile
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.messages import MessageQueue
-from ..libraries.tools import save_sysetting
 
 class Initialize(ProjectCheck):
     """
@@ -83,12 +80,6 @@ class Initialize(ProjectCheck):
         a method
         """
 
-        # remove the cpp temporal file
-        self.del_cpp_temp()
-
-        # remove src_filter from platformio.ini
-        self.exclude_ino(remove=True)
-
         # remove src_dir flag from platformio.ini
         self.remove_src()
 
@@ -97,30 +88,3 @@ class Initialize(ProjectCheck):
 
         # none last action
         save_sysetting('last_action', None)
-
-    def make_cpp_temp(self):
-        """cpp file
-        
-        copy a ino file in a new cpp file
-        """
-        extension = self.get_file_extension()
-
-        if(extension == 'ino'):
-            file_path = self.get_file_path()
-            cpp_file = file_path.replace('.ino', '.cpp')
-            
-            copyfile(file_path, cpp_file)
-            self.add_arduino_lib(cpp_file)
-            self.exclude_ino()
-
-    def del_cpp_temp(self):
-        """remove cpp
-        
-        remove the cpp file
-        """
-        file_path = self.get_file_path()
-        ino_file = file_path.replace('.cpp', '.ino')
-        cpp_file = file_path.replace('.ino', '.cpp')
-
-        if(path.exists(cpp_file) and path.exists(ino_file)):
-            remove(cpp_file)
