@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.messages import MessageQueue
+from ..libraries.tools import save_sysetting
 
 class Initialize(ProjectCheck):
     """
