@@ -263,27 +263,27 @@ class PreferencesBridge(PioBridge):
         flag is add into the platformio.ini file with
         the new speed, it will overwrite the default speed
         """
+        baud_flag = 'upload_speed'
         ini_path = self.get_ini_path()
         baudrate = get_setting('upload_baudrate', None)
 
-        Config = ConfigParser()
-        ini_file = Config.read(ini_path)
-        environment = 'env:{0}'.format(self.board_id)
+        config = ConfigParser()
+        ini_file = config.read(ini_path)
 
-        if(environment not in ini_file):
+        environment = 'env:' + self.board_id
+
+        if(not config.has_section(environment)):
             return
 
-        env = ini_file[environment]
-
-        if(not baudrate):
-            if('upload_speed' in env):
-                env.pop('upload_speed')
+        # remove previous configuration
+        if(config.has_option(environment, baud_flag)):
+            config.remove_option(environment, baud_flag)
 
         if(baudrate):
-            extra_option = {'upload_speed': baudrate}
-            env.merge(extra_option)
+            config.set(environment, baud_flag, baudrate)
 
-        ini_file.write()
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
 
     def get_mdns_services(self):
         """mDNS services
