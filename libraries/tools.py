@@ -284,17 +284,25 @@ def create_sketch(sketch_name, select_path):
     folder inside of the plugin
     """
     from . import paths
+
+    ext = None
+    sketch = sketch_name.split('.')
+    if(len(sketch) > 1):
+        ext = '.' + sketch[-1]
+        sketch_name = sketch_name.replace(ext, '')
+
     # file path
     sketch_path = path.join(select_path, sketch_name)
     if not path.exists(sketch_path):
         makedirs(sketch_path)
 
-    # use cpp file/template intead of ino
-    cpp = get_setting('cpp_file', False)
-    if cpp:
-        ext = '.cpp'
-    else:
-        ext = '.ino'
+    if(not ext):
+        # use cpp file/template intead of ino
+        cpp = get_setting('cpp_file', False)
+        if cpp:
+            ext = '.cpp'
+        else:
+            ext = '.ino'
 
     # get template
     template_file_name = 'template' + ext
