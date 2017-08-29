@@ -14,28 +14,28 @@ msgid "button_download_python"
 msgstr "下载 Python"
 
 msgid "symlink_detected"
-msgstr "Symlink has been detected\n"
+msgstr "已检测到符号链接\n"
 
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] 初始化\n"
 
 msgid "pio_is_installed"
-msgstr "PlatformIO 安装完毕，现在可以享受 Deviot！"
+msgstr "PlatformIO 安装完毕, 现在可以享受 Deviot！"
 
 msgid "pio_isn_installed"
-msgstr "准备安装 PlatformIO，请耐心等待，可能要花上一段时间。 \n"
+msgstr "准备安装 PlatformIO, 请耐心等待, 可能要花上一段时间。 \n"
 
 msgid "downloading_files"
 msgstr "正在下载所需文件...\n"
 
 msgid "error_downloading_files"
-msgstr "下载所需文件时出错 ...\n"
+msgstr "下载所需文件时出错...\n"
 
 msgid "error_saving_files"
 msgstr "保存所需文件时出错...\n"
 
 msgid "setup_error"
-msgstr "There was an error\n"
+msgstr "出现了一个错误\n"
 
 msgid "extracting_files"
 msgstr "提取文件...\n"
@@ -53,24 +53,24 @@ msgid "installing_stable_pio"
 msgstr "安装 PlatformIO 稳定版...\n"
 
 msgid "setup_finished"
-msgstr "安装完毕，去享受 Deviot 吧！\n"
+msgstr "安装完毕，去享受 Deviot 吧! \n"
 
 msgid "searching_pio_updates"
 msgstr "搜索 PlatformIO 升级...\n\n"
 
 msgid "new_pio_update{0}{1}"
-msgstr "发现 PlatformIO {0} 新版本, 当前版本 {1} ，是否更新？"
+msgstr "发现 PlatformIO {0} 新版本,当前版本 {1} , 是否更新?"
 
 msgid "update_button"
-msgstr "现在升级"
+msgstr "立即升级"
 
 msgid "reset_after_upgrade"
-msgstr "Deviot has been upgraded to the last version. Please, restart Sublime Text"
+msgstr "Deviot 已升级至最新版本, 重启 Sublime Text 以应用更新"
 
 # 菜单
 
 msgid "menu_quick_panel"
-msgstr "Quick Panel"
+msgstr "快捷菜单"
 
 msgid "menu_new_sketch"
 msgstr "新建"
@@ -91,25 +91,25 @@ msgid "menu_import_library"
 msgstr "导入库"
 
 msgid "menu_no_libraries"
-msgstr "没有库"
+msgstr "找不到库"
 
 msgid "menu_library_examples"
 msgstr "示例"
 
 msgid "menu_no_examples"
-msgstr "没有示例"
+msgstr "找不到示例"
 
 msgid "menu_option_lib"
 msgstr "库选项"
 
 msgid "menu_rebuild_lib_list"
-msgstr "Rebuild Library List"
+msgstr "重建库列表"
 
 msgid "menu_extra_lib_folder"
-msgstr "Extra Library Folder"
+msgstr "附加库文件夹"
 
 msgid "menu_remove_extra_lib_folder"
-msgstr "Remove Extra Library Folder"
+msgstr "移除附加库文件夹"
 
 msgid "menu_open_lib_folder"
 msgstr "打开库文件夹"
@@ -121,7 +121,7 @@ msgid "menu_upload"
 msgstr "下载"
 
 msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
+msgstr "覆盖上传波特率"
 
 msgid "menu_clean"
 msgstr "清除"
@@ -136,10 +136,10 @@ msgid "menu_hide_console"
 msgstr "隐藏控制台"
 
 msgid "menu_show_terminal"
-msgstr "Show Terminal"
+msgstr "显示终端"
 
 msgid "menu_hide_terminal"
-msgstr "Hide Terminal"
+msgstr "隐藏终端"
 
 msgid "menu_programmer"
 msgstr "编程器"
@@ -160,16 +160,16 @@ msgid "menu_monitor_serial"
 msgstr "串口监视器"
 
 msgid "menu_run"
-msgstr "Start/Stop Monitor"
+msgstr "开始/暂停串口监视器"
 
 msgid "menu_send"
 msgstr "发送"
 
 msgid "menu_send_persistent"
-msgstr "Send Persistent"
+msgstr "持续发送"
 
 msgid "menu_clean_view"
-msgstr "Clean Monitor View"
+msgstr "清除输出"
 
 msgid "menu_deviot_output"
 msgstr "控制台输出"
@@ -178,7 +178,7 @@ msgid "menu_auto_scroll"
 msgstr "自动滚动"
 
 msgid "menu_auto_clean"
-msgstr "Auto-Clean View"
+msgstr "自动清除输出"
 
 msgid "menu_baudrate"
 msgstr "波特率"
@@ -226,13 +226,13 @@ msgid "menu_always_native"
 msgstr "使用 PlatformIO 新建"
 
 msgid "menu_rebuild_boards"
-msgstr "Rebuild Boards File"
+msgstr "重建开发板文件"
 
 msgid "menu_show_verbose"
 msgstr "显示详细输出"
 
 msgid "menu_status_information"
-msgstr "Information in the Status Bar"
+msgstr "状态栏信息"
 
 msgid "menu_open_build_folder"
 msgstr "打开编译文件夹"
@@ -241,13 +241,13 @@ msgid "menu_change_build_folder"
 msgstr "更改编译文件夹"
 
 msgid "menu_use_cpp_new"
-msgstr "使用 .CPP 新建文件"
+msgstr "使用 .cpp 新建文件"
 
 msgid "menu_rebuild_syntax"
-msgstr "Rebuild Syntax and Completions Files"
+msgstr "重建语法与自动完成文件"
 
 msgid "menu_remove_settings"
-msgstr "删除参数文件"
+msgstr "删除配置文件"
 
 msgid "menu_languages"
 msgstr "语言 (Languages)"
@@ -259,10 +259,10 @@ msgid "menu_about"
 msgstr "关于"
 
 msgid "menu_about_deviot"
-msgstr "关于Deviot"
+msgstr "关于 Deviot"
 
 msgid "menu_about_pio"
-msgstr "关于PlatformIO"
+msgstr "关于 PlatformIO"
 
 
 # 信息和错误
@@ -271,16 +271,16 @@ msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
 msgid "_deviot_starting{0}"
-msgstr "[ Deviot {0} ] Starting...\n"
+msgstr "[ Deviot {0} ] 启动中...\n"
 
 msgid "caption_new_sketch"
-msgstr "名称："
+msgstr "名称: "
 
 msgid "not_empty_sketch"
 msgstr "不能下载空程序\n"
 
 msgid "not_iot_{0}{1}"
-msgstr "{0} {1} 不是 IoT(物联网) 文件\n"
+msgstr "{0} {1} 不是 IoT 文件\n"
 
 msgid "select_board_list"
 msgstr "从列表中选择一个开发板"
@@ -292,7 +292,7 @@ msgid "select_port_list"
 msgstr "从列表中选择一个端口"
 
 msgid "ota_error_platform"
-msgstr "在线只能升级当前 Espressif (ESP8266) 平台"
+msgstr "在线上传只支持 Espressif (ESP8266) 平台, 选择其他串口或切换当前环境"
 
 msgid "select_library"
 msgstr "选择库"
@@ -301,33 +301,33 @@ msgid "select_example"
 msgstr "选择示例"
 
 msgid "_previous"
-msgstr "< 以前"
+msgstr "< 之前"
 
 msgid "select_{0}"
-msgstr "Choose {0}"
+msgstr "选择 {0}"
 
 msgid "restart_sublime"
-msgstr "Please Restart Sublime Text"
+msgstr "请重新启动 Sublime Text"
 
 msgid "button_ok"
-msgstr "OK"
+msgstr "确定"
 
 # 库
 
 msgid "deviot_library{0}"
-msgstr "[ Deviot {0} ] Library Manager\n"
+msgstr "[ Deviot {0} ] 库管理器\n"
 
 msgid "search_query"
-msgstr "搜索查询："
+msgstr "搜索: "
 
 msgid "add_ip_caption"
-msgstr "输入IP地址： "
+msgstr "输入IP地址:  "
 
 msgid "already_installed{0}"
 msgstr "{0} 已安装\n"
 
 msgid "downloading_package{0}"
-msgstr "下载插件 {0}\n\n它可能需要一段时间，请耐心等待。\n"
+msgstr "下载插件 {0}\n\n它可能需要一段时间, 请耐心等待. \n"
 
 msgid "unpacking"
 msgstr "解压...\n"
@@ -351,21 +351,24 @@ msgstr "没有安装库"
 # 串口监视器
 
 msgid "serial_monitor_header{0}{1}"
-msgstr "[ Deviot {0} ] Serial Monitor | {1}\n\n"
+msgstr "[ Deviot {0} ] 串口监视器 | {1}\n\n"
 
 msgid "serial_port_used_{0}"
-msgstr "串口 {0} 正在使用中。请尝试关闭可能使用此串口的程序。\n"
+msgstr "串口 {0} 正在使用中, 请尝试关闭可能使用此串口的程序. \n"
+
+msgid "serial_not_available"
+msgstr "选定的串口不可用"
 
 msgid "send"
 msgstr "发送："
 
 msgid "sended_{0}"
-msgstr "\n[发送] {0}\n"
+msgstr "\n[已发送] {0}\n"
 
-# 在线升级验证
+# 在线上传验证
 
 msgid "pass_caption"
-msgstr "密码："
+msgstr "密码: "
 
 # 输出控制台
 
@@ -405,31 +408,43 @@ msgstr "不一致"
 # Platformio Console
 
 msgid "pio_terminal"
-msgstr "[ Deviot ] PlatformIO Terminal\n\nTo get information about the PlatformIO command writes: 'pio -h'\nor 'help' to know about the Deviot commands.\n"
+msgstr "[ Deviot ] PlatformIO 终端\n\n使用命令 'pio -h' 以获得关于 PlatformIO 的帮助, \n或使用 'help' 以获得关于 Deviot 命令的帮助.\n"
 
 msgid "invalid_command"
-msgstr "Invalid command (Try with: help)\n"
+msgstr "无效命令 (尝试: help)\n"
 
 msgid "invalid_path"
-msgstr "Folder name not valid.\n"
+msgstr "无效文件夹名称.\n"
 
 msgid "created{0}"
-msgstr "'{0}' created successfully.\n"
+msgstr "'{0}' 已创建.\n"
 
 msgid "error_making_folder"
-msgstr "Error creating the folder.\n"
+msgstr "创建文件夹失败.\n"
 
 msgid "removed{0}"
-msgstr "{0} Deleted successfully.\n"
+msgstr "{0} 已删除.\n"
 
 msgid "wrong_folder_name"
-msgstr "The name of the folder is wrong, fix it and try again.\n"
+msgstr "错误的文件夹名称, 请更正并重试.\n"
 
 msgid "cmd_cwd"
-msgstr "Shows the current working dir.\n"
+msgstr "显示当前目录.\n"
 
 msgid "cmd_cd"
-msgstr "Change directory.\n"
+msgstr "切换目录.\n"
 
 msgid "cmd_ls"
-msgstr "List all files and folder in the 
+msgstr "列出当前目录下的所有文件与文件夹\n"
+
+msgid "cmd_mk"
+msgstr "在当前目录下创建文件夹\n"
+
+msgid "cmd_rm"
+msgstr "在当前目录下移除文件夹\n"
+
+msgid "cmd_clear"
+msgstr "清除终端输出\n"
+
+msgid "cmd_pio_help"
+msgstr "以查看 PlatformIO 的信息\n"
