@@ -23,7 +23,7 @@
 - **400+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
 - **Library Manager**, find, install and remove any Library
 - **OTA Upload** Sends your firmware Over The Air to any ***espressif*** board
-- **PlatformIO Terminal**, if you are a CLI guy and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
+- **PlatformIO Terminal**, if you love the CLI and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
 - **Serial Monitor**, display and Send data through a serial port
 - **Quick Search**, all Deviot features at one step
 - **Snippets**, code quickly with this shortcuts. [Read more](https://github.com/gepd/Deviot/wiki/Snippets-(Fragmentos))
