@@ -11,11 +11,11 @@ Sublime Text plugin for IoT development
 
 **IMPORTANT!**
 
-- This plugin require **Python 2** 
+- This plugin requires **Python 2** 
 
-if after install python you are experienced any problems go to `Deviot Menu > Options > Remove Preferences File` and restart Sublime Text
+if after installing python2 you are experienced any problems, go to `Deviot Menu > Options > Remove Preferences File` and restart Sublime Text
 
-If keep having problems, please submit an issue explaining your problem from [this link](https://github.com/gepd/Deviot/issues/new)
+If you keep having problems, please submit an issue explaining your problem with [this link](https://github.com/gepd/Deviot/issues/new)
 
 --------------------------------
 
