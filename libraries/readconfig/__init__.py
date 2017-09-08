@@ -34,7 +34,7 @@ from __future__ import unicode_literals
 
 import re
 from os import path
-from collections import OrderedDict
+from .ordereddict3 import OrderedDict
 
 ENCODING = 'latin-1'
 
