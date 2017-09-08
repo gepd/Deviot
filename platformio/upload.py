@@ -77,7 +77,6 @@ class Upload(Initialize):
 
         out = self.run_command(cmd)
 
-        self.programmer(wipe=True)
         self.after_complete()
 
         if(get_setting('run_monitor', None) and out[0] == 0):
