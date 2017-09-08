@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from os import path
 from .tools import accepted_extensions
-from ..libraries import configparser
+from ..libraries.readconfig import ReadConfig
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
 
@@ -153,7 +153,7 @@ class ProjectCheck(QuickMenu):
         project_path = self.get_project_path()
         ini_path = self.get_ini_path()
 
-        config = configparser.RawConfigParser()
+        config = ReadConfig()
         config.read(ini_path)
         
         if(not config.has_section(platformio_head)):
@@ -172,7 +172,7 @@ class ProjectCheck(QuickMenu):
         platformio_head = 'platformio'
 
         ini_path = self.get_ini_path()
-        config = configparser.RawConfigParser()
+        config = ReadConfig()
         config.read(ini_path)
 
         if(config.has_option(platformio_head, 'src_dir')):
@@ -277,7 +277,7 @@ class ProjectCheck(QuickMenu):
 
         auth = None
         ini_path = self.get_ini_path()
-        config = configparser.RawConfigParser()
+        config = ReadConfig()
         config.read(ini_path)
         
         ports_list = self.get_ports_list()

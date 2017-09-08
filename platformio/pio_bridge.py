@@ -83,10 +83,10 @@ class PioBridge(Command):
             board_id {[type]} -- [description]
         """
         if(self.is_initialized):
-            from ..libraries import configparser
+            from ..libraries.readconfig import ReadConfig
 
             file_path = self.get_ini_path()
-            config = configparser.RawConfigParser()
+            config = ReadConfig()
             config.read(file_path)
 
             environment = 'env:' + board_id

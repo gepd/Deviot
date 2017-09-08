@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
-from ..libraries.configparser import ConfigParser
+from ..libraries.readconfig import ReadConfig
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -180,10 +180,9 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
 
         # open platformio.ini and get the environment
-        config = ConfigParser()
-        ini_file = config.read(ini_path)
-
-        environment = 'env:' + self.board_id
+        Config = ReadConfig()
+        ini_file = Config.read(ini_path)
+        environment = 'env:{0}'.format(self.board_id)
 
         # stop if environment wasn't initialized yet
         if(not config.has_section(environment)):
@@ -238,8 +237,42 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
         extra = get_setting('extra_library', None)
 
-        config = ConfigParser()
-        ini_file = config.read(ini_path)
+        Config = ConfigParser()
+        ini_file = Config.read(ini_path)
+        environment = 'env:{0}'.format(self.board_id)
+
+        if(environment not in ini_file):
+            return
+
+        env = ini_file[environment]
+
+        if(not extra):
+            if('lib_extra_dirs' in env):
+                env.pop('lib_extra_dirs')
+
+        if(extra):
+            extra_option = {'lib_extra_dirs': extra}
+            env.merge(extra_option)
+
+        ini_file.write()
+
+    def exclude_ino(self, remove=False):
+        """Add extra library folder
+        
+        Adds an extra folder where to search for user libraries,
+        this option will run before compile the code.
+
+        The path of the folder must be set from the option 
+        `add extra folder` in the library option menu
+        """
+        file_path = self.get_file_path()
+        ini_path = self.get_ini_path()
+        
+        cpp_name = file_path.replace('.ino', '.cpp')
+        filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
+
+        config = ReadConfig()
+        config.read(ini_path)
 
         environment = 'env:' + self.board_id
 
