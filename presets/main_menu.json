@@ -368,6 +368,7 @@
                                 },
                                 {
                                     "caption":"menu_always_native",
+				    "checkbox":true,
                                     "command":"deviot_pio_structure"
                                 },
                                 {
