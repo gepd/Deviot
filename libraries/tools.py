@@ -112,14 +112,25 @@ def get_sysetting(key, default=None):
     Stores the setting in the file:
     Packages/User/Deviot/deviot.ini
     """
-    from ..libraries import configparser
+    from ..libraries.readconfig import ReadConfig
     from .paths import getSystemIniPath
  
     section = "config"
     sys_path = getSystemIniPath()
-    config = configparser.RawConfigParser()
-    config.read(sys_path)
+
+    config = ReadConfig()
     
+    # remove config file if it's currupted
+    if(config.bad_format()):
+        from .path import packages_path
+        ini = path.join(packages_path, 'User', 'Deviot', 'deviot.ini')
+        
+        if(path.exists(ini)):
+            remove(ini)
+
+
+    config.read(sys_path)
+
     if(not config.has_option(section, key)):
         return default
     
@@ -130,12 +141,13 @@ def save_sysetting(key, value):
     Gets the setting stored in the file 
     Packages/User/Deviot/deviot.ini
     """
-    from ..libraries import configparser
+    from ..libraries.readconfig import ReadConfig
     from .paths import getSystemIniPath
 
     section = "config"
     sys_path = getSystemIniPath()
-    config = configparser.RawConfigParser()
+
+    config = ReadConfig()
     config.read(sys_path)
 
     if(not config.has_section(section)):
@@ -268,17 +280,25 @@ def create_sketch(sketch_name, select_path):
     folder inside of the plugin
     """
     from . import paths
+
+    ext = None
+    sketch = sketch_name.split('.')
+    if(len(sketch) > 1):
+        ext = '.' + sketch[-1]
+        sketch_name = sketch_name.replace(ext, '')
+
     # file path
     sketch_path = path.join(select_path, sketch_name)
     if not path.exists(sketch_path):
         makedirs(sketch_path)
 
-    # use cpp file/template intead of ino
-    cpp = get_setting('cpp_file', False)
-    if cpp:
-        ext = '.cpp'
-    else:
-        ext = '.ino'
+    if(not ext):
+        # use cpp file/template intead of ino
+        cpp = get_setting('cpp_file', False)
+        if cpp:
+            ext = '.cpp'
+        else:
+            ext = '.ino'
 
     # get template
     template_file_name = 'template' + ext

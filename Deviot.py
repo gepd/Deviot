@@ -6,17 +6,22 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from os import path
-from sublime import windows
+from os import path, remove
+from shutil import rmtree
+from sublime import windows, message_dialog
 from sublime_plugin import EventListener
 
 from .commands import *
 from .platformio.update import Update
 from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting, set_deviot_syntax
-from .libraries.paths import getBoardsFileDataPath, getMainMenuPath, getPluginPath
+from .libraries.syntax import Syntax
+from .libraries.paths import getMainMenuPath, getPackagesPath
+from .libraries.paths import getDeviotUserPath
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
+
+package_name = 'Deviot'
 
 def plugin_loaded():
     # Load or fix the right deviot syntax file 
@@ -30,6 +35,9 @@ def plugin_loaded():
     # Search updates
     Update().check_update_async()
 
+    # check syntax files
+    Syntax().check_syntax_file()
+
     menu_path = getMainMenuPath()
     compile_lang = get_setting('compile_lang', True)
     
@@ -38,13 +46,27 @@ def plugin_loaded():
         TopMenu().make_menu_files()
         save_setting('compile_lang', False)
 
-    # check if the syntax file exist
-    deviot_syntax = getPluginPath()
-    syntax_path = path.join(deviot_syntax, 'deviot.sublime-syntax')
+    from package_control import events
+    # alert when deviot was updated
+    if(events.post_upgrade(package_name)):
+        from .libraries.I18n import I18n
+        message = I18n().translate("reset_after_upgrade")
+        message_dialog(message)
 
-    if(not path.exists(syntax_path)):
-        active_window().run_command('deviot_rebuild_syntax')
+def plugin_unloaded():
+    from package_control import events
 
+    if events.remove(package_name):
+        # remove settings
+        packages = getPackagesPath()
+        st_settings = path.join(packages, 'User', 'deviot.sublime-settings')
+        if(path.exists(st_settings)):
+            remove(st_settings)
+
+        # remove deviot user folder
+        user = getDeviotUserPath()
+        if(path.isdir(user)):
+            rmtree(user)
 
 class DeviotListener(EventListener):
     def on_load(self, view):

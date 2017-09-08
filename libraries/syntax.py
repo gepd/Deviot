@@ -23,7 +23,14 @@ class Syntax(object):
         global _
         _ = I18n().translate
 
-        self.create_files_async()
+    def check_syntax_file(self):
+        """
+        Check if the syntax file exits, if not create it
+        """
+        deviot_syntax = getPluginPath()
+        syntax_path = path.join(deviot_syntax, 'deviot.sublime-syntax')
+        if(not path.exists(syntax_path)):
+            self.create_files_async()
 
     def create_files_async(self):
         """New thread execution

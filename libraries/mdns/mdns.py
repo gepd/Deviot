@@ -24,7 +24,12 @@ class MDNSBrowser:
         
         Starts to browsing in the arduino instance
         """
-        self._zeroconf = Zeroconf()
+        try:
+            self._zeroconf = Zeroconf()
+        except:
+            # not connected
+            return
+
         self._browser = ServiceBrowser(self._zeroconf, '_arduino._tcp.local.',
                                        handlers=[self.on_service_state_change])
         sleep(0.20)

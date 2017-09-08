@@ -64,6 +64,9 @@ msgstr "La nueva versión {0} de PlatformIO está disponible, tu versión actual
 msgid "update_button"
 msgstr "Actualizar Ahora"
 
+msgid "reset_after_upgrade"
+msgstr "Deviot ha sido actualizado a la última versión. Por favor, reinicia Sublime Text"
+
 # Menu
 
 msgid "menu_quick_panel"

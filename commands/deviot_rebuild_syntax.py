@@ -9,4 +9,4 @@ class DeviotRebuildSyntaxCommand(WindowCommand):
 
     def run(self):
         from ..libraries.syntax import Syntax
-        Syntax()
+        Syntax().create_files_async()
