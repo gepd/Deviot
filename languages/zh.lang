@@ -64,6 +64,9 @@ msgstr "发现 PlatformIO {0} 新版本, 当前版本 {1} ，是否更新？"
 msgid "update_button"
 msgstr "现在升级"
 
+msgid "reset_after_upgrade"
+msgstr "Deviot has been upgraded to the last version. Please, restart Sublime Text"
+
 # 菜单
 
 msgid "menu_quick_panel"
