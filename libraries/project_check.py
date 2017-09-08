@@ -125,12 +125,14 @@ class ProjectCheck(QuickMenu):
 
         if(pio_structure):
             file_path = self.get_file_path()
-            if('src' not in file_path):
+
+            dst = add_folder_to_filepath(file_path, 'src')
+            
+            if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
                 
                 self.close_file()
 
-                dst = add_folder_to_filepath(file_path, 'src')
                 move(file_path, dst)
 
                 self.window.open_file(dst)
