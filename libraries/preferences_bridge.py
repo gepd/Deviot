@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
 from ..libraries.readconfig import ReadConfig
+from ..libraries import __version__ as version
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -352,6 +353,10 @@ class PreferencesBridge(PioBridge):
 
             if(board_id or port_id):
                 info = "{0} | {1}".format(board_id, port_id)
+                
+                if('dev' in version):
+                    info += " | Deviot {0}".format(version)
+
                 self.view.set_status('_deviot_extra',  info)
         else:
             self.view.erase_status('_deviot_extra')
