@@ -224,7 +224,7 @@ class PreferencesBridge(PioBridge):
         with open(ini_path, 'w') as configfile:
             config.write(configfile)
 
-    def add_extra_library(self):
+    def add_extra_library(self, wipe=False):
         """Add extra library folder
         
         Adds an extra folder where to search for user libraries,
@@ -245,11 +245,11 @@ class PreferencesBridge(PioBridge):
         if(not config.has_section(environment)):
             return
 
-        if(not extra):
+        if(not extra or wipe):
             if(config.has_option(environment, flag)):
                 config.remove_option(environment, flag)
 
-        if(extra):
+        if(extra and not wipe):
             config.set(environment, flag, extra)
 
         # save in file
