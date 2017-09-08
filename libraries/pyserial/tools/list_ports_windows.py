@@ -40,7 +40,8 @@ def string(buffer):
     s = []
     for c in buffer:
         if c == 0: break
-        s.append(chr(c))
+        if(c >= 0):
+            s.append(chr(c))
     return ''.join(s)
 
 
