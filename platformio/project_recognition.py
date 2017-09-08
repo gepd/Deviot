@@ -239,9 +239,9 @@ class ProjectRecognition(object):
         environments = []
 
         if(ini_path and os.path.exists(ini_path)):
-            from ..libraries.configparser import ConfigParser
-            
-            Config = ConfigParser()
+            from ..libraries.readconfig import ReadConfig
+
+            Config = ReadConfig()
             Config.read(ini_path)
 
             for pio_env in Config.sections():
@@ -267,9 +267,9 @@ class ProjectRecognition(object):
         ini_path = self.get_ini_path()
 
         if(ini_path and os.path.exists(ini_path)):
-            from ..libraries import configparser
+            from ..libraries.readconfig import ReadConfig
 
-            config = configparser.RawConfigParser()
+            config = ReadConfig()
             config.read(ini_path)
 
             if(config.has_option('platformio', 'src_dir')):

@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
-from ..libraries.configparser import ConfigParser
+from ..libraries.readconfig import ReadConfig
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -198,7 +198,7 @@ class PreferencesBridge(PioBridge):
         }
 
         # open platformio.ini and get the environment
-        Config = ConfigParser()
+        Config = ReadConfig()
         ini_file = Config.read(ini_path)
         environment = 'env:{0}'.format(self.board_id)
 
@@ -268,7 +268,7 @@ class PreferencesBridge(PioBridge):
         cpp_name = file_path.replace('.ino', '.cpp')
         filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
 
-        config = ConfigParser()
+        config = ReadConfig()
         config.read(ini_path)
 
         environment = 'env:{0}'.format(self.board_id)
