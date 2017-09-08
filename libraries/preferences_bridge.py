@@ -164,7 +164,7 @@ class PreferencesBridge(PioBridge):
             from ..platformio.upload import Upload
             Upload()
 
-    def programmer(self):
+    def programmer(self, wipe=False):
         """Programmer
 
         Adds the programmer strings in the platformio.ini file, it considerate
@@ -196,7 +196,7 @@ class PreferencesBridge(PioBridge):
                 config.remove_option(environment, option)
 
         # add programmer option if it was selected
-        if(programmer):
+        if(programmer and not wipe):
             if(programmer == 'avr'):
                 config.set(environment, 'upload_protocol', 'stk500v1')
                 config.set(environment, 'upload_flags', '-P$UPLOAD_PORT')
