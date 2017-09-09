@@ -25,7 +25,7 @@ SOFTWARE.
 
 author: gepd
 website: https://github.com/gepd/ReadConfig
-library version: 0.0.1
+library version: 0.0.3
 """
 
 from __future__ import absolute_import
@@ -34,7 +34,7 @@ from __future__ import unicode_literals
 
 import re
 from os import path
-from .ordereddict3 import OrderedDict
+from collections import OrderedDict
 
 ENCODING = 'latin-1'
 
@@ -129,7 +129,7 @@ class ReadConfig(object):
         """
         Store comments of the source file
         """
-        if(line.startswith('#')):
+        if(line.startswith('#') and not self._cur_sect):
             key = '#{0}'.format(self._comment_count)
             self._data[key] = line.rstrip()
             self._comment_count += 1
@@ -219,11 +219,15 @@ class ReadConfig(object):
         """
         if(section in self._sections):
             if(option in self._data[section].keys()):
-                values = self._data[section][option]
+                values = []
+                for op in self._data[section][option]:
+                    if(not op.startswith('#')):
+                        values.append(op)
+
                 if(len(values) > 1):
                     return values
                 else:
-                    return values[0]
+                    return values
         return False
 
     def has_section(self, section):
@@ -288,7 +292,7 @@ class ReadConfig(object):
 
         for linedata in self._data:
             line = self._data[linedata]
-            
+ 
             if(type(line) is type(str())):
                 # comment(s)
                 if(line.startswith('#')):
@@ -301,17 +305,17 @@ class ReadConfig(object):
                 new_data  += '[{0}]\n'.format(linedata)
 
                 # option(s) - value(s)
-                for key, value in line.items():
-                    if(len(value)):
-                        if(len(value) > 1):
-                            value = "\n".join(value)
-                            new_data += '{0} = \n{1}\n'.format(key, value)
+                for key, values in line.items():
+                    comcount = [x for x in values if x.startswith('#')]
+                    if(len(values) > 1):
+                        values = "\n".join(values)
+                        if(len(comcount) == 0):
+                            values = '\n' + values
                         else:
-                            new_data += '{0} = {1}\n'.format(key, value[0])
-                    
-        
-        # remove final line breaks
-        new_data = new_data.rstrip()
+                            values = ' ' + values
+                        new_data += '{0} ={1}\n'.format(key, values)
+                    else:
+                        new_data += '{0} = {1}\n'.format(key, values[0])
 
         # write in file
         fileobject.write(new_data)
