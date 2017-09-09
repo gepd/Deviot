@@ -1,8 +1,8 @@
 import sublime
 import sublime_plugin
 
-from Deviot.libraries.progress_bar import ProgressBar
-from Deviot.libraries.reloader import reload_package
+from ..libraries.progress_bar import ProgressBar
+from ..libraries.reloader import reload_package
 
 
 class DeviotReloadCommand(sublime_plugin.WindowCommand):
