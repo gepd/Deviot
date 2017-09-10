@@ -12,6 +12,7 @@ from time import sleep
 from sys import exit
 from .I18n import I18n
 from .tools import findInOpendView, get_setting
+from .paths import getPluginName
 
 errs_by_file = {}
 phantom_sets_by_buffer = {}
@@ -59,7 +60,8 @@ class Console(object):
                 self.panel.set_name('exec')
 
                 if(name == 'exec'):
-                    self.panel.set_syntax_file("Packages/Deviot/Console.tmLanguage")
+                    package_name = getPluginName()
+                    self.panel.set_syntax_file("{0}/Console.tmLanguage".format(package_name))
                 else:
                     self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
 

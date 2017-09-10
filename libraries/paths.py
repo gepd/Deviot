@@ -24,6 +24,14 @@ def getPluginPath():
     plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
+def getPluginName():
+    """
+    Get the name where the pugin is installed including
+    Package string 'Package/Deviot...'
+    """
+    plugin_path = getPluginPath()
+    plugin_name = os.path.basename(plugin_path)
+    return 'Packages/{0}'.format(plugin_name)
 
 def getPackagesPath():
     """

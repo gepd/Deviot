@@ -220,6 +220,8 @@ def set_deviot_syntax(view):
     Force sublime text to assign deviot syntax when its
     a iot file
     """
+    from .paths import getPluginName
+
     accepted = accepted_extensions()
 
     try:
@@ -231,7 +233,8 @@ def set_deviot_syntax(view):
     except:
         return
 
-    d_syntax = 'Packages/Deviot/deviot.sublime-syntax'
+    package_name = getPluginName()
+    d_syntax = '{0}/deviot.sublime-syntax'.format(package_name)
 
     syntax = view.settings().get('syntax')
 
