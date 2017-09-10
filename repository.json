@@ -1,0 +1,18 @@
+{
+    "schema_version": "3.0.0",
+    "packages": [
+        {
+            "name": "Deviot (Arduino IDE)",
+            "previous_names": ["Deviot"],
+            "details": "https://github.com/gepd/Deviot",
+            "donate": "https://gratipay.com/~gepd/",
+            "labels": ["build system", "ide", "arduino", "iot", "platformio"],
+            "releases": [
+                {
+                    "sublime_text": ">=3000",
+                    "branch": "develop"
+                }
+            ]
+        }
+    ]
+}
