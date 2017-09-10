@@ -145,6 +145,9 @@ class ProjectCheck(QuickMenu):
         the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
         Here we add that option when platformio structure is not enabled
         """
+        if(self.is_native()):
+            return
+
         platformio_head = 'platformio'
         pio_structure = self.get_structure_option()
 
@@ -171,6 +174,9 @@ class ProjectCheck(QuickMenu):
         
         Remove the src_dir flag from the platformio.ini file
         """
+        if(self.is_native()):
+            return
+
         platformio_head = 'platformio'
 
         ini_path = self.get_ini_path()
