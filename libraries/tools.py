@@ -215,43 +215,6 @@ def remove_settings():
 
     message_dialog(text)
 
-def set_deviot_syntax(view):
-    """
-    Force sublime text to assign deviot syntax when its
-    a iot file
-    """
-    from .paths import getPluginName
-
-    accepted = accepted_extensions()
-
-    try:
-        file = view.file_name()
-        ext = file.split(".")[-1]
-        
-        if(ext not in accepted):
-            return
-    except:
-        return
-
-    package_name = getPluginName()
-    d_syntax = 'Packages/{0}/deviot.sublime-syntax'.format(package_name)
-
-    syntax = view.settings().get('syntax')
-
-    if(syntax.endswith('Arduino.tmLanguage')):
-        view.settings().set('syntax', d_syntax)
-        return
-
-    if(not syntax or not syntax.endswith('/deviot.sublime-syntax')):
-        from .paths import getPluginPath
-
-        deviot_syntax = getPluginPath()
-        deviot_syntax = path.join(deviot_syntax, 'deviot.sublime-syntax')
-
-        if(path.exists(deviot_syntax)):
-            view.settings().set('syntax', d_syntax)
-
-
 def singleton(cls):
     """
     restricts the instantiation of a class to one object

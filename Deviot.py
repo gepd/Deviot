@@ -8,13 +8,13 @@ from __future__ import unicode_literals
 
 from os import path, remove
 from shutil import rmtree
-from sublime import windows, message_dialog
+from sublime import message_dialog
 from sublime_plugin import EventListener
 
 from .commands import *
 from .platformio.update import Update
 from .beginning.pio_install import PioInstall
-from .libraries.tools import get_setting, save_setting, set_deviot_syntax
+from .libraries.tools import get_setting, save_setting
 from .libraries.syntax import Syntax
 from .libraries.paths import getMainMenuPath, getPackagesPath
 from .libraries.paths import getDeviotUserPath, getPluginName
@@ -24,11 +24,6 @@ from .libraries.project_check import ProjectCheck
 package_name = getPluginName()
 
 def plugin_loaded():
-    # Load or fix the right deviot syntax file 
-    for window in windows():
-        for view in window.views():
-            set_deviot_syntax(view)
-
     # Install PlatformIO
     PioInstall()
 
@@ -37,6 +32,9 @@ def plugin_loaded():
 
     # check syntax files
     Syntax().check_syntax_file()
+
+    # Load or fix the right deviot syntax file 
+    Syntax().paint_iot_views()
 
     menu_path = getMainMenuPath()
     compile_lang = get_setting('compile_lang', True)
@@ -47,6 +45,7 @@ def plugin_loaded():
         save_setting('compile_lang', False)
 
     from package_control import events
+    
     # alert when deviot was updated
     if(events.post_upgrade(package_name)):
         from .libraries.I18n import I18n
@@ -69,13 +68,11 @@ def plugin_unloaded():
             rmtree(user)
 
 class DeviotListener(EventListener):
-    def on_load(self, view):
-        set_deviot_syntax(view)
-
     def on_activated(self, view):
         PreferencesBridge().set_status_information()
     
     def on_close(self, view):
+        # remove open used serials ports
         from .libraries import serial
         
         window_name = view.name()

@@ -11,6 +11,7 @@ from threading import Thread
 
 from .file import File
 from .libraries import get_library_list
+from .tools import accepted_extensions
 from .paths import getSyntaxPath, getPluginPath
 from ..libraries.thread_progress import ThreadProgress
 
@@ -32,6 +33,50 @@ class Syntax(object):
         if(not path.exists(syntax_path)):
             self.create_files_async()
 
+    def set_deviot_syntax(self, view):
+        """
+        Force sublime text to assign deviot syntax when its
+        a iot file
+        """
+
+        accepted = accepted_extensions()
+
+        try:
+            file = view.file_name()
+            ext = file.split(".")[-1]
+
+            if(ext not in accepted):
+                return
+        except:
+            return
+
+        from .paths import getPluginPath, getPluginName
+
+        plugin_name = getPluginName()
+        plugin_path = getPluginPath()
+        syntax_name = 'deviot.sublime-syntax'
+        current_syntax = view.settings().get('syntax')
+        deviot_syntax = path.join(plugin_path, syntax_name)
+
+        # check if syntax file was created
+        if(not path.exists(deviot_syntax)):
+            return
+
+        # assign syntax
+        if(not current_syntax.endswith(syntax_name)):
+            syntax = 'Packages/{}/{}'.format(plugin_name, syntax_name)
+            view.assign_syntax(syntax)
+
+    def paint_iot_views(self):
+        """
+        Assign the deviot syntax in all iot files
+        """
+        from sublime import windows
+        
+        for window in windows():
+            for view in window.views():
+                self.set_deviot_syntax(view)
+
     def create_files_async(self):
         """New thread execution
         
@@ -52,6 +97,7 @@ class Syntax(object):
         """
         self.create_syntax()
         self.create_completions()
+        self.paint_iot_views()
 
     def create_syntax(self):
         """sublime-syntax

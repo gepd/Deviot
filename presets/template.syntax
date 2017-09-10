@@ -60,7 +60,7 @@ contexts:
   unique-modifiers:
     - match: \b({{modifiers}})\b
       scope: storage.modifier.c++
-    - match: \b(Serial|Wire|Stream|Keyboard|Mouse|{KEYWORD1}|{KEYWORD3})\.(print|println)*\b
+    - match: \b(Serial|Wire|Stream|Keyboard|Mouse)\.(print|println)*\b
       captures:
         1: storage.modifier.iot
         2: entity.name.class.iot
