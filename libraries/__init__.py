@@ -1,5 +1,5 @@
 VERSION = (2, 2, 0, 'dev1')
-__version__ = ".".join([str(s) for s in VERSION])
+__version__ = ".".join([str(s) for s in VERSION[:3]]) + VERSION[3]
 
 __title__ = "Deviot"
 __description__ = (
