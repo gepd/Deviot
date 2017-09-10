@@ -348,14 +348,12 @@ class PreferencesBridge(PioBridge):
             board_id = self.get_environment()
             port_id = self.get_serial_port()
 
-            board_id = board_id.upper() if (board_id) else None
-            port_id = port_id.upper() if (port_id) else None
+            board_id = board_id.upper() if (board_id) else ' - '
+            port_id = port_id.upper() if (port_id) else ' - '
 
-            if(board_id or port_id):
+            if(board_id or port_id or 'dev' in version):
                 info = "{0} | {1}".format(board_id, port_id)
-                
-                if('dev' in version):
-                    info += " | Deviot {0}".format(version)
+                info += " | Deviot {0}".format(version)
 
                 self.view.set_status('_deviot_extra',  info)
         else:
