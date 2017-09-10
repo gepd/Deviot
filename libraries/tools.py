@@ -234,7 +234,7 @@ def set_deviot_syntax(view):
         return
 
     package_name = getPluginName()
-    d_syntax = '{0}/deviot.sublime-syntax'.format(package_name)
+    d_syntax = 'Packages/{0}/deviot.sublime-syntax'.format(package_name)
 
     syntax = view.settings().get('syntax')
 

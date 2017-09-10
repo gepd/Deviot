@@ -17,11 +17,11 @@ from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting, set_deviot_syntax
 from .libraries.syntax import Syntax
 from .libraries.paths import getMainMenuPath, getPackagesPath
-from .libraries.paths import getDeviotUserPath
+from .libraries.paths import getDeviotUserPath, getPluginName
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
 
-package_name = 'Deviot'
+package_name = getPluginName()
 
 def plugin_loaded():
     # Load or fix the right deviot syntax file 
