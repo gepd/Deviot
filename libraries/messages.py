@@ -61,10 +61,10 @@ class Console(object):
 
                 if(name == 'exec'):
                     package_name = getPluginName()
-                    self.panel.set_syntax_file("Packages/{0}/Console.tmLanguage".format(package_name))
+                    syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
+                    self.panel.assign_syntax(syntax)
                 else:
-                    self.panel.set_syntax_file("Packages/Text/Plain text.tmLanguage")
-
+                    self.panel.assign_syntax("Packages/Text/Plain text.tmLanguage")
             else:
                 self.open_panel()
 
