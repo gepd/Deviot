@@ -1,5 +1,24 @@
 # Deviot Release Notes
 
+## Version 2.1.5 | 11 Sept 2017
+
+#### Improvements
+* Updated Chinese Language (Thanks to @chkb123456)
+* Replaced the configparser by readconfig library to avoid remove comments (Issue: https://github.com/gepd/Deviot/issues/144)
+* Alert the user when the plugin is updated
+* Better syntax assign to IOT files
+* Display the develop version in the status bar (Issue: https://github.com/gepd/Deviot/issues/164)
+* Do not move the sketch if there is a symlink in the 'src' folder (issue: https://github.com/gepd/Deviot/issues/165)
+* Remove extra library flag after compile/upload
+* Add programmer flags only when the firmware is uploading, and removing it when it finish
+
+#### Bugs
+* Multiples fixes after renaming the package in the Package Control repository
+* Read platformio.ini after move the buffer to a new path (Issue: https://github.com/gepd/Deviot/issues/165#issuecomment-327986058)
+* Split syntax keywords in new lines to avoid make ST crash
+* Avoid remove flags in PIO structure projects
+* Serial Fix, to allow port names with non ascii characters
+
 ## Version 2.1.1 | 17 Aug 2017
 
 #### Bugs
