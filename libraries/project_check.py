@@ -135,8 +135,7 @@ class ProjectCheck(QuickMenu):
 
                 move(file_path, dst)
 
-                self.window.open_file(dst)
-                return
+                self.view = self.window.open_file(dst)
 
     def override_src(self):
         """Adds src_dir
