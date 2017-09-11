@@ -60,7 +60,9 @@ contexts:
   unique-modifiers:
     - match: \b({{modifiers}})\b
       scope: storage.modifier.c++
-    - match: \b(Serial|Wire|Stream|Keyboard|Mouse)\.(print|println)*\b
+    - match: '\b(Serial|Wire|Stream|Keyboard|Mouse|
+    {KEYWORD1})\.(print|println|
+    {KEYWORD2})*\b'
       captures:
         1: storage.modifier.iot
         2: entity.name.class.iot
@@ -82,7 +84,8 @@ contexts:
   unique-constants:
     - match: \bnullptr\b
       scope: constant.language.c++
-    - match: \b(|DEC|OCT|DEC|HEX|HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP|INPUT_PULLDOWN|LED_BUILTIN|{LITERAL1})\b
+    - match: '\b(|DEC|OCT|DEC|HEX|HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP|INPUT_PULLDOWN|LED_BUILTIN|
+    {LITERAL1})\b'
       scope: constant.language.iot
 
   unique-keywords:

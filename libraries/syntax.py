@@ -106,36 +106,44 @@ class Syntax(object):
         constants, etc found in the libraries
         """
 
-        literal1s = []
-        keyword1s = []
-        keyword2s = []
-        keyword3s = []
+        literal1s = ''
+        keyword1s = ''
+        keyword2s = ''
+        keyword3s = ''
+
+        il1 = 0
+        ik1 = 0
+        ik2 = 0
+        ik3 = 0
 
         keywords = self.get_keywords()
         
         for keys in keywords:
             for word in keys.get_keywords():
                 if('LITERAL1' in word.get_type()):
-                    literal1s.append(word.get_id())
+                    literal1s += word.get_id() + '|'
+                    if(il1 == 6):
+                        literal1s += '\n'
+                        il1 = 0
+                    il1 += 1
                 if('KEYWORD1' in word.get_type()):
-                    keyword1s.append(word.get_id())
+                    keyword1s += word.get_id() + '|'
+                    if(ik1 == 6):
+                        keyword1s += '\n'
+                        ik1 = 0
+                    ik1 += 1
                 if('KEYWORD2' in word.get_type()):
-                    keyword2s.append(word.get_id())
+                    keyword2s += word.get_id() + '|'
+                    if(ik2 == 6):
+                        keyword2s += '\n'
+                        ik2 = 0
+                    ik2 += 1
                 if('KEYWORD3' in word.get_type()):
-                    keyword3s.append(word.get_id())
-
-        # convert to string
-        literal1s = set(literal1s)
-        literal1s = "|".join(literal1s)
-
-        keyword1s = set(keyword1s)
-        keyword1s = "|".join(keyword1s)
-
-        keyword2s = set(keyword2s)
-        keyword2s = "|".join(keyword2s)
-
-        keyword3s = set(keyword3s)
-        keyword3s = "|".join(keyword3s)
+                    keyword3s += word.get_id() + '|'
+                    if(ik3 == 6):
+                        keyword3s += '\n'
+                        ik3 = 0
+                    ik3 += 1
 
         template_path = getSyntaxPath()
         plugin_path = getPluginPath()
