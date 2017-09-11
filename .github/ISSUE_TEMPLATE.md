@@ -6,6 +6,8 @@ Before report an issue, please make sure it hasn't been reported before.
 
 ### Description of problem
 
+### Error(s) in ST Console? (View > Show Console)
+
 ### Steps to Reproduce
 
 ### Actual Results
