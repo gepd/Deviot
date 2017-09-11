@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
 from ..libraries.readconfig import ReadConfig
+from ..libraries import __version__ as version
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -164,7 +165,7 @@ class PreferencesBridge(PioBridge):
             from ..platformio.upload import Upload
             Upload()
 
-    def programmer(self):
+    def programmer(self, wipe=False):
         """Programmer
 
         Adds the programmer strings in the platformio.ini file, it considerate
@@ -175,13 +176,13 @@ class PreferencesBridge(PioBridge):
         """
 
         # list of programmers
-
-        programmer = get_setting('programmer_id', None)
         ini_path = self.get_ini_path()
+        programmer = get_setting('programmer_id', None)
+        
 
         # open platformio.ini and get the environment
-        Config = ReadConfig()
-        ini_file = Config.read(ini_path)
+        config = ReadConfig()
+        config.read(ini_path)
         environment = 'env:{0}'.format(self.board_id)
 
         # stop if environment wasn't initialized yet
@@ -196,7 +197,7 @@ class PreferencesBridge(PioBridge):
                 config.remove_option(environment, option)
 
         # add programmer option if it was selected
-        if(programmer):
+        if(programmer and not wipe):
             if(programmer == 'avr'):
                 config.set(environment, 'upload_protocol', 'stk500v1')
                 config.set(environment, 'upload_flags', '-P$UPLOAD_PORT')
@@ -224,7 +225,7 @@ class PreferencesBridge(PioBridge):
         with open(ini_path, 'w') as configfile:
             config.write(configfile)
 
-    def add_extra_library(self):
+    def add_extra_library(self, wipe=False):
         """Add extra library folder
         
         Adds an extra folder where to search for user libraries,
@@ -233,28 +234,28 @@ class PreferencesBridge(PioBridge):
         The path of the folder must be set from the option 
         `add extra folder` in the library option menu
         """
-        lib_flag = 'lib_extra_dirs'
+        flag = 'lib_extra_dirs'
         ini_path = self.get_ini_path()
         extra = get_setting('extra_library', None)
 
-        Config = ConfigParser()
-        ini_file = Config.read(ini_path)
+        config = ReadConfig()
+        config.read(ini_path)
+
         environment = 'env:{0}'.format(self.board_id)
 
-        if(environment not in ini_file):
+        if(not config.has_section(environment)):
             return
 
-        env = ini_file[environment]
+        if(not extra or wipe):
+            if(config.has_option(environment, flag)):
+                config.remove_option(environment, flag)
 
-        if(not extra):
-            if('lib_extra_dirs' in env):
-                env.pop('lib_extra_dirs')
+        if(extra and not wipe):
+            config.set(environment, flag, extra)
 
-        if(extra):
-            extra_option = {'lib_extra_dirs': extra}
-            env.merge(extra_option)
-
-        ini_file.write()
+        # save in file
+        with open(ini_path, 'w') as configfile:
+            config.write(configfile)
 
     def exclude_ino(self, remove=False):
         """Add extra library folder
@@ -300,7 +301,7 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
         baudrate = get_setting('upload_baudrate', None)
 
-        config = ConfigParser()
+        config = ReadConfig()
         ini_file = config.read(ini_path)
 
         environment = 'env:' + self.board_id
@@ -347,11 +348,13 @@ class PreferencesBridge(PioBridge):
             board_id = self.get_environment()
             port_id = self.get_serial_port()
 
-            board_id = board_id.upper() if (board_id) else None
-            port_id = port_id.upper() if (port_id) else None
+            board_id = board_id.upper() if (board_id) else ' - '
+            port_id = port_id.upper() if (port_id) else ' - '
 
-            if(board_id or port_id):
+            if(board_id or port_id or 'dev' in version):
                 info = "{0} | {1}".format(board_id, port_id)
+                info += " | Deviot {0}".format(version)
+
                 self.view.set_status('_deviot_extra',  info)
         else:
             self.view.erase_status('_deviot_extra')

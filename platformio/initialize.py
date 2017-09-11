@@ -80,6 +80,11 @@ class Initialize(ProjectCheck):
         or upload an sketch. You should only put here a fuction or
         a method
         """
+        # remove lib_extra_dirs flag
+        self.add_extra_library(wipe=True)
+
+        # remove programmer flags
+        self.programmer(wipe=True)
 
         # remove src_dir flag from platformio.ini
         self.remove_src()

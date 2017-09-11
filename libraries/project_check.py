@@ -125,16 +125,17 @@ class ProjectCheck(QuickMenu):
 
         if(pio_structure):
             file_path = self.get_file_path()
-            if('src' not in file_path):
+
+            dst = add_folder_to_filepath(file_path, 'src')
+            
+            if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
                 
                 self.close_file()
 
-                dst = add_folder_to_filepath(file_path, 'src')
                 move(file_path, dst)
 
-                self.window.open_file(dst)
-                return
+                self.view = self.window.open_file(dst)
 
     def override_src(self):
         """Adds src_dir
@@ -143,6 +144,9 @@ class ProjectCheck(QuickMenu):
         the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
         Here we add that option when platformio structure is not enabled
         """
+        if(self.is_native()):
+            return
+
         platformio_head = 'platformio'
         pio_structure = self.get_structure_option()
 
@@ -169,6 +173,9 @@ class ProjectCheck(QuickMenu):
         
         Remove the src_dir flag from the platformio.ini file
         """
+        if(self.is_native()):
+            return
+
         platformio_head = 'platformio'
 
         ini_path = self.get_ini_path()

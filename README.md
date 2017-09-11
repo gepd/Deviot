@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/gepd/deviot/releases"><img src="https://img.shields.io/github/release/gepd/deviot.svg?maxAge=3600&style=flat-square" alt="Release"></a>
-    <a href="https://packagecontrol.io/packages/Deviot"><img src="https://img.shields.io/packagecontrol/dt/Deviot.svg?maxAge=3600&style=flat-square" alt="Downloads"></a>
+    <a href="https://packagecontrol.io/packages/Deviot%20(Arduino%20IDE)"><img src="https://img.shields.io/packagecontrol/dt/Deviot%20(Arduino%20IDE).svg?maxAge=3600&style=flat-square" alt="Downloads"></a>
     <a href="https://github.com/gepd/Deviot/blob/master/LICENCE"><img src="https://img.shields.io/badge/Licence-%20Apache%20Software%20License-green.svg?maxAge=3600&style=flat-square" alt="Licence"></a>
     <a href="https://gratipay.com/~gepd/"><img src="https://img.shields.io/badge/donate-Deviot-orange.svg?maxAge=3600&style=flat-square" alt="Donate"></a>
 </p>
@@ -40,11 +40,11 @@ Deviot is available in:
 * **English**
 * **Spanish**
 * **Portuguese**
+* **Chinese**
 * **French** (Incomplete)
 * **Italian** (Incomplete)
 * **Polish** (Incomplete)
 * **Korean** (Incomplete)
-* **Chinese** (Incomplete)
 
 If you want to contribute and translate it to your language, use [this template](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) or any other language file as reference. ([Languages availables](https://github.com/gepd/Deviot/tree/master/Languages))
 

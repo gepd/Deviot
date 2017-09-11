@@ -24,6 +24,12 @@ def getPluginPath():
     plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
+def getPluginName():
+    """
+    Get the name where the pugin is installed (package folder)
+    """
+    plugin_path = getPluginPath()
+    return os.path.basename(plugin_path)
 
 def getPackagesPath():
     """
