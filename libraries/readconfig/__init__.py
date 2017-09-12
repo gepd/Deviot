@@ -120,7 +120,7 @@ class ReadConfig(object):
         """
         Store breakline(s) of the source file
         """
-        if('\r\n' == line):
+        if(line == '\r\n' or line == '\n'):
             key = "${0}".format(self._break_count)
             self._data[key] = '\n'
             self._break_count += 1
