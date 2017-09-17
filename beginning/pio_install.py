@@ -43,7 +43,7 @@ from ..libraries import __version__, __title__
 from ..libraries.syntax import Syntax
 from ..libraries.tools import get_setting, save_setting
 from ..libraries.tools import get_sysetting, save_sysetting
-from ..libraries.paths import getSystemIniPath
+from ..libraries.paths import getSystemIniPath, getPackagesPath
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 from ..platformio.pio_bridge import PioBridge
@@ -382,6 +382,19 @@ def get_default_paths():
     else:
         user_bin_path = path.join(path.expanduser('~'), '.local', 'bin')
         default_path = ["/usr/bin", "/usr/local/bin", user_bin_path]
+
+    # get path from python.txt in Packages/User/Deviot
+    packages_path = getPackagesPath()
+    deviot_path = path.join(packages_path, 'User', 'Deviot')
+    extra_python = path.join(deviot_path, 'python.txt')
+
+    if(path.exists(extra_python)):
+        with open(extra_python) as file:
+            for line in file:
+                line = line.strip()
+                new_path = path.normpath(line)
+                default_path.append(new_path)
+
     return default_path
 
 
