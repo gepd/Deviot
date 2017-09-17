@@ -130,12 +130,9 @@ class ProjectCheck(QuickMenu):
             
             if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
-                
-                self.close_file()
 
                 move(file_path, dst)
-
-                self.view = self.window.open_file(dst)
+                self.view.retarget(dst)
 
     def override_src(self):
         """Adds src_dir
