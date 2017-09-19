@@ -178,7 +178,7 @@ class QuickMenu(PreferencesBridge):
         """
         self.quick_list = self.quick_overwrite_baud_list()
         
-        quick_panel(self.quick_list, self.callback_overwrite_baud)
+        quick_panel(self.quick_list, self.callback_overwrite_baud, index=self.index)
 
     def callback_overwrite_baud(self, selected):
         """Baud rate callback
@@ -206,9 +206,11 @@ class QuickMenu(PreferencesBridge):
         Returns:
             list -- list of baud rates
         """
+        current = get_setting('upload_baudrate', "None")
         baudrate_list = ["None", "1200", "1800", "2400", "4800", "9600", "19200", "38400", 
                         "57600", "115200", "230400", "460800", "500000", "576000",
                         "921600", "1000000", "1152000"]
+        self.index = baudrate_list.index(current)
 
         return baudrate_list
 
