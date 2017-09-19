@@ -219,7 +219,7 @@ class QuickMenu(PreferencesBridge):
         """
         self.quick_list = self.quick_serial_list()
 
-        quick_panel(self.quick_list, self.callback_serial_ports)
+        quick_panel(self.quick_list, self.callback_serial_ports, index=self.index)
 
     def callback_serial_ports(self, selected):
         """Selected Port Callback
@@ -252,14 +252,20 @@ class QuickMenu(PreferencesBridge):
         Returns:
             list -- available serial ports/mdns services
         """
-
+        index = 2
         header = _("select_port_list").upper()
         ports_list = self.get_ports_list()
         ports_list.insert(0, [header])
-        ports_list.insert(1, [_("menu_add_ip")])     
+        ports_list.insert(1, [_("menu_add_ip")])
+        current = get_setting('port_id', None)   
 
         if(len(ports_list) < 2):
             ports_list = [_("menu_no_serial_mdns").upper()]
+
+        for port in ports_list[2:]:
+            if(current in port):
+                self.index = index
+            index += 1
 
         return ports_list
 
