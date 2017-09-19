@@ -47,7 +47,7 @@ class Console(object):
         self.panel.set_read_only(True)
 
         automatic_scroll = get_setting('automatic_scroll', True)
-        if(automatic_scroll):
+        if(automatic_scroll or self.name == 'exec'):
             self.panel.run_command("move_to", {"extend": False, "to": "eof"})
 
     def set_console(self, name='exec'):
