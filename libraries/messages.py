@@ -251,11 +251,19 @@ class MessageQueue(Console):
         line = result.group(2)
         column = result.group(3)
         txt = result.group(4)
+        m_type = None
+
+        if('error' in txt):
+            txt = txt.replace('error: ', '')
+            m_type = 'error'
+        elif('warning' in txt):
+            txt = txt.replace('warning: ', '')
+            m_type = 'warning'
 
         if(file not in errs_by_file):
             errs_by_file[file] = []
 
-        errs_by_file[file].append((int(line) -1, int(column), txt))
+        errs_by_file[file].append((int(line) -1, int(column), m_type, txt))
         self.update_phantoms()
 
     def update_phantoms(self):
@@ -267,30 +275,42 @@ class MessageQueue(Console):
 
         stylesheet = '''
             <style>
-                div.error {
-                    padding: 0.45rem 0.45rem 0.45rem 0.7rem;
+                div.content {
+                    padding: 0.45rem 0.45rem 0.45rem 0.45rem;
                     margin: 0.2rem 0;
-                    border-radius: 2px;
-                    border: 1px solid white;
-                    background-color: #bc0101;
+                    border-radius: 4px;
                 }
-                div.error span.message {
+                div.content span.message {
                     color: white;
-                    padding-right: 0.7rem;
+                    padding-right: 0.4rem;
+                    padding-left: 0.5rem;
                 }
-
-                div.error a {
+                span.error_box {
+                    padding: 5px;
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 3px;
+                    background-color: red;
+                }
+                span.warning_box {
+                    padding: 5px;
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 3px;
+                    background-color: #d1cd00;
+                }
+                div.content a {
                     text-decoration: inherit;
                     padding: 0.35rem 0.7rem 0.45rem 0.8rem;
                     position: relative;
                     bottom: 0.05rem;
-                    border-radius: 0 2px 2px 0;
+                    border-radius: 4px;
                     font-weight: bold;
                 }
-                html.dark div.error a {
+                html.dark div.content a {
                     background-color: #00000018;
                 }
-                html.light div.error a {
+                html.light div.content a {
                     background-color: #ffffff18;
                 }
             </style>
@@ -308,15 +328,16 @@ class MessageQueue(Console):
 
                 phantoms = []
 
-                for line, column, text in errs:
+                for line, column, m_type, text in errs:
                     pt = view.text_point(line - 1, column - 1)
                     phantoms.append(sublime.Phantom(
                         sublime.Region(pt, view.line(pt).b),
                         ('<body id=inline-error>' + stylesheet + \
-                            '<div class="error">' + \
+                            '<div class="content">' + \
+                            '<span class="' + m_type + '_box">' + m_type + '</span>' + \
                             '<span class="message">' + text + '</span>' + \
-                            '<a href=hide>' + chr(0x00D7) + '</a></div>' + \
-                            '</body>'),
+                            '<a href=hide>' + chr(0x00D7) + '</a>' + \
+                            '</div></body>'),
                         sublime.LAYOUT_BELOW,
                         on_navigate=self.on_phantom_navigate))
 
