@@ -126,6 +126,9 @@ msgstr "Sobre Escribir Velocidad de Carga"
 msgid "menu_clean"
 msgstr "Limpiar"
 
+msgid "menu_freeze_sketch"
+msgstr "Congelar Sketch"
+
 msgid "menu_open_ini_file"
 msgstr "Abrir Archivo Para Compilación"
 

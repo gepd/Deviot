@@ -78,6 +78,11 @@
                 "id": "clean_sketch",
                 "command": "deviot_clean_sketch"
             },{
+                "caption": "menu_freeze_sketch",
+                "id": "freeze_sketch",
+                "checkbox": true,
+                "command": "deviot_freeze_sketch"
+            },{
                 "caption": "menu_open_ini_file",
                 "id": "open_ini_file",
                 "command": "deviot_open_ini_file"

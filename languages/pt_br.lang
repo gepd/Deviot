@@ -127,6 +127,9 @@ msgstr "Excesso de Velocidade de Upload"
 msgid "menu_clean"
 msgstr "Limpar"
 
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
 msgid "menu_open_ini_file"
 msgstr "Open Build Config File"
 

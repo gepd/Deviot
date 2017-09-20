@@ -26,7 +26,7 @@ from __future__ import unicode_literals
 
 import os
 import sublime
-
+from ..libraries.tools import get_setting
 
 class ProjectRecognition(object):
     def __init__(self):
@@ -56,6 +56,10 @@ class ProjectRecognition(object):
         Returns:
             [str] -- path of the file path/path/file.ext
         """
+        freeze = get_setting('freeze_sketch', None)
+        
+        if(freeze):
+            return freeze
         return self.view.file_name()
 
     def get_project_path(self):

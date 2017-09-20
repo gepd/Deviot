@@ -130,9 +130,13 @@ class ProjectCheck(QuickMenu):
             
             if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
+                from .tools import get_setting, save_setting
 
                 move(file_path, dst)
                 self.view.retarget(dst)
+
+                if(get_setting('freeze_sketch', None)):
+                    save_setting('freeze_sketch', dst)
 
     def override_src(self):
         """Adds src_dir

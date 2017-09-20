@@ -126,6 +126,9 @@ msgstr "Overwrite Upload Speed"
 msgid "menu_clean"
 msgstr "Wyczyść"
 
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
 msgid "menu_open_ini_file"
 msgstr "Otwórz Plik Konfiguracji Builda" 
 
