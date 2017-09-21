@@ -84,6 +84,9 @@ msgstr "Select Environment"
 msgid "menu_search_lib"
 msgstr "Find/Install Library"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "Remove Library"
 

@@ -85,6 +85,9 @@ msgstr "Selecione o Ambiente"
 msgid "menu_search_lib"
 msgstr "Procurar/Instalar Biblioteca"
 
+msgid "menu_update_lib"
+msgstr "Atualizar Biblioteca"
+
 msgid "menu_remove_lib"
 msgstr "Remover Biblioteca"
 

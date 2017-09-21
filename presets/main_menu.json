@@ -30,6 +30,10 @@
                 "id": "search_library",
                 "command": "deviot_search_library"
             },{
+                "caption": "menu_update_lib",
+                "id": "update_library",
+                "command": "deviot_update_library"
+            },{
                 "caption": "menu_remove_lib",
                 "id": "remove_library",
                 "command": "deviot_remove_library"

@@ -84,6 +84,9 @@ msgstr "开发环境"
 msgid "menu_search_lib"
 msgstr "搜索库"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "删除库"
 

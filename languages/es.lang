@@ -84,6 +84,9 @@ msgstr "Selecciona Un Entorno de Desarrollo"
 msgid "menu_search_lib"
 msgstr "Buscar/Instalar Librería"
 
+msgid "menu_update_lib"
+msgstr "Actualizar Librería"
+
 msgid "menu_remove_lib"
 msgstr "Eliminar Librería"
 

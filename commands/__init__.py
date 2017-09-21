@@ -2,6 +2,7 @@ from .deviot_new_sketch import DeviotNewSketchCommand
 from .deviot_select_boards import DeviotSelectBoardsCommand
 from .deviot_select_environment import DeviotSelectEnvironmentCommand
 from .deviot_search_library import DeviotSearchLibraryCommand
+from .deviot_update_library import DeviotUpdateLibraryCommand
 from .deviot_remove_library import DeviotRemoveLibraryCommand
 from .deviot_import_library import DeviotImportLibraryCommand
 from .deviot_insert_library import DeviotInsertLibraryCommand
@@ -58,6 +59,7 @@ __all__ = [
     'DeviotSelectBoardsCommand',
     'DeviotSelectEnvironmentCommand',
     'DeviotSearchLibraryCommand',
+    'DeviotUpdateLibraryCommand',
     'DeviotRemoveLibraryCommand',
     'DeviotImportLibraryCommand',
     'DeviotInsertLibraryCommand',

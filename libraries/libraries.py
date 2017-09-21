@@ -195,20 +195,57 @@ class Libraries(Command):
             from .syntax import Syntax
             Syntax()
 
+    def update_library_async(self, selected):
+        """Update
+        
+        Show the installed libraries to search updates
+        """
+        if(selected <= 0):
+            return
 
-    def get_installed_list(self):
+        thread = Thread(target=self.update_library, args=(selected,))
+        thread.start()
+        ThreadProgress(thread, _('updating'), '')
+
+    def update_library(self, selected):
+        """Update Library
+    
+        Run a CLI command with the ID of the library to update
+
+        Arguments:
+            selected {int} -- user selection index.
+        """
+        response_list = self.quick_list
+
+        lib_id = self.quick_list[selected][2].split(' ')[0]
+        lib_name = self.quick_list[selected][0]
+
+        self.set_queue()
+
+        cmd = ['lib', '--global', 'update', lib_id]
+        out = self.run_command(cmd)
+
+        self.dstop()
+
+    def get_installed_list(self, type):
         """Install libraries list
         
         Get the file with the installed libraries. This files
         is updated each time the user install or remove a library,
         the file is formated in the quick panel way (list)
+        
+        Arguments:
+            type {str} -- action to do after show the quick list
         """
         quick_list = File(self.lib_file_path).read_json()
 
         self.quick_list = quick_list
         self.quick_list.insert(0, [_('select_library').upper()])
 
-        quick_panel(quick_list, self.remove_library_async)
+        if(type == 'remove'):
+            quick_panel(quick_list, self.remove_library_async)
+        else:
+            quick_panel(quick_list, self.update_library_async)
 
     def remove_library_async(self, selected):
         """Remove in a thread

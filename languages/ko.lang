@@ -84,6 +84,9 @@ msgstr "프로세서 선택"
 msgid "menu_search_lib"
 msgstr "라이브러리 검색하기"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "라이브러리 삭제하기"
 
