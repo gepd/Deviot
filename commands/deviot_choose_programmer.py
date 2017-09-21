@@ -13,5 +13,5 @@ class DeviotChooseProgrammerCommand(WindowCommand):
         save_setting('programmer_id', programmer_item)
 
     def is_checked(self, programmer_item):
-        target_programmer = get_setting('programmer_id', None)
+        target_programmer = get_setting('programmer_id', False)
         return programmer_item == target_programmer
