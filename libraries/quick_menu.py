@@ -76,15 +76,14 @@ class QuickMenu(PreferencesBridge):
         boards_file = File(boards_path)
         boards = boards_file.read_json()
         boards_list = []
+        start = ''
 
         for board in boards:
             id = board['id']
             vendor = board['vendor']
 
             if(id in selected_boards):
-                start = '- '
-            else:
-                start = '+ '
+                start = '* '                
 
             caption = start + board['name']
             extra = "%s | %s" % (vendor, id)
