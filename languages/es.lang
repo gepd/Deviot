@@ -247,7 +247,7 @@ msgid "menu_change_build_folder"
 msgstr "Cambiar Carpeta de Compilación"
 
 msgid "menu_use_cpp_new"
-msgstr "Usar CPP con Nuevo Archivo"
+msgstr "Extensión CPP con Nuevo Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Reconstruir Archivos de Syntax y Completions"

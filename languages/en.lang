@@ -247,7 +247,7 @@ msgid "menu_change_build_folder"
 msgstr "Change Build Folder"
 
 msgid "menu_use_cpp_new"
-msgstr "Use CPP File on New File"
+msgstr "Use CPP on New Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Rebuild Syntax and Completions Files"

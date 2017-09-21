@@ -248,7 +248,7 @@ msgid "menu_change_build_folder"
 msgstr "Alterar Pasta de Compilação"
 
 msgid "menu_use_cpp_new"
-msgstr "Use o Arquivo CPP no Novo Arquivo"
+msgstr "Use o Arquivo CPP no Novo Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Reconstruir Arquivos de Sintaxe e Finalizações"
