@@ -63,7 +63,7 @@ class ReadConfig(object):
     _OPTION_PATT = r'(([\w]+)\s*\=? (.+)|)'
 
     # value regex
-    _VALUE_PATT = r'(([\w]+\s)? (.+)|)'
+    _VALUE_PATT = r'(([\w]+\s=*\s*)? (.+)|)'
 
     # Compiled regular expression for matching sections
     SECTCRE = re.compile(_SECTION_PATT, re.VERBOSE)
