@@ -109,13 +109,10 @@ class PioBridge(Command):
         pio_structure = self.get_structure_option()
 
         if(pio_structure):
-            project_path = self.get_project_path()
-            
+            project_path = self.get_parent_path()
             if(not project_path):
                 return None
 
-            if('src' in project_path):
-                project_path = self.get_parent_path()
             return project_path
 
         if(self.is_initialized()):
