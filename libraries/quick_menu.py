@@ -83,7 +83,9 @@ class QuickMenu(PreferencesBridge):
             vendor = board['vendor']
 
             if(id in selected_boards):
-                start = '* '                
+                start = '* ' 
+            else:
+                start = ''               
 
             caption = start + board['name']
             extra = "%s | %s" % (vendor, id)
