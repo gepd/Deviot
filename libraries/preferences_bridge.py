@@ -252,7 +252,7 @@ class PreferencesBridge(PioBridge):
             return
 
         current = config.get(environment, option_name)
-        current = current[0] if current else None
+        current = current[0] if current else []
 
         # get current value
         if(not wipe and config.has_option(environment, option_name)):
