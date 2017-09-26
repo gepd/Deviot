@@ -123,14 +123,20 @@ msgstr "Erzeugen"
 msgid "menu_upload"
 msgstr "Hochladen"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Geschwindigkeit zum Hochladen überschreiben"
-
 msgid "menu_clean"
 msgstr "Sketch bereinigen"
 
+msgid "menu_compile_options"
+msgstr "Compile/Upload Options"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Geschwindigkeit zum Hochladen überschreiben"
+
 msgid "menu_freeze_sketch"
 msgstr "An aktuellen Sketch binden"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Untouch"
 
 msgid "menu_open_ini_file"
 msgstr "Build Konfiguration öffnen"

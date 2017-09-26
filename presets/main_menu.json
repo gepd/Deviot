@@ -74,22 +74,33 @@
                 "id": "menu_upload",
                 "command": "deviot_upload_sketch"
             },{
-                "caption": "menu_overwrite_upload_baud",
-                "id": "menu_overwrite_upload_baud",
-                "command": "deviot_overwrite_upload_baud"
-            },{
                 "caption": "menu_clean",
                 "id": "clean_sketch",
                 "command": "deviot_clean_sketch"
             },{
-                "caption": "menu_freeze_sketch",
-                "id": "freeze_sketch",
-                "checkbox": true,
-                "command": "deviot_freeze_sketch"
-            },{
-                "caption": "menu_open_ini_file",
-                "id": "open_ini_file",
-                "command": "deviot_open_ini_file"
+                "caption": "menu_compile_options",
+                "id": "compile_options",
+                "children": [
+                                {
+                                    "caption": "menu_overwrite_upload_baud",
+                                    "id": "menu_overwrite_upload_baud",
+                                    "command": "deviot_overwrite_upload_baud"
+                                },{
+                                    "caption": "menu_freeze_sketch",
+                                    "id": "freeze_sketch",
+                                    "checkbox": true,
+                                    "command": "deviot_freeze_sketch"
+                                },{
+                                    "caption": "menu_pio_untouch",
+                                    "id": "pio_untouch",
+                                    "checkbox": true,
+                                    "command": "deviot_pio_untouch"
+                                },{
+                                    "caption": "menu_open_ini_file",
+                                    "id": "open_ini_file",
+                                    "command": "deviot_open_ini_file"
+                                }                
+                ]
             },{
                 "caption": "menu_show_console",
                 "id": "show_console",

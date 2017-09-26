@@ -124,17 +124,23 @@ msgstr "Compilar"
 msgid "menu_upload"
 msgstr "Enviar"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Excesso de Velocidade de Upload"
-
 msgid "menu_clean"
 msgstr "Limpar"
+
+msgid "menu_compile_options"
+msgstr "Opções de Compilação/Envio"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Excesso de Velocidade de Upload"
 
 msgid "menu_freeze_sketch"
 msgstr "Congelar Sketch"
 
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Sem Modificação"
+
 msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
+msgstr "Abrir platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Mostrar Console Deviot"

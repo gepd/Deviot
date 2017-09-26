@@ -174,8 +174,7 @@ class PreferencesBridge(PioBridge):
         Arguments:
             programmer {str} -- id of chosen option
         """
-
-        # list of programmers
+        write_file = False
         ini_path = self.get_ini_path()
         programmer = get_setting('programmer_id', None)
         
@@ -195,6 +194,7 @@ class PreferencesBridge(PioBridge):
         if(config.has_option(environment, options[0])):
             for option in options:
                 config.remove_option(environment, option)
+                write_file = True
 
         # add programmer option if it was selected
         if(programmer and not wipe):
@@ -220,104 +220,66 @@ class PreferencesBridge(PioBridge):
                 config.set(environment, 'upload_flags', '-P$UPLOAD_PORT -b$UPLOAD_SPEED')
                 config.set(environment, 'upload_speed', '19200')
                 config.set(environment, 'upload_port', self.port_id)
+            write_file = True
 
         # save in file
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
+        if(write_file):
+            with open(ini_path, 'w') as configfile:
+                config.write(configfile)
 
-    def add_extra_library(self, wipe=False):
-        """Add extra library folder
+    def add_option(self, option_name, wipe=False):
+        """Add option
         
-        Adds an extra folder where to search for user libraries,
-        this option will run before compile the code.
-
-        The path of the folder must be set from the option 
-        `add extra folder` in the library option menu
+        Adds the option `option_name` into platformio.ini. The value
+        of this option will be get from the setting file
+        
+        Arguments:
+            option_name {str} -- name of the value
+        
+        Keyword Arguments:
+            wipe {bool} -- when is true remove the option 
+                            from platformio.ini (default: {False})
         """
-        flag = 'lib_extra_dirs'
+        option = get_setting(option_name, None)
         ini_path = self.get_ini_path()
-        extra = get_setting('extra_library', None)
+        write_file = False
 
         config = ReadConfig()
         config.read(ini_path)
 
         environment = 'env:{0}'.format(self.board_id)
-
         if(not config.has_section(environment)):
             return
 
-        if(not extra or wipe):
-            if(config.has_option(environment, flag)):
-                config.remove_option(environment, flag)
+        current = config.get(environment, option_name)
+        current = current[0] if current else None
 
-        if(extra and not wipe):
-            config.set(environment, flag, extra)
+        # get current value
+        if(not wipe and config.has_option(environment, option_name)):
+            self.init_option = config.get(environment, option_name)[0]
+
+        # add option
+        if(not wipe and option and option not in current):
+            if(self.init_option):
+                option = self.init_option + ', ' + option
+            
+            config.set(environment, option_name, option)
+            write_file = True
+
+        # remove in case to be neccesary
+        if(wipe):
+            if(self.init_option and current != self.init_option):
+                config.set(environment, option_name, self.init_option)
+                write_file = True
+            else:
+                config.remove_option(environment, option_name)
+                write_file = True
+            self.init_option = None
 
         # save in file
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
-
-    def exclude_ino(self, remove=False):
-        """Add extra library folder
-        
-        Adds an extra folder where to search for user libraries,
-        this option will run before compile the code.
-
-        The path of the folder must be set from the option 
-        `add extra folder` in the library option menu
-        """
-        file_path = self.get_file_path()
-        ini_path = self.get_ini_path()
-        
-        cpp_name = file_path.replace('.ino', '.cpp')
-        filters = '-<{0}> +<{1}>'.format(file_path, cpp_name)
-
-        config = ReadConfig()
-        config.read(ini_path)
-
-        environment = 'env:' + self.board_id
-
-        if(not config.has_section(environment)):
-            return
-
-        # remove previous configuration
-        if(config.has_option(environment, lib_flag)):
-            config.remove_option(environment, lib_flag)
-
-        if(extra):
-            config.set(environment, lib_flag, extra)
-
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
-
-    def overwrite_baudrate(self):
-        """Add new speed
-        
-        When a new speed is selected, the 'upload_speed' 
-        flag is add into the platformio.ini file with
-        the new speed, it will overwrite the default speed
-        """
-        baud_flag = 'upload_speed'
-        ini_path = self.get_ini_path()
-        baudrate = get_setting('upload_baudrate', None)
-
-        config = ReadConfig()
-        ini_file = config.read(ini_path)
-
-        environment = 'env:' + self.board_id
-
-        if(not config.has_section(environment)):
-            return
-
-        # remove previous configuration
-        if(config.has_option(environment, baud_flag)):
-            config.remove_option(environment, baud_flag)
-
-        if(baudrate):
-            config.set(environment, baud_flag, baudrate)
-
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
+        if(write_file):
+            with open(ini_path, 'w') as configfile:
+                config.write(configfile)
 
     def get_mdns_services(self):
         """mDNS services

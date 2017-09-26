@@ -123,17 +123,20 @@ msgstr "Zbuduj"
 msgid "menu_upload"
 msgstr "Wgraj"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "Wyczyść"
+
+msgid "menu_compile_options"
+msgstr "Compile/Upload Options"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
 
 msgid "menu_freeze_sketch"
 msgstr "Freeze Sketch"
 
 msgid "menu_open_ini_file"
-msgstr "Otwórz Plik Konfiguracji Builda" 
+msgstr "Otwórz platformio.ini" 
 
 msgid "menu_show_console"
 msgstr "Pokaż Konsolę Deviot"

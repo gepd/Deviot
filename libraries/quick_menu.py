@@ -197,7 +197,7 @@ class QuickMenu(PreferencesBridge):
         if(selected == 'None'):
             selected = None
 
-        save_setting('upload_baudrate', selected)
+        save_setting('upload_speed', selected)
 
     def quick_overwrite_baud_list(self):
         """Baud rate list
@@ -207,7 +207,7 @@ class QuickMenu(PreferencesBridge):
         Returns:
             list -- list of baud rates
         """
-        current = get_setting('upload_baudrate', "None")
+        current = get_setting('upload_speed', "None")
         baudrate_list = ["None", "1200", "1800", "2400", "4800", "9600", "19200", "38400", 
                         "57600", "115200", "230400", "460800", "500000", "576000",
                         "921600", "1000000", "1152000"]

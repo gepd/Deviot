@@ -123,17 +123,23 @@ msgstr "Compilation"
 msgid "menu_upload"
 msgstr "Chargement"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "Nettoyage"
+
+msgid "menu_compile_options"
+msgstr "Options de Compilation/Chargement"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
 
 msgid "menu_freeze_sketch"
 msgstr "Freeze Sketch"
 
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Non Modifié"
+
 msgid "menu_open_ini_file"
-msgstr "Ouvrir Config de compilation"
+msgstr "Ouvrir platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Show Deviot Console"

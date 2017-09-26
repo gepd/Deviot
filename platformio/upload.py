@@ -51,15 +51,15 @@ class Upload(Initialize):
         self.add_board()
 
         # add extra library board
-        self.add_extra_library()
+        self.add_option('lib_extra_dirs')
 
         # check if there is a new speed to overwrite
-        self.overwrite_baudrate()
+        self.add_option('upload_speed')
 
         # check if there is a programmer selected
         self.programmer()
-        programmer = get_setting('programmer_id', None)
 
+        programmer = get_setting('programmer_id', None)
         if(programmer):
             cmd = ['run', '-t', 'program', '-e', self.board_id]
         else:

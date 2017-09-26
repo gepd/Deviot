@@ -16,6 +16,7 @@ from .deviot_upload_sketch import DeviotUploadSketchCommand
 from .deviot_overwrite_upload_baud import DeviotOverwriteUploadBaudCommand
 from .deviot_clean_sketch import DeviotCleanSketchCommand
 from .deviot_freeze_sketch import DeviotFreezeSketchCommand
+from .deviot_pio_untouch import DeviotPioUntouchCommand
 from .deviot_open_ini_file import DeviotOpenIniFile
 from .deviot_show_console import DeviotShowConsoleCommand
 from .deviot_hide_console import DeviotHideConsoleCommand
@@ -73,6 +74,7 @@ __all__ = [
     'DeviotOverwriteUploadBaudCommand',
     'DeviotCleanSketchCommand',
     'DeviotFreezeSketchCommand',
+    'DeviotPioUntouchCommand',
     'DeviotOpenIniFile',
     'DeviotShowConsoleCommand',
     'DeviotHideConsoleCommand',

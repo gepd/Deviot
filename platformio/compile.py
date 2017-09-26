@@ -40,10 +40,9 @@ class Compile(Initialize):
             self.derror("select_board_list")
             return
 
-        # add extra library board
-        self.add_extra_library()
+        self.add_option('lib_extra_dirs')
 
-        # add src_dir flag if it's neccesary
+        # add src_dir option if it's neccesary
         self.override_src()
 
         cmd = ['run', '-e ', self.board_id]

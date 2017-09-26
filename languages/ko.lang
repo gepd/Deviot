@@ -123,17 +123,23 @@ msgstr "빌드"
 msgid "menu_upload"
 msgstr "업로드"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "클린"
+
+msgid "menu_compile_options"
+msgstr "옵션 빌드/업로드"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
 
 msgid "menu_freeze_sketch"
 msgstr "Freeze Sketch"
 
+msgid "menu_pio_untouch"
+msgstr "platformio.ini 수정없이"
+
 msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
+msgstr "열다 platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Show Deviot Console"

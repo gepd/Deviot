@@ -8,7 +8,7 @@ class DeviotExtraLibraryFolderCommand(WindowCommand):
     """
 
     def run(self):
-        folder_explorer(key='extra_library', callback=self.done)
+        folder_explorer(key='lib_extra_dirs', callback=self.done)
 
     def done(self, key, value):
         save_setting(key, value)

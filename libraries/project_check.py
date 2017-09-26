@@ -25,6 +25,7 @@ class ProjectCheck(QuickMenu):
         
         self.board_id = None
         self.port_id = None
+        self.init_option = None
 
     def is_iot(self):
         """IOT
@@ -138,7 +139,7 @@ class ProjectCheck(QuickMenu):
                 if(get_setting('freeze_sketch', None)):
                     save_setting('freeze_sketch', dst)
 
-    def override_src(self):
+    def override_src(self, wipe=False):
         """Adds src_dir
         
         When you don't want to keep the platformio file structure, you need to add
@@ -148,47 +149,39 @@ class ProjectCheck(QuickMenu):
         if(self.is_native()):
             return
 
+        write_file = False
+        current_src = None
         platformio_head = 'platformio'
         pio_structure = self.get_structure_option()
-
-        if(pio_structure):
-            self.remove_src()
-            return
-
         project_path = self.get_project_path()
         ini_path = self.get_ini_path()
 
         config = ReadConfig()
         config.read(ini_path)
-        
-        if(not config.has_section(platformio_head)):
-            config.add_section(platformio_head)
 
-        config.set(platformio_head, 'src_dir', project_path)
-
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
-
-    def remove_src(self):
-        """Remove src_dir
-        
-        Remove the src_dir flag from the platformio.ini file
-        """
-        if(self.is_native()):
-            return
-
-        platformio_head = 'platformio'
-
-        ini_path = self.get_ini_path()
-        config = ReadConfig()
-        config.read(ini_path)
-
+        # get string if exists
         if(config.has_option(platformio_head, 'src_dir')):
+            current_src = config.get(platformio_head, 'src_dir')[0]
+
+        # remove option
+        if(wipe and current_src):
             config.remove_option(platformio_head, 'src_dir')
 
             if(not config.options(platformio_head)):
                 config.remove_section(platformio_head)
+            write_file = True
 
+        # check section
+        if(not config.has_section(platformio_head)):
+            config.add_section(platformio_head)
+            write_file = True
+
+        # change only in case it's different
+        if(project_path != current_src):
+            config.set(platformio_head, 'src_dir', project_path)
+            write_file = True
+
+        if(write_file):
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 
