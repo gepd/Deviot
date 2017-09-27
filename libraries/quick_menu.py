@@ -26,10 +26,26 @@ class QuickMenu(PreferencesBridge):
         _ = I18n().translate
 
     def set_list(self, quick_list):
+        """Set List
+
+        Set the list with the items to be shown in the
+        quick panel
+
+        Arguments:
+            quick_list {list} -- list of items
+        """
         self.quick_list = quick_list
 
     def show_quick_panel(self, callback):
+        """Quick Panel
 
+        Show the quick panel with the given items, previously setted
+        in the quick_list object. The callback can set the index
+        object to selected an item when the panel is called.
+
+        Arguments:
+            callback {obj} -- callback to call after the selection
+        """
         quick_panel(self.quick_list, callback, index=self.index)
 
     def callback_board(self, selected):
