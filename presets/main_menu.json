@@ -224,151 +224,17 @@
                     {
                         "caption": "menu_baudrate",
                         "id": "baudrate_item",
-                        "children":
-                        [
-                            {
-                                "caption": "300",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 300},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "1200",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 1200},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "2400",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 2400},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "4800",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 4800},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "9600",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 9600},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "14400",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 14400},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "19200",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 19200},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "28800",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 28800},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "38400",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 38400},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "57600",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 57600},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "115200",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 115200},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "230400",
-                                "command": "deviot_choose_baudrate",
-                                "args": {"baudrate_item": 230400},
-                                "checkbox": true
-                            }
-                        ]
+                        "command": "deviot_choose_baudrate"
                     },
                     {
                         "caption": "menu_line_ending",
                         "id": "line_ending_item",
-                        "children":
-                        [
-                            {
-                                "caption": "menu_none",
-                                "id": "line_ending_none",
-                                "command": "deviot_choose_line_ending",
-                                "args": {"line_ending_item": null},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_new_line",
-                                "id": "line_ending_new",
-                                "command": "deviot_choose_line_ending",
-                                "args": {"line_ending_item": "\n"},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_cr",
-                                "id": "line_ending_return",
-                                "command": "deviot_choose_line_ending",
-                                "args": {"line_ending_item": "\r"},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_nl_cr",
-                                "id": "line_ending_both",
-                                "command": "deviot_choose_line_ending",
-                                "args": {"line_ending_item": "\r\n"},
-                                "checkbox": true
-                            }
-                        ]
+                        "command": "deviot_choose_line_ending"
                     },
                     {
                         "caption": "menu_display_mode",
                         "id": "display_mode_item",
-                        "children":
-                        [
-                            {
-                                "caption": "menu_text",
-                                "id": "display_mode_text",
-                                "command": "deviot_choose_display_mode",
-                                "args": {"display_mode_item": "Text"},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_ascii",
-                                "id": "display_mode_sacii",
-                                "command": "deviot_choose_display_mode",
-                                "args": {"display_mode_item": "Ascii"},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_hex",
-                                "id": "display_mode_hex",
-                                "command": "deviot_choose_display_mode",
-                                "args": {"display_mode_item": "Hex"},
-                                "checkbox": true
-                            },
-                            {
-                                "caption": "menu_hexascii",
-                                "id": "display_mode_hex",
-                                "command": "deviot_choose_display_mode",
-                                "args": {"display_mode_item": "Mix"},
-                                "checkbox": true
-                            }
-                        ]
+                        "command": "deviot_choose_display_mode"
                     }
                 ]
             },
@@ -388,7 +254,7 @@
                                 },
                                 {
                                     "caption":"menu_always_native",
-				    "checkbox":true,
+				                    "checkbox":true,
                                     "command":"deviot_pio_structure"
                                 },
                                 {

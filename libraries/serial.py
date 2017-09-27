@@ -215,11 +215,11 @@ def display_mode(inp_text, str_len=0):
     text = u''
     display_mode = get_setting("display_mode", 'Text')
     
-    if display_mode == 'Ascii':
+    if display_mode == 'ASCII':
         for character in inp_text:
             text += chr(character)
     
-    elif display_mode == 'Hex':
+    elif display_mode == 'HEX':
         for (index, character) in enumerate(inp_text):
             text += u'%02X ' % character
             if (index + str_len + 1) % 8 == 0:

@@ -189,12 +189,11 @@ class QuickMenu(PreferencesBridge):
             return
 
         selected = self.quick_list[selected]
-
-        if(selected == 'None'):
-            selected = None
+        selected = None if selected == 'None' else selected
 
         save_setting('upload_speed', selected)
 
+    
     def overwrite_baud_list(self):
         """Baud rate list
         
@@ -204,12 +203,10 @@ class QuickMenu(PreferencesBridge):
             list -- list of baud rates
         """
         current = get_setting('upload_speed', "None")
-        baudrate_list = ["None", "1200", "1800", "2400", "4800", "9600", "19200", "38400", 
-                        "57600", "115200", "230400", "460800", "500000", "576000",
-                        "921600", "1000000", "1152000"]
-        self.index = baudrate_list.index(current)
+        items = QuickMenu.baudrate_list()
+        self.index = items.index(current)
 
-        return baudrate_list
+        return items
 
     def callback_serial_ports(self, selected):
         """Selected Port Callback
@@ -395,6 +392,130 @@ class QuickMenu(PreferencesBridge):
             self.quick_list.append([caption, files])
 
         self.show_quick_panel(self.callback_library)
+
+    def serial_baudrate_list(self):
+        """Serial Baudrate
+        
+        List of baud rates to use with the serial monitor.
+        It check if there is already an option selected and
+        set it in the index object.
+        
+        Returns:
+            [list] -- list of
+        """
+        current = get_setting('baudrate', "9600")
+        items = QuickMenu.baudrate_list()
+        self.index = items.index(current)
+
+        return items
+
+    def callback_serial_baudrate(self, selected):
+        """Serial baud rate callback
+        
+        callback to select the baud rate used in the serial
+        monitor. The option is stored in the preferences file
+        
+        Arguments:
+            selected {int} -- index of the selected baud rate
+        """
+        if(selected == -1):
+            return
+
+        selected = self.quick_list[selected]
+        selected = None if selected == 'None' else selected
+
+        save_setting('baudrate', selected)
+
+    def line_endings_list(self):
+        """Serial ending strings
+
+        List of ending string used in the monitor serial
+        """
+        items = [
+                ["None"],
+                ["New Line", "\n"],
+                ["Carriage Return", "\r"],
+                ["Both NL & CR", "\r\n"]
+                ]
+        current = get_setting('line_ending', None)
+        
+        simplified = [i[1] for i in items if len(i) > 1]
+        simplified.insert(0, None)
+
+        self.index = simplified.index(current)
+
+        return items
+
+    def callback_line_endings(self, selected):
+        """Callback line endings
+        
+        Stores the line ending selected by the user
+        
+        Arguments:
+            selected {int} -- index user selection
+        """
+        if(selected == -1):
+            return
+
+        try:
+            selected = self.quick_list[selected][1]
+        except IndexError:
+            selected = None
+
+        save_setting('line_ending', selected)
+
+    def display_mode_list(self):
+        """Display modes
+        
+        List of display modes
+        """
+        items = [["Text"],["ASCII"],["HEX"],["Mix"]]
+
+        current = get_setting('display_mode', 'Text')
+        self.index = items.index([current])
+
+        return items
+
+    def callback_display_mode(self, selected):
+        """Display mode callback
+        
+        Stores the display mode selected by the user
+        
+        Arguments:
+            selected {int} -- index user selection
+        """
+        if(selected == -1):
+            return
+
+        selected = self.quick_list[selected][0]
+        save_setting('display_mode', selected)
+
+    @staticmethod
+    def baudrate_list():
+        """Baudrate list
+
+        List of baud rates shown in the monitor serial and upload speed
+        quick panels.
+        """
+        baudrate_list = ["None",
+                        "1200", 
+                        "1800", 
+                        "2400", 
+                        "4800", 
+                        "9600", 
+                        "19200", 
+                        "38400", 
+                        "57600", 
+                        "115200", 
+                        "230400", 
+                        "460800", 
+                        "500000", 
+                        "576000",
+                        "921600", 
+                        "1000000", 
+                        "1152000"]
+
+        return baudrate_list
 
     def open_file(self, sketch_path):
         """Open sketch

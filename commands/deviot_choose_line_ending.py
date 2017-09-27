@@ -1,5 +1,5 @@
 from sublime_plugin import WindowCommand
-from ..libraries.tools import get_setting, save_setting
+from ..libraries.quick_menu import QuickMenu
 
 class DeviotChooseLineEndingCommand(WindowCommand):
     """
@@ -9,9 +9,10 @@ class DeviotChooseLineEndingCommand(WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, line_ending_item):
-        save_setting('line_ending', line_ending_item)
+    def run(self):
+        Quick = QuickMenu()
+        items = Quick.line_endings_list()
+        callback = Quick.callback_line_endings
+        Quick.set_list(items)
 
-    def is_checked(self, line_ending_item):
-        target_line_ending = get_setting('line_ending', None)
-        return line_ending_item == target_line_ending
+        Quick.show_quick_panel(callback)

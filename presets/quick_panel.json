@@ -93,6 +93,15 @@
         "caption": "menu_auto_clean",
         "command": "deviot_auto_clean"
     },{
+        "caption": "menu_baudrate",
+        "command": "deviot_choose_baudrate"
+    },{
+        "caption": "menu_line_ending",
+        "command": "deviot_choose_line_ending"
+    },{
+        "caption": "menu_display_mode",
+        "command": "deviot_choose_display_mode"
+    },{
         "caption": "menu_upgrade_pio",
         "command": "deviot_upgrade_pio"
     },{
