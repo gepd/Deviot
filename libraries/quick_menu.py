@@ -25,14 +25,12 @@ class QuickMenu(PreferencesBridge):
         global _
         _ = I18n().translate
 
-    def quick_boards(self):
-        """Boards Menu
-        
-        Shows the quick panel with the availables boards in
-        deviot
-        """
-        boards_list = self.quick_boards_list()
-        quick_panel(boards_list, self.callback_board)
+    def set_list(self, quick_list):
+        self.quick_list = quick_list
+
+    def show_quick_panel(self, callback):
+
+        quick_panel(self.quick_list, callback, index=self.index)
 
     def callback_board(self, selected):
         """Board Callback
@@ -51,7 +49,7 @@ class QuickMenu(PreferencesBridge):
             save_sysetting('last_action', None)
             return
 
-        boards_list = self.quick_boards_list()
+        boards_list = self.boards_list()
         board_select = boards_list[selected][-1]
         board_id = board_select.split("|")[-1].strip()
 
@@ -59,7 +57,7 @@ class QuickMenu(PreferencesBridge):
         self.run_last_action()
         self.set_status_information()
 
-    def quick_boards_list(self):
+    def boards_list(self):
         """Boards List
         
         PlatformIO returns a JSON list with all information of the boards,
@@ -93,14 +91,6 @@ class QuickMenu(PreferencesBridge):
 
         return boards_list
 
-    def quick_environments(self):
-        """Environment Panel
-        
-        Displays the quick panel with the available environments
-        """
-        environments_list = self.quick_environment_list()
-        quick_panel(environments_list, self.callback_environment, index=self.index)
-
     def callback_environment(self, selected):
         """Environment Callback
         
@@ -116,7 +106,7 @@ class QuickMenu(PreferencesBridge):
             save_sysetting('last_action', None)
             return
 
-        environments_list = self.quick_environment_list()
+        environments_list = self.environment_list()
         environment_select = environments_list[selected][1]
         environment = environment_select.split("|")[-1].strip()
 
@@ -124,7 +114,7 @@ class QuickMenu(PreferencesBridge):
         self.run_last_action()
         self.set_status_information()
 
-    def quick_environment_list(self):
+    def environment_list(self):
         """
         gets a list with all selected environments and format it
         to be shown in the quick panel
@@ -132,7 +122,7 @@ class QuickMenu(PreferencesBridge):
         from .file import File
 
         environments_list = []
-        boards = self.quick_boards_list()
+        boards = self.boards_list()
         environments = self.get_selected_boards()
         environment = self.get_environment()
         new_environments = environments
@@ -171,16 +161,6 @@ class QuickMenu(PreferencesBridge):
 
         return environments_list
 
-    def quick_overwrite_baud(self):
-        """Upload baud rate
-        
-        Shows the list of baud rates to override when 
-        upload an sketch to a device
-        """
-        self.quick_list = self.quick_overwrite_baud_list()
-        
-        quick_panel(self.quick_list, self.callback_overwrite_baud, index=self.index)
-
     def callback_overwrite_baud(self, selected):
         """Baud rate callback
         
@@ -199,7 +179,7 @@ class QuickMenu(PreferencesBridge):
 
         save_setting('upload_speed', selected)
 
-    def quick_overwrite_baud_list(self):
+    def overwrite_baud_list(self):
         """Baud rate list
         
         List of baud rates used to overwrite the upload speed
@@ -214,15 +194,6 @@ class QuickMenu(PreferencesBridge):
         self.index = baudrate_list.index(current)
 
         return baudrate_list
-
-    def quick_serial_ports(self):
-        """List of Serial Ports
-        
-        Show the list of serial ports availables in the quick panel
-        """
-        self.quick_list = self.quick_serial_list()
-
-        quick_panel(self.quick_list, self.callback_serial_ports, index=self.index)
 
     def callback_serial_ports(self, selected):
         """Selected Port Callback
@@ -246,7 +217,7 @@ class QuickMenu(PreferencesBridge):
         self.run_last_action()
         self.set_status_information()
 
-    def quick_serial_list(self):
+    def serial_list(self):
         """Serial Port List
         
         Gets the list of serial ports and mdns services and
@@ -272,15 +243,7 @@ class QuickMenu(PreferencesBridge):
 
         return ports_list
 
-    def quick_language(self):
-        """Language Panel
-        
-        Shows the panel to selecte the language of the plugin
-        """
-        language_list = self.quick_language_list()
-        quick_panel(language_list, self.callback_language, index=self.index)
-
-    def quick_language_list(self):
+    def language_list(self):
         """Language List
         
         Builts the list with the available languages in Deviot
@@ -326,15 +289,6 @@ class QuickMenu(PreferencesBridge):
         save_setting('compile_lang', True)
         self.window.run_command("deviot_reload")
 
-
-    def quick_import(self):
-        """Import Panel
-        
-        Shows a list of libraries to import in the current sketch
-        """
-        libraries_list = self.quick_import_list()
-        quick_panel(libraries_list, self.callback_import)
-
     def callback_import(self, selected):
         """Import Callback
         
@@ -347,13 +301,13 @@ class QuickMenu(PreferencesBridge):
         if(selected <= 0):
             return
 
-        libraries_list = self.quick_import_list()
+        libraries_list = self.import_list()
         library_import = libraries_list[selected][1]
 
         window = sublime.active_window()
         window.run_command('deviot_insert_library', {'path': library_import})
 
-    def quick_import_list(self):
+    def import_list(self):
         """Import List
         
         To generate the list of libraries, it search first in the two main folder of the plugin
@@ -394,7 +348,7 @@ class QuickMenu(PreferencesBridge):
         if(len(self.quick_list) <= 1):
             self.quick_list = [[_("menu_no_examples")]]
 
-        quick_panel(self.quick_list, self.callback_library)
+        self.show_quick_panel(self.callback_library)
 
     def callback_library(self, selected):
         """Show Examples
@@ -424,7 +378,7 @@ class QuickMenu(PreferencesBridge):
             caption = os.path.basename(files)
             self.quick_list.append([caption, files])
 
-        quick_panel(self.quick_list, self.callback_library)
+        self.show_quick_panel(self.callback_library)
 
     def open_file(self, sketch_path):
         """Open sketch

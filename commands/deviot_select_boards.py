@@ -3,4 +3,9 @@ from ..libraries.quick_menu import QuickMenu
 
 class DeviotSelectBoardsCommand(WindowCommand):
     def run(self):
-        QuickMenu().quick_boards()
+    	Quick = QuickMenu()
+    	items = Quick.boards_list()
+    	callback = Quick.callback_board
+    	Quick.set_list(items)
+
+    	Quick.show_quick_panel(callback)
