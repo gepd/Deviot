@@ -25,7 +25,7 @@ SOFTWARE.
 
 author: gepd
 website: https://github.com/gepd/ReadConfig
-library version: 0.0.4
+library version: 0.0.5
 """
 
 from __future__ import absolute_import
@@ -50,6 +50,8 @@ class ReadConfig(object):
                   configuration files, and managing
                   the parsed database.
     """
+
+    comment_prefixes = ('#', ';')
 
     # Parsing regular expressions
 
@@ -129,7 +131,7 @@ class ReadConfig(object):
         """
         Store comments of the source file
         """
-        if(line.startswith('#') and not self._cur_sect):
+        if(line.startswith(ReadConfig.comment_prefixes) and not self._cur_sect):
             key = '#{0}'.format(self._comment_count)
             self._data[key] = line.rstrip()
             self._comment_count += 1
@@ -295,7 +297,7 @@ class ReadConfig(object):
  
             if(type(line) is type(str())):
                 # comment(s)
-                if(line.startswith('#')):
+                if(line.startswith(ReadConfig.comment_prefixes)):
                     new_data  += line + '\n'
                 # break line(s)
                 else:
