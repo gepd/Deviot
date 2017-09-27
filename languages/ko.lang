@@ -193,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
-msgstr "통신 속도"
+msgstr "직렬 통신 속도"
 
 msgid "menu_line_ending"
 msgstr "줄넘김"

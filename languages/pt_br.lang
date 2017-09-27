@@ -194,7 +194,7 @@ msgid "menu_auto_clean"
 msgstr "Vista de Limpeza Automática"
 
 msgid "menu_baudrate"
-msgstr "Taxa de Transmissão"
+msgstr "Taxa de Transmissão Serial (baudrate)"
 
 msgid "menu_line_ending"
 msgstr "Terminais de Linha"

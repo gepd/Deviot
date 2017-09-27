@@ -193,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Limpiar Ventana"
 
 msgid "menu_baudrate"
-msgstr "Velocidad de Transmisión (baudrate)"
+msgstr "Velocidad de Transmisión Serial (baudrate)"
 
 msgid "menu_line_ending"
 msgstr "Final de Linea"

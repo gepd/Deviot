@@ -193,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
-msgstr "Baudrate"
+msgstr "Serial Baudrate"
 
 msgid "menu_line_ending"
 msgstr "Terminatore di riga"

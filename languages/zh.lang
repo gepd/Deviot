@@ -193,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "自动清除输出"
 
 msgid "menu_baudrate"
-msgstr "波特率"
+msgstr "串行波特率"
 
 msgid "menu_line_ending"
 msgstr "行尾"
