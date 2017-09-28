@@ -205,10 +205,10 @@ class ProjectCheck(QuickMenu):
             selected_boards = self.get_selected_boards()
 
             if(not selected_boards):
-                QuickMenu().quick_boards()
+                self.window.run_command('deviot_select_boards')
                 return
 
-            QuickMenu().quick_environments()
+            self.window.run_command('deviot_select_environment')
             return
 
     def check_port_selected(self):
@@ -227,7 +227,7 @@ class ProjectCheck(QuickMenu):
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
         if(not port_ready and ip_device is None):
-            QuickMenu().quick_serial_ports()
+            self.window.run_command('deviot_select_port')
             self.port_id = None
 
     def check_serial_monitor(self):
