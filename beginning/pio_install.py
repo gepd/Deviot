@@ -60,6 +60,8 @@ class PioInstall(object):
         self.dev_ver = __version__
         self.sub_ver = sublime.version()
 
+        beginning_check()
+
         ###
         installed = get_sysetting('installed', False)
         if(not installed):
@@ -276,6 +278,23 @@ class PioInstall(object):
                     'open_url', {'url': 'https://www.python.org/downloads/'})
             
             exit(0)
+
+
+def beginning_check():
+    """Beginning check
+
+    Checks to do at start sublime text.
+    Telemetry will be always disabled and could be possible to activate
+    in the deviot or o.s terminal. (pio settings set enable_telemetry yes) 
+    """
+    # disable telemetry
+    telemetry_check = get_sysetting('telemetry_check', False)
+    if(not telemetry_check):
+        cmd = ['platformio', 'settings', 'set', 'enable_telemetry', 'no']
+        out = run_command(cmd)
+
+        if(out[0] == 0):
+            save_sysetting('telemetry_check', True)
 
 
 def check_pio():
