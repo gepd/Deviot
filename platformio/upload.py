@@ -51,7 +51,7 @@ class Upload(Initialize):
         self.add_board()
 
         # add extra library board
-        self.add_option('lib_extra_dirs')
+        self.add_option('lib_extra_dirs', append=True)
 
         # check if there is a new speed to overwrite
         self.add_option('upload_speed')

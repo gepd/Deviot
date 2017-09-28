@@ -18,6 +18,7 @@ class PreferencesBridge(PioBridge):
 
     def __init__(self):
         super(PreferencesBridge, self).__init__()
+        self.init_option = None
 
     def save_selected_board(self, board_id):
         """Store Board
@@ -227,7 +228,7 @@ class PreferencesBridge(PioBridge):
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 
-    def add_option(self, option_name, wipe=False):
+    def add_option(self, option_name, wipe=False, append=False):
         """Add option
         
         Adds the option `option_name` into platformio.ini. The value
@@ -239,6 +240,8 @@ class PreferencesBridge(PioBridge):
         Keyword Arguments:
             wipe {bool} -- when is true remove the option 
                             from platformio.ini (default: {False})
+            append {bool} -- when is true, when is true it appends
+                            the given data
         """
         option = get_setting(option_name, None)
         ini_path = self.get_ini_path()
@@ -260,7 +263,7 @@ class PreferencesBridge(PioBridge):
 
         # add option
         if(not wipe and option and option not in current):
-            if(self.init_option):
+            if(self.init_option and append):
                 option = self.init_option + ', ' + option
             
             config.set(environment, option_name, option)
@@ -274,7 +277,6 @@ class PreferencesBridge(PioBridge):
             else:
                 config.remove_option(environment, option_name)
                 write_file = True
-            self.init_option = None
 
         # save in file
         if(write_file):
