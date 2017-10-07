@@ -263,7 +263,7 @@ class PioInstall(object):
         if(out[0] == 0):
             self.version = sub(r'\D', '', out[1])
 
-        if(int(self.version[0]) is 3):
+        if(self.version and int(self.version[0]) is 3):
             self.check_sym_link()
 
         # show error and link to download
