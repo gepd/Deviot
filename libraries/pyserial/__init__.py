@@ -1,33 +1,42 @@
-#!/usr/bin/env python 
-
-# portable serial port access with python
-# this is a wrapper module for different platform implementations
+#!/usr/bin/env python
 #
-# (C) 2001-2010 Chris Liechti <cliechti@gmx.net>
-# this is distributed under a free software license, see license.txt
-
-VERSION = '2.6-pre1'
+# This is a wrapper module for different platform implementations
+#
+# This file is part of pySerial. https://github.com/pyserial/pyserial
+# (C) 2001-2017 Chris Liechti <cliechti@gmx.net>
+#
+# SPDX-License-Identifier:    BSD-3-Clause
 
 import sys
+import importlib
 
+from .serialutil import *
+#~ SerialBase, SerialException, to_bytes, iterbytes
+
+__version__ = '3.4'
+
+VERSION = __version__
+
+# pylint: disable=wrong-import-position
 if sys.platform == 'cli':
-    from serial.serialcli import *
+    from .serialcli import Serial
 else:
     import os
     # chose an implementation, depending on os
-    if os.name == 'nt': #sys.platform == 'win32':
-        from .serialwin32 import *
+    if os.name == 'nt':  # sys.platform == 'win32':
+        from .serialwin32 import Serial
     elif os.name == 'posix':
-        from .serialposix import *
+        from .serialposix import Serial, PosixPollSerial, VTIMESerial  # noqa
     elif os.name == 'java':
-        from .serialjava import *
+        from .serialjava import Serial
     else:
-        raise ImportError("Sorry: no implementation for your platform ('%s') available" % (os.name,))
+        raise ImportError("Sorry: no implementation for your platform ('{}') available".format(os.name))
 
 
 protocol_handler_packages = [
-        'serial.urlhandler',
-        ]
+    'serial.urlhandler',
+]
+
 
 def serial_for_url(url, *args, **kwargs):
     """\
@@ -44,33 +53,34 @@ def serial_for_url(url, *args, **kwargs):
     ``protocol_handler_packages.append("my_handlers")`` would extend the search
     path so that ``serial_for_url("foobar://"))`` would work.
     """
-    # check remove extra parameter to not confuse the Serial class
-    do_open = 'do_not_open' not in kwargs or not kwargs['do_not_open']
-    if 'do_not_open' in kwargs: del kwargs['do_not_open']
-    # the default is to use the native version
-    klass = Serial   # 'native' implementation
-    # check port type and get class
+    # check and remove extra parameter to not confuse the Serial class
+    do_open = not kwargs.pop('do_not_open', False)
+    # the default is to use the native implementation
+    klass = Serial
     try:
-        url_nocase = url.lower()
+        url_lowercase = url.lower()
     except AttributeError:
         # it's not a string, use default
         pass
     else:
-        if '://' in url_nocase:
-            protocol = url_nocase.split('://', 1)[0]
+        # if it is an URL, try to import the handler module from the list of possible packages
+        if '://' in url_lowercase:
+            protocol = url_lowercase.split('://', 1)[0]
+            module_name = '.protocol_{}'.format(protocol)
             for package_name in protocol_handler_packages:
-                module_name = '%s.protocol_%s' % (package_name, protocol,)
                 try:
-                    handler_module = __import__(module_name)
+                    importlib.import_module(package_name)
+                    handler_module = importlib.import_module(module_name, package_name)
                 except ImportError:
-                    pass
+                    continue
                 else:
-                    klass = sys.modules[module_name].Serial
+                    if hasattr(handler_module, 'serial_class_for_url'):
+                        url, klass = handler_module.serial_class_for_url(url)
+                    else:
+                        klass = handler_module.Serial
                     break
             else:
-                raise ValueError('invalid URL, protocol %r not known' % (protocol,))
-        else:
-            klass = Serial   # 'native' implementation
+                raise ValueError('invalid URL, protocol {!r} not known'.format(protocol))
     # instantiate and open when desired
     instance = klass(None, *args, **kwargs)
     instance.port = url
