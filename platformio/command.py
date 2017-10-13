@@ -72,7 +72,7 @@ class Command(ProjectRecognition):
         command.extend(post_command)
 
         # verbose mode
-        if(self.verbose and 'run' in cmd and '-e' in cmd and 'upload' not in cmd):
+        if(self.verbose and 'run' in cmd and '-e' in cmd):
             command.extend(['-v'])
 
         command.append("2>&1")
