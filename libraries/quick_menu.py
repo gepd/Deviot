@@ -405,7 +405,11 @@ class QuickMenu(PreferencesBridge):
         """
         current = get_setting('baudrate', "9600")
         items = QuickMenu.baudrate_list()
-        self.index = items.index(current)
+
+        try:
+            self.index = items.index(current)
+        except ValueError:
+            self.index = 0
 
         return items
 
