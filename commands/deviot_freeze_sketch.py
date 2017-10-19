@@ -23,7 +23,10 @@ class DeviotFreezeSketchCommand(WindowCommand):
         view = window.active_view()
         self.sketch_path = view.file_name()
 
-        self.setting_path = get_setting('freeze_sketch', None)    
+        if(not self.sketch_path):
+            return enabled
+
+        self.setting_path = get_setting('freeze_sketch', None)
 
         if(self.sketch_path.endswith('.ino') or 
             self.sketch_path.endswith('.cpp') or
