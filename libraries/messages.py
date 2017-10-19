@@ -36,7 +36,10 @@ class Console(object):
         size = self.panel.size()
         auto_clean = get_setting('auto_clean', True)
 
-        if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
+        sel = self.panel.sel()[0]
+        line_end = self.panel.rowcol(sel.end())[0] + 2
+
+        if(auto_clean and line_end > 30000):
             self.clean_console()
 
         if(size < 1 and self.name == 'exec'):
