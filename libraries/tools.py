@@ -22,7 +22,7 @@ def accepted_extensions():
     """
     Files accepted to be processed by deviot
     """
-    accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+    accepted = ['ino', 'pde', 'cpp', 'c', 'S', 'h']
     return accepted
 
 def get_env_paths():
