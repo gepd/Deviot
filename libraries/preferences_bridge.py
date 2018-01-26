@@ -39,7 +39,10 @@ class PreferencesBridge(PioBridge):
                 settings.append(board_id)
             else:
                 settings.remove(board_id)
-                self.remove_ini_environment(board_id)
+                try:
+                    self.remove_ini_environment(board_id)
+                except:
+                    pass
                 
                 if(len(settings) > 0):
                     board_id = settings[-1]
