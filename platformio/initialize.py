@@ -8,8 +8,8 @@ from __future__ import unicode_literals
 
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
-from ..libraries.messages import MessageQueue
 from ..libraries.tools import save_sysetting, get_setting
+from ..libraries.I18n import I18n
 
 class Initialize(ProjectCheck):
     """
@@ -24,14 +24,9 @@ class Initialize(ProjectCheck):
     """
     def __init__(self):
         super(Initialize, self).__init__()
-
-        messages = MessageQueue("_deviot_starting{0}", version)
-        messages.start_print()
-        
-        self.dprint = messages.put
-        self.derror = messages.print_once
-        self.dstop = messages.stop_print
+        _ = I18n().translate
         self.init_option = None
+        self.extra_name = _('_deviot_starting{0}').format(version)
 
     def add_board(self):
         """New Board
@@ -91,9 +86,6 @@ class Initialize(ProjectCheck):
 
             # remove upload_speed
             self.add_option('upload_speed', wipe=True)
-
-        # stop message queue
-        self.dstop()
 
         # none last action
         save_sysetting('last_action', None)

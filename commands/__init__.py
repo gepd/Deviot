@@ -54,6 +54,7 @@ from .deviot_clean_console import DeviotCleanConsoleCommand
 from .deviot_reload import DeviotReloadCommand
 from .deviot_set_ip import DeviotSetIpCommand
 from .deviot_history import InputTextHistoryCommand
+from .min_origami import DeviotCreatePaneCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -111,5 +112,6 @@ __all__ = [
     'DeviotCleanConsoleCommand',
     'DeviotReloadCommand',
     'DeviotSetIpCommand',
-    'InputTextHistoryCommand'
+    'InputTextHistoryCommand',
+    'DeviotCreatePaneCommand'
 ]

@@ -1,80 +1,221 @@
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
+# This file is part of the uPiot project, https://github.com/gepd/upiot/
+#
+# MIT License
+#
+# Copyright (c) 2017 GEPD
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-from os import getcwd, environ
-import subprocess
-from sys import exit
+import os
+import time
+import threading
+import sublime
 
-from ..libraries.tools import get_setting, get_sysetting, create_command
-from ..platformio.project_recognition import ProjectRecognition
+from re import findall
+from sys import platform
+from subprocess import Popen, PIPE
+from functools import partial
+from collections import deque
 
-###
-dprint = None
-derror = None
-dstop = None
-###
+from ..libraries import messages
+from ..libraries.tools import create_command, get_setting
+from ..libraries.thread_progress import ThreadProgress
+from .project_recognition import ProjectRecognition
+
+_COMMAND_QUEUE = deque()
+_BUSY = False
+
+
+class AsyncProcess(object):
+
+    def __init__(self, cmd, listener):
+        self.listener = listener
+        self.killed = False
+        self.start_time = time.time()
+
+        self.proc = Popen(
+            cmd,
+            stdout=PIPE,
+            stderr=PIPE,
+            stdin=PIPE,
+            shell=True)
+
+        if(self.proc.stdout):
+            th1 = threading.Thread(target=self.read_stdout)
+            th1.start()
+            th1.join()
+            ThreadProgress(th, '', '')
+
+        if(self.proc.stderr):
+            th2 = threading.Thread(target=self.read_stderr)
+            th2.start()
+            th2.join()
+
+    def kill(self):
+        """Kill process
+
+        kill the encapsulated subprocess.Popen
+        """
+        if(not self.killed):
+            self.killed = True
+            if(platform == 'win32'):
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                subprocess.Popen("taskkill /PID " + str(self.proc.pid),
+                                 startupinfo=startupinfo)
+            else:
+                self.proc.terminate()
+            self.listener = None
+
+    def poll(self):
+        return self.proc.poll() is None
+
+    def exit_code(self):
+        """
+        return the exit code
+        """
+        return self.proc.poll()
+
+    def read_stdout(self):
+        """Read stdout output
+
+        Reads the stdout outputs when the data is available
+        and send it to the listener to be printed
+        """
+        while True:
+            data = os.read(self.proc.stdout.fileno(), 2 ** 15)
+
+            if(len(data) > 0):
+                if(self.listener):
+                    self.listener.on_data(data)
+            else:
+                self.proc.stdout.close()
+                if(self.listener):
+                    self.listener.on_finished(self)
+                break
+
+    def read_stderr(self):
+        """Read stderr output
+
+        Reads the stderr outputs when the data is available
+        and send it to the listener to be printed
+        """
+        while True:
+            data = os.read(self.proc.stderr.fileno(), 2 ** 15)
+
+            if len(data) > 0:
+                if self.listener:
+                    self.listener.on_data(data)
+            else:
+                self.proc.stderr.close()
+                break
+
 
 class Command(ProjectRecognition):
-    def __init__(self):
-        super(Command, self).__init__()
-        self.realtime = True
-        self.set_return = False
-        self.verbose = get_setting('verbose_output', False)
-        self.dprint = None
+    txt = None
 
-        env_path = get_sysetting('env_path', None)
-        
-        if(env_path):
-            environ['PATH'] = env_path
+    def init(self, extra_name=None, messages=None):
+        self.extra_name = extra_name
+        self.txt = messages
 
-    def run_command(self, command, prepare=True):
-        '''
-        Run a command with Popen and return the results or print the errors
-        '''
+    def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
+        self.window = sublime.active_window()
 
-        if(not self.cwd):
-            self.cwd = getcwd()
+        global _COMMAND_QUEUE
+        global _BUSY
 
-        if(prepare):
-            command = self.prepare_command(command)
-        command = ' '.join(command)
+        # kill the process
+        if(kill):
+            if(self.proc):
+                self.proc.kill()
+                self.proc = None
+            return
 
-        process = subprocess.Popen(command, stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, cwd=self.cwd,
-                                   universal_newlines=True, shell=True)
+        if(_BUSY):
+            _COMMAND_QUEUE.append(cmd)
+            return
 
-        if(self.realtime):
-            while True:
-                output = process.stdout.readline()
-                # exit when there is nothing to show
-                if output == '' and process.poll() is not None:
-                    break
+        if(not self.txt):
+            self.txt = messages.Messages(self.extra_name)
+            self.txt.create_panel(in_file=in_file)
 
-                if output:
-                    self.dprint(output, hide_hour=True)
-                    # dprint(output)
+        self.encoding = 'utf-8'
+        self.proc = None
 
-        # return code and stdout
-        output = process.communicate()
-        stdout = output[0]
-        return_code = process.returncode
+        verbose = get_setting('verbose_output', False)
+        cmd = prepare_command(cmd, verbose)
 
-        # dstop()
+        if(self.cwd):
+            os.chdir(self.cwd)
 
-        if stdout and self.set_return:
-            return stdout
-        
-        return (return_code, stdout)
+        try:
+            _BUSY = True
+            self.proc = AsyncProcess(cmd, self)
+        except Exception as e:
+            pass
 
-    def prepare_command(self, post_command):
-        cmd = " ".join(post_command)
-        command = create_command(['platformio', '-f', '-c', 'sublimetext'])
-        command.extend(post_command)
+    def on_data(self, data):
+        try:
+            characters = data.decode(self.encoding)
+        except:
+            characters = "[Decode error - output not " + self.encoding + "]\n"
 
-        # verbose mode
-        if(self.verbose and 'run' in cmd and '-e' in cmd):
-            command.extend(['-v'])
+        # Normalize newlines, Sublime Text always uses a single \n separator
+        # in memory.
+        characters = characters.replace('\r\n', '\n').replace('\r', '\n')
+        self.txt.print(characters)
 
-        command.append("2>&1")
+    def finish(self, proc):
+        elapsed = time.time() - proc.start_time
+        exit_code = proc.exit_code()
 
-        return command
+        if(exit_code == 0 and not len(_COMMAND_QUEUE)):
+            sublime.status_message("Build finished")
+        else:
+            sublime.status_message("Build finished with errors")
+
+        # run next command in the deque
+        run_next()
+
+    def on_finished(self, proc):
+        sublime.set_timeout(partial(self.finish, proc), 0)
+
+
+def run_next():
+    global _COMMAND_QUEUE
+    global _BUSY
+
+    _BUSY = False
+
+    if(len(_COMMAND_QUEUE)):
+        Command().run(_COMMAND_QUEUE.popleft())
+
+
+def prepare_command(options, verbose):
+    cmd = " ".join(options)
+    command = create_command(['platformio', '-f', '-c', 'sublimetext'])
+    command.extend(options)
+
+    # verbose mode
+    if(verbose and 'run' in cmd and '-e' in cmd):
+        command.extend(['-v'])
+
+    command.append("2>&1")
+
+    return " ".join(command)

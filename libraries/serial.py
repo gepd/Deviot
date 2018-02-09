@@ -14,7 +14,7 @@ from . import __version__ as version
 from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
-from .messages import MessageQueue
+from .messages import Messages
 from .I18n import I18n
 
 def serial_port_list():
@@ -54,20 +54,13 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
-        type_console = 'sexec'
         serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
         output_console = get_setting('output_console', False)
-        
-        if(not output_console):
-            type_console = serial_header.strip('\\n')
     
-        message = MessageQueue(serial_header)
-        message.set_console(type_console)
-        message.start_print()
+        messages = Messages()
+        messages.create_panel(in_file=True, name=serial_header.rstrip('\\n'))
 
-        self.dprint = message.put
-        self.dstop = message.stop_print
-        self.clean = message.clean_console
+        self.dprint = messages.print
 
     def is_running(self):
         """Monitor Running
@@ -114,7 +107,6 @@ class SerialMonitor(object):
         self.is_alive = False
         if(self.port in serials_in_use):
             serials_in_use.remove(self.port)
-        self.dstop()
 
     def clean_console(self):
         """Clean console
@@ -142,7 +134,7 @@ class SerialMonitor(object):
                 length_in_text = len(inp_text)
                 inp_text = display_mode(inp_text, length_before)
                 
-                self.dprint(inp_text, hide_hour=True)
+                self.dprint(inp_text)
                 
                 length_before += length_in_text
                 length_before %= 16
@@ -293,10 +285,9 @@ def toggle_serial_monitor():
     serial_monitor = get_serial_monitor(port_id)
 
     if(serial_monitor == False):
-        message = MessageQueue("_deviot_{0}", version)
-        message.start_print()
-        message.put("serial_not_available")
-        message.stop_print()
+        message = Messages(init_text=("_deviot_{0}", version))
+        message.create_panel(in_file=True)
+        message.print("serial_not_available")
         return
 
     if(not serial_monitor.is_running()):

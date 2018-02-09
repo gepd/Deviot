@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from .command import Command
 from ..libraries import __version__ as version
 from ..libraries.tools import create_command, get_sysetting, save_sysetting
-from ..libraries.messages import MessageQueue
+from ..libraries.messages import Messages
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
@@ -35,16 +35,12 @@ class Update(Command):
 
         self.cwd = None
         self.dprint = None
-        self.derror = None
-        self.dstop = None
 
     def show_feedback(self):
-        messages = MessageQueue("_deviot_starting{0}", version)
-        messages.start_print()
+        messages = Messages()
+        messages.create_panel()
 
-        self.dprint = messages.put
-        self.derror = messages.print_once
-        self.dstop = messages.stop_print
+        self.dprint = messages.print
 
     def update_pio(self):
         """Update PlatformIO
