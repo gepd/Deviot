@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-
-# portable serial port access with python
-# this is a wrapper module for different platform implementations of the
-# port enumeration feature
 #
-# (C) 2011 Chris Liechti <cliechti@gmx.net>
-# this is distributed under a free software license, see license.txt
+# Serial port enumeration. Console tool and backend selection.
+#
+# This file is part of pySerial. https://github.com/pyserial/pyserial
+# (C) 2011-2015 Chris Liechti <cliechti@gmx.net>
+#
+# SPDX-License-Identifier:    BSD-3-Clause
 
 """\
 This module will provide a function called comports that returns an
@@ -16,84 +16,93 @@ Additionally a grep function is supplied that can be used to search for ports
 based on their descriptions or hardware ID.
 """
 
-import sys, os, re
+import sys
+import os
+import re
 
 # chose an implementation, depending on os
 #~ if sys.platform == 'cli':
 #~ else:
-import os
-# chose an implementation, depending on os
-if os.name == 'nt': #sys.platform == 'win32':
-    from .list_ports_windows import *
+if os.name == 'nt':  # sys.platform == 'win32':
+    from .list_ports_windows import comports
 elif os.name == 'posix':
-    from .list_ports_posix import *
+    from .list_ports_posix import comports
 #~ elif os.name == 'java':
 else:
-    raise ImportError("Sorry: no implementation for your platform ('%s') available" % (os.name,))
+    raise ImportError("Sorry: no implementation for your platform ('{}') available".format(os.name))
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-def grep(regexp):
+def grep(regexp, include_links=False):
     """\
     Search for ports using a regular expression. Port name, description and
     hardware ID are searched. The function returns an iterable that returns the
     same tuples as comport() would do.
     """
-    for port, desc, hwid in comports():
-        if re.search(regexp, port, re.I) or re.search(regexp, desc) or re.search(regexp, hwid):
-            yield port, desc, hwid
+    r = re.compile(regexp, re.I)
+    for info in comports(include_links):
+        port, desc, hwid = info
+        if r.search(port) or r.search(desc) or r.search(hwid):
+            yield info
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 def main():
-    import optparse
+    import argparse
 
-    parser = optparse.OptionParser(
-        usage = "%prog [options] [<regexp>]",
-        description = "Miniterm - A simple terminal program for the serial port."
-    )
-    
-    parser.add_option("--debug",
-            help="print debug messages and tracebacks (development mode)",
-            dest="debug",
-            default=False,
-            action='store_true')
+    parser = argparse.ArgumentParser(description='Serial port enumeration')
 
-    parser.add_option("-v", "--verbose",
-            help="show more messages (can be given multiple times)",
-            dest="verbose",
-            default=1,
-            action='count')
+    parser.add_argument(
+        'regexp',
+        nargs='?',
+        help='only show ports that match this regex')
 
-    parser.add_option("-q", "--quiet",
-            help="suppress all messages",
-            dest="verbose",
-            action='store_const',
-            const=0)
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='show more messages')
 
-    (options, args) = parser.parse_args()
+    parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='suppress all messages')
 
+    parser.add_argument(
+        '-n',
+        type=int,
+        help='only output the N-th entry')
+
+    parser.add_argument(
+        '-s', '--include-links',
+        action='store_true',
+        help='include entries that are symlinks to real devices')
+
+    args = parser.parse_args()
 
     hits = 0
     # get iteraror w/ or w/o filter
-    if args:
-        if len(args) > 1:
-            parser.error('more than one regexp not supported')
-        print ("Filtered list with regexp: %r" % (args[0],))
-        iterator = sorted(grep(args[0]))
+    if args.regexp:
+        if not args.quiet:
+            sys.stderr.write("Filtered list with regexp: {!r}\n".format(args.regexp))
+        iterator = sorted(grep(args.regexp, include_links=args.include_links))
     else:
-        iterator = sorted(comports())
+        iterator = sorted(comports(include_links=args.include_links))
     # list them
-    for port, desc, hwid in iterator:
-        print ("%-20s" % (port,))
-        if options.verbose > 1:
-            print ("    desc: %s" % (desc,))
-            print ("    hwid: %s" % (hwid,))
+    for n, (port, desc, hwid) in enumerate(iterator, 1):
+        if args.n is None or args.n == n:
+            sys.stdout.write("{:20}\n".format(port))
+            if args.verbose:
+                sys.stdout.write("    desc: {}\n".format(desc))
+                sys.stdout.write("    hwid: {}\n".format(hwid))
         hits += 1
-    if options.verbose:
+    if not args.quiet:
         if hits:
-            print ("%d ports found" % (hits,))
+            sys.stderr.write("{} ports found\n".format(hits))
         else:
-            print ("no ports found")
+            sys.stderr.write("no ports found\n")
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # test
 if __name__ == '__main__':
     main()
