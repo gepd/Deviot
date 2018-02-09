@@ -171,27 +171,29 @@ class PioTerminal(Command):
         """
         from ..libraries.I18n import I18n
 
-        width = 25
+        width = 15
 
         cmd_string = ["cwd", "cd", "ls", "mk", "rm", "clear", "pio --help"]
         cmd_descript = ["cmd_cwd", "cmd_cd", "cmd_ls", "cmd_mk", "cmd_rm", "cmd_clear", "cmd_pio_help"]
 
         for cmd, description in zip(cmd_string, cmd_descript):
             description = I18n().translate(description)
-            self.dprint("{}: {}\n".format(cmd.ljust(width), str(description).ljust(width)))
+            self.dprint("{}: {}".format(cmd.ljust(width), str(description).ljust(width)))
 
     def clear_cmd(self):
         """Clean view
         
         Cleans the console view
         """
+        global _
+
         self.window.focus_view(self.view)
         self.view.set_read_only(False)
         self.window.run_command("deviot_clean_view")
         self.view.set_read_only(True)
 
         header = self.check_header()
-        self.dprint(header)
+        self.dprint(_(header))
 
     def show_cwd(self):
         """Currente directory
