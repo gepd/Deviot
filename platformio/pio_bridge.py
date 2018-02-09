@@ -20,22 +20,6 @@ class PioBridge(Command):
 
         self.cwd = self.get_working_project_path()
 
-    def save_boards_list(self):
-        """PlatformIO Board List
-        
-        Gets the list of all boards availables in platformIO and
-        stores it in a json file
-        """
-        self.cwd = None
-        self.set_return = True
-        self.realtime = False
-        
-        cmd = ['boards', '--json-output']
-        boards = self.run_command(cmd)
-
-        board_file_path = paths.getBoardsFileDataPath()
-        File(board_file_path).write(boards)
-
     def save_boards_list_async(self):
         """Save boards list async
         
@@ -45,10 +29,11 @@ class PioBridge(Command):
         from threading import Thread
         from ..libraries.thread_progress import ThreadProgress
         from ..libraries.I18n import I18n
+        from ..beginning.pio_install import save_board_list
 
         txt = I18n().translate('processing')
 
-        thread = Thread(target=self.save_boards_list)
+        thread = Thread(target=save_board_list)
         thread.start()
         ThreadProgress(thread, txt, '')
 

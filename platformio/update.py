@@ -10,6 +10,7 @@ from .command import Command
 from ..libraries import __version__ as version
 from ..libraries.tools import create_command, get_sysetting, save_sysetting
 from ..libraries.messages import Messages
+from ..beginning.pio_install import run_command
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
@@ -48,10 +49,11 @@ class Update(Command):
         Update platformIO to the last version (block thread)
         """
         self.show_feedback()
-        self.dprint("searching_pio_updates")
+        self.dprint(_("searching_pio_updates"))
 
         cmd = ['upgrade']
-        out = self.run_command(cmd)
+        out = run_command(cmd, prepare=True)
+        self.dprint(out[1])
 
     def update_async(self):
         """New Thread Execution
@@ -83,21 +85,21 @@ class Update(Command):
         the stable or developer version
         """
         self.show_feedback()
-        self.dprint("uninstall_old_pio")
+        self.dprint(_("uninstall_old_pio"))
 
         cmd = ['pip','uninstall', '--yes','platformio']
-        out = self.run_command(cmd, prepare=False)
+        out = run_command(cmd)
 
         if(get_sysetting('pio_developer', False)):
             self.dprint("installing_dev_pio")
             option = 'https://github.com/platformio/' \
             'platformio/archive/develop.zip'
         else:
-            self.dprint("installing_stable_pio")
+            self.dprint(_("installing_stable_pio"))
             option = 'platformio'
 
         cmd = create_command(['pip','install', '-U', option])
-        out = self.run_command(cmd, prepare=False)
+        out = run_command(cmd)
 
     def check_update_async(self):
         """New Thread Execution
@@ -126,7 +128,7 @@ class Update(Command):
 
         date_now = datetime.now()
         date_update = get_sysetting('last_check_update', False)
-        
+
         try:
             date_update = datetime.strptime(date_update, '%Y-%m-%d %H:%M:%S.%f')
 
@@ -147,7 +149,7 @@ class Update(Command):
 
         self.realtime = False
         cmd = ['--version']
-        out = self.run_command(cmd)
+        out = run_command(cmd, prepare=True)
 
         pio_version = out[1]
         pio_version_int = int(sub(r'\D', '', pio_version))
@@ -175,4 +177,4 @@ class Update(Command):
                 self.realtime = True
 
                 cmd = ['upgrade']
-                out = self.run_command(cmd)
+                out = run_command(cmd, prepare=True)

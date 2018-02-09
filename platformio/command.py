@@ -34,7 +34,7 @@ from functools import partial
 from collections import deque
 
 from ..libraries import messages
-from ..libraries.tools import create_command, get_setting
+from ..libraries.tools import prepare_command, get_setting
 from ..libraries.thread_progress import ThreadProgress
 from .project_recognition import ProjectRecognition
 
@@ -152,8 +152,11 @@ class Command(ProjectRecognition):
             return
 
         if(not self.txt):
-            self.txt = messages.Messages(self.extra_name)
-            self.txt.create_panel(in_file=in_file)
+            try:
+                self.txt = messages.Messages(self.extra_name)
+                self.txt.create_panel(in_file=in_file)
+            except:
+                pass
 
         self.encoding = 'utf-8'
         self.proc = None
@@ -205,17 +208,3 @@ def run_next():
 
     if(len(_COMMAND_QUEUE)):
         Command().run(_COMMAND_QUEUE.popleft())
-
-
-def prepare_command(options, verbose):
-    cmd = " ".join(options)
-    command = create_command(['platformio', '-f', '-c', 'sublimetext'])
-    command.extend(options)
-
-    # verbose mode
-    if(verbose and 'run' in cmd and '-e' in cmd):
-        command.extend(['-v'])
-
-    command.append("2>&1")
-
-    return " ".join(command)

@@ -107,6 +107,20 @@ def create_command(command):
 
     return cmd
 
+def prepare_command(options, verbose):
+    cmd = " ".join(options)
+    command = create_command(['platformio', '-f', '-c', 'sublimetext'])
+    command.extend(options)
+
+    # verbose mode
+    if(verbose and 'run' in cmd and '-e' in cmd):
+        command.extend(['-v'])
+
+    command.append("2>&1")
+
+    return " ".join(command)
+
+
 def get_sysetting(key, default=None):
     """
     Stores the setting in the file:
