@@ -8,7 +8,7 @@ from threading import Thread
 from time import sleep
 
 from ..libraries import tools, paths
-from ..libraries.messages import MessageQueue
+from ..libraries.messages import Messages
 from ..platformio.command import Command
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
@@ -17,19 +17,18 @@ class PioTerminal(Command):
 
     def __init__(self):
         super(PioTerminal, self).__init__()
+
         global _
         _ = I18n().translate
 
         name = 'PlatformIO Terminal'
-        self.window, self.view = tools.findInOpendView(name)
 
+        self.window, self.view = tools.findInOpendView(name)
         header = self.check_header()
-        message = MessageQueue(header)
-        message.set_console(name)
-        message.start_print()
-        
-        self.dprint = message.put
-        self.dstop = message.stop_print
+
+        self.messages = Messages(init_text=_(header))
+        self.messages.create_panel(in_file=True, name=name)
+        self.dprint = self.messages.print
 
     def check_header(self):
         """Terminal eader
@@ -54,7 +53,6 @@ class PioTerminal(Command):
             self.window.focus_view(self.view)
             self.window.run_command("close")
             self.window.run_command('destroy_pane', {'direction': 'self'})
-            self.dstop()
 
     def print_screen(self, text):
         """Print on screen
@@ -93,7 +91,6 @@ class PioTerminal(Command):
         
         Cancel the message queue when the input panel is cancel (esc key)
         """
-        self.dstop()
 
     def send_cmd(self, cmd):
         """Process command
@@ -106,10 +103,9 @@ class PioTerminal(Command):
             cmd {str} -- command to execute
         """
         if(not cmd):
-            self.dstop()
             return
 
-        self.dprint("\n$ {0} \n".format(cmd), hide_hour=True)
+        self.dprint("\n$ {0} \n".format(cmd))
         
         sleep(0.03)
 
@@ -121,7 +117,8 @@ class PioTerminal(Command):
         cmd = cmd.split(" ")
 
         self.cwd = os.getcwd()
-        self.run_command(cmd)
+        self.init(extra_name="Pio Terminal 2.0", messages=self.messages)
+        self.run_command(cmd, in_file=True)
 
         self.show_input()
 
@@ -161,7 +158,7 @@ class PioTerminal(Command):
         elif('pio' in cmd or 'platformio' in cmd):
             cmd_return = False
         else:
-            self.dprint("invalid_command", hide_hour=True)
+            self.dprint("invalid_command")
             self.show_input()
 
         return cmd_return
@@ -181,7 +178,7 @@ class PioTerminal(Command):
 
         for cmd, description in zip(cmd_string, cmd_descript):
             description = I18n().translate(description)
-            self.dprint("{}: {}\n".format(cmd.ljust(width), str(description).ljust(width)), hide_hour=True)
+            self.dprint("{}: {}\n".format(cmd.ljust(width), str(description).ljust(width)))
 
     def clear_cmd(self):
         """Clean view
@@ -194,7 +191,7 @@ class PioTerminal(Command):
         self.view.set_read_only(True)
 
         header = self.check_header()
-        self.dprint(header, hide_hour=True)
+        self.dprint(header)
 
     def show_cwd(self):
         """Currente directory
@@ -202,7 +199,7 @@ class PioTerminal(Command):
         Prints the current working directory
         """
         cwd = os.getcwd()
-        self.dprint(cwd + '\n', hide_hour=True)
+        self.dprint(cwd + '\n')
 
     def set_cwd(self, path):
         """Set directory
@@ -215,11 +212,11 @@ class PioTerminal(Command):
         cwd = os.getcwd()
         cwd = os.path.join(cwd, path)
         if(not os.path.isdir(cwd)):
-            self.dprint('invalid_path', hide_hour=True)
+            self.dprint('invalid_path')
             return
         os.chdir(path)
         cwd = os.getcwd()
-        self.dprint(cwd + '\n', hide_hour=True)
+        self.dprint(cwd + '\n')
 
     def list_cwd(self):
         """List of files and directories
@@ -230,7 +227,7 @@ class PioTerminal(Command):
         cwd = os.getcwd()
         cwd = os.path.join(cwd, '*')
         for current in glob(cwd):
-            self.dprint(current + '\n', hide_hour=True)
+            self.dprint(current + '\n')
 
     def mk_cwd(self, path):
         """Make folder
@@ -246,7 +243,7 @@ class PioTerminal(Command):
             os.makedirs(path)
             self.dprint("created{0}", True, path)
         except:
-            self.dprint("error_making_folder", hide_hour=True)
+            self.dprint("error_making_folder")
 
     def rm_cwd(self, path):
         """Remove folder
@@ -263,4 +260,4 @@ class PioTerminal(Command):
             rmtree(cwd)
             self.dprint("removed{0}", True, path)
         except:
-            self.dprint("wrong_folder_name", hide_hour=True)
+            self.dprint("wrong_folder_name")

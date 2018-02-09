@@ -7,4 +7,4 @@ class DeviotHideConsoleCommand(WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
     def run(self):
-        self.window.run_command("hide_panel", {"panel": "output.exec"})
+        self.window.run_command("hide_panel", {"panel": "output.deviot"})

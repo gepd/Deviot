@@ -18,7 +18,7 @@ from urllib.request import urlopen
 from . import __version__ as version
 from .file import File
 from .I18n import I18n
-from .messages import MessageQueue
+from .messages import Messages
 from .quick_panel import quick_panel
 from ..platformio.command import Command
 from .thread_progress import ThreadProgress
@@ -46,7 +46,6 @@ class Libraries(Command):
         self.cwd = None
 
         self.dprint = None
-        self.dstop = None
 
     def set_queue(self):
         """Message Instances
@@ -54,11 +53,10 @@ class Libraries(Command):
         Makes all the instances to start to print in the deviot console.
         It sends a header string as first message
         """
-        message = MessageQueue("deviot_library{0}", version)
-        message.start_print()
-        
-        self.dprint = message.put
-        self.dstop = message.stop_print
+        messages = Messages()
+        messages.create_panel()
+
+        self.dprint = messages.print
 
     def search_library(self):
         """Search Library
@@ -185,8 +183,6 @@ class Libraries(Command):
         cmd = ['lib', '--global', 'install', lib_id]
         out = self.run_command(cmd)
 
-        self.dstop()
-
         if(out[0] == 0):
             quick_list = File(self.lib_file_path).read_json()
             quick_list.append(self.quick_list[selected])
@@ -224,8 +220,6 @@ class Libraries(Command):
 
         cmd = ['lib', '--global', 'update', lib_id]
         out = self.run_command(cmd)
-
-        self.dstop()
 
     def get_installed_list(self, type):
         """Install libraries list
@@ -281,8 +275,6 @@ class Libraries(Command):
 
         cmd = ['lib', '--global', 'uninstall', lib_id]
         out = self.run_command(cmd)
-
-        self.dstop()
 
         if(out[0] == 0):
             self.quick_list.remove(self.quick_list[selected])
