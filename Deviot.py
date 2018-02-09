@@ -20,6 +20,7 @@ from .libraries.paths import getMainMenuPath, getPackagesPath
 from .libraries.paths import getDeviotUserPath, getPluginName
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
+from .libraries import messages
 
 package_name = getPluginName()
 
@@ -71,8 +72,23 @@ def plugin_unloaded():
 class DeviotListener(EventListener):
     def on_activated(self, view):
         PreferencesBridge().set_status_information()
+
+    def on_pre_close(self, view):
+        # run on_pre_close to get the window instance
+        try:
+            name = view.name()
+            messages.session[name].on_pre_close(view)
+        except:
+            pass
     
     def on_close(self, view):
+        # close empty panel
+        try:
+            name = view.name()
+            messages.session[name].on_close(view)
+        except:
+            pass
+
         # remove open used serials ports
         from .libraries import serial
         

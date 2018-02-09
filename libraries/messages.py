@@ -34,12 +34,16 @@ import threading
 from .paths import getPluginName
 from .tools import findInOpendView
 
+global session
+
+session = {}
 close_panel = False
 viewer_name = 'Deviot Viewer'
 
 
 class Messages:
     port = None
+    window = None
     text_queue = collections.deque()
     text_queue_lock = threading.Lock()
 
@@ -52,6 +56,7 @@ class Messages:
         Start the print module, if the window was already created
         it's recovered.
         """
+        global session
 
         self.window = sublime.active_window()
 
@@ -63,6 +68,10 @@ class Messages:
         # print initial message
         if(self._init_text):
             self.print(self._init_text)
+
+        if(name):
+            session[name] = self
+
 
     def select_output(self, in_file, name=''):
         """Panel Output
@@ -177,16 +186,24 @@ class Messages:
 
         return view
 
-def check_empty_panel():
+    def on_pre_close(self, view):
+        self.window = view.window()
+
+    def on_close(self, view):
+        if(view.name() not in session):
+            return
+
+        if(check_empty_panel(self.window)):
+            self.window.run_command("destroy_pane", args={"direction": "self"})
+            self.window = None
+
+def check_empty_panel(window):
     """
     If there is an empty panel will make it active
 
     Returns:
         bool -- True if there is an empty panel false if not
     """
-    from sublime import active_window
-
-    window = active_window()
     num = window.num_groups()
 
     for n in range(0, num):
