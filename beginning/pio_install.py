@@ -436,10 +436,13 @@ def run_command(command, error='', cwd=None, prepare=False):
     Run all the commands to install the plugin
 
     Arguments:
-        command {[list]} -- [list of commands]
+        command {list} -- list of commands
 
     Keyword Arguments:
-        cwd {[str]} -- [current working dir] (default: {None})
+        cwd {str} -- current working dir (default: None)
+        prepare {bool} -- when is true the platformIO command will
+                          be updated to be multi-platform compatible
+                          (default: False)
 
     Returns:
         [list] -- list[0]: return code list[1]: command output
