@@ -175,6 +175,9 @@ class Command(ProjectRecognition):
         except Exception as e:
             pass
 
+    def exit_code(self):
+        return self._exit_code
+
     def _on_data(self, data):
         try:
             characters = data.decode(self.encoding)
