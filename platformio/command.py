@@ -103,11 +103,11 @@ class AsyncProcess(object):
 
             if(len(data) > 0):
                 if(self.listener):
-                    self.listener.on_data(data)
+                    self.listener._on_data(data)
             else:
                 self.proc.stdout.close()
                 if(self.listener):
-                    self.listener.on_finished(self)
+                    self.listener._on_finished(self)
                 break
 
     def read_stderr(self):
@@ -121,21 +121,23 @@ class AsyncProcess(object):
 
             if len(data) > 0:
                 if self.listener:
-                    self.listener.on_data(data)
+                    self.listener._on_data(data)
             else:
                 self.proc.stderr.close()
                 break
 
 
 class Command(ProjectRecognition):
-    txt = None
+    _txt = None
+    _exit_code = None
 
     def init(self, extra_name=None, messages=None):
         self.extra_name = extra_name
-        self.txt = messages
+        self._txt = messages
 
     def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
         self.window = sublime.active_window()
+        self._exit_code = None
 
         global _COMMAND_QUEUE
         global _BUSY
@@ -151,10 +153,10 @@ class Command(ProjectRecognition):
             _COMMAND_QUEUE.append(cmd)
             return
 
-        if(not self.txt):
+        if(not self._txt):
             try:
-                self.txt = messages.Messages(self.extra_name)
-                self.txt.create_panel(in_file=in_file)
+                self._txt = messages.Messages(self.extra_name)
+                self._txt.create_panel(in_file=in_file)
             except:
                 pass
 
@@ -173,7 +175,7 @@ class Command(ProjectRecognition):
         except Exception as e:
             pass
 
-    def on_data(self, data):
+    def _on_data(self, data):
         try:
             characters = data.decode(self.encoding)
         except:
@@ -182,11 +184,12 @@ class Command(ProjectRecognition):
         # Normalize newlines, Sublime Text always uses a single \n separator
         # in memory.
         characters = characters.replace('\r\n', '\n').replace('\r', '\n')
-        self.txt.print(characters)
+        self._txt.print(characters)
 
-    def finish(self, proc):
+    def _finish(self, proc):
         elapsed = time.time() - proc.start_time
         exit_code = proc.exit_code()
+        self._exit_code = exit_code
 
         if(exit_code == 0 and not len(_COMMAND_QUEUE)):
             sublime.status_message("Build finished")
@@ -196,8 +199,8 @@ class Command(ProjectRecognition):
         # run next command in the deque
         run_next()
 
-    def on_finished(self, proc):
-        sublime.set_timeout(partial(self.finish, proc), 0)
+    def _on_finished(self, proc):
+        sublime.set_timeout(partial(self._finish, proc), 0)
 
 
 def run_next():
