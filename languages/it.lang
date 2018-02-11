@@ -157,7 +157,7 @@ msgid "menu_programmer"
 msgstr "Programmatore"
 
 msgid "menu_serial_port"
-msgstr "Porte Seriali"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "Cambia OTA Password"

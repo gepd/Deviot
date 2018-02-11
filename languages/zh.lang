@@ -157,7 +157,7 @@ msgid "menu_programmer"
 msgstr "编程器"
 
 msgid "menu_serial_port"
-msgstr "串口"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "更改密码"

@@ -153,8 +153,8 @@ msgstr "Hide Terminal"
 msgid "menu_programmer"
 msgstr "Programista"
 
-msgid "menu_serial_ports"
-msgstr "Porty Szeregowe"
+msgid "menu_serial_port"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "Zmień OTA Hasło"
