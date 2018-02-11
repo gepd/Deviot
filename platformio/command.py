@@ -34,7 +34,7 @@ from functools import partial
 from collections import deque
 
 from ..libraries import messages
-from ..libraries.tools import prepare_command, get_setting
+from ..libraries.tools import prepare_command, get_setting, get_sysetting
 from ..libraries.thread_progress import ThreadProgress
 from .project_recognition import ProjectRecognition
 
@@ -141,6 +141,11 @@ class Command(ProjectRecognition):
 
     def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
         self.window = sublime.active_window()
+
+        # sets environment
+        env_path = get_sysetting('env_path', False)
+        if(env_path):
+            os.environ['PATH'] = env_path
 
         global _COMMAND_QUEUE
         global _BUSY
