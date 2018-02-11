@@ -107,6 +107,7 @@ class AsyncProcess(object):
             else:
                 self.proc.stdout.close()
                 if(self.listener):
+                    time.sleep(0.01)
                     self.listener._on_finished(self)
                 break
 
@@ -129,15 +130,17 @@ class AsyncProcess(object):
 
 class Command(ProjectRecognition):
     _txt = None
-    _exit_code = None
+
+    def __init__(self):
+        super(Command, self).__init__()
+        self._output = None
 
     def init(self, extra_name=None, messages=None):
-        self.extra_name = extra_name
+        self._extra_name = extra_name
         self._txt = messages
 
     def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
         self.window = sublime.active_window()
-        self._exit_code = None
 
         global _COMMAND_QUEUE
         global _BUSY
@@ -155,7 +158,7 @@ class Command(ProjectRecognition):
 
         if(not self._txt):
             try:
-                self._txt = messages.Messages(self.extra_name)
+                self._txt = messages.Messages(self._extra_name)
                 self._txt.create_panel(in_file=in_file)
             except:
                 pass
@@ -176,13 +179,24 @@ class Command(ProjectRecognition):
             pass
 
     def exit_code(self):
-        return self._exit_code
+        return self.proc.exit_code()
+
+    def get_output(self):
+        return self._output
 
     def _on_data(self, data):
         try:
             characters = data.decode(self.encoding)
         except:
             characters = "[Decode error - output not " + self.encoding + "]\n"
+
+        # if there is not printer, store the data
+        if(not self._txt):
+            if(not self._output):
+                self._output = characters
+            else:
+                self._output += characters
+            return
 
         # Normalize newlines, Sublime Text always uses a single \n separator
         # in memory.
@@ -192,7 +206,6 @@ class Command(ProjectRecognition):
     def _finish(self, proc):
         elapsed = time.time() - proc.start_time
         exit_code = proc.exit_code()
-        self._exit_code = exit_code
 
         if(exit_code == 0 and not len(_COMMAND_QUEUE)):
             sublime.status_message("Build finished")
