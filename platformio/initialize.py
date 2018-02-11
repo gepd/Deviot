@@ -30,6 +30,7 @@ class Initialize(ProjectCheck):
         messages.initial_text('_deviot_starting{0}', version)
         messages.create_panel()
 
+        self.init(messages=messages)
         self.print = messages.print
 
     def add_board(self):
