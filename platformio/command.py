@@ -60,7 +60,7 @@ class AsyncProcess(object):
             th1 = threading.Thread(target=self.read_stdout)
             th1.start()
             th1.join()
-            ThreadProgress(th, '', '')
+            ThreadProgress(th1, '', '')
 
         if(self.proc.stderr):
             th2 = threading.Thread(target=self.read_stderr)
