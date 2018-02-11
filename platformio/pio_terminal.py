@@ -24,8 +24,10 @@ class PioTerminal(Command):
         self.window, self.view = tools.findInOpendView(name)
         header = self.check_header()
 
-        self.messages = Messages(init_text=header)
-        self.messages.create_panel(in_file=True, name=name)
+        self.messages = Messages()
+        self.messages.initial_text(header)
+        self.messages.panel_name(name)
+        self.messages.create_panel(in_file=True)
         self.dprint = self.messages.print
 
     def check_header(self):
