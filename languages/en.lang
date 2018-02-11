@@ -324,6 +324,9 @@ msgstr "Please Restart Sublime Text"
 msgid "button_ok"
 msgstr "OK"
 
+msgid "processing"
+msgstr "Processing"
+
 # Libraries
 
 msgid "deviot_library{0}"

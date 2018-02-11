@@ -324,6 +324,9 @@ msgstr "请重新启动 Sublime Text"
 msgid "button_ok"
 msgstr "确定"
 
+msgid "processing"
+msgstr "处理"
+
 # 库
 
 msgid "deviot_library{0}"
