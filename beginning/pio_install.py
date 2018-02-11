@@ -143,9 +143,6 @@ class PioInstall(object):
 
         create_path(CACHE_PATH)
 
-        # defining default env paths
-        environ['PATH'] = get_env_paths()
-
     def cached_file(self):
         """Cached File
 
@@ -448,6 +445,9 @@ def run_command(command, error='', cwd=None, prepare=False):
         [list] -- list[0]: return code list[1]: command output
     '''
     import subprocess
+
+    # defining default env paths
+    environ['PATH'] = get_env_paths()
 
     if(prepare):
         command = prepare_command(command, verbose=False)
