@@ -73,7 +73,7 @@ Support the open source!. If you liked this plugin, and you want to make a contr
 
 ## License
 
-Copyright 2015-2017 GEPD <gepd@outlook.com>
+Copyright 2015-2018 GEPD <gepd@outlook.com>
 
 Deviot is licensed with the permissive Apache 2.0 licence. It means that you can use it personal or commercially, free of charge.
 
