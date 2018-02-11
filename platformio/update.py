@@ -14,7 +14,6 @@ from ..beginning.pio_install import run_command
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
-_ = I18n
 
 class Update(Command):
     """Update PlatFormIO
@@ -30,12 +29,10 @@ class Update(Command):
     """
     def __init__(self):
         super(Update, self).__init__()
-        global _
-        
-        _ = I18n().translate
 
         self.cwd = None
         self.dprint = None
+        self.translate = I18n().translate
 
     def show_feedback(self):
         messages = Messages()
@@ -49,7 +46,7 @@ class Update(Command):
         Update platformIO to the last version (block thread)
         """
         self.show_feedback()
-        self.dprint(_("searching_pio_updates"))
+        self.dprint('searching_pio_updates')
 
         cmd = ['upgrade']
         out = run_command(cmd, prepare=True)
@@ -64,7 +61,7 @@ class Update(Command):
 
         thread = Thread(target=self.update_pio)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def developer_async(self):
         """New Thread Execution
@@ -75,7 +72,7 @@ class Update(Command):
 
         thread = Thread(target=self.developer_pio)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def developer_pio(self):
         """Developer
@@ -85,17 +82,17 @@ class Update(Command):
         the stable or developer version
         """
         self.show_feedback()
-        self.dprint(_("uninstall_old_pio"))
+        self.dprint('uninstall_old_pio')
 
         cmd = ['pip','uninstall', '--yes','platformio']
         out = run_command(cmd)
 
         if(get_sysetting('pio_developer', False)):
-            self.dprint("installing_dev_pio")
+            self.dprint('installing_dev_pio')
             option = 'https://github.com/platformio/' \
             'platformio/archive/develop.zip'
         else:
-            self.dprint(_("installing_stable_pio"))
+            self.dprint('installing_stable_pio')
             option = 'platformio'
 
         cmd = create_command(['pip','install', '-U', option])
@@ -110,7 +107,7 @@ class Update(Command):
 
         thread = Thread(target=self.check_update)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def check_update(self):
         """Check update
@@ -167,10 +164,10 @@ class Update(Command):
         if(pio_version_int < last_pio_version_int):
             from sublime import ok_cancel_dialog
 
-            update = ok_cancel_dialog(_('new_pio_update{0}{1}',
+            update = ok_cancel_dialog(self.translate('new_pio_update{0}{1}',
                 last_pio_version,
                 pio_version),
-                _('update_button'))
+                self.translate('update_button'))
 
             if(update):
                 self.show_feedback()

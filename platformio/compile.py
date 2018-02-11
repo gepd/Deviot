@@ -31,7 +31,7 @@ class Compile(Initialize):
         
         self.add_board()
         if(not self.board_id):
-            self.derror("select_board_list")
+            self.print("select_board_list")
             return
 
         self.add_option('lib_extra_dirs')

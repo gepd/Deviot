@@ -11,16 +11,10 @@ from sys import exit
 from .initialize import Initialize
 from ..libraries.tools import get_setting, save_setting, save_sysetting
 from ..libraries.thread_progress import ThreadProgress
-from ..libraries.I18n import I18n
-
-_ = I18n
 
 class Upload(Initialize):
     def __init__(self):
         super(Upload, self).__init__()
-
-        global _
-        _ = I18n().translate
 
         self.nonblock_upload()
 
@@ -38,13 +32,13 @@ class Upload(Initialize):
         # check board selected or make select it
         self.check_board_selected()
         if(not self.board_id):
-            self.derror("select_board_list")
+            self.print("select_board_list")
             return
 
         # check port selected or make select it
         self.check_port_selected()
         if(not self.port_id):
-            self.derror("select_port_list")
+            self.print("select_port_list")
             return
 
         # initialize board if it's not
@@ -66,7 +60,7 @@ class Upload(Initialize):
             cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e', self.board_id]
 
         if(not self.check_auth_ota()):
-            self.derror("ota_error_platform")
+            self.print("ota_error_platform")
             save_sysetting('last_action', None)
             return
 

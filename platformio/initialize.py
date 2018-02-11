@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
 from ..libraries.tools import save_sysetting, get_setting
-from ..libraries.I18n import I18n
+from ..libraries.messages import Messages
 
 class Initialize(ProjectCheck):
     """
@@ -24,9 +24,13 @@ class Initialize(ProjectCheck):
     """
     def __init__(self):
         super(Initialize, self).__init__()
-        _ = I18n().translate
         self.init_option = None
-        self.extra_name = _('_deviot_starting{0}').format(version)
+
+        messages = Messages()
+        messages.initial_text('_deviot_starting{0}', version)
+        messages.create_panel()
+
+        self.print = messages.print
 
     def add_board(self):
         """New Board

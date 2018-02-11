@@ -15,7 +15,6 @@ from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
 from .messages import Messages
-from .I18n import I18n
 
 def serial_port_list():
     """List of Ports
@@ -54,11 +53,11 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
-        serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
         output_console = get_setting('output_console', False)
     
         messages = Messages()
-        messages.create_panel(in_file=True, name=serial_header.rstrip('\\n'))
+        messages.panel_name('serial_monitor_header{0}{1}', version, serial_port)
+        messages.create_panel(in_file=not output_console)
 
         self.dprint = messages.print
 
@@ -155,7 +154,7 @@ class SerialMonitor(object):
         line_ending = get_setting('line_ending', '')
         out_text += line_ending
         
-        self.dprint('sended_{0}', True, out_text)
+        self.dprint('sended_{0}', out_text)
 
         out_text = out_text.encode('utf-8', 'replace')
         self.serial.write(out_text)

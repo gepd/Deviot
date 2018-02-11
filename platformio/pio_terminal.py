@@ -18,15 +18,13 @@ class PioTerminal(Command):
     def __init__(self):
         super(PioTerminal, self).__init__()
 
-        global _
-        _ = I18n().translate
-
         name = 'PlatformIO Terminal'
 
+        self.translate = I18n().translate
         self.window, self.view = tools.findInOpendView(name)
         header = self.check_header()
 
-        self.messages = Messages(init_text=_(header))
+        self.messages = Messages(init_text=header)
         self.messages.create_panel(in_file=True, name=name)
         self.dprint = self.messages.print
 
@@ -84,7 +82,7 @@ class PioTerminal(Command):
         """
         thread = Thread(target=self.send_cmd, args=(cmd,))
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def cancel_input(self):
         """Cancel queue
@@ -185,15 +183,13 @@ class PioTerminal(Command):
         
         Cleans the console view
         """
-        global _
-
         self.window.focus_view(self.view)
         self.view.set_read_only(False)
         self.window.run_command("deviot_clean_view")
         self.view.set_read_only(True)
 
         header = self.check_header()
-        self.dprint(_(header))
+        self.dprint(header)
 
     def show_cwd(self):
         """Currente directory
@@ -243,7 +239,7 @@ class PioTerminal(Command):
         cwd = os.path.join(cwd, path)
         try:
             os.makedirs(path)
-            self.dprint("created{0}", True, path)
+            self.dprint("created{0}", path)
         except:
             self.dprint("error_making_folder")
 
@@ -260,6 +256,6 @@ class PioTerminal(Command):
         cwd = os.path.join(cwd, path)
         try:
             rmtree(cwd)
-            self.dprint("removed{0}", True, path)
+            self.dprint("removed{0}", path)
         except:
             self.dprint("wrong_folder_name")

@@ -33,6 +33,7 @@ import threading
 
 from .paths import getPluginName
 from .tools import findInOpendView
+from .I18n import I18n
 
 global session
 
@@ -47,11 +48,35 @@ class Messages:
     text_queue = collections.deque()
     text_queue_lock = threading.Lock()
 
-    def __init__(self, init_text=None, output_view=None):
-        self._init_text = init_text
+    def __init__(self, output_view=None):
+        self.translate = I18n().translate
         self.output_view = output_view
+        self._init_text = None
+        self._name = None        
 
-    def create_panel(self, direction='down', name=None, in_file=False):
+    def initial_text(self, text, *args):
+        """Intial message
+        
+        Sets the initial string to be push when the Messages instance is created
+        
+        Arguments:
+            text {str} -- string to display
+            *args {str} -- arguments to be replaced in the text string
+        """
+        self._init_text = self.translate(text, *args)
+
+    def panel_name(self, text, *args):
+        """Panel name
+        
+        Sets the name of the panel when it will be a ST window
+        
+        Arguments:
+            text {str} -- string to name the panel
+            *args {str} -- arguments to be replaced in the text string
+        """
+        self._name = self.translate(text, *args).strip('\\n')
+
+    def create_panel(self, direction='down', in_file=False):
         """
         Start the print module, if the window was already created
         it's recovered.
@@ -60,8 +85,8 @@ class Messages:
 
         self.window = sublime.active_window()
 
-        if(not self.output_view and not self.recover_panel(name)):
-            self.select_output(in_file, name)
+        if(not self.output_view and not self.recover_panel(self._name)):
+            self.select_output(in_file)
 
         self.window.run_command("show_panel", {"panel": "output.deviot"})
 
@@ -69,11 +94,12 @@ class Messages:
         if(self._init_text):
             self.print(self._init_text)
 
-        if(name):
-            session[name] = self
+        # store the session to close the panel in the future
+        if(self._name):
+            session[self._name] = self
 
 
-    def select_output(self, in_file, name=''):
+    def select_output(self, in_file):
         """Panel Output
         
         Selects where the content will be printed, it can be the ST console
@@ -86,7 +112,7 @@ class Messages:
             name {str} -- name of the new view (default: {''})
         """
         if(in_file):
-            self.output_view = self.new_file_panel(name=name, direction='right')
+            self.output_view = self.new_file_panel(direction='right')
         else:
             package_name = getPluginName()
             syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
@@ -102,10 +128,13 @@ class Messages:
         window = sublime.active_window()
         window.focus_view(self.output_view)
 
-    def print(self, text):
+    def print(self, text, *args):
         """
         Adds the string in the deque list
         """
+        # translate strings before append
+        text = I18n().translate(text, *args)
+
         self.text_queue_lock.acquire()
         try:
             if(type(text) == bytes):
@@ -159,7 +188,7 @@ class Messages:
             self.output_view = view
         return bool(view)
 
-    def new_file_panel(self, name, direction):
+    def new_file_panel(self, direction):
         """Create an empty new file sheet
 
         Creates an empty sheet to be used as console
@@ -180,7 +209,7 @@ class Messages:
         window.run_command('deviot_create_pane', options)
 
         view = window.new_file()
-        view.set_name(name)
+        view.set_name(self._name)
         view.run_command('toggle_setting', word_wrap)
         view.set_scratch(True)
 
