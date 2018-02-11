@@ -213,4 +213,4 @@ def run_next():
     _BUSY = False
 
     if(len(_COMMAND_QUEUE)):
-        Command().run(_COMMAND_QUEUE.popleft())
+        Command().run_command(_COMMAND_QUEUE.popleft())
