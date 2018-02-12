@@ -13,7 +13,6 @@ from .preferences_bridge import PreferencesBridge
 from .serial import serial_port_list
 from .I18n import I18n
 
-_ = None
 
 class QuickMenu(PreferencesBridge):
     def __init__(self):
@@ -21,9 +20,8 @@ class QuickMenu(PreferencesBridge):
         self.index = 0
         self.quick_list = []
         self.deeper = 0
-
-        global _
-        _ = I18n().translate
+        self.history = {}
+        self.translate = I18n().translate
 
     def set_list(self, quick_list):
         """Set List
@@ -240,14 +238,14 @@ class QuickMenu(PreferencesBridge):
             list -- available serial ports/mdns services
         """
         index = 2
-        header = _("select_port_list").upper()
+        header = self.translate("select_port_list").upper()
         ports_list = self.get_ports_list()
         ports_list.insert(0, [header])
-        ports_list.insert(1, [_("menu_add_ip")])
+        ports_list.insert(1, [self.translate("menu_add_ip")])
         current = get_setting('port_id', None)   
 
         if(len(ports_list) < 2):
-            ports_list = [_("menu_no_serial_mdns").upper()]
+            ports_list = [self.translate("menu_no_serial_mdns").upper()]
 
         for port in ports_list[2:]:
             if(current in port):
@@ -337,10 +335,10 @@ class QuickMenu(PreferencesBridge):
         platform = platform if(platform) else "all"
 
         quick_list = get_library_list(platform=platform)
-        quick_list.insert(0, [_("select_library").upper()])
+        quick_list.insert(0, [self.translate("select_library").upper()])
 
         if(len(quick_list) <= 1):
-            quick_list = [[_("menu_no_libraries")]]
+            quick_list = [[self.translate("menu_no_libraries")]]
 
         return quick_list
 
@@ -356,10 +354,10 @@ class QuickMenu(PreferencesBridge):
         platform = platform if(platform) else "all"
 
         self.quick_list = get_library_list(example_list=True, platform=platform)
-        self.quick_list.insert(0, [_("select_library").upper()])
+        self.quick_list.insert(0, [self.translate("select_library").upper()])
 
         if(len(self.quick_list) <= 1):
-            self.quick_list = [[_("menu_no_examples")]]
+            self.quick_list = [[self.translate("menu_no_examples")]]
 
         self.show_quick_panel(self.callback_library)
 
@@ -376,16 +374,35 @@ class QuickMenu(PreferencesBridge):
         if(selected <= 0):
             return
 
-        library_path = self.quick_list[selected][1]
-        
-        if('examples' not in library_path):
-            library_path = os.path.join(library_path, 'examples')
+        if(selected == 1):
+            self.index -= 1
 
-        if(self.open_file(library_path)):
+        if(selected == 1 and self.index == 0):
+            self.quick_libraries()
+            self.index = 0
+            self.history = {}
             return
 
+        if(selected == 1 and self.index > 0):
+            library_path = self.history[self.index - 1]
+            del self.history[len(self.history) - 1]
+
+        if(selected != 1):
+            library_path = self.quick_list[selected][1]
+        
+            if('examples' not in library_path):
+                library_path = os.path.join(library_path, 'examples')
+
+            if(self.open_file(library_path)):
+                return
+
+            self.history[self.index] = library_path
+            self.index += 1
+
         library_path = os.path.join(library_path, '*')
-        self.quick_list = [[_("select_example").upper()]]
+        
+        self.quick_list = [[self.translate("select_example").upper()]]
+        self.quick_list.append([self.translate("_previous").upper()])
 
         for files in glob(library_path):
             caption = os.path.basename(files)
