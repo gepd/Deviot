@@ -172,6 +172,15 @@ class Messages:
         """
         Prints the text in the window
         """
+
+        # Cleans output at the 2000 lines, and when auto clean is activated
+        size = self.output_view.size()
+        auto_clean = get_setting('auto_clean', True)
+
+        if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
+            self.clean_console()
+
+        # append text
         text = text.replace('\r\n', '\n'). replace('\r', '\n').replace('\\n', '\n')
         self.output_view.run_command('append', {'characters': text, "force": True})
 
