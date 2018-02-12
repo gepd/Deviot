@@ -69,11 +69,11 @@ class Upload(Initialize):
         # add src_dir flag if it's neccesary
         self.override_src()
 
-        out = self.run_command(cmd)
+        self.run_command(cmd)
 
         self.after_complete()
 
-        if(get_setting('run_monitor', None) and self.exit_code() == 0):
+        if(get_setting('run_monitor', None)):
             from ..libraries.serial import toggle_serial_monitor
             toggle_serial_monitor()
         save_setting('run_monitor', None)
