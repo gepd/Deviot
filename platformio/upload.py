@@ -11,6 +11,7 @@ from sys import exit
 from .initialize import Initialize
 from ..libraries.tools import get_setting, save_setting, save_sysetting
 from ..libraries.thread_progress import ThreadProgress
+from ..libraries.I18n import I18n
 
 class Upload(Initialize):
     def __init__(self):
@@ -85,7 +86,8 @@ class Upload(Initialize):
         Starts a new thread to run the start_upload method
         """
         from threading import Thread
+        translate = I18n().translate
 
         thread = Thread(target=self.start_upload)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, translate('processing'), '')
