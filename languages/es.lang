@@ -330,6 +330,9 @@ msgstr "Procesando"
 msgid "unknown"
 msgstr "Desconocido"
 
+msgid "deviot_info"
+msgstr "\nPodrás ver más información después de compilar tu proyecto o subir tu firmware.\n\n- Aprende más sobre Deviot en la Wiki https://goo.gl/PKju55\n- Si este plugin te ha sido útil, considera hacer una donación https://goo.gl/7K4BXh"
+
 # Librerías
 
 msgid "deviot_library{0}"

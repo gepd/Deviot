@@ -330,6 +330,9 @@ msgstr "가공"
 msgid "unknown"
 msgstr "Unknown"
 
+msgid "deviot_info"
+msgstr "\nYou will see more information after build your project or upload your firmware.\n\n- Check the wiki to know more about Deviot https://goo.gl/PKju55\n- If this plugin has been helpful for you, consider to make a donation https://goo.gl/7K4BXh"
+
 # Libraries
 
 msgid "deviot_library{0}"

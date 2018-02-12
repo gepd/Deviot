@@ -190,6 +190,12 @@ class Messages:
             to_option = 'eof' if automatic_scroll else None
             self.output_view.run_command('move_to', {'extend': False, 'to': to_option})
 
+    def first_message(self):
+        from . import __version__ as version
+
+        self.print('_deviot_{0}', version)
+        self.print('deviot_info')
+
     def recover_panel(self, name):
         """
         Recover the message window object
