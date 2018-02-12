@@ -1,5 +1,44 @@
 [
     {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
+        "children":
+        [
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "Deviot",
+                        "children":
+                        [
+                            {
+                                "caption": "Settings",
+                                "command": "edit_settings", 
+                                "args": {
+                                    "base_file": "${packages}/Deviot (Arduino IDE)/deviot.sublime-settings",
+                                    "default": "[\n\t$0\n]\n"
+                                }
+                            },
+                            {"caption": "-"},
+                            {
+                                "caption": "Key Bindings",
+                                "command": "edit_settings", 
+                                "args": {
+                                    "base_file": "${packages}/Deviot (Arduino IDE)/shortcuts/Default ($platform).sublime-keymap",
+                                    "default": "[\n\t$0\n]\n"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "caption": "Deviot",
         "mnemonic": "D",
         "id": "deviot",
