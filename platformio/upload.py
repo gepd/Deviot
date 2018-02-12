@@ -51,6 +51,9 @@ class Upload(Initialize):
         # check if there is a new speed to overwrite
         self.add_option('upload_speed')
 
+        # loads data from platformio.ini
+        self.read_pio_preferences()
+
         # check if there is a programmer selected
         self.programmer()
 

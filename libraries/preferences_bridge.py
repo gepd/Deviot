@@ -147,6 +147,47 @@ class PreferencesBridge(PioBridge):
         
         return port_id
 
+    def read_pio_preferences(self):
+        """Reads data/preferences
+        
+        Reads the information stored in the platformio.ini file and load it in deviot
+        """
+        ini_path = self.get_ini_path()
+
+        # open platformio.ini to read the preferences
+        config = ReadConfig()
+        config.read(ini_path)
+
+        environment = 'env:{0}'.format(self.board_id)
+
+        # stop if environment wasn't initialized yet
+        if(not config.has_section(environment)):
+            return
+
+        programmer_list = {
+        'stk500v1': 'check',
+        'stk500v2': 'avrmkii',
+        'usbtiny': 'usbtiny',
+        'arduinoisp': 'arduinoisp',
+        'usbasp': 'usbasp',
+        'dapa': 'parallel'
+        }
+
+        if(config.has_option(environment, 'upload_protocol')):
+            option = config.get(environment, 'upload_protocol')[0]
+
+            programmer = programmer_list[option]
+            if(programmer == 'check'):
+                flags = config.get(environment, 'upload_flags')
+                if(flags == '-P$UPLOAD_PORT'):
+                    option = 'avr'
+                else:
+                    option = 'arduinoasisp'
+        else:
+            option = False
+        save_setting('programmer_id', option)
+
+
     def run_last_action(self):
         """Last Action
         
