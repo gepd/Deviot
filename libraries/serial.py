@@ -284,8 +284,9 @@ def toggle_serial_monitor():
     serial_monitor = get_serial_monitor(port_id)
 
     if(serial_monitor == False):
-        message = Messages(init_text=("_deviot_{0}", version))
-        message.create_panel(in_file=True)
+        message = Messages()
+        message.initial_text("_deviot_{0}", version)
+        message.create_panel()
         message.print("serial_not_available")
         return
 
