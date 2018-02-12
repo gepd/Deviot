@@ -86,7 +86,7 @@ class ProjectCheck(QuickMenu):
             bool -- False if any of the requirements fails.
         """
         if(self.is_empty()):
-            self.dprint("not_empty_sketch")
+            self.print("not_empty_sketch")
             return False
 
         if(not self.get_file_name()):
@@ -94,7 +94,7 @@ class ProjectCheck(QuickMenu):
             self.cwd = self.get_working_project_path()
 
         if(not self.is_iot()):
-            self.derror("not_iot_{0}", self.get_file_name())
+            self.print("not_iot_{0}", self.get_file_name())
             return False
 
         self.check_unsaved_changes()
