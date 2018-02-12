@@ -176,6 +176,10 @@ class Messages:
         self.output_view.run_command('append', {'characters': text})
         self.output_view.set_read_only(True)
         self.output_view.run_command("move_to", {"extend": True, "to": "eof"})
+        
+        if(len(self.output_view.sel()) > 0):
+            self.output_view.sel().clear()
+        
 
     def recover_panel(self, name):
         """
