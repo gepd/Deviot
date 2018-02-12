@@ -15,6 +15,7 @@ from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
 from .messages import Messages
+from . import status_color
 
 def serial_port_list():
     """List of Ports
@@ -126,6 +127,7 @@ class SerialMonitor(object):
             try:
                 buf_number = self.serial.inWaiting()
             except:
+                status_color.set("error", 3000)
                 self.stop()
 
             if(buf_number > 0):
@@ -284,6 +286,8 @@ def toggle_serial_monitor():
     serial_monitor = get_serial_monitor(port_id)
 
     if(serial_monitor == False):
+        status_color.set('error', 3000)
+        
         message = Messages()
         message.initial_text("_deviot_{0}", version)
         message.create_panel()
@@ -291,6 +295,8 @@ def toggle_serial_monitor():
         return
 
     if(not serial_monitor.is_running()):
+        status_color.set('success')
+        
         serial_monitor.start_async()
 
         if(port_id not in serials_in_use):
@@ -299,5 +305,6 @@ def toggle_serial_monitor():
         serial_monitor_dict[port_id] = serial_monitor
     
     else:
+        status_color.set('error', 3000)
         serial_monitor.stop()
         del serial_monitor_dict[port_id]
