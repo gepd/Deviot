@@ -222,11 +222,20 @@ class ProjectCheck(QuickMenu):
 
         self.port_id = self.get_serial_port()
         ports_list = self.get_ports_list()
+        ini_path = self.get_ini_path()
+        ini_ready = False
+
+        config = ReadConfig()
+        config.read(ini_path)
+
+        environment = 'env:{0}'.format(self.board_id)
+        if(config.has_option(environment, 'upload_protocol')):
+            ini_ready = True
 
         port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
-        if(not port_ready and ip_device is None):
+        if(not port_ready and ip_device is None and not ini_ready):
             self.window.run_command('deviot_select_port')
             self.port_id = None
 
@@ -268,6 +277,10 @@ class ProjectCheck(QuickMenu):
         ended = True
 
         platform = self.get_platform()
+
+        if(not platform):
+            return ended
+
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
 
         if(platform and 'espressif' not in platform and ip_device is not None):
