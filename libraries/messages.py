@@ -32,7 +32,7 @@ import collections
 import threading
 
 from .paths import getPluginName
-from .tools import findInOpendView
+from .tools import findInOpendView, get_setting
 from .I18n import I18n
 
 global session
@@ -174,9 +174,12 @@ class Messages:
         """
         text = text.replace('\r\n', '\n'). replace('\r', '\n').replace('\\n', '\n')
         self.output_view.run_command('append', {'characters': text, "force": True})
+
+        # check automatic scroll option
+        automatic_scroll = get_setting('automatic_scroll', True)
         if(len(self.output_view.sel()) > 0):
-            self.output_view.sel().clear()
-        
+            to_option = 'eof' if automatic_scroll else None
+            self.output_view.run_command('move_to', {'extend': False, 'to': to_option})
 
     def recover_panel(self, name):
         """
