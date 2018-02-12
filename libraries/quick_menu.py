@@ -170,7 +170,7 @@ class QuickMenu(PreferencesBridge):
         if(new_environments):
             for board in new_environments:
                 caption = board
-                vendor = "Unknown | {0}".format(board)
+                vendor = self.translate('unknown') + " | {0}".format(board)
                 environments_list.append([caption, vendor])
 
         return environments_list

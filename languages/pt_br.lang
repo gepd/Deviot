@@ -328,6 +328,9 @@ msgstr "OK"
 msgid "processing"
 msgstr "Em Processamento"
 
+msgid "unknown"
+msgstr "Desconhecido"
+
 # Libraries
 
 msgid "deviot_library{0}"

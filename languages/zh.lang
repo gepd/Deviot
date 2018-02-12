@@ -327,6 +327,9 @@ msgstr "确定"
 msgid "processing"
 msgstr "处理"
 
+msgid "unknown"
+msgstr "Unknown"
+
 # 库
 
 msgid "deviot_library{0}"
