@@ -119,6 +119,7 @@ class Messages:
 
             self.output_view = self.window.create_output_panel('deviot')
             self.output_view.assign_syntax(syntax)
+        self.output_view.set_read_only(True)
 
     def set_focus(self):
         """Set focus
@@ -172,11 +173,7 @@ class Messages:
         Prints the text in the window
         """
         text = text.replace('\r\n', '\n'). replace('\r', '\n').replace('\\n', '\n')
-        self.output_view.set_read_only(False)
-        self.output_view.run_command('append', {'characters': text})
-        self.output_view.set_read_only(True)
-        self.output_view.run_command("move_to", {"extend": True, "to": "eof"})
-        
+        self.output_view.run_command('append', {'characters': text, "force": True})
         if(len(self.output_view.sel()) > 0):
             self.output_view.sel().clear()
         
