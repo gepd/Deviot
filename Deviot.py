@@ -20,7 +20,7 @@ from .libraries.paths import getMainMenuPath, getPackagesPath
 from .libraries.paths import getDeviotUserPath, getPluginName, status_color_folder
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
-from .libraries import messages
+from .libraries import messages, status_color
 
 package_name = getPluginName()
 
@@ -104,6 +104,7 @@ class DeviotListener(EventListener):
         search_id = window_name.split(" | ")
 
         if(len(search_id) > 1 and search_id[1] in serial.serials_in_use):
+            status_color.set('error', 3000)
             port_id = search_id[1]
             serial_monitor = serial.serial_monitor_dict.get(port_id, None)
             serial_monitor.stop()
