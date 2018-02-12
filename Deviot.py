@@ -17,7 +17,7 @@ from .beginning.pio_install import PioInstall
 from .libraries.tools import get_setting, save_setting
 from .libraries.syntax import Syntax
 from .libraries.paths import getMainMenuPath, getPackagesPath
-from .libraries.paths import getDeviotUserPath, getPluginName
+from .libraries.paths import getDeviotUserPath, getPluginName, status_color_folder
 from .libraries.preferences_bridge import PreferencesBridge
 from .libraries.project_check import ProjectCheck
 from .libraries import messages
@@ -68,6 +68,14 @@ def plugin_unloaded():
         user = getDeviotUserPath()
         if(path.isdir(user)):
             rmtree(user)
+
+
+# plugin_unload is not working so if the status bar color
+#  folder is present when ST starts, it will remove it.
+try:
+    rmtree(status_color_folder())
+except:
+    pass
 
 class DeviotListener(EventListener):
     def on_activated(self, view):
