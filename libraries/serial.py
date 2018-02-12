@@ -55,10 +55,11 @@ class SerialMonitor(object):
         self.baudrate = get_setting('baudrate', 9600)
 
         output_console = get_setting('output_console', False)
+        direction = get_setting('monitor_direction', 'right')
     
         messages = Messages()
         messages.panel_name('serial_monitor_header{0}{1}', version, serial_port)
-        messages.create_panel(in_file=not output_console)
+        messages.create_panel(direction=direction, in_file=not output_console)
 
         self.dprint = messages.print
 

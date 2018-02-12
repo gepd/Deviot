@@ -22,12 +22,14 @@ class PioTerminal(Command):
 
         self.translate = I18n().translate
         self.window, self.view = tools.findInOpendView(name)
+        
         header = self.check_header()
-
+        direction = tools.get_setting('terminal_direction', 'right')
+        
         self.messages = Messages()
         self.messages.initial_text(header)
         self.messages.panel_name(name)
-        self.messages.create_panel(in_file=True)
+        self.messages.create_panel(direction=direction, in_file=True)
         self.dprint = self.messages.print
 
     def check_header(self):

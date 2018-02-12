@@ -76,7 +76,7 @@ class Messages:
         """
         self._name = self.translate(text, *args).strip('\\n')
 
-    def create_panel(self, direction='down', in_file=False):
+    def create_panel(self, direction='right', in_file=False):
         """
         Start the print module, if the window was already created
         it's recovered.
@@ -86,7 +86,7 @@ class Messages:
         self.window = sublime.active_window()
 
         if(not self.output_view and not self.recover_panel(self._name)):
-            self.select_output(in_file)
+            self.select_output(in_file, direction)
 
         self.window.run_command("show_panel", {"panel": "output.deviot"})
 
@@ -99,7 +99,7 @@ class Messages:
             session[self._name] = self
 
 
-    def select_output(self, in_file):
+    def select_output(self, in_file, direction):
         """Panel Output
         
         Selects where the content will be printed, it can be the ST console
@@ -112,7 +112,7 @@ class Messages:
             name {str} -- name of the new view (default: {''})
         """
         if(in_file):
-            self.output_view = self.new_file_panel(direction='right')
+            self.output_view = self.new_file_panel(direction)
         else:
             package_name = getPluginName()
             syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
