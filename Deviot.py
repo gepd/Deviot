@@ -10,7 +10,22 @@ from os import path, remove
 from shutil import rmtree
 from sublime import message_dialog
 from sublime_plugin import EventListener
-from .libraries.paths import getPluginName
+
+from .commands import *
+
+try:
+    from .libraries.paths import getPluginName
+    from .platformio.update import Update
+    from .libraries.syntax import Syntax
+    from .beginning.pio_install import PioInstall
+    from .libraries.tools import get_setting, save_setting
+    from .libraries.paths import getMainMenuPath, getPackagesPath
+    from .libraries.paths import getDeviotUserPath, status_color_folder
+    from .libraries.preferences_bridge import PreferencesBridge
+    from .libraries.project_check import ProjectCheck
+    from .libraries import messages, status_color
+except:
+    pass
 
 package_name = getPluginName()
 
@@ -58,18 +73,6 @@ def plugin_unloaded():
         user = getDeviotUserPath()
         if(path.isdir(user)):
             rmtree(user)
-
-from .commands import *
-from .platformio.update import Update
-from .beginning.pio_install import PioInstall
-from .libraries.tools import get_setting, save_setting
-from .libraries.syntax import Syntax
-from .libraries.paths import getMainMenuPath, getPackagesPath
-from .libraries.paths import getDeviotUserPath, status_color_folder
-from .libraries.preferences_bridge import PreferencesBridge
-from .libraries.project_check import ProjectCheck
-from .libraries import messages, status_color
-
 
 # plugin_unload is not working so if the status bar color
 #  folder is present when ST starts, it will remove it.
