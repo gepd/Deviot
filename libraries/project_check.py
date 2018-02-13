@@ -222,20 +222,21 @@ class ProjectCheck(QuickMenu):
 
         self.port_id = self.get_serial_port()
         ports_list = self.get_ports_list()
+        
         ini_path = self.get_ini_path()
-        ini_ready = False
+        if(ini_path):
+            config = ReadConfig()
+            config.read(ini_path)
 
-        config = ReadConfig()
-        config.read(ini_path)
-
-        environment = 'env:{0}'.format(self.board_id)
-        if(config.has_option(environment, 'upload_protocol')):
-            ini_ready = True
+            environment = 'env:{0}'.format(self.board_id)
+            if(config.has_option(environment, 'upload_protocol')):
+                self.port_id = True
+                return
 
         port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
-        if(not port_ready and ip_device is None and not ini_ready):
+        if(not port_ready and ip_device is None):
             self.window.run_command('deviot_select_port')
             self.port_id = None
 
