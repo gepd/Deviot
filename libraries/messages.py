@@ -191,10 +191,19 @@ class Messages:
             self.output_view.run_command("goto_line", {"line": line})
 
     def clean_view(self):
+        """Clean message view
+        
+        Cleans all characters in the output_view
+        """
         self.window.focus_view(self.output_view)
         self.window.run_command('deviot_clean_view')
 
     def first_message(self):
+        """Deviot console message
+        
+        Method to print a message when deviot console is not yet created but the
+        "show deviot console" is called
+        """
         from . import __version__ as version
 
         self.print('_deviot_{0}', version)
