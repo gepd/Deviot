@@ -182,7 +182,12 @@ class Messages:
             self.clean_console()
 
         # append text
-        text = text.replace('\r\n', '\n'). replace('\r', '\n').replace('\\n', '\n')
+        text = text.replace('\r\n', '\n'). replace('\r', '\n')
+
+        # fix only end of lines
+        if('\\n' in text[-2:]):
+            text = text.replace('\\n', '\n')
+
         self.output_view.run_command('append', {'characters': text, "force": True})
 
         # check automatic scroll option
