@@ -89,6 +89,7 @@ class Messages:
             self.select_output(in_file, direction)
 
         self.window.run_command("show_panel", {"panel": "output.deviot"})
+        self.set_focus()
 
         # print initial message
         if(self._init_text):
