@@ -190,6 +190,10 @@ class Messages:
             to_option = 'eof' if automatic_scroll else None
             self.output_view.run_command('move_to', {'extend': False, 'to': to_option})
 
+    def clean_view(self):
+        self.window.focus_view(self.output_view)
+        self.window.run_command('deviot_clean_view')
+
     def first_message(self):
         from . import __version__ as version
 

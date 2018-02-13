@@ -62,6 +62,7 @@ class SerialMonitor(object):
         messages.create_panel(direction=direction, in_file=not output_console)
 
         self.dprint = messages.print
+        self.clean = messages.clean_view
 
     def is_running(self):
         """Monitor Running
