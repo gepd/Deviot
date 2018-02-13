@@ -28,8 +28,8 @@ def status_color_folder():
     """
     Packages/User/Status Color/
     """
-    plugin = path.dirname(plugin_folder())
-    status_color = path.join(plugin, 'User', 'Status Color')
+    plugin = os.path.dirname(getPluginPath())
+    status_color = os.path.join(plugin, 'User', 'Status Color')
     return status_color
 
 def getPluginName():
