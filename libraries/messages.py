@@ -186,9 +186,9 @@ class Messages:
 
         # check automatic scroll option
         automatic_scroll = get_setting('automatic_scroll', True)
-        if(len(self.output_view.sel()) > 0):
-            to_option = 'eof' if automatic_scroll else None
-            self.output_view.run_command('move_to', {'extend': False, 'to': to_option})
+        if(len(self.output_view.sel()) > 0 and automatic_scroll or not self._name):
+            line = self.output_view.rowcol(size)[0] + 1
+            self.output_view.run_command("goto_line", {"line": line})
 
     def clean_view(self):
         self.window.focus_view(self.output_view)
