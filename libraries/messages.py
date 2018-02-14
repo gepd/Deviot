@@ -88,7 +88,10 @@ class Messages:
         if(not self.output_view and not self.recover_panel(self._name)):
             self.select_output(in_file, direction)
 
-        self.window.run_command("show_panel", {"panel": "output.deviot"})
+        if(not in_file):
+            self.window.run_command("show_panel", {"panel": "output.deviot"})
+
+        # change focus to the panel
         self.set_focus()
 
         # print initial message
