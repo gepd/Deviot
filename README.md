@@ -68,7 +68,7 @@ You should let the `msgid` as is, and paste your translated string in `msgstr`. 
 
 ## Donate
 
-Support the open source!. If you liked this plugin, and you want to make a contribution to continue its development, do it through [this link](https://gratipay.com/~gepd/). If you have any problems, or want to contact me: <gepd@outlook.com>
+Support the open source!. If you liked this plugin, and you want to make a contribution to continue its development, do it through [this link](https://www.paypal.me/gepd). If you have any problems, or want to contact me: <gepd@outlook.com>
 
 
 ## License
