@@ -24,10 +24,11 @@
 
 import os
 import time
+import html
 import threading
 import sublime
 
-from re import findall
+from re import findall, search
 from sys import platform
 from subprocess import Popen, PIPE
 from functools import partial
@@ -131,6 +132,10 @@ class AsyncProcess(object):
 class Command(ProjectRecognition):
     _txt = None
 
+    errors_inline = None
+    errs_by_file = {}
+    phantom_sets_by_buffer = {}
+
     def __init__(self):
         super(Command, self).__init__()
         self._output = None
@@ -208,8 +213,17 @@ class Command(ProjectRecognition):
         characters = characters.replace('\r\n', '\n').replace('\r', '\n')
         self._txt.print(characters)
 
+        if(self.errors_inline):
+            # errors inline
+            errors = self.find_all_pio_errors(characters)
+            for file, line, column, text in errors:
+                if file not in self.errs_by_file:
+                    self.errs_by_file[file] = []
+                self.errs_by_file[file].append((line, column, text))
+
+            self.update_phantoms()
+
     def _finish(self, proc):
-        elapsed = time.time() - proc.start_time
         exit_code = proc.exit_code()
 
         if(exit_code == 0 and not len(_COMMAND_QUEUE)):
@@ -217,11 +231,125 @@ class Command(ProjectRecognition):
         else:
             sublime.status_message("Build finished with errors")
 
+        end_time = time.strftime('%c')
+        self._txt.print("\n[{0}]", end_time)
+
         # run next command in the deque
         run_next()
 
     def _on_finished(self, proc):
         sublime.set_timeout(partial(self._finish, proc), 0)
+
+    def find_all_pio_errors(self, text):
+        """Find PlatformIO errors
+        
+        Extract all errors gived by PlatformIO
+        
+        Arguments:
+            text {str} -- line string with error
+        
+        Returns:
+            [tuple] -- (file_path, line_number, colum_number, error_text)
+        """
+        error = []
+
+        # substract error with regex
+        if('error:' in text):
+            result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
+            if(result is not None):
+                file_path = result.group(1)
+                line_number = result.group(2)
+                column_number = result.group(3)
+                error_txt = result.group(4)
+
+                error.append([file_path, int(line_number), int(column_number), error_txt])
+
+        return error
+
+    def update_phantoms(self):
+        stylesheet = '''
+            <style>
+                div.content {
+                    padding: 0.45rem 0.45rem 0.45rem 0.45rem;
+                    margin: 0.2rem 0;
+                    border-radius: 4px;
+                }
+                div.content span.message {
+                    color: white;
+                    padding-right: 0.4rem;
+                    padding-left: 0.5rem;
+                }
+                span.error_box {
+                    padding: 5px;
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 3px;
+                    background-color: red;
+                }
+                span.warning_box {
+                    padding: 5px;
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 3px;
+                    background-color: #d1cd00;
+                }
+                div.content a {
+                    text-decoration: inherit;
+                    padding: 0.35rem 0.7rem 0.45rem 0.8rem;
+                    position: relative;
+                    bottom: 0.05rem;
+                    border-radius: 4px;
+                    font-weight: bold;
+                }
+                html.dark div.content a {
+                    background-color: #00000018;
+                }
+                html.light div.content a {
+                    background-color: #ffffff18;
+                }
+            </style>
+        '''
+
+        for file, errs in self.errs_by_file.items():
+            view = self.window.find_open_file(file)
+            if view:
+
+                buffer_id = view.buffer_id()
+                if buffer_id not in self.phantom_sets_by_buffer:
+                    phantom_set = sublime.PhantomSet(view, "exec")
+                    self.phantom_sets_by_buffer[buffer_id] = phantom_set
+                else:
+                    phantom_set = self.phantom_sets_by_buffer[buffer_id]
+
+                phantoms = []
+
+                for line, column, text in errs:
+                    pt = view.text_point(line - 1, column - 1)
+                    phantoms.append(sublime.Phantom(
+                        sublime.Region(pt, view.line(pt).b),
+                        ('<body id=inline-error>' + stylesheet +
+                            '<div class="content">'
+                            '<span class="error_box">error</span>' + 
+                            '<span class="message">' + html.escape(text, quote=False) + '</span>' +
+                            '<a href=hide>' + chr(0x00D7) + '</a></div>' +
+                            '</div></body>'),
+                        sublime.LAYOUT_BELOW,
+                        on_navigate=self.on_phantom_navigate))
+
+                phantom_set.update(phantoms)
+
+    def hide_phantoms(self):
+        for file, errs in self.errs_by_file.items():
+            view = self.window.find_open_file(file)
+            if view:
+                view.erase_phantoms("exec")
+
+        self.errs_by_file = {}
+        self.phantom_sets_by_buffer = {}
+        self.show_errors_inline = False
+
+    def on_phantom_navigate(self, url):
+        self.hide_phantoms()
 
 
 def run_next():
