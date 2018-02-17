@@ -25,7 +25,7 @@ SOFTWARE.
 
 author: gepd
 website: https://github.com/gepd/ReadConfig
-library version: 0.0.3
+library version: 0.0.5
 """
 
 from __future__ import absolute_import
@@ -51,6 +51,8 @@ class ReadConfig(object):
                   the parsed database.
     """
 
+    comment_prefixes = ('#', ';')
+
     # Parsing regular expressions
 
     # Section regex
@@ -63,7 +65,7 @@ class ReadConfig(object):
     _OPTION_PATT = r'(([\w]+)\s*\=? (.+)|)'
 
     # value regex
-    _VALUE_PATT = r'((\w+\s\=\s*)? (.+)|)'
+    _VALUE_PATT = r'(([\w]+\s=*\s*)? (.+)|)'
 
     # Compiled regular expression for matching sections
     SECTCRE = re.compile(_SECTION_PATT, re.VERBOSE)
@@ -120,7 +122,7 @@ class ReadConfig(object):
         """
         Store breakline(s) of the source file
         """
-        if('\r\n' == line):
+        if(line == '\r\n' or line == '\n'):
             key = "${0}".format(self._break_count)
             self._data[key] = '\n'
             self._break_count += 1
@@ -129,7 +131,7 @@ class ReadConfig(object):
         """
         Store comments of the source file
         """
-        if(line.startswith('#') and not self._cur_sect):
+        if(line.startswith(ReadConfig.comment_prefixes) and not self._cur_sect):
             key = '#{0}'.format(self._comment_count)
             self._data[key] = line.rstrip()
             self._comment_count += 1
@@ -174,7 +176,7 @@ class ReadConfig(object):
                 value = is_value.group(3)
                 value = value if value else line
                 value = value.rstrip()
-                if(value):
+                if(value and not value.startswith('=')):
                     self._data[section][option].append(value)
     
     def bad_format(self):
@@ -295,7 +297,7 @@ class ReadConfig(object):
  
             if(type(line) is type(str())):
                 # comment(s)
-                if(line.startswith('#')):
+                if(line.startswith(ReadConfig.comment_prefixes)):
                     new_data  += line + '\n'
                 # break line(s)
                 else:

@@ -35,6 +35,7 @@ import struct
 import sys
 import termios
 
+from .serialutil import *
 from .serialutil import SerialBase, SerialException, to_bytes, \
     portNotOpenError, writeTimeoutError, Timeout
 
@@ -370,27 +371,27 @@ class Serial(SerialBase, PlatformSpecific):
         else:
             raise ValueError('Invalid char len: {!r}'.format(self._bytesize))
         # setup stop bits
-        if self._stopbits == serial.STOPBITS_ONE:
+        if self._stopbits == STOPBITS_ONE:
             cflag &= ~(termios.CSTOPB)
-        elif self._stopbits == serial.STOPBITS_ONE_POINT_FIVE:
+        elif self._stopbits == STOPBITS_ONE_POINT_FIVE:
             cflag |= (termios.CSTOPB)  # XXX same as TWO.. there is no POSIX support for 1.5
-        elif self._stopbits == serial.STOPBITS_TWO:
+        elif self._stopbits == STOPBITS_TWO:
             cflag |= (termios.CSTOPB)
         else:
             raise ValueError('Invalid stop bit specification: {!r}'.format(self._stopbits))
         # setup parity
         iflag &= ~(termios.INPCK | termios.ISTRIP)
-        if self._parity == serial.PARITY_NONE:
+        if self._parity == PARITY_NONE:
             cflag &= ~(termios.PARENB | termios.PARODD | CMSPAR)
-        elif self._parity == serial.PARITY_EVEN:
+        elif self._parity == PARITY_EVEN:
             cflag &= ~(termios.PARODD | CMSPAR)
             cflag |= (termios.PARENB)
-        elif self._parity == serial.PARITY_ODD:
+        elif self._parity == PARITY_ODD:
             cflag &= ~CMSPAR
             cflag |= (termios.PARENB | termios.PARODD)
-        elif self._parity == serial.PARITY_MARK and CMSPAR:
+        elif self._parity == PARITY_MARK and CMSPAR:
             cflag |= (termios.PARENB | CMSPAR | termios.PARODD)
-        elif self._parity == serial.PARITY_SPACE and CMSPAR:
+        elif self._parity == PARITY_SPACE and CMSPAR:
             cflag |= (termios.PARENB | CMSPAR)
             cflag &= ~(termios.PARODD)
         else:
@@ -785,7 +786,7 @@ class VTIMESerial(Serial):
             orig_attr = termios.tcgetattr(self.fd)
             iflag, oflag, cflag, lflag, ispeed, ospeed, cc = orig_attr
         except termios.error as msg:      # if a port is nonexistent but has a /dev file, it'll fail here
-            raise serial.SerialException("Could not configure port: {}".format(msg))
+            raise SerialException("Could not configure port: {}".format(msg))
 
         if vtime < 0 or vtime > 255:
             raise ValueError('Invalid vtime: {!r}'.format(vtime))

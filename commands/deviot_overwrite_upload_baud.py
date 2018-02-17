@@ -5,4 +5,9 @@ from ..libraries.quick_menu import QuickMenu
 class DeviotOverwriteUploadBaudCommand(WindowCommand):
 
     def run(self):
-        QuickMenu().quick_overwrite_baud()
+    	Quick = QuickMenu()
+    	items = Quick.overwrite_baud_list()
+    	callback = Quick.callback_overwrite_baud
+    	Quick.set_list(items)
+
+    	Quick.show_quick_panel(callback)

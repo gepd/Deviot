@@ -84,6 +84,9 @@ msgstr "프로세서 선택"
 msgid "menu_search_lib"
 msgstr "라이브러리 검색하기"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "라이브러리 삭제하기"
 
@@ -120,14 +123,23 @@ msgstr "빌드"
 msgid "menu_upload"
 msgstr "업로드"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "클린"
 
+msgid "menu_compile_options"
+msgstr "옵션 빌드/업로드"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
+
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini 수정없이"
+
 msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
+msgstr "열다 platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Show Deviot Console"
@@ -145,7 +157,7 @@ msgid "menu_programmer"
 msgstr "Programmer"
 
 msgid "menu_serial_port"
-msgstr "시리얼 포트"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "Change OTA Password"
@@ -181,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
-msgstr "통신 속도"
+msgstr "직렬 통신 속도"
 
 msgid "menu_line_ending"
 msgstr "줄넘김"
@@ -311,6 +323,15 @@ msgstr "Please Restart Sublime Text"
 
 msgid "button_ok"
 msgstr "OK"
+
+msgid "processing"
+msgstr "가공"
+
+msgid "unknown"
+msgstr "Unknown"
+
+msgid "deviot_info"
+msgstr "\nYou will see more information after build your project or upload your firmware.\n\n- Check the wiki to know more about Deviot https://goo.gl/PKju55\n- If this plugin has been helpful for you, consider to make a donation https://goo.gl/7K4BXh"
 
 # Libraries
 

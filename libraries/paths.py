@@ -24,6 +24,14 @@ def getPluginPath():
     plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
+def status_color_folder():
+    """
+    Packages/User/Status Color/
+    """
+    plugin = os.path.dirname(getPluginPath())
+    status_color = os.path.join(plugin, 'User', 'Status Color')
+    return status_color
+
 def getPluginName():
     """
     Get the name where the pugin is installed (package folder)

@@ -2,6 +2,7 @@ from .deviot_new_sketch import DeviotNewSketchCommand
 from .deviot_select_boards import DeviotSelectBoardsCommand
 from .deviot_select_environment import DeviotSelectEnvironmentCommand
 from .deviot_search_library import DeviotSearchLibraryCommand
+from .deviot_update_library import DeviotUpdateLibraryCommand
 from .deviot_remove_library import DeviotRemoveLibraryCommand
 from .deviot_import_library import DeviotImportLibraryCommand
 from .deviot_insert_library import DeviotInsertLibraryCommand
@@ -14,6 +15,8 @@ from .deviot_compile_sketch import DeviotCompileSketchCommand
 from .deviot_upload_sketch import DeviotUploadSketchCommand
 from .deviot_overwrite_upload_baud import DeviotOverwriteUploadBaudCommand
 from .deviot_clean_sketch import DeviotCleanSketchCommand
+from .deviot_freeze_sketch import DeviotFreezeSketchCommand
+from .deviot_pio_untouch import DeviotPioUntouchCommand
 from .deviot_open_ini_file import DeviotOpenIniFile
 from .deviot_show_console import DeviotShowConsoleCommand
 from .deviot_hide_console import DeviotHideConsoleCommand
@@ -51,12 +54,14 @@ from .deviot_clean_console import DeviotCleanConsoleCommand
 from .deviot_reload import DeviotReloadCommand
 from .deviot_set_ip import DeviotSetIpCommand
 from .deviot_history import InputTextHistoryCommand
+from .min_origami import DeviotCreatePaneCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
     'DeviotSelectBoardsCommand',
     'DeviotSelectEnvironmentCommand',
     'DeviotSearchLibraryCommand',
+    'DeviotUpdateLibraryCommand',
     'DeviotRemoveLibraryCommand',
     'DeviotImportLibraryCommand',
     'DeviotInsertLibraryCommand',
@@ -69,6 +74,8 @@ __all__ = [
     'DeviotUploadSketchCommand',
     'DeviotOverwriteUploadBaudCommand',
     'DeviotCleanSketchCommand',
+    'DeviotFreezeSketchCommand',
+    'DeviotPioUntouchCommand',
     'DeviotOpenIniFile',
     'DeviotShowConsoleCommand',
     'DeviotHideConsoleCommand',
@@ -105,5 +112,6 @@ __all__ = [
     'DeviotCleanConsoleCommand',
     'DeviotReloadCommand',
     'DeviotSetIpCommand',
-    'InputTextHistoryCommand'
+    'InputTextHistoryCommand',
+    'DeviotCreatePaneCommand'
 ]

@@ -1,5 +1,60 @@
 # Deviot Release Notes
 
+## Version 2.2.0 | 17 Feb 2018
+
+#### New
+* New color status when the serial monitor is running
+* New file windows (Terminal, Monitor) will be opened in a new group at the right side
+
+
+#### Improvements
+* Updated pyserial to 3.4
+* Added ".h" extension to the list of IOT files (issue: https://github.com/gepd/Deviot/issues/202)
+* Updated "Serial Port(s)" string to "Device(s)"
+* Added `< Previous` option in the list of examples (Issue: https://github.com/gepd/Deviot/issues/205)
+* Open and show a message the first time the console is call (Issues: https://github.com/gepd/Deviot/issues/184 https://github.com/gepd/Deviot/issues/209)
+* Automatically load the programmer preference from platformio.ini (Issue: https://github.com/gepd/Deviot/issues/208)
+* Restored feature to show errors inline
+* Performance improvements
+
+#### Bugs
+* Fixed bug fix not showing verbose mode in the upload output
+* Fixed bug selecting the serial baud rate when there is an option in the preferences file not stored in the list of baud rates. (Issue: https://github.com/gepd/Deviot/issues/190)
+* Minor bug checking the "freeze sketch" option
+* Fixed bug installing pio developer version (issue: https://github.com/gepd/Deviot/issues/201)
+* Fix to avoid add wrong paths in the ENV variable (Issue: https://github.com/gepd/Deviot/issues/204)
+* Fix issue reconnecting the serial monitor even if the upload failed (issue: https://github.com/gepd/Deviot/issues/171)
+* Avoid to ask for a port when the upload protocol is set (issue: https://github.com/gepd/Deviot/issues/208)
+* Fixed auto-scroll options not working in realtime
+* Fixed auto-clean option
+
+## Version 2.1.6 | 11 Sep 2017
+
+#### New
+* New option 'platformio.ini untouch'. To remove any flag added by Deviot before compile or upload (Issue: https://github.com/gepd/Deviot/issues/137)
+* New feature to "freeze" a sketch (Issue: https://github.com/gepd/Deviot/issues/170)
+* New option to update an installed library (Issue: https://github.com/gepd/Deviot/issues/172)
+* Deviot spricht Deutsch! https://github.com/gepd/Deviot/issues/178
+
+#### Improvements
+* Create a python.txt file in Packages/User/Deviot with the python paths for cases when python is installed in non standard path (Issue: https://github.com/gepd/Deviot/issues/159)
+* Avoid to close the window buffer when the sketch is moved to the `src` folder
+* Show the port previously selected in the list of serial ports
+* Show the upload baudrate previously selected in the quick list
+* Minor tweaks in the console highlight
+* Show an `*` insted of `-` in the boards already selected, in the list of boards
+* Update the main menu after an update
+* Show baudrate, line endings and display mode serial monitor options in a Quick Panel.
+* Make PlatformIO telemetry disabled by default
+
+
+#### Bugs
+* Deviot console always scroll (Issue: https://github.com/gepd/Deviot/issues/156)
+* Bug fix to select examples in any directory level (Issue: https://github.com/gepd/Deviot/issues/82)
+* Bug fix adding the `upload_speed` flag (issue: https://github.com/gepd/Deviot/issues/183)
+* Bug fixes in readconfig library
+* other minor improvements
+
 ## Version 2.1.5 | 11 Sept 2017
 
 #### Improvements

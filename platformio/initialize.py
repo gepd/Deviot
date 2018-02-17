@@ -8,8 +8,8 @@ from __future__ import unicode_literals
 
 from ..libraries import __version__ as version
 from ..libraries.project_check import ProjectCheck
-from ..libraries.messages import MessageQueue
-from ..libraries.tools import save_sysetting
+from ..libraries.tools import save_sysetting, get_setting
+from ..libraries.messages import Messages
 
 class Initialize(ProjectCheck):
     """
@@ -24,13 +24,14 @@ class Initialize(ProjectCheck):
     """
     def __init__(self):
         super(Initialize, self).__init__()
+        self.init_option = None
 
-        messages = MessageQueue("_deviot_starting{0}", version)
-        messages.start_print()
-        
-        self.dprint = messages.put
-        self.derror = messages.print_once
-        self.dstop = messages.stop_print
+        messages = Messages()
+        messages.initial_text('_deviot_starting{0}', version)
+        messages.create_panel()
+
+        self.init(messages=messages)
+        self.print = messages.print
 
     def add_board(self):
         """New Board
@@ -80,17 +81,16 @@ class Initialize(ProjectCheck):
         or upload an sketch. You should only put here a fuction or
         a method
         """
-        # remove lib_extra_dirs flag
-        self.add_extra_library(wipe=True)
+        pio_untouch = get_setting('pio_untouch', False)
+        if(pio_untouch):
+            # remove lib_extra_dirs option
+            self.add_option('lib_extra_dirs', wipe=True)
 
-        # remove programmer flags
-        self.programmer(wipe=True)
+            # remove programmer flags
+            self.programmer(wipe=True)
 
-        # remove src_dir flag from platformio.ini
-        self.remove_src()
-
-        # stop message queue
-        self.dstop()
+            # remove upload_speed
+            self.add_option('upload_speed', wipe=True)
 
         # none last action
         save_sysetting('last_action', None)

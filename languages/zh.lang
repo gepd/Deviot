@@ -84,6 +84,9 @@ msgstr "开发环境"
 msgid "menu_search_lib"
 msgstr "搜索库"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "删除库"
 
@@ -120,14 +123,23 @@ msgstr "编译"
 msgid "menu_upload"
 msgstr "下载"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "覆盖上传波特率"
-
 msgid "menu_clean"
 msgstr "清除"
 
+msgid "menu_compile_options"
+msgstr "Compile/Upload Options"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "覆盖上传波特率"
+
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Untouch"
+
 msgid "menu_open_ini_file"
-msgstr "配置文件"
+msgstr "打開 platformio.ini"
 
 msgid "menu_show_console"
 msgstr "显示控制台"
@@ -145,7 +157,7 @@ msgid "menu_programmer"
 msgstr "编程器"
 
 msgid "menu_serial_port"
-msgstr "串口"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "更改密码"
@@ -181,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "自动清除输出"
 
 msgid "menu_baudrate"
-msgstr "波特率"
+msgstr "串行波特率"
 
 msgid "menu_line_ending"
 msgstr "行尾"
@@ -311,6 +323,15 @@ msgstr "请重新启动 Sublime Text"
 
 msgid "button_ok"
 msgstr "确定"
+
+msgid "processing"
+msgstr "处理"
+
+msgid "unknown"
+msgstr "Unknown"
+
+msgid "deviot_info"
+msgstr "\nYou will see more information after build your project or upload your firmware.\n\n- Check the wiki to know more about Deviot https://goo.gl/PKju55\n- If this plugin has been helpful for you, consider to make a donation https://goo.gl/7K4BXh"
 
 # 库
 

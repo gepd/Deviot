@@ -84,6 +84,9 @@ msgstr "Wybierz Środowisko"
 msgid "menu_search_lib"
 msgstr "Szukaj Biblioteki"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "Usuń Bibliotekę"
 
@@ -120,14 +123,20 @@ msgstr "Zbuduj"
 msgid "menu_upload"
 msgstr "Wgraj"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "Wyczyść"
 
+msgid "menu_compile_options"
+msgstr "Compile/Upload Options"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
+
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
 msgid "menu_open_ini_file"
-msgstr "Otwórz Plik Konfiguracji Builda" 
+msgstr "Otwórz platformio.ini" 
 
 msgid "menu_show_console"
 msgstr "Pokaż Konsolę Deviot"
@@ -144,8 +153,8 @@ msgstr "Hide Terminal"
 msgid "menu_programmer"
 msgstr "Programista"
 
-msgid "menu_serial_ports"
-msgstr "Porty Szeregowe"
+msgid "menu_serial_port"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "Zmień OTA Hasło"
@@ -181,7 +190,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
-msgstr "Baudrate"
+msgstr "Serial Baudrate"
 
 msgid "menu_line_ending"
 msgstr "Edycja Linii"
@@ -311,6 +320,15 @@ msgstr "Please Restart Sublime Text"
 
 msgid "button_ok"
 msgstr "OK"
+
+msgid "processing"
+msgstr "Processing"
+
+msgid "unknown"
+msgstr "Unknown"
+
+msgid "deviot_info"
+msgstr "\nYou will see more information after build your project or upload your firmware.\n\n- Check the wiki to know more about Deviot https://goo.gl/PKju55\n- If this plugin has been helpful for you, consider to make a donation https://goo.gl/7K4BXh"
 
 # Libraries
 

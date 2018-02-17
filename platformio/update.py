@@ -9,11 +9,11 @@ from __future__ import unicode_literals
 from .command import Command
 from ..libraries import __version__ as version
 from ..libraries.tools import create_command, get_sysetting, save_sysetting
-from ..libraries.messages import MessageQueue
+from ..libraries.messages import Messages
+from ..beginning.pio_install import run_command
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
-_ = I18n
 
 class Update(Command):
     """Update PlatFormIO
@@ -29,22 +29,16 @@ class Update(Command):
     """
     def __init__(self):
         super(Update, self).__init__()
-        global _
-        
-        _ = I18n().translate
 
         self.cwd = None
         self.dprint = None
-        self.derror = None
-        self.dstop = None
+        self.translate = I18n().translate
 
     def show_feedback(self):
-        messages = MessageQueue("_deviot_starting{0}", version)
-        messages.start_print()
+        messages = Messages()
+        messages.create_panel()
 
-        self.dprint = messages.put
-        self.derror = messages.print_once
-        self.dstop = messages.stop_print
+        self.dprint = messages.print
 
     def update_pio(self):
         """Update PlatformIO
@@ -52,10 +46,11 @@ class Update(Command):
         Update platformIO to the last version (block thread)
         """
         self.show_feedback()
-        self.dprint("searching_pio_updates")
+        self.dprint('searching_pio_updates')
 
         cmd = ['upgrade']
-        out = self.run_command(cmd)
+        out = run_command(cmd, prepare=True)
+        self.dprint(out[1])
 
     def update_async(self):
         """New Thread Execution
@@ -66,7 +61,7 @@ class Update(Command):
 
         thread = Thread(target=self.update_pio)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def developer_async(self):
         """New Thread Execution
@@ -77,7 +72,7 @@ class Update(Command):
 
         thread = Thread(target=self.developer_pio)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def developer_pio(self):
         """Developer
@@ -87,21 +82,21 @@ class Update(Command):
         the stable or developer version
         """
         self.show_feedback()
-        self.dprint("uninstall_old_pio")
+        self.dprint('uninstall_old_pio')
 
         cmd = ['pip','uninstall', '--yes','platformio']
-        out = self.run_command(cmd, prepare=False)
+        out = run_command(cmd)
 
         if(get_sysetting('pio_developer', False)):
-            self.dprint("installing_dev_pio")
+            self.dprint('installing_dev_pio')
             option = 'https://github.com/platformio/' \
             'platformio/archive/develop.zip'
         else:
-            self.dprint("installing_stable_pio")
+            self.dprint('installing_stable_pio')
             option = 'platformio'
 
         cmd = create_command(['pip','install', '-U', option])
-        out = self.run_command(cmd, prepare=False)
+        out = run_command(cmd)
 
     def check_update_async(self):
         """New Thread Execution
@@ -112,7 +107,7 @@ class Update(Command):
 
         thread = Thread(target=self.check_update)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, self.translate('processing'), '')
 
     def check_update(self):
         """Check update
@@ -130,7 +125,7 @@ class Update(Command):
 
         date_now = datetime.now()
         date_update = get_sysetting('last_check_update', False)
-        
+
         try:
             date_update = datetime.strptime(date_update, '%Y-%m-%d %H:%M:%S.%f')
 
@@ -151,7 +146,7 @@ class Update(Command):
 
         self.realtime = False
         cmd = ['--version']
-        out = self.run_command(cmd)
+        out = run_command(cmd, prepare=True)
 
         pio_version = out[1]
         pio_version_int = int(sub(r'\D', '', pio_version))
@@ -169,14 +164,14 @@ class Update(Command):
         if(pio_version_int < last_pio_version_int):
             from sublime import ok_cancel_dialog
 
-            update = ok_cancel_dialog(_('new_pio_update{0}{1}',
+            update = ok_cancel_dialog(self.translate('new_pio_update{0}{1}',
                 last_pio_version,
                 pio_version),
-                _('update_button'))
+                self.translate('update_button'))
 
             if(update):
                 self.show_feedback()
                 self.realtime = True
 
                 cmd = ['upgrade']
-                out = self.run_command(cmd)
+                out = run_command(cmd, prepare=True)

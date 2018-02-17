@@ -11,16 +11,10 @@ from sys import exit
 from .initialize import Initialize
 from ..libraries.tools import save_sysetting
 from ..libraries.thread_progress import ThreadProgress
-from ..libraries.I18n import I18n
-
-_ = None
 
 class Compile(Initialize):
     def __init__(self):
         super(Compile, self).__init__()
-
-        global _
-        _ = I18n().translate
 
         self.nonblock_compile()
 
@@ -37,13 +31,12 @@ class Compile(Initialize):
         
         self.add_board()
         if(not self.board_id):
-            self.derror("select_board_list")
+            self.print("select_board_list")
             return
 
-        # add extra library board
-        self.add_extra_library()
+        self.add_option('lib_extra_dirs')
 
-        # add src_dir flag if it's neccesary
+        # add src_dir option if it's neccesary
         self.override_src()
 
         cmd = ['run', '-e ', self.board_id]
@@ -57,6 +50,9 @@ class Compile(Initialize):
         Starts a new thread to run the start_compilation method
         """
         from threading import Thread
+        from ..libraries.I18n import I18n
+
+        _ = I18n().translate
 
         thread = Thread(target=self.start_compilation)
         thread.start()

@@ -14,8 +14,8 @@ from . import __version__ as version
 from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
-from .messages import MessageQueue
-from .I18n import I18n
+from .messages import Messages
+from . import status_color
 
 def serial_port_list():
     """List of Ports
@@ -54,20 +54,15 @@ class SerialMonitor(object):
         self.is_alive = False
         self.baudrate = get_setting('baudrate', 9600)
 
-        type_console = 'sexec'
-        serial_header = I18n().translate("serial_monitor_header{0}{1}", version, serial_port)
         output_console = get_setting('output_console', False)
-        
-        if(not output_console):
-            type_console = serial_header.strip('\\n')
+        direction = get_setting('monitor_direction', 'right')
     
-        message = MessageQueue(serial_header)
-        message.set_console(type_console)
-        message.start_print()
+        messages = Messages()
+        messages.panel_name('serial_monitor_header{0}{1}', version, serial_port)
+        messages.create_panel(direction=direction, in_file=not output_console)
 
-        self.dprint = message.put
-        self.dstop = message.stop_print
-        self.clean = message.clean_console
+        self.dprint = messages.print
+        self.clean = messages.clean_view
 
     def is_running(self):
         """Monitor Running
@@ -114,7 +109,6 @@ class SerialMonitor(object):
         self.is_alive = False
         if(self.port in serials_in_use):
             serials_in_use.remove(self.port)
-        self.dstop()
 
     def clean_console(self):
         """Clean console
@@ -135,6 +129,7 @@ class SerialMonitor(object):
             try:
                 buf_number = self.serial.inWaiting()
             except:
+                status_color.set("error", 3000)
                 self.stop()
 
             if(buf_number > 0):
@@ -142,7 +137,7 @@ class SerialMonitor(object):
                 length_in_text = len(inp_text)
                 inp_text = display_mode(inp_text, length_before)
                 
-                self.dprint(inp_text, hide_hour=True)
+                self.dprint(inp_text)
                 
                 length_before += length_in_text
                 length_before %= 16
@@ -163,7 +158,7 @@ class SerialMonitor(object):
         line_ending = get_setting('line_ending', '')
         out_text += line_ending
         
-        self.dprint('sended_{0}', True, out_text)
+        self.dprint('sended_{0}', out_text)
 
         out_text = out_text.encode('utf-8', 'replace')
         self.serial.write(out_text)
@@ -215,11 +210,11 @@ def display_mode(inp_text, str_len=0):
     text = u''
     display_mode = get_setting("display_mode", 'Text')
     
-    if display_mode == 'Ascii':
+    if display_mode == 'ASCII':
         for character in inp_text:
             text += chr(character)
     
-    elif display_mode == 'Hex':
+    elif display_mode == 'HEX':
         for (index, character) in enumerate(inp_text):
             text += u'%02X ' % character
             if (index + str_len + 1) % 8 == 0:
@@ -293,13 +288,17 @@ def toggle_serial_monitor():
     serial_monitor = get_serial_monitor(port_id)
 
     if(serial_monitor == False):
-        message = MessageQueue("_deviot_{0}", version)
-        message.start_print()
-        message.put("serial_not_available")
-        message.stop_print()
+        status_color.set('error', 3000)
+        
+        message = Messages()
+        message.initial_text("_deviot_{0}", version)
+        message.create_panel()
+        message.print("serial_not_available")
         return
 
     if(not serial_monitor.is_running()):
+        status_color.set('success')
+        
         serial_monitor.start_async()
 
         if(port_id not in serials_in_use):
@@ -308,5 +307,6 @@ def toggle_serial_monitor():
         serial_monitor_dict[port_id] = serial_monitor
     
     else:
+        status_color.set('error', 3000)
         serial_monitor.stop()
         del serial_monitor_dict[port_id]

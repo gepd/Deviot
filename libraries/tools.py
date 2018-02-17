@@ -22,7 +22,7 @@ def accepted_extensions():
     """
     Files accepted to be processed by deviot
     """
-    accepted = ['ino', 'pde', 'cpp', 'c', '.S']
+    accepted = ['ino', 'pde', 'cpp', 'c', 'S', 'h']
     return accepted
 
 def get_env_paths():
@@ -106,6 +106,20 @@ def create_command(command):
     cmd.extend(command[1:])
 
     return cmd
+
+def prepare_command(options, verbose):
+    cmd = " ".join(options)
+    command = create_command(['platformio', '-f', '-c', 'sublimetext'])
+    command.extend(options)
+
+    # verbose mode
+    if(verbose and 'run' in cmd and '-e' in cmd):
+        command.extend(['-v'])
+
+    command.append("2>&1")
+
+    return " ".join(command)
+
 
 def get_sysetting(key, default=None):
     """

@@ -25,6 +25,7 @@ class ProjectCheck(QuickMenu):
         
         self.board_id = None
         self.port_id = None
+        self.init_option = None
 
     def is_iot(self):
         """IOT
@@ -85,7 +86,7 @@ class ProjectCheck(QuickMenu):
             bool -- False if any of the requirements fails.
         """
         if(self.is_empty()):
-            self.dprint("not_empty_sketch")
+            self.print("not_empty_sketch")
             return False
 
         if(not self.get_file_name()):
@@ -93,7 +94,7 @@ class ProjectCheck(QuickMenu):
             self.cwd = self.get_working_project_path()
 
         if(not self.is_iot()):
-            self.derror("not_iot_{0}", self.get_file_name())
+            self.print("not_iot_{0}", self.get_file_name())
             return False
 
         self.check_unsaved_changes()
@@ -130,14 +131,15 @@ class ProjectCheck(QuickMenu):
             
             if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
-                
-                self.close_file()
+                from .tools import get_setting, save_setting
 
                 move(file_path, dst)
+                self.view.retarget(dst)
 
-                self.view = self.window.open_file(dst)
+                if(get_setting('freeze_sketch', None)):
+                    save_setting('freeze_sketch', dst)
 
-    def override_src(self):
+    def override_src(self, wipe=False):
         """Adds src_dir
         
         When you don't want to keep the platformio file structure, you need to add
@@ -147,47 +149,39 @@ class ProjectCheck(QuickMenu):
         if(self.is_native()):
             return
 
+        write_file = False
+        current_src = None
         platformio_head = 'platformio'
         pio_structure = self.get_structure_option()
-
-        if(pio_structure):
-            self.remove_src()
-            return
-
         project_path = self.get_project_path()
         ini_path = self.get_ini_path()
 
         config = ReadConfig()
         config.read(ini_path)
-        
-        if(not config.has_section(platformio_head)):
-            config.add_section(platformio_head)
 
-        config.set(platformio_head, 'src_dir', project_path)
-
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
-
-    def remove_src(self):
-        """Remove src_dir
-        
-        Remove the src_dir flag from the platformio.ini file
-        """
-        if(self.is_native()):
-            return
-
-        platformio_head = 'platformio'
-
-        ini_path = self.get_ini_path()
-        config = ReadConfig()
-        config.read(ini_path)
-
+        # get string if exists
         if(config.has_option(platformio_head, 'src_dir')):
+            current_src = config.get(platformio_head, 'src_dir')[0]
+
+        # remove option
+        if(wipe and current_src):
             config.remove_option(platformio_head, 'src_dir')
 
             if(not config.options(platformio_head)):
                 config.remove_section(platformio_head)
+            write_file = True
 
+        # check section
+        if(not config.has_section(platformio_head)):
+            config.add_section(platformio_head)
+            write_file = True
+
+        # change only in case it's different
+        if(project_path != current_src):
+            config.set(platformio_head, 'src_dir', project_path)
+            write_file = True
+
+        if(write_file):
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 
@@ -211,10 +205,10 @@ class ProjectCheck(QuickMenu):
             selected_boards = self.get_selected_boards()
 
             if(not selected_boards):
-                QuickMenu().quick_boards()
+                self.window.run_command('deviot_select_boards')
                 return
 
-            QuickMenu().quick_environments()
+            self.window.run_command('deviot_select_environment')
             return
 
     def check_port_selected(self):
@@ -228,12 +222,22 @@ class ProjectCheck(QuickMenu):
 
         self.port_id = self.get_serial_port()
         ports_list = self.get_ports_list()
+        
+        ini_path = self.get_ini_path()
+        if(ini_path):
+            config = ReadConfig()
+            config.read(ini_path)
+
+            environment = 'env:{0}'.format(self.board_id)
+            if(config.has_option(environment, 'upload_protocol')):
+                self.port_id = True
+                return
 
         port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
         if(not port_ready and ip_device is None):
-            QuickMenu().quick_serial_ports()
+            self.window.run_command('deviot_select_port')
             self.port_id = None
 
     def check_serial_monitor(self):
@@ -274,6 +278,10 @@ class ProjectCheck(QuickMenu):
         ended = True
 
         platform = self.get_platform()
+
+        if(not platform):
+            return ended
+
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
 
         if(platform and 'espressif' not in platform and ip_device is not None):

@@ -10,8 +10,8 @@ proceed with the installation.
 
 This code is intended to work as a standalone, so you can call to the
 "PioInstall" class and it will run in a new thread and will install all 
-the necessary files to run platformio. (replace or remove dprint, derror,
-show_message() and show_error()) all inside ### are external libraries
+the necessary files to run platformio. (replace or remove dprint,
+show_message()) all inside ### are external libraries
 
 Version: 1.0.0
 Author: Guillermo Díaz
@@ -41,16 +41,15 @@ from ..libraries import __version__, __title__
 
 ###
 from ..libraries.syntax import Syntax
-from ..libraries.tools import get_setting, save_setting
-from ..libraries.tools import get_sysetting, save_sysetting
-from ..libraries.paths import getSystemIniPath
+from ..libraries.tools import get_setting, save_setting, prepare_command
+from ..libraries.tools import get_sysetting, save_sysetting, create_command
+from ..libraries.paths import getSystemIniPath, getPackagesPath, getBoardsFileDataPath
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 from ..platformio.pio_bridge import PioBridge
+from ..libraries.file import File
 
 dprint = None
-derror = None
-dstop = None
 ###
 
 
@@ -59,6 +58,8 @@ class PioInstall(object):
     def __init__(self, window=False):
         self.dev_ver = __version__
         self.sub_ver = sublime.version()
+
+        beginning_check()
 
         ###
         installed = get_sysetting('installed', False)
@@ -72,13 +73,16 @@ class PioInstall(object):
 
         Syntax()
 
+        global _
+        _ = I18n().translate
+
         show_messages()
-        dprint("deviot_setup{0}", True, self.dev_ver)
+        header = _("deviot_setup{0}").format(self.dev_ver)
         ###
 
         self.file_paths()
 
-        caption = I18n().translate('processing')
+        caption = _('processing')
         thread = Thread(target=self.install)
         thread.start()
         ThreadProgress(thread, caption, '')
@@ -139,9 +143,6 @@ class PioInstall(object):
 
         create_path(CACHE_PATH)
 
-        # defining default env paths
-        environ['PATH'] = get_env_paths()
-
     def cached_file(self):
         """Cached File
 
@@ -161,31 +162,26 @@ class PioInstall(object):
 
         self.check_python()
 
-        check_pio()
+        if(check_pio()):
+            return
 
-        dprint("pio_isn_installed")
-        dprint("downloading_files")
+        dprint(_("pio_isn_installed"))
+        dprint(_("downloading_files"))
 
         self.download_file()
 
-        dprint("extracting_files")
+        dprint(_("extracting_files"))
 
         self.extract_file()
 
         # install virtualenv
-        dprint("installing_pio")
+        dprint(_("installing_pio"))
+
 
         cmd = [self.SYMLINK, 'virtualenv.py', '"%s"' % self.V_ENV_PATH]
         out = run_command(cmd, "setup_error", self.OUTPUT_PATH)
 
-        # Install pio
-        if(sublime.platform() == 'osx'):
-            executable = path.join(self.V_ENV_BIN_PATH, self.SYMLINK)
-            cmd = ['"%s"' % (executable), '-m', 'pip',
-                   'install', '-U', 'platformio']
-        else:
-            executable = path.join(self.V_ENV_BIN_PATH, 'pip')
-            cmd = ['"%s"' % (executable), 'install', '-U', 'platformio']
+        cmd = create_command(['pip', 'install', '-U', 'platformio'])
         out = run_command(cmd, "setup_error")
 
         # save env paths
@@ -193,9 +189,9 @@ class PioInstall(object):
         save_env_paths(env_path)
 
         save_sysetting('installed', True)
-        PioBridge().save_boards_list()
+        save_board_list()
 
-        derror("setup_finished")
+        dprint(_("setup_finished"))
 
     def download_file(self):
         """Download File
@@ -208,7 +204,7 @@ class PioInstall(object):
                 file_open = urlopen(file_request)
                 file = file_open.read()
             except:
-                derror("error_downloading_files")
+                dprint(_("error_downloading_files"))
 
             # save file
             try:
@@ -216,7 +212,7 @@ class PioInstall(object):
                 output.write(bytearray(file))
                 output.close()
             except:
-                derror("error_saving_files")
+                dprint(_("error_saving_files"))
 
     def extract_file(self):
         """Extract File
@@ -243,7 +239,7 @@ class PioInstall(object):
         out = run_command(cmd)
 
         if(out[0] == 0):
-            dprint("symlink_detected")
+            dprint(_("symlink_detected"))
             self.version = sub(r'\D', '', out[1])
             self.SYMLINK = 'python2'
             save_sysetting('symlink', True)
@@ -278,13 +274,30 @@ class PioInstall(object):
             exit(0)
 
 
+def beginning_check():
+    """Beginning check
+
+    Checks to do at start sublime text.
+    Telemetry will be always disabled and could be possible to activate
+    in the deviot or o.s terminal. (pio settings set enable_telemetry yes) 
+    """
+    # disable telemetry
+    telemetry_check = get_sysetting('telemetry_check', False)
+    if(not telemetry_check):
+        cmd = ['settings', 'set', 'enable_telemetry', 'no']
+        out = run_command(cmd, prepare=True)
+
+        if(out[0] == 0):
+            save_sysetting('telemetry_check', True)
+
+
 def check_pio():
     """PlarformIO
 
     Check if platformIO is already installed in the machine
     """
-    cmd = ['platformio', '--version']
-    out = run_command(cmd)
+    cmd = ['--version']
+    out = run_command(cmd, prepare=True)
 
     status = out[0]
 
@@ -293,8 +306,12 @@ def check_pio():
         save_sysetting('installed', True)
         save_sysetting('external_bins', True)
         save_sysetting('env_path', env_path)
-        PioBridge().save_boards_list()
-        derror("pio_is_installed")
+        
+        save_board_list()
+
+        dprint(_("pio_is_installed"))
+        return True
+    return False
 
 def create_path(path):
     """
@@ -378,31 +395,66 @@ def get_default_paths():
         list -- paths corresponding to the os
     """
     if(sublime.platform() == 'windows'):
-        default_path = ["C:\Python27\\", "C:\Python27\Scripts"]
+        default_path = ["C:\\Python27\\", "C:\\Python27\\Scripts"]
     else:
         user_bin_path = path.join(path.expanduser('~'), '.local', 'bin')
         default_path = ["/usr/bin", "/usr/local/bin", user_bin_path]
+
+    # get path from python.txt in Packages/User/Deviot
+    packages_path = getPackagesPath()
+    deviot_path = path.join(packages_path, 'User', 'Deviot')
+    extra_python = path.join(deviot_path, 'python.txt')
+
+    if(path.exists(extra_python)):
+        with open(extra_python) as file:
+            for line in file:
+                line = line.strip()
+                new_path = path.normpath(line)
+                default_path.append(new_path)
+
+    temp_path = default_path
+    default_path = []
+    
+    for tpath in temp_path:
+        if(path.exists(tpath)):
+            default_path.append(tpath)
+
     return default_path
 
+def save_board_list():
+    boards = run_command(['boards', '--json-output'], prepare=True)[1]
 
-def run_command(command, error='', cwd=None):
+    board_file_path = getBoardsFileDataPath()
+    File(board_file_path).write(boards)
+
+def run_command(command, error='', cwd=None, prepare=False):
     '''Commands
 
     Run all the commands to install the plugin
 
     Arguments:
-        command {[list]} -- [list of commands]
+        command {list} -- list of commands
 
     Keyword Arguments:
-        cwd {[str]} -- [current working dir] (default: {None})
+        cwd {str} -- current working dir (default: None)
+        prepare {bool} -- when is true the platformIO command will
+                          be updated to be multi-platform compatible
+                          (default: False)
 
     Returns:
         [list] -- list[0]: return code list[1]: command output
     '''
     import subprocess
 
-    command.append("2>&1")
-    command = ' '.join(command)
+    # defining default env paths
+    environ['PATH'] = get_env_paths()
+
+    if(prepare):
+        command = prepare_command(command, verbose=False)
+    else:
+        command.append("2>&1")
+        command = ' '.join(command)
+
     process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE, cwd=cwd,
                                universal_newlines=True, shell=True)
@@ -413,7 +465,7 @@ def run_command(command, error='', cwd=None):
 
     if(return_code > 0 and error is not ''):
         dprint(error)
-        derror(stdout)
+        dprint(stdout)
 
     return (return_code, stdout)
 
@@ -427,37 +479,11 @@ def show_messages():
 
     dprint overrides `message.put()` instead calling it that way, 
     dprint() will make the same behavior
-
-    derror will print the message in the console but will stop the
-    execution of the code
-
-    dstop is the reference of the stop_print method in the MessageQueue
-    class, it will called when derror is executed
     """
-    from ..libraries.messages import MessageQueue
+    from ..libraries.messages import Messages
 
     global dprint
-    global derror
-    global dstop
 
-    message = MessageQueue()
-    message.start_print()
-    dprint = message.put
-    derror = show_error
-    dstop = message.stop_print
-
-def show_error(text, *args):
-    """Show Error
-    
-    When it's called print the error in the console but stop the
-    execution of the program after doing it
-
-    Use this function calling derror()
-    
-    Arguments:
-        text {str} -- message to show in the console
-        *args {str} -- strings to be replaced with format()
-    """
-    dprint(text, False, *args)
-    dstop()
-    exit(0)
+    message = Messages()
+    message.create_panel()
+    dprint = message.print

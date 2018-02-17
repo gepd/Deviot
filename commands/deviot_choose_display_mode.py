@@ -1,5 +1,5 @@
 from sublime_plugin import WindowCommand
-from ..libraries.tools import get_setting, save_setting
+from ..libraries.quick_menu import QuickMenu
 
 class DeviotChooseDisplayModeCommand(WindowCommand):
     """
@@ -9,9 +9,10 @@ class DeviotChooseDisplayModeCommand(WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, display_mode_item):
-        save_setting('display_mode', display_mode_item)
+    def run(self):
+        Quick = QuickMenu()
+        items = Quick.display_mode_list()
+        callback = Quick.callback_display_mode
+        Quick.set_list(items)
 
-    def is_checked(self, display_mode_item):
-        display_target = get_setting('display_mode', 'Text')
-        return display_mode_item == display_target
+        Quick.show_quick_panel(callback)

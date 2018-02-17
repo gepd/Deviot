@@ -1,357 +1,283 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# This file is part of the uPiot project, https://github.com/gepd/upiot/
+#
+# MIT License
+#
+# Copyright (c) 2017 GEPD
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import sublime
-import html
-from os import path
-from re import search
-from time import strftime
-from sys import exit
-from queue import Queue
-from threading import Thread
-from time import sleep
-from sys import exit
-from .I18n import I18n
-from .tools import findInOpendView, get_setting
+import sublime_plugin
+
+import collections
+import threading
+
 from .paths import getPluginName
+from .tools import findInOpendView, get_setting
+from .I18n import I18n
 
-errs_by_file = {}
-phantom_sets_by_buffer = {}
-first_scroll = False
+global session
 
-class Console(object):
-    """Deviot Console
-    
-    Shows the message int he deiot console, it's use with
-    message queue
-    """
+session = {}
+close_panel = False
+viewer_name = 'Deviot Viewer'
 
-    def __init__(self):
+
+class Messages:
+    port = None
+    window = None
+    text_queue = collections.deque()
+    text_queue_lock = threading.Lock()
+
+    def __init__(self, output_view=None):
+        self.translate = I18n().translate
+        self.output_view = output_view
+        self._init_text = None
+        self._name = None        
+
+    def initial_text(self, text, *args):
+        """Intial message
+        
+        Sets the initial string to be push when the Messages instance is created
+        
+        Arguments:
+            text {str} -- string to display
+            *args {str} -- arguments to be replaced in the text string
+        """
+        self._init_text = self.translate(text, *args)
+
+    def panel_name(self, text, *args):
+        """Panel name
+        
+        Sets the name of the panel when it will be a ST window
+        
+        Arguments:
+            text {str} -- string to name the panel
+            *args {str} -- arguments to be replaced in the text string
+        """
+        self._name = self.translate(text, *args).strip('\\n')
+
+    def create_panel(self, direction='right', in_file=False):
+        """
+        Start the print module, if the window was already created
+        it's recovered.
+        """
+        global session
+
         self.window = sublime.active_window()
-        self.view = self.window.active_view()
-        self.file_name = self.view.file_name()
-        self.panel = None
-        self.name = None
 
-    def print_screen(self, text):
-        size = self.panel.size()
+        if(not self.output_view and not self.recover_panel(self._name)):
+            self.select_output(in_file, direction)
+
+        if(not in_file):
+            self.window.run_command("show_panel", {"panel": "output.deviot"})
+
+        # change focus to the panel
+        self.set_focus()
+
+        # print initial message
+        if(self._init_text):
+            self.print(self._init_text)
+
+        # store the session to close the panel in the future
+        if(self._name):
+            session[self._name] = self
+
+
+    def select_output(self, in_file, direction):
+        """Panel Output
+        
+        Selects where the content will be printed, it can be the ST console
+        or in a new buffer (view)
+        
+        Arguments:
+            in_file {bool} -- if it's true a new view will be created
+        
+        Keyword Arguments:
+            name {str} -- name of the new view (default: {''})
+        """
+        if(in_file):
+            self.output_view = self.new_file_panel(direction)
+        else:
+            package_name = getPluginName()
+            syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
+
+            self.output_view = self.window.create_output_panel('deviot')
+            self.output_view.assign_syntax(syntax)
+        self.output_view.set_read_only(True)
+
+    def set_focus(self):
+        """Set focus
+
+        Sets the focus to the console window
+        """
+        window = sublime.active_window()
+        window.focus_view(self.output_view)
+
+    def print(self, text, *args):
+        """
+        Adds the string in the deque list
+        """
+        # translate strings before append
+        text = I18n().translate(text, *args)
+
+        self.text_queue_lock.acquire()
+        try:
+            if(type(text) == bytes):
+                text = text.decode('utf-8')
+            self.text_queue.append(text)
+        finally:
+            self.text_queue_lock.release()
+
+        sublime.set_timeout(self.service_text_queue, 0)
+
+    def service_text_queue(self):
+        """
+        Handles the deque list to print the messages
+        """
+        self.text_queue_lock.acquire()
+
+        is_empty = False
+        try:
+            if(len(self.text_queue) == 0):
+                return
+
+            characters = self.text_queue.popleft()
+            is_empty = (len(self.text_queue) == 0)
+
+            self.send_to_file(characters)
+
+        finally:
+            self.text_queue_lock.release()
+
+        if(not is_empty):
+            sublime.set_timeout(self.service_text_queue, 1)
+
+    def send_to_file(self, text):
+        """
+        Prints the text in the window
+        """
+
+        # Cleans output at the 2000 lines, and when auto clean is activated
+        size = self.output_view.size()
         auto_clean = get_setting('auto_clean', True)
 
         if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
-            self.clean_console()
+            self.clean_view()
 
-        if(size < 1 and self.name == 'exec'):
-            self.window.run_command("show_panel", {"panel": "output.exec"})
+        # append text
+        text = text.replace('\r\n', '\n'). replace('\r', '\n')
 
-        self.panel.set_read_only(False)
-        self.panel.run_command("append", {"characters": text})
-        self.panel.set_read_only(True)
-
-        automatic_scroll = get_setting('automatic_scroll', True)
-        if(automatic_scroll):
-            self.panel.run_command("move_to", {"extend": False, "to": "eof"})
-
-    def set_console(self, name='exec'):
-        self.name = name
-        self.window, self.panel = findInOpendView(name)
-
-        if(not self.panel):
-            if(name == 'exec' or name == 'sexec'):
-                self.panel = self.window.create_output_panel('exec')
-                self.panel.set_name('exec')
-
-                if(name == 'exec'):
-                    package_name = getPluginName()
-                    syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
-                    self.panel.assign_syntax(syntax)
-                else:
-                    self.panel.assign_syntax("Packages/Text/Plain text.tmLanguage")
-            else:
-                self.open_panel()
-
-    def clean_console(self):
-        self.window.focus_view(self.panel)
-        self.panel.set_read_only(False)
-        self.window.run_command("deviot_clean_view")
-        self.panel.set_read_only(True)
-
-    def open_panel(self, direction=False):
-        
-        if(direction):
-            options = {'direction': 'down', 'give_focus': True}
-            self.window.run_command('deviot_create_pane', options)
-
-        self.panel = self.window.new_file()
-        self.panel.set_name(self.name)
-
-        self.panel.run_command('toggle_setting', {'setting': 'word_wrap'})
-        self.panel.set_scratch(True)
-        self.window.focus_view(self.panel)
-
-class MessageQueue(Console):
-    """Message Queue
-
-    Handles the queue to print messages in the console. To use it
-    Create a new instance and call start_print, add message to the
-    queue with put. stop_print will stop to search new messages.
-
-    message = MessageQueue()
-    message.start_print()
-    message.put("message")
-    message.stop_print()
-
-    start_print() and stop_print() are executed in a new thred to avoid
-    block the sublime text UI
-    """
-
-    def __init__(self, start_header=None, *args):
-        super(MessageQueue, self).__init__()
-        self.queue = Queue(0)
-        self.is_alive = False
-        self.is_first = True
-        self.stopping = False
-        self.start_header = start_header
-        self.header_args = args
-
-    def put(self, text, hide_hour=False, *args):
-        """Put new message
-        
-        Puts a new message in the queue
-        
-        Arguments:
-            text {str} -- message to be displayed
-            *args {str} -- string to be replaced with format()
-        
-        Keyword Arguments:
-            hide_hour {bool} -- avoid to add the hour in the
-                                message (default: {False})
-        """ 
-        if(not text):
-            return
-    
-        text = I18n().translate(text, *args)
-        
+        # fix only end of lines
         if('\\n' in text[-2:]):
             text = text.replace('\\n', '\n')
 
-        empty = False
-        if(not text.strip()):
-            empty = True
+        self.output_view.run_command('append', {'characters': text, "force": True})
 
-        if(not hide_hour):
-            text = self.add_hour(text)
+        # check automatic scroll option
+        automatic_scroll = get_setting('automatic_scroll', True)
+        if(len(self.output_view.sel()) > 0 and automatic_scroll or not self._name):
+            line = self.output_view.rowcol(size)[0] + 1
+            self.output_view.run_command("goto_line", {"line": line})
 
-        if(not empty):
-            self.queue.put(text)
-
-    def start_print(self):
-        """Start Print
+    def clean_view(self):
+        """Clean message view
         
-        Starts a new thread to wait the messages to be shown
-        in the console
+        Cleans all characters in the output_view
         """
-        self.hide_phantoms()
+        self.window.focus_view(self.output_view)
+        self.window.run_command('deviot_clean_view')
+
+    def first_message(self):
+        """Deviot console message
         
-        if(not self.panel):
-            self.set_console()
-
-        if(not self.is_alive):
-            self.is_alive = True
-
-            if(self.start_header and self.is_first):
-                self.put(self.start_header, True, *self.header_args)
-                self.is_first = False
-            
-            thread = Thread(target=lambda: self.print())
-            thread.start()
-
-    def print(self):
-        """Print
-        
-        Here is where the magic happens
+        Method to print a message when deviot console is not yet created but the
+        "show deviot console" is called
         """
-        while(self.is_alive):
-            while(not self.queue.empty()):
-                text = self.queue.get()
-                
-                if(': error:' in text or ': fatal error:' in text):
-                    self.service_text_queue(text)
-                self.print_screen(text)
-                sleep(0.01)
-            sleep(0.01)
+        from . import __version__ as version
 
+        self.print('_deviot_{0}', version)
+        self.print('deviot_info')
 
-    def stop_print(self):
-        """Stop queue
-        
-        Start a new thread to stop the queue, if there is any message
-        in the queue, it will wait until it's empty
+    def recover_panel(self, name):
         """
-        if(not self.stopping):
-            self.stopping = True
-            thread = Thread(target=lambda: self.stop())
-            thread.start()
-    
-    def stop(self):
-        """Stop
-        
-        Here is where the magic happens
+        Recover the message window object
         """
-        while(not self.queue.empty()):
-            sleep(0.05)
-        self.is_alive = False
-        self.stopping = False
 
-    def print_once(self, text, *args):
-        """Print one time
-        
-        Print a message one time and stop the queue
-        
+        window, view = findInOpendView(name)
+
+        if(view):
+            self.output_view = view
+        return bool(view)
+
+    def new_file_panel(self, direction):
+        """Create an empty new file sheet
+
+        Creates an empty sheet to be used as console
+
         Arguments:
-            text {str} -- text to display
-            *args {str} -- text to replace in the 'text' var
-        """
-        if(self.is_alive):
-            self.put(text, False, *args)
-            self.stop_print()
+            name {str} -- name to set in the ST view
+            direction {str} -- Where the window will be located. options available:
+                                'self', 'left', 'right', 'up', 'down'
 
-    def add_hour(self, txt):
-        """Format arguments
-        
-        Adds the current time (HH:MM:SS) to the given string
-        
-        Arguments:
-            txt {str} -- message string
-        
         Returns:
-            [str] -- final string with time + message
+            obj -- Sublime Text view buffer
         """
-        time = strftime('%H:%M:%S')
-        txt = time + ' ' + txt
+        window = sublime.active_window()
 
-        return txt
+        word_wrap = {'setting': 'word_wrap'}
+        options = {'direction': direction, 'give_focus': True}
 
-    def service_text_queue(self, text):
-        """error data
-        
-        search the data of the error: file affected, column, line
-        and error text and store it in the global var errs_by_file
-        
-        Arguments:
-            text {str} -- line with the error
-        """
-        global errs_by_file
-        
-        result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
+        window.run_command('deviot_create_pane', options)
 
-        if(not result):
+        view = window.new_file()
+        view.set_name(self._name)
+        view.run_command('toggle_setting', word_wrap)
+        view.set_scratch(True)
+
+        return view
+
+    def on_pre_close(self, view):
+        self.window = view.window()
+
+    def on_close(self, view):
+        if(view.name() not in session):
             return
 
-        file = self.file_name
-        file_in_line = path.normpath(result.group(1))
-        line = result.group(2)
-        column = result.group(3)
-        txt = result.group(4)
+        if(check_empty_panel(self.window)):
+            self.window.run_command("destroy_pane", args={"direction": "self"})
+            self.window = None
 
-        if(file not in errs_by_file):
-            errs_by_file[file] = []
+def check_empty_panel(window):
+    """
+    If there is an empty panel will make it active
 
-        errs_by_file[file].append((int(line) -1, int(column), txt))
-        self.update_phantoms()
+    Returns:
+        bool -- True if there is an empty panel false if not
+    """
+    num = window.num_groups()
 
-    def update_phantoms(self):
-        """show phantom
-
-        Show the error in the phantom
-        """
-        global first_scroll
-
-        stylesheet = '''
-            <style>
-                div.error {
-                    padding: 0.45rem 0.45rem 0.45rem 0.7rem;
-                    margin: 0.2rem 0;
-                    border-radius: 2px;
-                    border: 1px solid white;
-                    background-color: #bc0101;
-                }
-                div.error span.message {
-                    color: white;
-                    padding-right: 0.7rem;
-                }
-
-                div.error a {
-                    text-decoration: inherit;
-                    padding: 0.35rem 0.7rem 0.45rem 0.8rem;
-                    position: relative;
-                    bottom: 0.05rem;
-                    border-radius: 0 2px 2px 0;
-                    font-weight: bold;
-                }
-                html.dark div.error a {
-                    background-color: #00000018;
-                }
-                html.light div.error a {
-                    background-color: #ffffff18;
-                }
-            </style>
-        '''
-
-        for file, errs in errs_by_file.items():
-            view = self.window.find_open_file(file)
-            if view:
-                buffer_id = view.buffer_id()
-                if buffer_id not in phantom_sets_by_buffer:
-                    phantom_set = sublime.PhantomSet(view, "exec")
-                    phantom_sets_by_buffer[buffer_id] = phantom_set
-                else:
-                    phantom_set = phantom_sets_by_buffer[buffer_id]
-
-                phantoms = []
-
-                for line, column, text in errs:
-                    pt = view.text_point(line - 1, column - 1)
-                    phantoms.append(sublime.Phantom(
-                        sublime.Region(pt, view.line(pt).b),
-                        ('<body id=inline-error>' + stylesheet + \
-                            '<div class="error">' + \
-                            '<span class="message">' + text + '</span>' + \
-                            '<a href=hide>' + chr(0x00D7) + '</a></div>' + \
-                            '</body>'),
-                        sublime.LAYOUT_BELOW,
-                        on_navigate=self.on_phantom_navigate))
-
-                    if(not first_scroll):
-                        view.sel().clear()
-                        view.sel().add(sublime.Region(pt))
-                        view.show(pt)
-                        first_scroll = True
-
-                phantom_set.update(phantoms)
-
-    def hide_phantoms(self):
-        """hide phantom
-        
-        erase the phantom from the view
-        """
-        global errs_by_file
-        global phantom_sets_by_buffer
-        global first_scroll
-
-        for file, errs in errs_by_file.items():
-            view = self.window.find_open_file(file)
-            if view:
-                view.erase_phantoms("exec")
-
-        errs_by_file = {}
-        phantom_sets_by_buffer = {}
-        first_scroll = False
-
-    def on_phantom_navigate(self, url):
-        """on close
-        
-        Hide the phantom when the "x" is pressed
-        
-        Arguments:
-            url {str} -- attribute of the link clicked.
-        """
-        self.hide_phantoms()
+    for n in range(0, num):
+        if(not window.views_in_group(n)):
+            window.focus_group(n)
+            return True
+    return False

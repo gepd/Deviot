@@ -84,6 +84,9 @@ msgstr "Scegli Ambiente"
 msgid "menu_search_lib"
 msgstr "Cerca Libreria"
 
+msgid "menu_update_lib"
+msgstr "Update Library"
+
 msgid "menu_remove_lib"
 msgstr "Rimuovi Libreria"
 
@@ -120,14 +123,23 @@ msgstr "Compila"
 msgid "menu_upload"
 msgstr "Carica"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Overwrite Upload Speed"
-
 msgid "menu_clean"
 msgstr "Pulisci"
 
+msgid "menu_compile_options"
+msgstr "Compile/Upload Options"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Overwrite Upload Speed"
+
+msgid "menu_freeze_sketch"
+msgstr "Freeze Sketch"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Untouch"
+
 msgid "menu_open_ini_file"
-msgstr "Apri Config File di Compilazione"
+msgstr "Apri platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Mostra Deviot Console"
@@ -145,7 +157,7 @@ msgid "menu_programmer"
 msgstr "Programmatore"
 
 msgid "menu_serial_port"
-msgstr "Porte Seriali"
+msgstr "Device(s)"
 
 msgid "menu_auth_change"
 msgstr "Cambia OTA Password"
@@ -181,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Clean View"
 
 msgid "menu_baudrate"
-msgstr "Baudrate"
+msgstr "Serial Baudrate"
 
 msgid "menu_line_ending"
 msgstr "Terminatore di riga"
@@ -241,7 +253,7 @@ msgid "menu_change_build_folder"
 msgstr "Cambia cartella di Compilazione"
 
 msgid "menu_use_cpp_new"
-msgstr "Usa CPP File con New File"
+msgstr "Use CPP on New Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Rebuild Syntax and Completions Files"
@@ -311,6 +323,15 @@ msgstr "Please Restart Sublime Text"
 
 msgid "button_ok"
 msgstr "OK"
+
+msgid "processing"
+msgstr "In lavorazione"
+
+msgid "unknown"
+msgstr "Unknown"
+
+msgid "deviot_info"
+msgstr "\nYou will see more information after build your project or upload your firmware.\n\n- Check the wiki to know more about Deviot https://goo.gl/PKju55\n- If this plugin has been helpful for you, consider to make a donation https://goo.gl/7K4BXh"
 
 # Libraries
 

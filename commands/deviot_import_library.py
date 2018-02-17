@@ -4,7 +4,12 @@ from ..libraries.project_check import ProjectCheck
 
 class DeviotImportLibraryCommand(WindowCommand):
     def run(self):
-        QuickMenu().quick_import()
+        Quick = QuickMenu()
+        items = Quick.import_list()
+        callback = Quick.callback_import
+        Quick.set_list(items)
+
+        Quick.show_quick_panel(callback)
 
     def is_enabled(self):
         is_iot = ProjectCheck().is_iot()

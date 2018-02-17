@@ -16,11 +16,11 @@
     <p align="center" style="font-size: 9pt">Sublime theme used: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
 </p>
 
-**Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **400** boards.
+**Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **450** boards.
 
 
 # Features
-- **400+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
+- **450+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
 - **Library Manager**, find, install and remove any Library
 - **OTA Upload** Sends your firmware Over The Air to any ***espressif*** board
 - **PlatformIO Terminal**, if you love the CLI and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
@@ -41,6 +41,7 @@ Deviot is available in:
 * **Spanish**
 * **Portuguese**
 * **Chinese**
+* **German**
 * **French** (Incomplete)
 * **Italian** (Incomplete)
 * **Polish** (Incomplete)
@@ -61,6 +62,7 @@ You should let the `msgid` as is, and paste your translated string in `msgstr`. 
 * **Italian Translation** @davide-dv, @avivace
 * **Polish Translation** @jacek-c
 * **Portuguese Translation** @alexandrefernandesjs
+* **German Translation** @CSchoch
 * **Code Contributor:** @goolic, @thinkyhead
 
 
@@ -71,7 +73,7 @@ Support the open source!. If you liked this plugin, and you want to make a contr
 
 ## License
 
-Copyright 2015-2017 GEPD <gepd@outlook.com>
+Copyright 2015-2018 GEPD <gepd@outlook.com>
 
 Deviot is licensed with the permissive Apache 2.0 licence. It means that you can use it personal or commercially, free of charge.
 

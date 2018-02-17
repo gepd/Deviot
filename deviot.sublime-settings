@@ -1,0 +1,12 @@
+{
+	// Direction to create the new panel and the Serial Monitor output view
+	// possible values: 'self', 'left', 'right', 'up', 'down'
+	// change to self, to avoid create a new panel
+	"monitor_direction": "right",
+	// Direction to create the new panel and the PIO Terminal output view
+	// possible values: 'self', 'left', 'right', 'up', 'down'
+	// change to self, to avoid create a new panel
+	"terminal_direction": "right",
+    // show compile errors just under the line on which they occur.
+    "show_errors_inline": true
+}

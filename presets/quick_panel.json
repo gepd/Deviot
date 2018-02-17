@@ -9,6 +9,9 @@
         "caption": "menu_select_env",
         "command": "deviot_select_environment"
     },{
+        "caption": "menu_update_lib",
+        "command": "deviot_update_library"
+    },{
         "caption": "menu_search_lib",
         "command": "deviot_search_library"
     },{
@@ -41,6 +44,15 @@
     },{
         "caption": "menu_clean",
         "command": "deviot_clean_sketch"
+    },{
+        "caption": "menu_overwrite_upload_baud",
+        "command": "deviot_overwrite_upload_baud"
+    },{
+        "caption": "menu_freeze_sketch",
+        "command": "deviot_freeze_sketch"
+    },{
+        "caption": "menu_pio_untouch",
+        "command": "deviot_pio_untouch"
     },{
         "caption": "menu_open_ini_file",
         "command": "deviot_open_ini_file"
@@ -80,6 +92,15 @@
     },{
         "caption": "menu_auto_clean",
         "command": "deviot_auto_clean"
+    },{
+        "caption": "menu_baudrate",
+        "command": "deviot_choose_baudrate"
+    },{
+        "caption": "menu_line_ending",
+        "command": "deviot_choose_line_ending"
+    },{
+        "caption": "menu_display_mode",
+        "command": "deviot_choose_display_mode"
     },{
         "caption": "menu_upgrade_pio",
         "command": "deviot_upgrade_pio"

@@ -12,14 +12,20 @@ from sublime import message_dialog
 from sublime_plugin import EventListener
 
 from .commands import *
-from .platformio.update import Update
-from .beginning.pio_install import PioInstall
-from .libraries.tools import get_setting, save_setting
-from .libraries.syntax import Syntax
-from .libraries.paths import getMainMenuPath, getPackagesPath
-from .libraries.paths import getDeviotUserPath, getPluginName
-from .libraries.preferences_bridge import PreferencesBridge
-from .libraries.project_check import ProjectCheck
+
+try:
+    from .libraries.paths import getPluginName
+    from .platformio.update import Update
+    from .libraries.syntax import Syntax
+    from .beginning.pio_install import PioInstall
+    from .libraries.tools import get_setting, save_setting
+    from .libraries.paths import getMainMenuPath, getPackagesPath
+    from .libraries.paths import getDeviotUserPath, status_color_folder
+    from .libraries.preferences_bridge import PreferencesBridge
+    from .libraries.project_check import ProjectCheck
+    from .libraries import messages, status_color
+except:
+    pass
 
 package_name = getPluginName()
 
@@ -49,6 +55,7 @@ def plugin_loaded():
     # alert when deviot was updated
     if(events.post_upgrade(package_name)):
         from .libraries.I18n import I18n
+        save_setting('compile_lang', True)
         message = I18n().translate("reset_after_upgrade")
         message_dialog(message)
 
@@ -67,11 +74,33 @@ def plugin_unloaded():
         if(path.isdir(user)):
             rmtree(user)
 
+# plugin_unload is not working so if the status bar color
+#  folder is present when ST starts, it will remove it.
+try:
+    rmtree(status_color_folder())
+except:
+    pass
+
 class DeviotListener(EventListener):
     def on_activated(self, view):
         PreferencesBridge().set_status_information()
+
+    def on_pre_close(self, view):
+        # run on_pre_close to get the window instance
+        try:
+            name = view.name()
+            messages.session[name].on_pre_close(view)
+        except:
+            pass
     
     def on_close(self, view):
+        # close empty panel
+        try:
+            name = view.name()
+            messages.session[name].on_close(view)
+        except:
+            pass
+
         # remove open used serials ports
         from .libraries import serial
         
@@ -79,6 +108,7 @@ class DeviotListener(EventListener):
         search_id = window_name.split(" | ")
 
         if(len(search_id) > 1 and search_id[1] in serial.serials_in_use):
+            status_color.set('error', 3000)
             port_id = search_id[1]
             serial_monitor = serial.serial_monitor_dict.get(port_id, None)
             serial_monitor.stop()

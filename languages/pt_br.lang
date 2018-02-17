@@ -85,6 +85,9 @@ msgstr "Selecione o Ambiente"
 msgid "menu_search_lib"
 msgstr "Procurar/Instalar Biblioteca"
 
+msgid "menu_update_lib"
+msgstr "Atualizar Biblioteca"
+
 msgid "menu_remove_lib"
 msgstr "Remover Biblioteca"
 
@@ -121,14 +124,23 @@ msgstr "Compilar"
 msgid "menu_upload"
 msgstr "Enviar"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Excesso de Velocidade de Upload"
-
 msgid "menu_clean"
 msgstr "Limpar"
 
+msgid "menu_compile_options"
+msgstr "Opções de Compilação/Envio"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Excesso de Velocidade de Upload"
+
+msgid "menu_freeze_sketch"
+msgstr "Congelar Sketch"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Sem Modificação"
+
 msgid "menu_open_ini_file"
-msgstr "Open Build Config File"
+msgstr "Abrir platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Mostrar Console Deviot"
@@ -146,7 +158,7 @@ msgid "menu_programmer"
 msgstr "Programador"
 
 msgid "menu_serial_port"
-msgstr "Portas Seriais"
+msgstr "Dispositivo(s)"
 
 msgid "menu_auth_change"
 msgstr "Alterar a Senha da OTA"
@@ -182,7 +194,7 @@ msgid "menu_auto_clean"
 msgstr "Vista de Limpeza Automática"
 
 msgid "menu_baudrate"
-msgstr "Taxa de Transmissão"
+msgstr "Taxa de Transmissão Serial (baudrate)"
 
 msgid "menu_line_ending"
 msgstr "Terminais de Linha"
@@ -242,7 +254,7 @@ msgid "menu_change_build_folder"
 msgstr "Alterar Pasta de Compilação"
 
 msgid "menu_use_cpp_new"
-msgstr "Use o Arquivo CPP no Novo Arquivo"
+msgstr "Use o Arquivo CPP no Novo Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Reconstruir Arquivos de Sintaxe e Finalizações"
@@ -251,7 +263,7 @@ msgid "menu_remove_settings"
 msgstr "Remover Arquivos de Preferências"
 
 msgid "menu_languages"
-msgstr "Linguagens"
+msgstr "Linguagens (Languages)"
 
 msgid "menu_donate_deviot"
 msgstr "❤ Doar"
@@ -312,6 +324,15 @@ msgstr "Por Favor Reinicie o Sublime Text"
 
 msgid "button_ok"
 msgstr "OK"
+
+msgid "processing"
+msgstr "Em Processamento"
+
+msgid "unknown"
+msgstr "Desconhecido"
+
+msgid "deviot_info"
+msgstr "\nVocê vai ver mais informação depois de compilar o seu projeto ou ao carregar um firmware.\n\n- Visite a wiki para saber mais sobre Deviot https://goo.gl/PKju55\n- Se esse plugin tem sido de ajuda para você, considere fazer uma doação https://goo.gl/7K4BXh"
 
 # Libraries
 

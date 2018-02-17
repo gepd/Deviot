@@ -1,5 +1,5 @@
 from sublime_plugin import WindowCommand
-from ..libraries.tools import get_setting, save_setting
+from ..libraries.quick_menu import QuickMenu
 
 class DeviotChooseBaudrateCommand(WindowCommand):
     """
@@ -9,9 +9,10 @@ class DeviotChooseBaudrateCommand(WindowCommand):
     Extends: sublime_plugin.WindowCommand
     """
 
-    def run(self, baudrate_item):
-        save_setting('baudrate', baudrate_item)
+    def run(self):
+        Quick = QuickMenu()
+        items = Quick.serial_baudrate_list()
+        callback = Quick.callback_serial_baudrate
+        Quick.set_list(items)
 
-    def is_checked(self, baudrate_item):
-        target_baudrate = get_setting('baudrate', 9600)
-        return baudrate_item == target_baudrate
+        Quick.show_quick_panel(callback)

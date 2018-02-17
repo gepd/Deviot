@@ -84,6 +84,9 @@ msgstr "Selecciona Un Entorno de Desarrollo"
 msgid "menu_search_lib"
 msgstr "Buscar/Instalar Librería"
 
+msgid "menu_update_lib"
+msgstr "Actualizar Librería"
+
 msgid "menu_remove_lib"
 msgstr "Eliminar Librería"
 
@@ -120,14 +123,23 @@ msgstr "Compilar"
 msgid "menu_upload"
 msgstr "Cargar"
 
-msgid "menu_overwrite_upload_baud"
-msgstr "Sobre Escribir Velocidad de Carga"
-
 msgid "menu_clean"
 msgstr "Limpiar"
 
+msgid "menu_compile_options"
+msgstr "Opciones de Carga/Compilación"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Sobre Escribir Velocidad de Carga"
+
+msgid "menu_freeze_sketch"
+msgstr "Congelar Sketch"
+
+msgid "menu_pio_untouch"
+msgstr "platformio.ini Sin Modificar"
+
 msgid "menu_open_ini_file"
-msgstr "Abrir Archivo Para Compilación"
+msgstr "Abrir platformio.ini"
 
 msgid "menu_show_console"
 msgstr "Mostrar Consola Deviot"
@@ -145,7 +157,7 @@ msgid "menu_programmer"
 msgstr "Programador"
 
 msgid "menu_serial_port"
-msgstr "Puerto(s) Serial"
+msgstr "Dispositivo(s)"
 
 msgid "menu_auth_change"
 msgstr "Cambiar Contraseña OTA"
@@ -181,7 +193,7 @@ msgid "menu_auto_clean"
 msgstr "Auto-Limpiar Ventana"
 
 msgid "menu_baudrate"
-msgstr "Velocidad de Transmisión (baudrate)"
+msgstr "Velocidad de Transmisión Serial (baudrate)"
 
 msgid "menu_line_ending"
 msgstr "Final de Linea"
@@ -241,7 +253,7 @@ msgid "menu_change_build_folder"
 msgstr "Cambiar Carpeta de Compilación"
 
 msgid "menu_use_cpp_new"
-msgstr "Usar CPP con Nuevo Archivo"
+msgstr "Extensión CPP con Nuevo Sketch"
 
 msgid "menu_rebuild_syntax"
 msgstr "Reconstruir Archivos de Syntax y Completions"
@@ -311,6 +323,15 @@ msgstr "Por favor reinicie Sublime Text"
 
 msgid "button_ok"
 msgstr "OK"
+
+msgid "processing"
+msgstr "Procesando"
+
+msgid "unknown"
+msgstr "Desconocido"
+
+msgid "deviot_info"
+msgstr "\nPodrás ver más información después de compilar tu proyecto o subir tu firmware.\n\n- Aprende más sobre Deviot en la Wiki https://goo.gl/PKju55\n- Si este plugin te ha sido útil, considera hacer una donación https://goo.gl/7K4BXh"
 
 # Librerías
 

@@ -1,4 +1,5 @@
 from sublime_plugin import WindowCommand
+from ..libraries.messages import Messages
 
 class DeviotShowConsoleCommand(WindowCommand):
     """
@@ -8,4 +9,10 @@ class DeviotShowConsoleCommand(WindowCommand):
     """
 
     def run(self):
-        self.window.run_command("show_panel", {"panel": "output.exec"})
+        output_view = self.window.find_output_panel('deviot')
+        if(not output_view):
+            messages = Messages()
+            messages.create_panel()
+            messages.first_message()
+
+        self.window.run_command("show_panel", {"panel": "output.deviot"})
