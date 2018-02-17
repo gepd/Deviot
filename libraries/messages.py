@@ -182,7 +182,7 @@ class Messages:
         auto_clean = get_setting('auto_clean', True)
 
         if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
-            self.clean_console()
+            self.clean_view()
 
         # append text
         text = text.replace('\r\n', '\n'). replace('\r', '\n')
