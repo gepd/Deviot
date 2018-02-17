@@ -16,11 +16,11 @@
     <p align="center" style="font-size: 9pt">Sublime theme used: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
 </p>
 
-**Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **400** boards.
+**Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **450** boards.
 
 
 # Features
-- **400+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
+- **450+ Embedded Boards**, thanks to *[PlatformIO](http://platformio.org/)*, Deviot can handle a lot of boards!
 - **Library Manager**, find, install and remove any Library
 - **OTA Upload** Sends your firmware Over The Air to any ***espressif*** board
 - **PlatformIO Terminal**, if you love the CLI and know *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*, this is for you.
