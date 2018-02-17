@@ -2,7 +2,7 @@
     <a href="https://github.com/gepd/deviot/releases"><img src="https://img.shields.io/github/release/gepd/deviot.svg?maxAge=3600&style=flat-square" alt="Release"></a>
     <a href="https://packagecontrol.io/packages/Deviot"><img src="https://img.shields.io/packagecontrol/dt/Deviot.svg?maxAge=3600&style=flat-square" alt="Downloads"></a>
     <a href="https://github.com/gepd/Deviot/blob/master/LICENCE"><img src="https://img.shields.io/badge/Licence-%20Apache%20Software%20License-green.svg?maxAge=3600&style=flat-square" alt="Licence"></a>
-    <a href="https://gratipay.com/~gepd/"><img src="https://img.shields.io/badge/donate-Deviot-orange.svg?maxAge=3600&style=flat-square" alt="Donate"></a>
+    <a href="https://www.paypal.me/gepd"><img src="https://img.shields.io/badge/donate-Deviot-orange.svg?maxAge=3600&style=flat-square" alt="Donate"></a>
 </p>
 
 <p align="center">
@@ -16,11 +16,11 @@
     <p align="center" style="font-size: 9pt">Tema ST de la imagen: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
 </p>
 
-**Deviot** es un plugin inspirado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 3 en el que puedes desarrollar aplicacion para dispositivos IoT, usa el ecosistema [PlatformIO](http://platformio.org/) que soporta ¡más de **~400** placas!
+**Deviot** es un plugin inspirado en [stino](https://github.com/Robot-Will/Stino) para Sublime Text 3 en el que puedes desarrollar aplicacion para dispositivos IoT, usa el ecosistema [PlatformIO](http://platformio.org/) que soporta ¡más de **~450** placas!
 
 # Características
 
-- **Más de 400 placas**, gracias a *[PlatformIO](http://platformio.org/)*, Deviot puede controlar muchas tarjetas de desarrollo.
+- **Más de 450 placas**, gracias a *[PlatformIO](http://platformio.org/)*, Deviot puede controlar muchas tarjetas de desarrollo.
 - **Administrador de Librerías**, busca, instala y elimina cualquier librería con solo unos clicks.
 - **Cargas OTA**, cargas inalámbricas (Over The Air) a cualquier placa ***espressif***.
 - **Terminal PlatformIO**, para los amantes de la consola y los conocedores de *[PlatformIO CLI](http://docs.platformio.org/en/latest/core.html)*.
@@ -63,12 +63,12 @@ Debes dejar la cadena `msgid` como está, y pegar tu palabra/oración traducido/
 
 
 ## Donar
-¡Apoya el código libre!. Si te gustó este plugin y quieres aportar con un granito de arena para poder continuar desarrollándolo, hazlo a través de [este link](https://gratipay.com/~gepd/)
+¡Apoya el código libre!. Si te gustó este plugin y quieres aportar con un granito de arena para poder continuar desarrollándolo, hazlo a través de [este link](https://www.paypal.me/gepd)
 
 Si tienes algún problema o quieres contactarme: <gepd@outlook.com>
 
 ## Licencia
-Derechos de Autor 2015-2017 GEPD <gepd@outlook.com>
+Derechos de Autor 2015-2018 GEPD <gepd@outlook.com>
 
 Deviot está licenciado con la licencia permisiva Apache 2.0. Esto significa que tú puedes usarlo personal y comercialmente libre de cargos.
 
