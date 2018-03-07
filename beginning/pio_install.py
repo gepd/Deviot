@@ -182,7 +182,7 @@ class PioInstall(object):
         out = run_command(cmd, "setup_error", self.OUTPUT_PATH)
 
         cmd = create_command(['pip', 'install', '-U', 'platformio'])
-        out = run_command(cmd, "setup_error")
+        out = run_command(cmd, "setup_error", cwd=self.V_ENV_BIN_PATH)
 
         # save env paths
         env_path = [self.V_ENV_PATH, self.V_ENV_BIN_PATH]
