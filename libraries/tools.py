@@ -147,8 +147,13 @@ def get_sysetting(key, default=None):
 
     if(not config.has_option(section, key)):
         return default
+
+    output = config.get(section, key)[0]
+
+    if(output == 'True' or output == 'False'):
+        output = True if output == 'True' else False
     
-    return config.get(section, key)[0]
+    return output
 
 def save_sysetting(key, value):
     """

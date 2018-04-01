@@ -97,6 +97,12 @@ class Update(Command):
 
         cmd = create_command(['pip','install', '-U', option])
         out = run_command(cmd)
+        
+        if(out[0] == 0):
+            self.dprint('button_ok')
+            set_sysetting('pio_developer', True)
+        else:
+            self.dprint('setup_error')
 
     def check_update_async(self):
         """New Thread Execution
