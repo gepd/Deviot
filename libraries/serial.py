@@ -246,7 +246,7 @@ def display_mode(inp_text, str_len=0):
 
     else:
         text = inp_text.decode('utf-8', 'replace')
-        text = text.replace('\r', '').replace('NULL', '')
+        text = text.replace('\r', '')
     
     return text
 
