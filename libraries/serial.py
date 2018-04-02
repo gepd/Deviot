@@ -26,13 +26,13 @@ def serial_port_list():
         [list/list] -- list of list like [['port1 fullname', 
                        port_name]['port2 fullname', 'port_name']]
     """
-    ports = list(list_ports.comports()) 
+    ports = list(list_ports.comports())
     dev_names = ['ttyACM', 'ttyUSB', 'tty.', 'cu.']
     serial_ports = []
     for port_no, description, address in ports:
         for dev_name in dev_names:
             if(address != 'n/a' and dev_name in port_no or platform() == 'windows'):
-                serial_ports.append([description, port_no])
+                serial_ports.append([description, address, port_no])
                 break
 
     return serial_ports
@@ -265,7 +265,7 @@ def get_serial_monitor(port_id):
     ports_list = serial_port_list()
     
 
-    match = port_id in (port[1] for port in ports_list)
+    match = port_id in (port[2] for port in ports_list)
 
     if(not match):
         return False

@@ -10,7 +10,6 @@ from .quick_panel import quick_panel
 from .paths import getBoardsFileDataPath
 from .tools import get_setting, save_setting, save_sysetting
 from .preferences_bridge import PreferencesBridge
-from .serial import serial_port_list
 from .I18n import I18n
 
 
@@ -222,7 +221,7 @@ class QuickMenu(PreferencesBridge):
             self.window.run_command('deviot_set_ip')
             return
 
-        port_selected = self.quick_list[selected][1]
+        port_selected = self.quick_list[selected][2]
         save_setting('port_id', port_selected)
 
         self.run_last_action()
@@ -240,8 +239,8 @@ class QuickMenu(PreferencesBridge):
         index = 2
         header = self.translate("select_port_list").upper()
         ports_list = self.get_ports_list()
-        ports_list.insert(0, [header])
-        ports_list.insert(1, [self.translate("menu_add_ip")])
+        ports_list.insert(0, [header, ''])
+        ports_list.insert(1, [self.translate("menu_add_ip"), ''])
         current = get_setting('port_id', None)   
 
         if(len(ports_list) < 2):
