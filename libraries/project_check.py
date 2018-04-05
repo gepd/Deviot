@@ -233,7 +233,7 @@ class ProjectCheck(QuickMenu):
                 self.port_id = True
                 return
 
-        port_ready = [port[1] for port in ports_list if self.port_id == port[1]]
+        port_ready = [port[2] for port in ports_list if self.port_id == port[2]]
         ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
 
         if(not port_ready and ip_device is None):
@@ -298,17 +298,16 @@ class ProjectCheck(QuickMenu):
         ports_list = self.get_ports_list()
 
         for port in ports_list:
-            if(self.port_id == port[1]):
+            if(self.port_id == port[2]):
                 try:
-                    auth = port[2]
+                    auth = port[3]
                     break
                 except:
                     return ended
 
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
-
-        if(auth == 'no'):
+        if(auth == 'None'):
             if(not auth_pass):
                 if(config.has_option(environment, 'upload_flags')):
                     config.remove_option(environment, 'upload_flags')
@@ -317,7 +316,7 @@ class ProjectCheck(QuickMenu):
                         config.write(configfile)
             return ended
 
-        if(auth == 'yes' and not auth_pass):
+        if(auth != 'None' and not auth_pass):
             from .tools import save_sysetting
             self.window.run_command("deviot_set_password")
             save_sysetting('last_action', 3)
