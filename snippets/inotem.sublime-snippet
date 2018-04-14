@@ -1,9 +1,12 @@
 <snippet>
     <content><![CDATA[
+
 void setup(){
     ${1}
 }
+
 void loop(){
+	
 }
 ]]></content>
     <tabTrigger>inotem</tabTrigger>
