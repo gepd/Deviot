@@ -221,7 +221,11 @@ class QuickMenu(PreferencesBridge):
             self.window.run_command('deviot_set_ip')
             return
 
-        port_selected = self.quick_list[selected][2]
+        if(selected == 2):
+            port_selected = "not"
+        else:
+            port_selected = self.quick_list[selected][2]
+
         save_setting('port_id', port_selected)
 
         self.run_last_action()
@@ -237,10 +241,11 @@ class QuickMenu(PreferencesBridge):
             list -- available serial ports/mdns services
         """
         index = 2
-        header = self.translate("select_port_list").upper()
+        header = self.translate("port_list").upper()
         ports_list = self.get_ports_list()
-        ports_list.insert(0, [header, ''])
-        ports_list.insert(1, [self.translate("menu_add_ip"), ''])
+        ports_list.insert(0, [header, self.translate("select_port_list")])
+        ports_list.insert(1, [self.translate("menu_add_ip"), self.translate("add_ip_subtitle")])
+        ports_list.insert(2, [self.translate("menu_not_used_port"), self.translate("not_used_subtitle")])
         current = get_setting('port_id', None)   
 
         if(len(ports_list) < 2):

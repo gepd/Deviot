@@ -168,6 +168,9 @@ msgstr "没有串口或mDNS服务"
 msgid "menu_add_ip"
 msgstr "添加串口"
 
+msgid "menu_not_used_port"
+msgstr "Not Used"
+
 msgid "menu_monitor_serial"
 msgstr "串口监视器"
 
@@ -300,8 +303,17 @@ msgstr "从列表中选择一个开发板"
 msgid "select_env_list"
 msgstr "从列表中选择一个开发环境"
 
+msgid "port_list"
+msgstr "端口列表"
+
 msgid "select_port_list"
 msgstr "从列表中选择一个端口"
+
+msgid "not_used_subtitle"
+msgstr "Avoids the comprobation of the serial port"
+
+msgid "add_ip_subtitle"
+msgstr "IP or domain"
 
 msgid "ota_error_platform"
 msgstr "在线上传只支持 Espressif (ESP8266) 平台, 选择其他串口或切换当前环境"

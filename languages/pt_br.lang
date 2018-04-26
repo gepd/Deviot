@@ -169,6 +169,9 @@ msgstr "Não há Serviços de Porta serial ou mDNS Disponíveis"
 msgid "menu_add_ip"
 msgstr "Adicionar IP Manual"
 
+msgid "menu_not_used_port"
+msgstr "Não usado"
+
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
@@ -301,8 +304,17 @@ msgstr "Selecione uma Placa da Lista"
 msgid "select_env_list"
 msgstr "Selecione um Ambiente da Lista"
 
+msgid "port_list"
+msgstr "Lista de Portas"
+
 msgid "select_port_list"
 msgstr "Selecione uma Porta da Lista"
+
+msgid "not_used_subtitle"
+msgstr "Evita a comprobação de uma porta serial"
+
+msgid "add_ip_subtitle"
+msgstr "IP or domínio"
 
 msgid "ota_error_platform"
 msgstr "O upload da OTA só Está Dsponível Para a Plataforma Espressif (ESP8266). Selecione Outra Porta Serial ou Altere o Ambiente Atual"

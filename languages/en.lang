@@ -168,6 +168,9 @@ msgstr "No serial port or mDNS services available"
 msgid "menu_add_ip"
 msgstr "Add IP Manually"
 
+msgid "menu_not_used_port"
+msgstr "Not Used"
+
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
@@ -300,8 +303,17 @@ msgstr "Select a Board From The List"
 msgid "select_env_list"
 msgstr "Select an Environment From The List"
 
+msgid "port_list"
+msgstr "Port List"
+
 msgid "select_port_list"
 msgstr "Select a Port From The List"
+
+msgid "not_used_subtitle"
+msgstr "Avoids the comprobation of the serial port"
+
+msgid "add_ip_subtitle"
+msgstr "IP or domain"
 
 msgid "ota_error_platform"
 msgstr "OTA Upload is only available for Espressif (ESP8266) platform. Select other serial port or change the current environment"

@@ -168,6 +168,9 @@ msgstr "Ningún puerto o servicio mDNS disponible"
 msgid "menu_add_ip"
 msgstr "Agregar IP Manualmente"
 
+msgid "menu_not_used_port"
+msgstr "No usado"
+
 msgid "menu_monitor_serial"
 msgstr "Monitor Serial"
 
@@ -300,8 +303,17 @@ msgstr "Seleciona una Placa de la Lista\n"
 msgid "select_env_list"
 msgstr "Selecciona un Entorno de Desarrollo\n"
 
+msgid "port_list"
+msgstr "Lista de Puertos\n"
+
 msgid "select_port_list"
 msgstr "Selecciona un Puerto de la Lista\n"
+
+msgid "not_used_subtitle"
+msgstr "Evita la comprobación del puerto serial"
+
+msgid "add_ip_subtitle"
+msgstr "IP o dominio"
 
 msgid "ota_error_platform"
 msgstr "Cargas vía OTA sólo están disponibles para plataformas Espressif (ESP8266) actualmente"

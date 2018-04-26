@@ -221,6 +221,11 @@ class ProjectCheck(QuickMenu):
         from re import search
 
         self.port_id = self.get_serial_port()
+
+        if(self.port_id == 'not'):
+            self.port_id = 'not'
+            return
+
         ports_list = self.get_ports_list()
         
         ini_path = self.get_ini_path()

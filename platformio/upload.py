@@ -61,7 +61,9 @@ class Upload(Initialize):
         if(programmer):
             cmd = ['run', '-t', 'program', '-e', self.board_id]
         else:
-            cmd = ['run', '-t', 'upload', '--upload-port', self.port_id, '-e', self.board_id]
+            cmd = ['run', '-t', 'upload', '-e', self.board_id]
+            if(self.port_id != 'not'):
+                cmd.extend(['--upload-port', self.port_id])
 
         if(not self.check_auth_ota()):
             self.print("ota_error_platform")

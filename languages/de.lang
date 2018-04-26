@@ -168,6 +168,9 @@ msgstr "Kein Serieller Port oder mDNS Service verfügbar"
 msgid "menu_add_ip"
 msgstr "IP hinzufügen"
 
+msgid "menu_not_used_port"
+msgstr "Not Used"
+
 msgid "menu_monitor_serial"
 msgstr "Serieller Monitor"
 
@@ -300,8 +303,17 @@ msgstr "Wählen Sie ein Board aus der Liste"
 msgid "select_env_list"
 msgstr "Wählen Sie eine Umgebung aus der Liste"
 
+msgid "port_list"
+msgstr "Port Liste"
+
 msgid "select_port_list"
 msgstr "Wählen Sie einen Port aus der Liste"
+
+msgid "not_used_subtitle"
+msgstr "Avoids the comprobation of the serial port"
+
+msgid "add_ip_subtitle"
+msgstr "IP or domain"
 
 msgid "ota_error_platform"
 msgstr "Hochladen per OTA ist nur Espressif (ESP8266) Plattform. Wählen Sie einen anderen Seriellen Port oder wechseln Sie die Umgebung"
