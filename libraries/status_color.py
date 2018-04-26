@@ -95,7 +95,8 @@ def remove(remove_path=None):
 
     try:
         if(path.exists(theme_path)):
-            remove_file(theme_path)
+            with open(theme_path, 'w') as file:
+                file.write("[]")
     except:
         pass
 
