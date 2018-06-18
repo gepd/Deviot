@@ -118,7 +118,7 @@ class Libraries(Command):
             self.quick_list.append([self.translate('none_lib_found')])
         else:
             self.quicked(response_list['items'])
-            self.quick_list.insert(0, [self.translate('select_library').upper()])
+            self.quick_list.insert(0, [self.translate('select_library').upper(), ''])
         
         quick_panel(self.quick_list, self.library_install_async)
 
@@ -137,13 +137,10 @@ class Libraries(Command):
             id = item['id']
             name = item['name']
             description = item['description']
-            frameworks = ''
+            authornames = ", ".join(item['authornames'])
             
-            for framework in item['frameworks']:
-                frameworks += framework + ' '
-            
-            info = "{0} | {1}".format(id, frameworks)
-            quick_list.append([name, description, info])
+            info = "{0} | {1}".format(name, authornames)
+            quick_list.append([info, description])
 
         self.quick_list = quick_list
 
