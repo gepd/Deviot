@@ -17,5 +17,6 @@ class DeviotSetPasswordCommand(WindowCommand):
 
     def on_done(self, password):
         save_setting('auth_pass', password)
-        if(get_sysetting('last_action', None)):
-            self.window.run_command("deviot_upload_sketch")
+        # check this
+        #if(get_sysetting('last_action', None)):
+            #self.window.run_command("deviot_upload_sketch")
