@@ -34,7 +34,7 @@ class Libraries(Command):
 
     def __init__(self, window=None, view=None, feedback=True):
         super(Libraries, self).__init__()
-        
+
         self.translate = I18n().translate
         self.window = active_window()
         self.view = self.window.active_view()
@@ -46,7 +46,7 @@ class Libraries(Command):
 
     def set_queue(self):
         """Message Instances
-        
+
         Makes all the instances to start to print in the deviot console.
         It sends a header string as first message
         """
@@ -59,18 +59,19 @@ class Libraries(Command):
 
     def search_library(self):
         """Search Library
-        
+
         Opens the input box to search a library
         """
         caption = self.translate("search_query")
-        self.window.show_input_panel(caption, '', self.download_list_async, None, None)
+        self.window.show_input_panel(
+            caption, '', self.download_list_async, None, None)
 
     def download_list_async(self, keyword):
         """Downlad in a Thread
-        
+
         Opens the download_list method in a new thread to avoid blocking
         the main thread of sublime text
-        
+
         Arguments:
             keyword {str} -- keyword to be search
         """
@@ -80,7 +81,7 @@ class Libraries(Command):
 
     def download_list(self, keyword):
         """PlatformIO API
-        
+
         Search a library in the platformio API api.platformio.org.
         The results are formated in the quick panel way and displayed
         on it
@@ -118,39 +119,39 @@ class Libraries(Command):
             self.quick_list.append([self.translate('none_lib_found')])
         else:
             self.quicked(response_list['items'])
-            self.quick_list.insert(0, [self.translate('select_library').upper(), ''])
-        
+            self.quick_list.insert(
+                0, [self.translate('select_library').upper(), ''])
+
         quick_panel(self.quick_list, self.library_install_async)
 
     def quicked(self, source_list):
         """Quick panel List
-        
+
         Turn the source dictionary list in a only list
         format to work properly in the quick panel
-        
+
         Arguments:
             source_list {dict} -- dictionary with data
         """
         quick_list = []
-        
+
         for item in source_list:
             id = item['id']
             name = item['name']
             description = item['description']
             authornames = ", ".join(item['authornames'])
-            
+
             info = "{0} | {1}".format(name, authornames)
             quick_list.append([info, description])
 
         self.quick_list = quick_list
 
-
     def library_install_async(self, selected):
         """Install in thread
-        
+
         Runs the library_install method to avoid block the main
         thread of sublime text
-        
+
         Arguments:
             selected {int} -- user selection index
         """
@@ -163,9 +164,9 @@ class Libraries(Command):
 
     def library_install(self, selected):
         """Library Install
-        
-        Run a CLI command with the ID of the library to install. After the 
-        setup finished it adds the library information in the boards.json 
+
+        Run a CLI command with the ID of the library to install. After the
+        setup finished it adds the library information in the boards.json
         file.
 
         Arguments:
@@ -187,7 +188,7 @@ class Libraries(Command):
 
     def update_library_async(self, selected):
         """Update
-        
+
         Show the installed libraries to search updates
         """
         if(selected <= 0):
@@ -199,7 +200,7 @@ class Libraries(Command):
 
     def update_library(self, selected):
         """Update Library
-    
+
         Run a CLI command with the ID of the library to update
 
         Arguments:
@@ -215,11 +216,11 @@ class Libraries(Command):
 
     def get_installed_list(self, type):
         """Install libraries list
-        
+
         Get the file with the installed libraries. This files
         is updated each time the user install or remove a library,
         the file is formated in the quick panel way (list)
-        
+
         Arguments:
             type {str} -- action to do after show the quick list
         """
@@ -235,10 +236,10 @@ class Libraries(Command):
 
     def remove_library_async(self, selected):
         """Remove in a thread
-        
+
         Runs the remove_library method to avoid block the main
         thread of sublime text
-        
+
         Arguments:
             selected {int} -- user selection index
         """
@@ -251,7 +252,7 @@ class Libraries(Command):
 
     def remove_library(self, selected):
         """Remove Library
-    
+
         Run a CLI command with the ID of the library to uninstall,
         it also removes the reference from the libraries.json file.
 
@@ -276,7 +277,7 @@ class Libraries(Command):
 
     def save_installed_list_async(self):
         """Save in thread
-        
+
         Runs the save_installed_list method to avoid block the main
         thread of sublime text
         """
@@ -287,7 +288,7 @@ class Libraries(Command):
 
     def save_installed_list(self):
         """Save installed list
-        
+
         Each time a library is installed or removed, it's stored/delted
         in a file (libraries.json). This file is used to avoid the lag
         when you run the platformIO command. If for some reason the list
@@ -308,9 +309,10 @@ class Libraries(Command):
         from .syntax import Syntax
         Syntax()
 
+
 def get_library_folders(platform='all'):
     """Libraries availables
-    
+
     Find the list of all folders that should have libraries.
 
     The main folders are .platformio/lib who is the global folder
@@ -320,10 +322,10 @@ def get_library_folders(platform='all'):
     .platformio/packages. Each package folder contain a list of
     default libraries, those libraries are selected according to
     the selected option.
-    
+
     Keyword Arguments:
         platform {str} -- platform to search (default: {'all'})
-    
+
     Returns:
         [list] -- list of folders with the libraries
     """
@@ -337,7 +339,7 @@ def get_library_folders(platform='all'):
 
     for sub_path in packages_sub_dirs:
         if(platform in sub_path or platform == 'all'):
-            
+
             for sub_path in glob(sub_path):
                 packages = path.join(sub_path, '*')
                 packages = glob(packages)
@@ -358,25 +360,26 @@ def get_library_folders(platform='all'):
 
     return libraries_folders
 
+
 def get_library_list(example_list=False, platform="all"):
     """List of Libraries
-    
+
     Make a list of the libraries availables. This list is
     used in the import library and examples.
 
     Keyword Arguments:
-        example_list {bool} -- if it's True, returns a list of examples 
+        example_list {bool} -- if it's True, returns a list of examples
                                 inside of the library (default: {False})
 
         platform {str} -- results only in the given platform (default: {"all"})
-    
+
     Returns:
         [list/list] -- name of folder and path [[name, path]]
     """
     from re import search
 
     libraries_folders = get_library_folders(platform)
-    
+
     quick_list = []
     check_list = []
 
@@ -401,13 +404,15 @@ def get_library_list(example_list=False, platform="all"):
                         caption = path.basename(lib_core)
                         quick_list.append([caption, lib_core])
                         check_list.append([caption])
-                
-            if caption not in quick_list and '__cores__' not in caption and caption not in check_list:
+
+            if(caption not in quick_list and '__cores__' not in
+                    caption and caption not in check_list):
+
                 store_data = True
                 if(example_list):
                     examples_path = path.join(content, 'examples')
                     store_data = True if path.exists(examples_path) else False
-                
+
                 if(store_data):
                     quick_list.append([caption, content])
                     check_list.append(caption)
