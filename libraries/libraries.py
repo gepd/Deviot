@@ -142,7 +142,7 @@ class Libraries(Command):
             authornames = ", ".join(item['authornames'])
 
             info = "{0} | {1}".format(name, authornames)
-            quick_list.append([info, description])
+            quick_list.append([info, description, id])
 
         self.quick_list = quick_list
 
@@ -172,11 +172,11 @@ class Libraries(Command):
         Arguments:
             selected {int} -- user selection index
         """
-        lib_id = self.quick_list[selected][2].split(' ')[0]
+        lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
         self.set_queue()
-        self.run_command(['lib', '--global', 'install', lib_id])
+        self.run_command(['lib', '--global', 'install', str(lib_id)])
 
         if(self.exit_code() == 0):
             from .syntax import Syntax
@@ -208,11 +208,11 @@ class Libraries(Command):
         """
         response_list = self.quick_list
 
-        lib_id = self.quick_list[selected][2].split(' ')[0]
+        lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
         self.set_queue()
-        self.run_command(['lib', '--global', 'update', lib_id])
+        self.run_command(['lib', '--global', 'update', str(lib_id)])
 
     def get_installed_list(self, type):
         """Install libraries list
@@ -261,11 +261,11 @@ class Libraries(Command):
         """
         response_list = self.quick_list
 
-        lib_id = self.quick_list[selected][2].split(' ')[0]
+        lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
         self.set_queue()
-        self.run_command(['lib', '--global', 'uninstall', lib_id])
+        self.run_command(['lib', '--global', 'uninstall', str(lib_id)])
 
         if(self.exit_code() == 0):
             from .syntax import Syntax
