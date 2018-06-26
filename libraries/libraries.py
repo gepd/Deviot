@@ -139,7 +139,11 @@ class Libraries(Command):
             id = item['id']
             name = item['name']
             description = item['description']
-            authornames = ", ".join(item['authornames'])
+
+            try:
+                authornames = ", ".join(item['authornames'])
+            except KeyError:
+                authornames = ""
 
             info = "{0} | {1}".format(name, authornames)
             quick_list.append([info, description, id])
