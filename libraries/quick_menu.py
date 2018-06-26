@@ -523,31 +523,32 @@ class QuickMenu(PreferencesBridge):
         quick panels.
         """
         baudrate_list = ["None",
-                        "1200", 
-                        "1800", 
-                        "2400", 
-                        "4800", 
-                        "9600", 
-                        "19200", 
-                        "38400", 
-                        "57600", 
-                        "115200", 
-                        "230400", 
-                        "460800", 
-                        "500000", 
-                        "576000",
-                        "921600", 
-                        "1000000", 
-                        "1152000"]
+                         "1200",
+                         "1800",
+                         "2400",
+                         "4800",
+                         "9600",
+                         "19200",
+                         "38400",
+                         "57600",
+                         "74880"
+                         "115200",
+                         "230400",
+                         "460800",
+                         "500000",
+                         "576000",
+                         "921600",
+                         "1000000",
+                         "1152000"]
 
         return baudrate_list
 
     def open_file(self, sketch_path):
         """Open sketch
-        
+
         search in the given path a ino or pde file extension
         and open it in a new windows when it's found
-        
+
         Arguments:
             sketch_path {str} -- path (file/folder) where to search
         Returns:
