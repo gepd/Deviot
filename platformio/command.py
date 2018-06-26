@@ -231,8 +231,9 @@ class Command(ProjectRecognition):
         else:
             sublime.status_message("Build finished with errors")
 
-        end_time = time.strftime('%c')
-        self._txt.print("\n[{0}]", end_time)
+        if(self._txt):
+            end_time = time.strftime('%c')
+            self._txt.print("\n[{0}]", end_time)
 
         # run next command in the deque
         run_next()
