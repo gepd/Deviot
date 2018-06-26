@@ -43,6 +43,8 @@ class Upload(Initialize):
             self.print("select_port_list")
             return
 
+        port_id = self.port_id
+
         # initialize board if it's not
         self.add_board()
 
@@ -63,8 +65,8 @@ class Upload(Initialize):
             cmd = ['run', '-t', 'program', '-e', self.board_id]
         else:
             cmd = ['run', '-t', 'upload', '-e', self.board_id]
-            if(self.port_id != 'not'):
-                cmd.extend(['--upload-port', self.port_id])
+            if(port_id != 'not'):
+                cmd.extend(['--upload-port', port_id])
 
         if(not self.check_auth_ota()):
             self.print("ota_error_platform")
@@ -82,7 +84,7 @@ class Upload(Initialize):
 
         if(get_setting('run_monitor', None)):
             from ..libraries.serial import toggle_serial_monitor
-            toggle_serial_monitor()
+            toggle_serial_monitor(port_id)
         save_setting('run_monitor', None)
 
     def nonblock_upload(self):

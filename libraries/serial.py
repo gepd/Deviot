@@ -281,15 +281,15 @@ def get_serial_monitor(port_id):
     return serial_monitor
 
 
-def toggle_serial_monitor():
+def toggle_serial_monitor(port_id):
     """Open/Close serial monitor
 
     If the serial monitor is closed, it will be opened or the opposite.
     """
-    port_id = get_setting('port_id', None)
+    # port_id = get_setting('port_id', None)
     serial_monitor = get_serial_monitor(port_id)
 
-    if(serial_monitor == False):
+    if(not serial_monitor):
         status_color.set('error', 3000)
 
         message = Messages()
