@@ -13,6 +13,7 @@ from ..libraries.tools import get_setting, save_setting, save_sysetting
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
+
 class Upload(Initialize):
     def __init__(self):
         super(Upload, self).__init__()
@@ -21,7 +22,7 @@ class Upload(Initialize):
 
     def start_upload(self):
         """Upload
-        
+
         Run the upload platformio command checking if a board (environment)
         and a serial port is selected
         """
@@ -84,10 +85,9 @@ class Upload(Initialize):
             toggle_serial_monitor()
         save_setting('run_monitor', None)
 
-
     def nonblock_upload(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the start_upload method
         """
         from threading import Thread

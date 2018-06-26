@@ -17,13 +17,14 @@ from .tools import get_setting
 from .messages import Messages
 from . import status_color
 
+
 def serial_port_list():
     """List of Ports
-    
+
     Return the list of serial ports availables on the system.
-    
+
     Returns:
-        [list/list] -- list of list like [['port1 fullname', 
+        [list/list] -- list of list like [['port1 fullname',
                        port_name]['port2 fullname', 'port_name']]
     """
     ports = list(list_ports.comports())
@@ -31,7 +32,8 @@ def serial_port_list():
     serial_ports = []
     for port_no, description, address in ports:
         for dev_name in dev_names:
-            if(address != 'n/a' and dev_name in port_no or platform() == 'windows'):
+            if(address != 'n/a' and dev_name in port_no
+                    or platform() == 'windows'):
                 serial_ports.append([description, address, port_no])
                 break
 
@@ -56,7 +58,7 @@ class SerialMonitor(object):
 
         output_console = get_setting('output_console', False)
         direction = get_setting('monitor_direction', 'right')
-    
+
         messages = Messages()
         messages.panel_name('serial_monitor_header{0}{1}', version, serial_port)
         messages.create_panel(direction=direction, in_file=not output_console)
@@ -66,9 +68,9 @@ class SerialMonitor(object):
 
     def is_running(self):
         """Monitor Running
-        
+
         Check if the monitorserial is running
-        
+
         Returns:
             [bool] -- True if it's running
         """
@@ -76,7 +78,7 @@ class SerialMonitor(object):
 
     def start_async(self):
         """Start serial monitor
-        
+
         Open the serial monitor in a new thread to avoid block
         the sublime text UI
         """
@@ -85,17 +87,17 @@ class SerialMonitor(object):
 
     def start(self):
         """Start serial monitor
-        
+
         Starts to receive data from the serial monitor in a new thread.
 
         """
         if(not self.is_alive):
             self.serial.baudrate = self.baudrate
-            
+
             if is_available(self.port):
                 self.serial.open()
                 self.is_alive = True
-                
+
                 monitor_thread = Thread(target=self.receive)
                 monitor_thread.start()
             else:
@@ -103,7 +105,7 @@ class SerialMonitor(object):
 
     def stop(self):
         """Stop serial monitor
-        
+
         Stops the loop who is wating for more information from the serial port
         """
         self.is_alive = False
@@ -112,14 +114,14 @@ class SerialMonitor(object):
 
     def clean_console(self):
         """Clean console
-        
+
         Clean all text in the current console
         """
         self.clean()
 
     def receive(self):
         """Receive Data
-        
+
         The loops will run until is_alive is true. After receive the serial data
         it can be converted to the mode selected by the user (ascii, hex, etc)
         """
@@ -136,28 +138,28 @@ class SerialMonitor(object):
                 inp_text = self.serial.read(buf_number)
                 length_in_text = len(inp_text)
                 inp_text = display_mode(inp_text, length_before)
-                
+
                 self.dprint(inp_text)
-                
+
                 length_before += length_in_text
                 length_before %= 16
-            
+
             sleep(0.04)
-        
+
         self.serial.close()
 
     def send(self, out_text):
         """Send text
-        
+
         Sends text over the serial port open, it adds a line ending
         according to the user preference.
-        
+
         Arguments:
             out_text {str} -- text to send with the line ending
         """
         line_ending = get_setting('line_ending', '')
         out_text += line_ending
-        
+
         self.dprint('sended_{0}', out_text)
 
         out_text = out_text.encode('utf-8', 'replace')
@@ -166,7 +168,7 @@ class SerialMonitor(object):
 
 def is_available(serial_port):
     """Port available
-    
+
     Checks if the serial port is available.
 
     Arguments:
@@ -178,7 +180,7 @@ def is_available(serial_port):
     state = False
     serial = pyserial.Serial()
     serial.port = serial_port
-    
+
     try:
         serial.open()
     except pyserial.serialutil.SerialException:
@@ -189,8 +191,9 @@ def is_available(serial_port):
         if serial.isOpen():
             state = True
             serial.close()
-    
+
     return state
+
 
 def display_mode(inp_text, str_len=0):
     """
@@ -209,11 +212,11 @@ def display_mode(inp_text, str_len=0):
     """
     text = u''
     display_mode = get_setting("display_mode", 'Text')
-    
+
     if display_mode == 'ASCII':
         for character in inp_text:
             text += chr(character)
-    
+
     elif display_mode == 'HEX':
         for (index, character) in enumerate(inp_text):
             text += u'%02X ' % character
@@ -221,22 +224,22 @@ def display_mode(inp_text, str_len=0):
                 text += '\t'
             if (index + str_len + 1) % 16 == 0:
                 text += '\n'
-    
+
     elif display_mode == 'Mix':
         text_mix = u''
         for (index, character) in enumerate(inp_text):
             text_mix += chr(character)
             text += u'%02X ' % character
-            
+
             if (index + str_len + 1) % 8 == 0:
                 text += '\t'
-            
+
             if (index + str_len + 1) % 16 == 0:
                 text_mix = text_mix.replace('\n', '+')
                 text += text_mix
                 text += '\n'
                 text_mix = ''
-        
+
         if(text_mix):
             less = (31 - index)
             for sp in range(less):
@@ -247,23 +250,22 @@ def display_mode(inp_text, str_len=0):
     else:
         text = inp_text.decode('utf-8', 'replace')
         text = text.replace('\r', '')
-    
+
     return text
 
 
 def get_serial_monitor(port_id):
     """Get Serial Monitor Object
-    
+
     Get the serial monitor object. If this is in the serial_monitor_dict
     will be returned, if not a new serial monitor object will be created
-    
+
     Returns:
         bool/object -- False if port is not in the list of the current
                     availables port, otherwise a serial monitor object
     """
     serial_monitor = None
     ports_list = serial_port_list()
-    
 
     match = port_id in (port[2] for port in ports_list)
 
@@ -272,8 +274,8 @@ def get_serial_monitor(port_id):
 
     if(port_id in serials_in_use):
         serial_monitor = serial_monitor_dict.get(port_id, None)
-    
-    if(serial_monitor == None):
+
+    if(not serial_monitor):
         serial_monitor = SerialMonitor(port_id)
 
     return serial_monitor
@@ -281,7 +283,7 @@ def get_serial_monitor(port_id):
 
 def toggle_serial_monitor():
     """Open/Close serial monitor
-    
+
     If the serial monitor is closed, it will be opened or the opposite.
     """
     port_id = get_setting('port_id', None)
@@ -289,7 +291,7 @@ def toggle_serial_monitor():
 
     if(serial_monitor == False):
         status_color.set('error', 3000)
-        
+
         message = Messages()
         message.initial_text("_deviot_{0}", version)
         message.create_panel()
@@ -298,14 +300,14 @@ def toggle_serial_monitor():
 
     if(not serial_monitor.is_running()):
         status_color.set('success')
-        
+
         serial_monitor.start_async()
 
         if(port_id not in serials_in_use):
             serials_in_use.append(port_id)
 
         serial_monitor_dict[port_id] = serial_monitor
-    
+
     else:
         status_color.set('error', 3000)
         serial_monitor.stop()
