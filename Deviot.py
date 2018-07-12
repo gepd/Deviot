@@ -60,12 +60,24 @@ def dependencies_path():
     return path.join(deviot, _install_name)
 
 
-def bin_path():
+def bin_name():
     bin = 'bin'
-    dependencies = dependencies_path()
     if('windows' in sublime.platform()):
         bin = 'Scripts'
-    return path.join(dependencies, bin)
+    return bin
+
+
+def bin_path():
+    dependencies = dependencies_path()
+    return path.join(dependencies, bin_name())
+
+
+def pio_penv():
+    """
+    ~/.platformio/penv/bin
+    """
+    user_path = path.expanduser('~')
+    return path.join(user_path, '.platformio', 'penv', bin_name())
 
 
 def setting_path():
@@ -285,6 +297,9 @@ def default_paths():
 
     # possible old installation in /Packages/User/Deviot
     default_paths.append(bin_path())
+
+    # instalation from atom or MS VS
+    default_paths.append(pio_penv())
 
     # get path from python.txt in Packages/User/Deviot
     packages = packages_path()
