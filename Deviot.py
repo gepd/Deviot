@@ -201,13 +201,11 @@ def pio_command(options, verbose=False):
     """
     cmd = " ".join(options)
     command = prepare_command(['platformio', '-f', '-c', 'sublimetext'])
-    print("=== PREPARE COMMAND ====", command)
     command.extend(options)
 
     # verbose mode
     if(verbose and 'run' in cmd and '-e' in cmd):
         command.extend(['-v'])
-    print("=== PIO COMMAND ====", command)
     return command
 
 
@@ -231,14 +229,11 @@ def run_command(command, cwd=None, env_paths=False):
     import subprocess
 
     # defining default env paths
-    print("===== env paths", bool(env_paths))
     if(env_paths):
         environ['PATH'] = env_paths
 
     command.append("2>&1")
     command = ' '.join(command)
-
-    print("run_command", command)
 
     process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE, cwd=cwd,
