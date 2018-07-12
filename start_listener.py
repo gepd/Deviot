@@ -15,7 +15,6 @@ from sublime_plugin import EventListener
 from .commands import *
 
 try:
-    from .beginning.check_requirements import DeviotCheckRequirementsCommand
     from .libraries.paths import getPluginName
     from .beginning.update import Update
     from .libraries.syntax import Syntax
@@ -36,7 +35,7 @@ def plugin_loaded():
     window.run_command("deviot_check_requirements")
 
     # # Search updates
-    Update().check_update_async()
+    window.run_command("deviot_check_pio_updates")
 
     # # check syntax files
     Syntax().check_syntax_file()

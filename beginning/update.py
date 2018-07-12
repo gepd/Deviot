@@ -2,15 +2,28 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
 
 from re import sub
+import sublime_plugin
 
 from .. import deviot
 from ..libraries.messages import Messages
 from ..libraries.thread_progress import ThreadProgress
+
+
+class DeviotCheckPioUpdatesCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().check_update_async()
+
+
+class DeviotUpdatePioCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().update_async()
+
+
+class DeviotDevPioCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().developer_async()
 
 
 class Update:
@@ -83,7 +96,9 @@ class Update:
         cmd = ['pip', 'uninstall', '--yes', 'platformio']
         out = deviot.run_command(cmd)
 
-        if(deviot.get_sysetting('pio_developer', False)):
+        developer = deviot.get_sysetting('pio_developer', False)
+
+        if(not developer):
             self.dprint('installing_dev_pio')
             option = 'https://github.com/platformio/' \
                      'platformio/archive/develop.zip'
@@ -96,7 +111,7 @@ class Update:
 
         if(out[0] == 0):
             self.dprint('button_ok')
-            deviot.save_sysetting('pio_developer', True)
+            deviot.save_sysetting('pio_developer', not developer)
         else:
             self.dprint('setup_error')
 
@@ -159,10 +174,7 @@ class Update:
 
             if(update):
                 self.show_feedback()
-
-                cmd = deviot.pio_command(['upgrade'])
-                out = deviot.run_command(cmd)
-                self.dprint(out[1])
+                self.update_pio()
 
     def online_pio_version(self):
         from urllib.request import Request
