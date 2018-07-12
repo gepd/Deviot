@@ -15,14 +15,8 @@ from .tools import accepted_extensions
 from .paths import getSyntaxPath, getPluginPath
 from ..libraries.thread_progress import ThreadProgress
 
-from ..libraries.I18n import I18n
-
-_ = None
 
 class Syntax(object):
-    def __init__(self):
-        global _
-        _ = I18n().translate
 
     def check_syntax_file(self):
         """
@@ -87,7 +81,7 @@ class Syntax(object):
 
         thread = Thread(target=self.create_files)
         thread.start()
-        ThreadProgress(thread, _('processing'), '')
+        ThreadProgress(thread, 'processing', '')
 
     def create_files(self):
         """Build files
