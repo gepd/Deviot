@@ -6,7 +6,7 @@ from __future__ import absolute_import
 import sublime
 import sublime_plugin
 
-from os import path, makedirs, rename
+from os import path, rename
 from threading import Thread
 from urllib.request import Request
 from urllib.request import urlopen
@@ -75,7 +75,7 @@ class InstallPIO(object):
                 dprint("error_downloading_files")
 
             try:
-                create_path(deviot.cache_path())
+                deviot.create_dirs(deviot.cache_path())
                 output = open(deviot.virtualenv_file(), 'wb')
                 output.write(bytearray(file))
                 output.close()
@@ -102,19 +102,6 @@ def cached_file():
     Check if the virtualenvfile was already downloaded
     """
     return bool(path.isfile(deviot.virtualenv_file()))
-
-
-def create_path(path):
-    """
-    Create a specifict path if it doesn't exists
-    """
-    import errno
-    try:
-        makedirs(path)
-    except OSError as exc:
-        if exc.errno is not errno.EEXIST:
-            raise exc
-        pass
 
 
 def extract_tar(tar_path, extract_path='.'):
@@ -150,7 +137,7 @@ def save_board_list():
     cmd = deviot.pio_command(['boards', '--json-output'])
     boards = deviot.run_command(cmd, env_paths=paths)[1]
 
-    create_path(deviot.user_pio_path())
+    deviot.create_dirs(deviot.user_pio_path())
 
     board_file_path = deviot.boards_file_path()
     File(board_file_path).write(boards)

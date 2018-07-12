@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 
-from os import path, environ
+from os import path, environ, makedirs
 from collections import OrderedDict
 import inspect
 
@@ -25,6 +25,19 @@ def header():
     sublime_v = sublime.version()
     user_agent = 'Deviot/%s (Sublime-Text/%s)' % (deviot_v, sublime_v)
     return {'User-Agent': user_agent}
+
+
+def create_dirs(dirs):
+    """
+    Create a specifict path if it doesn't exists
+    """
+    import errno
+    try:
+        makedirs(path.dirname(dirs))
+    except OSError as exc:
+        if exc.errno is not errno.EEXIST:
+            raise exc
+        pass
 
 
 def current_file_path():
@@ -166,6 +179,8 @@ def save_sysetting(key, value):
 
     section = "config"
     setting_file = setting_path()
+
+    create_dirs(setting_file)
 
     config = ReadConfig()
     config.read(setting_file)
