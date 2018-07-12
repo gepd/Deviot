@@ -34,10 +34,12 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
         if(not self.check_python()):
             return
 
-        if(not self.check_pio()):
-            from .install_pio import InstallPIO
+        from . import install_pio
 
-            InstallPIO()
+        if(not self.check_pio()):
+            install_pio.InstallPIO()
+        else:
+            install_pio.already_installed()
 
     def get_python_version(self, symlink='python'):
         """
@@ -96,23 +98,24 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
         Check if platformIO is already installed in the machine
         """
         global dprint
+        save_env = False
 
         # normal check
         cmd = ['--version']
         cmd = deviot.pio_command(cmd)
-
         out = deviot.run_command(cmd)
         status = out[0]
 
         if(status > 0):
-            # check with edefult environment paths
+            # check with default environment paths
             env = deviot.environment_paths()
             out = deviot.run_command(cmd[:-1], env_paths=env)
             status = out[0]
+            save_env = True
 
         if(status is 0):
             deviot.save_sysetting('installed', True)
-            # deviot.save_sysetting('external_bins', True)
-            deviot.save_sysetting('env_paths', env)
+            if(save_env):
+                deviot.save_sysetting('env_paths', env)
             return True
         return False

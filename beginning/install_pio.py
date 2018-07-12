@@ -143,6 +143,11 @@ def save_board_list():
     File(board_file_path).write(boards)
 
 
+def already_installed():
+    show_messages()
+    dprint("pio_is_installed")
+
+
 def show_messages():
     """Show message in deviot console
 
