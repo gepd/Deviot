@@ -141,7 +141,6 @@ class Update:
 
         date_now = datetime.now()
         last_check = deviot.get_sysetting('last_check_update', False)
-        last_check = datetime.strptime(last_check, '%Y-%m-%d %H:%M:%S.%f')
 
         try:
             last_check = datetime.strptime(last_check, '%Y-%m-%d %H:%M:%S.%f')
