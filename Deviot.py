@@ -180,7 +180,7 @@ def save_sysetting(key, value):
     section = "config"
     setting_file = setting_path()
 
-    create_dirs(setting_file)
+    create_dirs(path.dirname(setting_file))
 
     config = ReadConfig()
     config.read(setting_file)
