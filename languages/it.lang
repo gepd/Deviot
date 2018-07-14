@@ -13,6 +13,9 @@ msgstr "Deviot necessita di Python 2.7 per funzionare, per favore scaricalo e in
 msgid "button_download_python"
 msgstr "Scarica Python"
 
+msgid "downloading_files"
+msgstr "Downloading Files...\n"
+
 msgid "symlink_detected"
 msgstr "Symlink has been detected\n"
 
