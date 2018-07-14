@@ -77,8 +77,6 @@ class Syntax(object):
         Runs the creation of the files in a new thread
         to avoid block the UI of ST
         """
-        from threading import Thread
-
         thread = Thread(target=self.create_files)
         thread.start()
         ThreadProgress(thread, 'processing', '')

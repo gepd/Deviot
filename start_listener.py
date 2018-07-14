@@ -32,6 +32,8 @@ package_name = getPluginName()
 
 def plugin_loaded():
     window = sublime.active_window()
+
+    # check if deviot is installed
     window.run_command("deviot_check_requirements")
 
     # # Search updates
