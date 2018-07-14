@@ -33,7 +33,7 @@ def create_dirs(dirs):
     """
     import errno
     try:
-        makedirs(path.dirname(dirs))
+        makedirs(dirs)
     except OSError as exc:
         if exc.errno is not errno.EEXIST:
             raise exc
