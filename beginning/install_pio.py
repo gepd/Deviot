@@ -66,14 +66,17 @@ class InstallPIO(object):
 
         logger.debug("output: %s", out)
 
-        deviot.save_sysetting('installed', True)
+        if(out[0] == 0):
+            deviot.save_sysetting('installed', True)
 
-        save_env_paths()
-        save_board_list()
+            save_env_paths()
+            save_board_list()
 
-        dprint("setup_finished")
-
-        logger.debug("Setup done")
+            dprint("setup_finished")
+            logger.debug("Setup done")
+        else:
+            dprint("setup_error")
+            logger.debug("PIO not installed")
 
     def download_file(self):
         """Download File
