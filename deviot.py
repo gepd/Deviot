@@ -202,10 +202,7 @@ def prepare_command(command):
     env_path = get_sysetting('env_path', False)
     symlink = get_sysetting('symlink', 'python')
 
-    if(not env_path or bool(external_bins)):
-        return command
-
-    if(platform() == 'osx'):
+    if(sublime.platform() == 'osx'):
         exe = symlink
         options = ['-m', command[0]]
     else:
