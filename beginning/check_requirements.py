@@ -83,11 +83,11 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
 
         _version = self.get_python_version()
 
-        if(_version[0] == "3"):
+        if(_version == "0" or _version[0] == "3"):
             self.check_symlink()
 
         # show error and link to download
-        if(_version == '0' or _version[0] == "3"):
+        if(_version == "0" or _version[0] == "3"):
             logger.debug("no python detected")
 
             translate = I18n().translate
@@ -111,13 +111,14 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
         """
         logger.debug("check_symlink")
 
+        global _version
         global _symlink
 
-        version = self.get_python_version(_symlink)
-        if(version[0] == "2"):
+        _version = self.get_python_version(_symlink)
+
+        if(_version[0] == "2"):
             logger.debug("symlink detected")
 
-            dprint("symlink_detected")
             deviot.save_sysetting('symlink', _symlink)
 
             logger.debug("symlink setting stored")
