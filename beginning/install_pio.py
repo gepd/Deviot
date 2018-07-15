@@ -3,6 +3,7 @@
 
 from __future__ import absolute_import
 
+import logging
 import sublime
 import sublime_plugin
 
@@ -17,6 +18,7 @@ from ..libraries.thread_progress import ThreadProgress
 from ..libraries.file import File
 
 dprint = None
+logger = logging.getLogger('Deviot')
 
 
 class InstallPIO(object):
@@ -34,6 +36,7 @@ class InstallPIO(object):
         script and install platformIO on it. The state of the installation
         is displayed on the console
         '''
+        logger.debug("Starting Setup")
         show_messages()
 
         dprint("downloading_files")
@@ -48,10 +51,20 @@ class InstallPIO(object):
         symlink = deviot.get_sysetting('symlink', 'python')
 
         cmd = [symlink, 'virtualenv.py', '"%s"' % deviot.dependencies_path()]
+
+        logger.debug("cmd: %s", cmd)
+
         out = deviot.run_command(cmd, cwd=deviot.virtualenv_path())
 
+        logger.debug("output: %s", out)
+
         cmd = deviot.prepare_command(['pip', 'install', '-U', 'platformio'])
+
+        logger.debug("cmd: %s", cmd)
+
         out = deviot.run_command(cmd, cwd=deviot.bin_path())
+
+        logger.debug("output: %s", out)
 
         deviot.save_sysetting('installed', True)
 
@@ -60,18 +73,25 @@ class InstallPIO(object):
 
         dprint("setup_finished")
 
+        logger.debug("Setup done")
+
     def download_file(self):
         """Download File
 
         Download the virtualenv file
         """
+        logger.debug("download file")
+
         if(not cached_file()):
             try:
+                logger.debug("downloading: %s", deviot.VIRTUALENV_URL)
+
                 file_request = Request(deviot.VIRTUALENV_URL,
                                        headers=deviot.header())
                 file_open = urlopen(file_request)
                 file = file_open.read()
-            except HTTPError:
+            except HTTPError as e:
+                logger.error("failed to download", exc_info=True)
                 dprint("error_downloading_files")
 
             try:
@@ -79,7 +99,10 @@ class InstallPIO(object):
                 output = open(deviot.virtualenv_file(), 'wb')
                 output.write(bytearray(file))
                 output.close()
+
+                logger.debug("file stored in: %s", deviot.virtualenv_file())
             except (OSError, FileNotFoundError) as e:
+                logger.error("error saving file", exc_info=True)
                 dprint("error_saving_files")
 
     def extract_file(self):
@@ -87,13 +110,23 @@ class InstallPIO(object):
 
         Extract the file and rename the output folder
         """
-        if(not path.isdir(deviot.virtualenv_path())):
+        logger.debug("extracting file")
+
+        virtualenv_dir = deviot.virtualenv_path()
+
+        if(not path.isdir(virtualenv_dir)):
             extract_tar(deviot.virtualenv_file(), deviot.dependencies_path())
+
+            logger.debug("done")
 
         # rename folder
         extr = path.join(deviot.dependencies_path(), "virtualenv-14.0.6")
-        if(not path.isdir(deviot.virtualenv_path())):
-            rename(extr, deviot.virtualenv_path())
+        if(not path.isdir(virtualenv_dir)):
+            logger.debug("rename folder from %s to %s", extr, virtualenv_dir)
+
+            rename(extr, virtualenv_dir)
+
+            logger.debug("done")
 
 
 def cached_file():
@@ -101,7 +134,9 @@ def cached_file():
 
     Check if the virtualenvfile was already downloaded
     """
-    return bool(path.isfile(deviot.virtualenv_file()))
+    is_cached = bool(path.isfile(deviot.virtualenv_file()))
+    logger.debug("check cache: %s", is_cached)
+    return is_cached
 
 
 def extract_tar(tar_path, extract_path='.'):
