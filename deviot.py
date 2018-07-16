@@ -198,11 +198,15 @@ def prepare_command(command):
     """
     Edit the command depending of the O.S of the user
     """
-    external_bins = get_sysetting('external_bins', False)
-    env_path = get_sysetting('env_path', False)
+    deviot_bin = get_sysetting('deviot_bin', False)
+    env_paths = get_sysetting('env_paths', False)
     symlink = get_sysetting('symlink', 'python')
+    platform = sublime.platform()
 
-    if(sublime.platform() == 'osx'):
+    if(bool(deviot_bin) or not env_paths and platform == 'windows'):
+        return command
+
+    if(platform == 'osx'):
         exe = symlink
         options = ['-m', command[0]]
     else:

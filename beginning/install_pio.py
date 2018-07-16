@@ -68,6 +68,7 @@ class InstallPIO(object):
 
         if(out[0] == 0):
             deviot.save_sysetting('installed', True)
+            deviot.save_sysetting('deviot_bin', True)
 
             save_env_paths()
             save_board_list()
