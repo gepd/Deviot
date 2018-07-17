@@ -9,7 +9,7 @@ _cache = '.cache'
 _install_name = 'penv'
 _virtualenv_name = 'virtualenv'
 VIRTUALENV_URL = 'https://pypi.python.org/packages/source/v/' \
-                  'virtualenv/virtualenv-14.0.6.tar.gz'
+                  'virtualenv/virtualenv-16.0.0.tar.gz'
 
 
 def version():

@@ -124,7 +124,7 @@ class InstallPIO(object):
             logger.debug("done")
 
         # rename folder
-        extr = path.join(deviot.dependencies_path(), "virtualenv-14.0.6")
+        extr = path.join(deviot.dependencies_path(), "virtualenv-16.0.0")
         if(not path.isdir(virtualenv_dir)):
             logger.debug("rename folder from %s to %s", extr, virtualenv_dir)
 
