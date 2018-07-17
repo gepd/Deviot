@@ -1,4 +1,5 @@
 import sublime
+from ..libraries.I18n import I18n
 
 
 class ThreadProgress():
@@ -18,8 +19,8 @@ class ThreadProgress():
 
     def __init__(self, thread, message, success_message):
         self.thread = thread
-        self.message = message
-        self.success_message = success_message
+        self.message = I18n().translate(message)
+        self.success_message = I18n().translate(success_message)
         self.addend = 1
         self.size = 8
         self.last_view = None
@@ -48,7 +49,9 @@ class ThreadProgress():
         before = i % self.size
         after = (self.size - 1) - before
 
-        active_view.set_status('_package_control', '%s [%s=%s]' % (self.message, ' ' * before, ' ' * after))
+        active_view.set_status('_package_control', '%s [%s=%s]'
+                               % (self.message, ' ' * before, ' ' * after))
+
         if self.last_view is None:
             self.last_view = active_view
 

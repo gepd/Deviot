@@ -13,6 +13,9 @@ msgstr "O Deviot precisa do Python 2.7 para funcionar, faça o download e instal
 msgid "button_download_python"
 msgstr "Baixar o Python"
 
+msgid "downloading_files"
+msgstr "Baixando arquivos...\n"
+
 msgid "symlink_detected"
 msgstr "Symlink foi detectado\n"
 

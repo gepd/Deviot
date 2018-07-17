@@ -13,6 +13,9 @@ msgstr "Deviot이 동작하려면 Python 2.7이 필요합니다, 다운로드 �
 msgid "button_download_python"
 msgstr "Python 다운로드하기"
 
+msgid "downloading_files"
+msgstr "Downloading Files...\n"
+
 msgid "symlink_detected"
 msgstr "Symlink has been detected\n"
 

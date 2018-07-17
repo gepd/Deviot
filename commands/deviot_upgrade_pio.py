@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 
+
 class DeviotUpgradePioCommand(WindowCommand):
     """
     Search for platformIO updates
@@ -8,5 +9,4 @@ class DeviotUpgradePioCommand(WindowCommand):
     """
 
     def run(self):
-        from ..platformio.update import Update
-        Update().update_async()
+        self.window.run_command("deviot_update_pio")

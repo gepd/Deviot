@@ -2,81 +2,90 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
 
-from .command import Command
-from ..libraries import __version__ as version
-from ..libraries.tools import create_command, get_sysetting, save_sysetting
+from re import sub
+import sublime_plugin
+
+from .. import deviot
 from ..libraries.messages import Messages
-from ..beginning.pio_install import run_command
 from ..libraries.thread_progress import ThreadProgress
-from ..libraries.I18n import I18n
 
 
-class Update(Command):
+class DeviotCheckPioUpdatesCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().check_update_async()
+
+
+class DeviotUpdatePioCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().update_async()
+
+
+class DeviotDevPioCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Update().developer_async()
+
+
+class Update:
     """Update PlatFormIO
-    
+
     Class to upgrade platformIO (update_pio) or install the
     developer branch (developer_pio) to avoid block the sublime
     text UI both function are run in a separate thread (async)
     update_asyc, developer_async
 
-    
-    Extends:
-        Command
     """
     def __init__(self):
         super(Update, self).__init__()
 
         self.cwd = None
         self.dprint = None
-        self.translate = I18n().translate
+        self.env_paths = deviot.get_sysetting('env_paths', False)
 
     def show_feedback(self):
         messages = Messages()
+        messages.initial_text("_deviot_{0}", deviot.version())
         messages.create_panel()
 
         self.dprint = messages.print
 
     def update_pio(self):
         """Update PlatformIO
-        
+
         Update platformIO to the last version (block thread)
         """
         self.show_feedback()
         self.dprint('searching_pio_updates')
 
-        cmd = ['upgrade']
-        out = run_command(cmd, prepare=True)
+        cmd = deviot.pio_command(['upgrade'])
+        out = deviot.run_command(cmd)
         self.dprint(out[1])
 
     def update_async(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the update_pio method
         """
         from threading import Thread
 
         thread = Thread(target=self.update_pio)
         thread.start()
-        ThreadProgress(thread, self.translate('processing'), '')
+        ThreadProgress(thread, 'processing', '')
 
     def developer_async(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the developer_pio method
         """
         from threading import Thread
 
         thread = Thread(target=self.developer_pio)
         thread.start()
-        ThreadProgress(thread, self.translate('processing'), '')
+        ThreadProgress(thread, 'processing', '')
 
     def developer_pio(self):
         """Developer
-        
+
         Uninstall the current version of platformio and install
         a version based in the preference of the user, it can be
         the stable or developer version
@@ -84,100 +93,101 @@ class Update(Command):
         self.show_feedback()
         self.dprint('uninstall_old_pio')
 
-        cmd = ['pip','uninstall', '--yes','platformio']
-        out = run_command(cmd)
+        cmd = ['pip', 'uninstall', '--yes', 'platformio']
+        out = deviot.run_command(cmd)
 
-        if(get_sysetting('pio_developer', False)):
+        developer = deviot.get_sysetting('pio_developer', False)
+
+        if(not developer):
             self.dprint('installing_dev_pio')
             option = 'https://github.com/platformio/' \
-            'platformio/archive/develop.zip'
+                     'platformio/archive/develop.zip'
         else:
             self.dprint('installing_stable_pio')
             option = 'platformio'
 
-        cmd = create_command(['pip','install', '-U', option])
-        out = run_command(cmd)
-        
+        cmd = deviot.prepare_command(['pip', 'install', '-U', option])
+        out = deviot.run_command(cmd)
+
         if(out[0] == 0):
             self.dprint('button_ok')
-            set_sysetting('pio_developer', True)
+            deviot.save_sysetting('pio_developer', not developer)
         else:
             self.dprint('setup_error')
 
     def check_update_async(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the check_update method
         """
         from threading import Thread
 
         thread = Thread(target=self.check_update)
         thread.start()
-        ThreadProgress(thread, self.translate('processing'), '')
+        ThreadProgress(thread, 'processing', '')
 
     def check_update(self):
         """Check update
-        
+
         Checks for platformio updates each 5 days.
         To know what is the last version of platformio
         pypi is checked
         """
-        installed = get_sysetting('installed', False)
-
+        installed = deviot.get_sysetting('installed', False)
         if(not installed):
             return
 
         from datetime import datetime, timedelta
 
         date_now = datetime.now()
-        date_update = get_sysetting('last_check_update', False)
+        last_check = deviot.get_sysetting('last_check_update', False)
 
         try:
-            date_update = datetime.strptime(date_update, '%Y-%m-%d %H:%M:%S.%f')
+            last_check = datetime.strptime(last_check, '%Y-%m-%d %H:%M:%S.%f')
 
-            if(date_now < date_update):
+            if(date_now < last_check):
                 return
-        except:
+        except TypeError:
             pass
 
-        if(not date_update or date_now > date_update):
-            date_update = date_now + timedelta(5, 0) # 5 días
-            save_sysetting('last_check_update', str(date_update))
+        if(not last_check or date_now > last_check):
+            last_check = date_now + timedelta(5, 0)  # 5 days
+            deviot.save_sysetting('last_check_update', str(last_check))
 
-        from ..libraries.tools import get_headers
-        from urllib.request import Request
-        from urllib.request import urlopen
-        from json import loads
-        from re import sub
+        cmd = deviot.pio_command(['--version'])
+        out = deviot.run_command(cmd, env_paths=self.env_paths)
 
-        self.realtime = False
-        cmd = ['--version']
-        out = run_command(cmd, prepare=True)
+        pio_version = int(sub(r'\D', '', out[1]))
+        last_pio_version = self.online_pio_version()
 
-        pio_version = out[1]
-        pio_version_int = int(sub(r'\D', '', pio_version))
-
-        try:
-            url = 'https://pypi.python.org/pypi/platformio/json'
-            req = Request(url, headers=get_headers())
-            response = urlopen(req)
-            pypi_list = loads(response.read().decode())
-            last_pio_version = pypi_list['info']['version']
-            last_pio_version_int = int(sub(r'\D', '', last_pio_version))
-        except:
-            return
-
-        if(pio_version_int < last_pio_version_int):
+        if(pio_version < last_pio_version):
             from sublime import ok_cancel_dialog
+            from ..libraries.I18n import I18n
 
-            update = ok_cancel_dialog(self.translate('new_pio_update{0}{1}',
-                last_pio_version,
-                pio_version),
-                self.translate('update_button'))
+            translate = I18n().translate
+
+            update = ok_cancel_dialog(translate('new_pio_update{0}{1}',
+                                                last_pio_version,
+                                                pio_version),
+                                      translate('update_button'))
 
             if(update):
                 self.show_feedback()
-                self.realtime = True
+                self.update_pio()
 
-                cmd = ['upgrade']
-                out = run_command(cmd, prepare=True)
+    def online_pio_version(self):
+        from urllib.request import Request
+        from urllib.request import urlopen
+        from urllib.error import HTTPError
+        from json import loads
+
+        try:
+            url = 'https://pypi.python.org/pypi/platformio/json'
+            req = Request(url, headers=deviot.header())
+            response = urlopen(req)
+            pypi_list = loads(response.read().decode())
+            last_pio_version = pypi_list['info']['version']
+        except (KeyError, HTTPError) as e:
+            return 0
+
+        return int(sub(r'\D', '', last_pio_version))

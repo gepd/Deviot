@@ -13,6 +13,9 @@ msgstr "Deviot 依赖于 Python, 请安装 Python 2.7"
 msgid "button_download_python"
 msgstr "下载 Python"
 
+msgid "downloading_files"
+msgstr "Downloading Files...\n"
+
 msgid "symlink_detected"
 msgstr "已检测到符号链接\n"
 
