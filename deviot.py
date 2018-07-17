@@ -198,12 +198,14 @@ def prepare_command(command):
     """
     Edit the command depending of the O.S of the user
     """
+    bin_dir = bin_path()
+    platform = sublime.platform()
     deviot_bin = get_sysetting('deviot_bin', False)
     env_paths = get_sysetting('env_paths', False)
     symlink = get_sysetting('symlink', 'python')
-    platform = sublime.platform()
 
-    if(bool(deviot_bin) or not env_paths and platform == 'windows'):
+    if(not path.exists(bin_dir) or bool(deviot_bin) or
+       not env_paths and platform == 'windows'):
         return command
 
     if(platform == 'osx'):
@@ -213,7 +215,6 @@ def prepare_command(command):
         exe = command[0]
         options = []
 
-    bin_dir = bin_path()
     executable = path.join(bin_dir, exe)
 
     cmd = ['"%s"' % (executable)]
