@@ -13,7 +13,7 @@ VIRTUALENV_URL = 'https://pypi.python.org/packages/source/v/' \
 
 
 def version():
-    version = (2, 3, 0, '.dev4')
+    version = (2, 3, 0, '.dev5')
     v_format = ".".join([str(s) for s in version[:3]])
     if(len(version) > 3):
         v_format += version[3]
