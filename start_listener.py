@@ -36,7 +36,6 @@ logger = logging.getLogger('Deviot')
 def plugin_loaded():
     handler = logging.StreamHandler(sys.stdout)
     logger.addHandler(handler)
-    logger.setLevel(logging.DEBUG)
 
     window = sublime.active_window()
 

@@ -23,6 +23,15 @@ logger = logging.getLogger('Deviot')
 
 class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
     def run(self):
+        self.installed = deviot.get_sysetting('installed', False)
+
+        # set level depending on the plugin installation status
+        if(not self.installed):
+            level = logging.DEBUG
+        else:
+            level = logging.ERROR
+
+        logger.setLevel(level)
 
         logger.debug("Command executed")
 
@@ -33,9 +42,8 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
     def check(self):
         logger.debug("New thread started")
         # check if the plugin was installed
-        installed = deviot.get_sysetting('installed', False)
-        logger.debug("Installed: %s1", installed)
-        if(bool(installed)):
+        logger.debug("Installed: %s1", self.installed)
+        if(bool(self.installed)):
             return
 
         Syntax()
