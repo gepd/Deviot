@@ -143,7 +143,7 @@ def get_sysetting(key, default=None):
     Stores the setting in the file:
     Packages/User/Deviot/deviot.ini
     """
-    from .libraries.readconfig import ReadConfig
+    from ..libraries.readconfig import ReadConfig
 
     section = "config"
     setting_file = setting_path()
@@ -175,7 +175,7 @@ def save_sysetting(key, value):
     Gets the setting stored in the file
     Packages/User/Deviot/deviot.ini
     """
-    from .libraries.readconfig import ReadConfig
+    from ..libraries.readconfig import ReadConfig
 
     section = "config"
     setting_file = setting_path()

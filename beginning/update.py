@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from re import sub
 import sublime_plugin
 
-from .. import deviot
+from ..api import deviot
 from ..libraries.messages import Messages
 from ..libraries.thread_progress import ThreadProgress
 

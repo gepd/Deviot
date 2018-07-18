@@ -13,7 +13,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 from urllib.error import HTTPError
 
-from .. import deviot
+from ..api import deviot
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.file import File
 

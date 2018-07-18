@@ -10,7 +10,7 @@ import sublime_plugin
 from re import sub
 from threading import Thread
 
-from .. import deviot
+from ..api import deviot
 from ..libraries.I18n import I18n
 from ..libraries.syntax import Syntax
 from ..libraries.thread_progress import ThreadProgress
