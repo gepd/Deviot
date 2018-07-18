@@ -29,7 +29,7 @@ class PioBridge(Command):
         from threading import Thread
         from ..libraries.thread_progress import ThreadProgress
         from ..libraries.I18n import I18n
-        from ..beginning.pio_install import save_board_list
+        from ..beginning.install_pio import save_board_list
 
         txt = I18n().translate('processing')
 

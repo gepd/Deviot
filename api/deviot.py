@@ -46,7 +46,7 @@ def current_file_path():
 
 def plugin_path():
     current = current_file_path()
-    return path.dirname(current)
+    return path.dirname(path.dirname(current))
 
 
 def packages_path():
