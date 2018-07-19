@@ -1,0 +1,468 @@
+# LANGUAGE: Russian
+# Russian translations for Deviot Plugin.
+# Copyright (C) 2015-2016 GEPD
+# This file is distributed under the same license as the Deviot Plugin.
+# Translators: Alexsey Rodoinov
+#
+
+# Setup Process
+
+msgid "deviot_need_python"
+msgstr "Deviot требует Python 2.7 "
+
+msgid "button_download_python"
+msgstr "Загрузить Python"
+
+msgid "symlink_detected"
+msgstr "Symlink обнаружен\n"
+
+msgid "deviot_setup{0}"
+msgstr "[ Deviot {0} ] Настройка\n"
+
+msgid "pio_is_installed"
+msgstr "PlatformIO Установлен, можно пользаватся Deviot!"
+
+msgid "pio_isn_installed"
+msgstr "PlatformIO Не установлен\nЗапуск установки. Это может занять некоторое время..\n"
+
+msgid "downloading_files"
+msgstr "Загрузка необходимых файлов...\n"
+
+msgid "error_downloading_files"
+msgstr "Произошла ошибка при загрузке необходимых файлов...\n"
+
+msgid "error_saving_files"
+msgstr "При сохранении необходимых файлов произошла ошибка...\n"
+
+msgid "setup_error"
+msgstr "?Там была ошибка?\n"
+
+msgid "extracting_files"
+msgstr "Распаковка файлов...\n"
+
+msgid "installing_pio"
+msgstr "Установка PlatformIO...\n"
+
+msgid "uninstall_old_pio"
+msgstr "Удаление старой версии PlatformIO...\n"
+
+msgid "installing_dev_pio"
+msgstr "Установка разрабатываемой версии  PlatformIO...\n"
+
+msgid "installing_stable_pio"
+msgstr "Установка стабильной версии PlatformIO...\n"
+
+msgid "setup_finished"
+msgstr "Установка закончена, можно пользаватся Deviot!\n"
+
+msgid "searching_pio_updates"
+msgstr "Поиск актуальной версии PlatformIO...\n\n"
+
+msgid "new_pio_update{0}{1}"
+msgstr "Версия {0} PlatformIO Доступна. Ваша версия {1}. Хотите обновить?"
+
+msgid "update_button"
+msgstr "Обновить сейчас"
+
+msgid "reset_after_upgrade"
+msgstr "Deviot был обновлен до последней версии, перезапустите Sublime Text"
+
+# Menu
+
+msgid "menu_quick_panel"
+msgstr "Панель Быстр. Дотступа"
+
+msgid "menu_new_sketch"
+msgstr "Новый Скетч"
+
+msgid "menu_select_boards"
+msgstr "Выбор Платы"
+
+msgid "menu_select_env"
+msgstr "Выбор Среды"
+
+msgid "menu_search_lib"
+msgstr "Поиск Библиотеки"
+
+msgid "menu_update_lib"
+msgstr "Обновить Библиотеку"
+
+msgid "menu_remove_lib"
+msgstr "Удалить Библиотеку"
+
+msgid "menu_import_library"
+msgstr "Импорт Библиотеки"
+
+msgid "menu_not_libraries"
+msgstr "Нет Доступных Библиотек"
+
+msgid "menu_library_examples"
+msgstr "Примеры"
+
+msgid "menu_not_examples"
+msgstr "Нет Доступных Примеров"
+
+msgid "menu_option_lib"
+msgstr "Параметры Библиотеки"
+
+msgid "menu_rebuild_lib_list"
+msgstr "Перестроить Список Библиотек"
+
+msgid "menu_open_lib_folder"
+msgstr "Открыть Папку с Библиотеками"
+
+msgid "menu_extra_lib_folder"
+msgstr "Папка Доп. Библиотек"
+
+msgid "menu_remove_extra_lib_folder"
+msgstr "Удалить Папку Доп. Библиотек"
+
+msgid "menu_build"
+msgstr "Собрать"
+
+msgid "menu_upload"
+msgstr "Загрузить"
+
+msgid "menu_clean"
+msgstr "Очистить папку ".pioenvs" "
+
+msgid "menu_compile_options"
+msgstr "Параметры Сборки/Загрузки"
+
+msgid "menu_overwrite_upload_baud"
+msgstr "Установить Скорость Загрузки"
+
+msgid "menu_freeze_sketch"
+msgstr "?Заморозить Скетч?"
+
+msgid "menu_open_ini_file"
+msgstr "Открыть platformio.ini" 
+
+msgid "menu_show_console"
+msgstr "Показать Консоль Deviot"
+
+msgid "menu_hide_console"
+msgstr "Скрыть Консоль Deviot"
+
+msgid "menu_show_terminal"
+msgstr "Показать Терминал"
+
+msgid "menu_hide_terminal"
+msgstr "Скрыть Терминал"
+
+msgid "menu_programmer"
+msgstr "Программатор"
+
+msgid "menu_serial_port"
+msgstr "Порт Платы"
+
+msgid "menu_auth_change"
+msgstr "Изменить Пароль OTA"
+
+msgid "menu_none_serial_mdns"
+msgstr "Нет Доступа к COM порту или Услуге mDNS"
+
+msgid "menu_add_ip"
+msgstr "Добавить IP Вручную"
+
+msgid "menu_monitor_serial"
+msgstr "Монитор COM Порта"
+
+msgid "menu_run"
+msgstr "Старт/Стоп СОМ Монитор"
+
+msgid "menu_send"
+msgstr "Отправить"
+
+msgid "menu_send_persistent"
+msgstr "Отправить ?Принудительно? "
+
+msgid "menu_clean_view"
+msgstr "Очистить СОМ Монитор"
+
+msgid "menu_deviot_output"
+msgstr "Вывод в Консоли Deviot"
+
+msgid "menu_auto_scroll"
+msgstr "Автопрокрутка"
+
+msgid "menu_auto_clean"
+msgstr "Автоочистка СОМ Монитора"
+
+msgid "menu_baudrate"
+msgstr "Скорость СОМ Порта"
+
+msgid "menu_line_ending"
+msgstr "Признак Конца Строки"
+
+msgid "menu_none"
+msgstr "Нет"
+
+msgid "menu_new_line"
+msgstr "Новая Строка"
+
+msgid "menu_cr"
+msgstr "Возврат Каретки"
+
+msgid "menu_nl_cr"
+msgstr "Новая Строка и Возврат Каретки"
+
+msgid "menu_display_mode"
+msgstr "Режим Отображения (HEX,ASCII,MIX)"
+
+msgid "menu_text"
+msgstr "Текст"
+
+msgid "menu_ascii"
+msgstr "ASCII"
+
+msgid "menu_hex"
+msgstr "HEX"
+
+msgid "menu_hexascii"
+msgstr "HEX + ASCII"
+
+msgid "menu_option"
+msgstr "Опции"
+
+msgid "menu_upgrade_pio"
+msgstr "Обновить PlatformIO"
+
+msgid "menu_developer_pio"
+msgstr "Использовать Разрабатываемую Версию Pio"
+
+msgid "menu_always_native"
+msgstr "Использовать Структуру PlatformIO"
+
+msgid "menu_rebuild_boards"
+msgstr "Перестроить Файл Плат"
+
+msgid "menu_show_verbose"
+msgstr "Полный Вывод Процесса Сборки"
+
+msgid "menu_status_information"
+msgstr "Информация в Строке Состояния"
+
+msgid "menu_open_build_folder"
+msgstr "Открыть Папку Сборки "
+
+msgid "menu_change_build_folder"
+msgstr "Выбор Папки Сборки"
+
+msgid "menu_use_cpp_new"
+msgstr "?Использовать Файл CPP В Нововом Файле?"
+
+msgid "menu_rebuild_syntax"
+msgstr "?Пересобрать Файлы Синтаксиса и Завершения?"
+
+msgid "menu_remove_settings"
+msgstr "Удаление Файлов Настроек Пользователя"
+
+msgid "menu_languages"
+msgstr "Язык (Languages)"
+
+msgid "menu_donate_deviot"
+msgstr "❤ Поддержать Разработчика"
+
+msgid "menu_about"
+msgstr "Информация"
+
+msgid "menu_about_deviot"
+msgstr "O Deviot"
+
+msgid "menu_about_pio"
+msgstr "O PlatformIO"
+
+
+# Wiadomości i błędy
+
+msgid "_deviot_{0}"
+msgstr "[ Deviot {0} ]\n"
+
+msgid "_deviot_starting{0}"
+msgstr "[ Deviot {0} ] Starting...\n"
+
+msgid "caption_new_sketch"
+msgstr "Имя Нового Скетча:"
+
+msgid "not_empty_sketch"
+msgstr "Невозможно Загрузить Пустой Скетч\n"
+
+msgid "not_iot_{0}"
+msgstr "{0} Не Является Файлом IoT\n"
+
+msgid "select_board_list"
+msgstr "Выбери Плату Из Списка"
+
+msgid "select_env_list"
+msgstr "Выбери Среду Из Списка"
+
+msgid "select_port_list"
+msgstr "Выбери Порт Из Списка"
+
+msgid "ota_error_platform"
+msgstr "Загрузка OTA Доступна Только Для Платформ Espressif (ESP8266)"
+
+msgid "select_library"
+msgstr "Выбор Библиотеки"
+
+msgid "select_example"
+msgstr "Выбор Примера"
+
+msgid "_previous"
+msgstr "< Предыдущий"
+
+msgid "select_{0}"
+msgstr "Выбор {0}"
+
+msgid "restart_sublime"
+msgstr "Перезапустите Sublime Text"
+
+msgid "button_ok"
+msgstr "OK"
+
+msgid "processing"
+msgstr "Обработка"
+
+msgid "unknown"
+msgstr "Неизвестн."
+
+msgid "deviot_info"
+msgstr "\nПосле создания проекта вы сможете увидеть дополнительную информацию или загрузить свою прошивку.\n\n- Прочтите вики, чтобы узнать больше о Deviot https://goo.gl/PKju55\n- Если Этот Плагин Был Вам Полезен, Поддержите Разработчика https://goo.gl/7K4BXh"
+
+# Libraries
+
+msgid "deviot_library{0}"
+msgstr "[ Deviot {0} ] Менеджер Библиотек\n"
+
+msgid "search_query"
+msgstr "Поисковый Запрос:"
+
+msgid "add_ip_caption"
+msgstr "Записать Адрес  IP:"
+
+msgid "already_installed{0}"
+msgstr "{0} Уже Установлен\n"
+
+msgid "downloading_package{0}"
+msgstr "Загрузка Пакета {0}\n\nМожет Знять Некоторое Время.\n"
+
+msgid "unpacking"
+msgstr "Распаковка...\n"
+
+msgid "download_dependece"
+msgstr "Загрузка Зависимостей\n"
+
+msgid "preparing_list"
+msgstr "Подготовка Списка"
+
+msgid "removing"
+msgstr "Удаление"
+
+msgid "none_lib_found"
+msgstr "Ненайдено Библиотек"
+
+msgid "none_lib_installed"
+msgstr "Нет Установленных Библиотек"
+
+
+# Serial Monitor
+
+msgid "serial_monitor_header{0}{1}"
+msgstr "[ Deviot {0} ] Монитор СОМ Порта | {1}\n\n"
+
+msgid "serial_port_used_{0}"
+msgstr "СОМ Порт {0} Занят. Попробуйте Закрыть Программы Использующие Его.\n"
+
+msgid "serial_not_available"
+msgstr "Выбранный СОМ Порт Недоступен"
+
+msgid "send"
+msgstr "Отправить:"
+
+msgid "sended_{0}"
+msgstr "\n[ОТПРАВЛЕНО] {0}\n"
+
+# Auth OTA
+
+msgid "pass_caption"
+msgstr "Пароль:"
+
+# Output console
+
+msgid "starting_on"
+msgstr "Начиная с"
+
+msgid "upload_size"
+msgstr "?Размер Загрузки?"
+
+msgid "sending_invitation"
+msgstr "Отправка Запроса"
+
+msgid "waiting_device"
+msgstr "Ожидание Устройства"
+
+msgid "waiting_result"
+msgstr "Ожидание Результата"
+
+msgid "result"
+msgstr "Результат"
+
+msgid "authentication"
+msgstr "Идентификация"
+
+msgid "failed"
+msgstr "Отказано"
+
+msgid "attempt"
+msgstr "Попытка"
+
+msgid "of"
+msgstr "Из"
+
+msgid "not_in_sync"
+msgstr "Нет Синхронизации"
+
+# Platformio Console
+
+msgid "pio_terminal"
+msgstr "[ Deviot ] PlatformIO Terminal\n\nЧтобы Получить Информацию о Командах PlatformIO: 'pio -h'\nИли 'help' Получить Информацию о Командах Deviot.\n"
+
+msgid "invalid_command"
+msgstr "Неверная команда (Попробуйте с помощью: help)\n"
+
+msgid "invalid_path"
+msgstr "Имя Папки Недействительно.\n"
+
+msgid "created{0}"
+msgstr "'{0}' Создан Успешно.\n"
+
+msgid "error_making_folder"
+msgstr "Ошибка При Создании Папки.\n"
+
+msgid "removed{0}"
+msgstr "{0} Удалено Успешно.\n"
+
+msgid "wrong_folder_name"
+msgstr "Имя Папки Неверно, Исправьте и Повторите Попытку.\n"
+
+msgid "cmd_cwd"
+msgstr "Показывает Текущий Рабочий Каталог.\n"
+
+msgid "cmd_cd"
+msgstr "Изменить Каталог.\n"
+
+msgid "cmd_ls"
+msgstr "Список Всех Файлов и Папок в cwd\n"
+
+msgid "cmd_mk"
+msgstr "Создать Папку В Каталоге cwd\n"
+
+msgid "cmd_rm"
+msgstr "Удалить Папку В Каталоге cwd\n"
+
+msgid "cmd_clear"
+msgstr "Очистить Все в Окне Терминала\n"
+
+msgid "cmd_pio_help"
+msgstr "Посмотреть Информацию о PlatformIO\n"
