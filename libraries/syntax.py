@@ -137,7 +137,7 @@ class Syntax(object):
                     ik3 += 1
 
         template_path = getSyntaxPath()
-        plugin_path = getPluginPath()
+        plugin_path = deviot.plugin_path()
         syntax_path = path.join(plugin_path, 'deviot.sublime-syntax')
 
         # syntax template
@@ -170,8 +170,9 @@ class Syntax(object):
         completions = {'scope': 'source.iot'}
         completions['completions'] = keyword_ids
 
-        completions_path = getPluginPath()
-        completions_path = path.join(completions_path, 'deviot.sublime-completions')
+        completions_path = deviot.plugin_path()
+        completions_path = path.join(completions_path,
+                                     'deviot.sublime-completions')
 
         File(completions_path).save_json(completions)
 

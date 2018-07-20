@@ -17,7 +17,7 @@ from sublime_plugin import EventListener
 from .commands import *
 
 try:
-    from .libraries.paths import getPluginName
+    from .api import deviot
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
@@ -29,7 +29,7 @@ try:
 except ImportError:
     pass
 
-package_name = getPluginName()
+package_name = deviot.plugin_name()
 logger = logging.getLogger('Deviot')
 
 

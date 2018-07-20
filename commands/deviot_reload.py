@@ -1,11 +1,12 @@
 import sublime
 import sublime_plugin
 
+from ..api import deviot
 from ..libraries.progress_bar import ProgressBar
 from ..libraries.reloader import reload_package
-from ..libraries.paths import getPluginName
 
-NAME = getPluginName()
+NAME = deviot.plugin_name()
+
 
 class DeviotReloadCommand(sublime_plugin.WindowCommand):
 

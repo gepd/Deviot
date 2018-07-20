@@ -31,7 +31,7 @@ import sublime_plugin
 import collections
 import threading
 
-from .paths import getPluginName
+from ..api import deviot
 from .tools import findInOpendView, get_setting
 from .I18n import I18n
 
@@ -118,7 +118,7 @@ class Messages:
         if(in_file):
             self.output_view = self.new_file_panel(direction)
         else:
-            package_name = getPluginName()
+            package_name = deviot.plugin_name()
             syntax = "Packages/{0}/Console.tmLanguage".format(package_name)
 
             self.output_view = self.window.create_output_panel('deviot')
