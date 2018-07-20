@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 
+from ..api import deviot
 from . import paths
 from .file import File
 from ..platformio.pio_bridge import PioBridge
@@ -65,7 +66,7 @@ class MenuFiles(PioBridge):
         to the current language selected
         """
         quick_path = paths.getQuickPath()
-        plugin_path = paths.getPluginPath()
+        plugin_path = deviot.plugin_path()
         output_path = os.path.join(plugin_path, 'Default.sublime-commands')
 
         quick_json = File(quick_path)
@@ -84,7 +85,7 @@ class MenuFiles(PioBridge):
         to the current language selected
         """
         context_path = paths.getContextPath()
-        plugin_path = paths.getPluginPath()
+        plugin_path = deviot.plugin_path()
         output_path = os.path.join(plugin_path, 'Context.sublime-menu')
 
         context_json = File(context_path)

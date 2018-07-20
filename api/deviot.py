@@ -49,6 +49,11 @@ def plugin_path():
     return path.dirname(path.dirname(current))
 
 
+def plugin_name():
+    plugin_path = plugin_path()
+    return path.basename(plugin_path)
+
+
 def packages_path():
     """
     Get sublime text package folder

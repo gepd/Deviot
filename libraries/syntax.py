@@ -9,10 +9,11 @@ from __future__ import unicode_literals
 from os import path
 from threading import Thread
 
+from ..api import deviot
 from .file import File
 from .libraries import get_library_list
 from .tools import accepted_extensions
-from .paths import getSyntaxPath, getPluginPath
+from .paths import getSyntaxPath
 from ..libraries.thread_progress import ThreadProgress
 
 
@@ -22,7 +23,7 @@ class Syntax(object):
         """
         Check if the syntax file exits, if not create it
         """
-        deviot_syntax = getPluginPath()
+        deviot_syntax = deviot.plugin_path()
         syntax_path = path.join(deviot_syntax, 'deviot.sublime-syntax')
         if(not path.exists(syntax_path)):
             self.create_files_async()
@@ -44,10 +45,8 @@ class Syntax(object):
         except:
             return
 
-        from .paths import getPluginPath, getPluginName
-
-        plugin_name = getPluginName()
-        plugin_path = getPluginPath()
+        plugin_name = deviot.plugin_name()
+        plugin_path = deviot.plugin_path()
         syntax_name = 'deviot.sublime-syntax'
         current_syntax = view.settings().get('syntax')
         deviot_syntax = path.join(plugin_path, syntax_name)

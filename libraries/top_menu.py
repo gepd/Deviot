@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import os
 
+from ..api import deviot
 from . import paths
 from .file import File
 from .menu_files import MenuFiles
@@ -29,7 +30,7 @@ class TopMenu(MenuFiles):
         menu file (menu_name.sublime-menu)
         """
         menu_preset = self.get_template_menu('main_menu.json')
-        path = paths.getPluginPath()
+        path = deviot.plugin_path()
 
         for option in menu_preset:
             option = self.translate_childrens(option)

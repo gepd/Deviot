@@ -12,6 +12,8 @@ from os import environ, path, makedirs, getenv, remove
 from sublime import load_settings, save_settings, platform, version, active_window, windows, Region, LAYOUT_BELOW
 from ..libraries import __version__
 
+from ..api import deviot
+
 H_EXTS = ['.h']
 ROOT_PATH = 'System Root(/)'
 INCLUDE = r'^\s*#include\s*[<"](\S+)[">]'
@@ -203,9 +205,9 @@ def remove_settings():
     Removes the deviot.sublime-settings and
     Packages/User/Deviot folder
     """
-    from .paths import getPluginPath, getPackagesPath, getDenvPath 
-    
-    plugin_path = getPluginPath()
+    from .paths import getPackagesPath, getDenvPath
+
+    plugin_path = deviot.plugin_path()
     packages_path = getPackagesPath()
     deviot_penv = getDenvPath()
 
