@@ -10,7 +10,6 @@ from re import search
 from shutil import rmtree
 from os import environ, path, makedirs, getenv, remove
 from sublime import load_settings, save_settings, platform, version, active_window, windows, Region, LAYOUT_BELOW
-from ..libraries import __version__
 
 from ..api import deviot
 
@@ -78,7 +77,7 @@ def get_headers():
     headers for urllib request
     """
 
-    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (__version__, version())
+    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (deviot.version(), version())
     headers = {'User-Agent': user_agent}
     return headers
 

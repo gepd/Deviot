@@ -16,7 +16,6 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 from ..api import deviot
-from . import __version__ as version
 from .file import File
 from .I18n import I18n
 from .messages import Messages
@@ -51,7 +50,7 @@ class Libraries(Command):
         It sends a header string as first message
         """
         messages = Messages()
-        messages.initial_text("deviot_library{0}", version)
+        messages.initial_text("deviot_library{0}", deviot.version())
         messages.create_panel()
         self.init(messages=messages)
 

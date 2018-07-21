@@ -10,7 +10,6 @@ from sublime import platform
 from threading import Thread
 from time import sleep
 
-from . import __version__ as version
 from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
@@ -59,6 +58,7 @@ class SerialMonitor(object):
         output_console = get_setting('output_console', False)
         direction = get_setting('monitor_direction', 'right')
 
+        version = deviot.version()
         messages = Messages()
         messages.panel_name('serial_monitor_header{0}{1}', version, serial_port)
         messages.create_panel(direction=direction, in_file=not output_console)

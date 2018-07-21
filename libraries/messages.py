@@ -216,9 +216,7 @@ class Messages:
         Method to print a message when deviot console is not yet created but
         the "show deviot console" is called
         """
-        from . import __version__ as version
-
-        self.print('_deviot_{0}', version)
+        self.print('_deviot_{0}', deviot.version())
         self.print('deviot_info')
 
     def recover_panel(self, name):

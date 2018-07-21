@@ -10,7 +10,7 @@ from ..api import deviot
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
 from ..libraries.readconfig import ReadConfig
-from ..libraries import __version__ as version
+
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -349,7 +349,8 @@ class PreferencesBridge(PioBridge):
         Show the board and serial port selected by the user
         """
         from .project_check import ProjectCheck
-        
+        version = deviot.version()
+
         show_info = get_setting('status_information', True)
 
         if(ProjectCheck().is_iot() and show_info):

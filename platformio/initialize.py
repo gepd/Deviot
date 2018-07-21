@@ -6,7 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from ..libraries import __version__ as version
+from ..api import deviot
 from ..libraries.project_check import ProjectCheck
 from ..libraries.tools import save_sysetting, get_setting
 from ..libraries.messages import Messages
@@ -27,7 +27,7 @@ class Initialize(ProjectCheck):
         self.init_option = None
 
         messages = Messages()
-        messages.initial_text('_deviot_starting{0}', version)
+        messages.initial_text('_deviot_starting{0}', deviot.version())
         messages.create_panel()
 
         self.init(messages=messages)
