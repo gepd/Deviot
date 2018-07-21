@@ -17,23 +17,6 @@ ROOT_PATH = 'System Root(/)'
 current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
 
 
-def getPluginPath():
-    """
-    Get absolute path of deviot plugin Packages/Deviot
-    """
-    plugin_path = os.path.dirname(os.path.dirname(current_file))
-    return plugin_path
-
-
-def status_color_folder():
-    """
-    Packages/User/Status Color/
-    """
-    plugin = os.path.dirname(getPluginPath())
-    status_color = os.path.join(plugin, 'User', 'Status Color')
-    return status_color
-
-
 def listWinVolume():
     """
     return the list of system drives in windows

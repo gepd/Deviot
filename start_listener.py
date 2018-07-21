@@ -21,7 +21,6 @@ try:
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
-    from .libraries.paths import status_color_folder
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries.project_check import ProjectCheck
     from .libraries import messages, status_colors
@@ -87,7 +86,9 @@ def plugin_unloaded():
 # plugin_unload is not working so if the status bar color
 #  folder is present when ST starts, it will remove it.
 try:
-    rmtree(status_color_folder())
+    plugin = deviot.packages_path()
+    status_color = path.join(plugin, 'User', 'Status Color')
+    rmtree(status_color)
 except OSError:
     pass
 
