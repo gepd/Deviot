@@ -106,17 +106,6 @@ def getBuildPath(filename):
     return getTempPath(filename)
 
 
-def getVirtualenvPath():
-    """
-    get virtualenv path Packages/User/Deviot/denv/virtualenv
-    """
-
-    denv = getDenvPath()
-    virtualenv = os.path.join(denv, 'virtualenv')
-
-    return virtualenv
-
-
 def listWinVolume():
     """
     return the list of system drives in windows
