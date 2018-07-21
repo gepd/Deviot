@@ -184,6 +184,19 @@ def pio_library(all=False):
     return pio_lib
 
 
+def pio_packages(all=True):
+    """
+    ~/.platformio/packages
+    """
+    user_path = path.expanduser('~')
+    pio_pack = path.join(user_path, '.platformio', 'packages')
+
+    if(all):
+        pio_pack = os.path.join(pio_pack, '*')
+
+    return pio_pack
+
+
 def boards_file_path():
     """
     Deviot file in Packages/User/Deviot/pio/boards.json

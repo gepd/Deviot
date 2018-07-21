@@ -85,19 +85,6 @@ def getUserPioPath():
     return data_path
 
 
-def getPioPackages(all=True):
-    """
-    ~/.platformio/packages
-    """
-    user_path = os.path.expanduser('~')
-    pio_pack = os.path.join(user_path, '.platformio', 'packages')
-
-    if(all):
-        pio_pack = os.path.join(pio_pack, '*')
-
-    return pio_pack
-
-
 def getBoardsFileDataPath():
     """
     Deviot file in Packages/User/Deviot/pio/boards.json

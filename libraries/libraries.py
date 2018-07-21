@@ -15,6 +15,7 @@ from urllib.parse import urlencode
 from urllib.request import Request
 from urllib.request import urlopen
 
+from ..api import deviot
 from . import __version__ as version
 from .file import File
 from .I18n import I18n
@@ -23,7 +24,7 @@ from .quick_panel import quick_panel
 from ..platformio.command import Command
 from .thread_progress import ThreadProgress
 from .tools import get_headers, get_setting, save_setting
-from .paths import getLibrariesFileDataPath, getPioPackages, getPioLibrary
+from .paths import getLibrariesFileDataPath, getPioLibrary
 
 
 class Libraries(Command):
@@ -335,7 +336,7 @@ def get_library_folders(platform='all'):
     """
     libraries_folders = []
 
-    pio_packages = getPioPackages(all=True)
+    pio_packages = deviot.pio_packages(all=True)
     packages_sub_dirs = glob(pio_packages)
 
     if(platform == 'atmelavr'):
