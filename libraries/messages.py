@@ -52,13 +52,14 @@ class Messages:
         self.translate = I18n().translate
         self.output_view = output_view
         self._init_text = None
-        self._name = None        
+        self._name = None
 
     def initial_text(self, text, *args):
         """Intial message
-        
-        Sets the initial string to be push when the Messages instance is created
-        
+
+        Sets the initial string to be push when the Messages instance is
+        created
+
         Arguments:
             text {str} -- string to display
             *args {str} -- arguments to be replaced in the text string
@@ -67,9 +68,9 @@ class Messages:
 
     def panel_name(self, text, *args):
         """Panel name
-        
+
         Sets the name of the panel when it will be a ST window
-        
+
         Arguments:
             text {str} -- string to name the panel
             *args {str} -- arguments to be replaced in the text string
@@ -102,16 +103,15 @@ class Messages:
         if(self._name):
             session[self._name] = self
 
-
     def select_output(self, in_file, direction):
         """Panel Output
-        
+
         Selects where the content will be printed, it can be the ST console
         or in a new buffer (view)
-        
+
         Arguments:
             in_file {bool} -- if it's true a new view will be created
-        
+
         Keyword Arguments:
             name {str} -- name of the new view (default: {''})
         """
@@ -181,7 +181,7 @@ class Messages:
         size = self.output_view.size()
         auto_clean = get_setting('auto_clean', True)
 
-        if(auto_clean and size > 80 * 20000): # 20000 lines of 80 charactes
+        if(auto_clean and size > 80 * 20000):  # 20000 lines of 80 charactes
             self.clean_view()
 
         # append text
@@ -191,17 +191,20 @@ class Messages:
         if('\\n' in text[-2:]):
             text = text.replace('\\n', '\n')
 
-        self.output_view.run_command('append', {'characters': text, "force": True})
+        self.output_view.run_command('append', {
+                                     'characters': text, "force": True})
 
         # check automatic scroll option
         automatic_scroll = get_setting('automatic_scroll', True)
-        if(len(self.output_view.sel()) > 0 and automatic_scroll or not self._name):
+        if(len(self.output_view.sel()) > 0 and
+           automatic_scroll or not self._name):
+
             line = self.output_view.rowcol(size)[0] + 1
             self.output_view.run_command("goto_line", {"line": line})
 
     def clean_view(self):
         """Clean message view
-        
+
         Cleans all characters in the output_view
         """
         self.window.focus_view(self.output_view)
@@ -209,9 +212,9 @@ class Messages:
 
     def first_message(self):
         """Deviot console message
-        
-        Method to print a message when deviot console is not yet created but the
-        "show deviot console" is called
+
+        Method to print a message when deviot console is not yet created but
+        the "show deviot console" is called
         """
         from . import __version__ as version
 
@@ -236,8 +239,9 @@ class Messages:
 
         Arguments:
             name {str} -- name to set in the ST view
-            direction {str} -- Where the window will be located. options available:
-                                'self', 'left', 'right', 'up', 'down'
+            direction {str} -- Where the window will be located. options
+                               available:
+                            'self', 'left', 'right', 'up', 'down'
 
         Returns:
             obj -- Sublime Text view buffer
@@ -266,6 +270,7 @@ class Messages:
         if(check_empty_panel(self.window)):
             self.window.run_command("destroy_pane", args={"direction": "self"})
             self.window = None
+
 
 def check_empty_panel(window):
     """

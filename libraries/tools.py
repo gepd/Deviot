@@ -20,12 +20,14 @@ INCLUDE = r'^\s*#include\s*[<"](\S+)[">]'
 PHANTOMS = []
 VPHANTOMS = {}
 
+
 def accepted_extensions():
     """
     Files accepted to be processed by deviot
     """
     accepted = ['ino', 'pde', 'cpp', 'c', 'S', 'h']
     return accepted
+
 
 def get_env_paths():
     '''
@@ -36,7 +38,7 @@ def get_env_paths():
 
     # default paths
     if(platform() == 'windows'):
-        default_paths = ["C:\Python27\\", "C:\Python27\Scripts"]
+        default_paths = ["C:\\Python27\\", "C:\\Python27\\Scripts"]
     else:
         default_paths = ["/usr/bin", "/usr/local/bin"]
 
@@ -80,6 +82,7 @@ def get_headers():
     headers = {'User-Agent': user_agent}
     return headers
 
+
 def create_command(command):
     """
     Edit the command depending of the O.S of the user
@@ -107,6 +110,7 @@ def create_command(command):
 
     return cmd
 
+
 def prepare_command(options, verbose):
     cmd = " ".join(options)
     command = create_command(['platformio', '-f', '-c', 'sublimetext'])
@@ -132,15 +136,14 @@ def get_sysetting(key, default=None):
     sys_path = deviot.system_ini_path()
 
     config = ReadConfig()
-    
+
     # remove config file if it's currupted
     if(config.bad_format()):
         from .path import packages_path
         ini = path.join(packages_path, 'User', 'Deviot', 'deviot.ini')
-        
+
         if(path.exists(ini)):
             remove(ini)
-
 
     config.read(sys_path)
 
@@ -151,12 +154,13 @@ def get_sysetting(key, default=None):
 
     if(output == 'True' or output == 'False'):
         output = True if output == 'True' else False
-    
+
     return output
+
 
 def save_sysetting(key, value):
     """
-    Gets the setting stored in the file 
+    Gets the setting stored in the file
     Packages/User/Deviot/deviot.ini
     """
     from ..libraries.readconfig import ReadConfig
@@ -175,6 +179,7 @@ def save_sysetting(key, value):
     with open(sys_path, 'w') as configfile:
         config.write(configfile)
 
+
 def get_setting(key, default=None):
     """
     get setting handled by ST
@@ -189,12 +194,13 @@ def save_setting(key, value=None, sys_options=False):
     """
     settings = load_settings("deviot.sublime-settings")
 
-    if(value == None):
+    if(value is None):
         settings.erase(key)
     else:
         settings.set(key, value)
 
     save_settings("deviot.sublime-settings")
+
 
 def remove_settings():
     """
@@ -223,12 +229,13 @@ def remove_settings():
 
     from .I18n import I18n
     from sublime import message_dialog
-    
+
     _ = I18n().translate
 
     text = _('restart_sublime')
 
     message_dialog(text)
+
 
 def singleton(cls):
     """
@@ -242,6 +249,7 @@ def singleton(cls):
         return instances[cls]
     return _singleton
 
+
 def make_folder(path):
     """
     Make a folder with the given path
@@ -253,6 +261,7 @@ def make_folder(path):
         if exc.errno != errno.EEXIST:
             raise exc
         pass
+
 
 def create_sketch(sketch_name, select_path):
     """
@@ -327,11 +336,12 @@ def findInOpendView(view_name):
             break
     return (window, opened_view)
 
+
 def list_win_volume():
     """List Windows Disc
-    
+
     Lists the volumes (disc) availables in Windows
-    
+
     Returns:
         list -- list of directories
     """
@@ -349,7 +359,7 @@ def add_library_to_sketch(view, edit, lib_path):
     Includes a library at the top of the sketch. For example if the
     path given is of the EEPROM library it will add: #include <EEPROM.h>
 
-    To do that, it looks all files with extension '.h' (defined in the 
+    To do that, it looks all files with extension '.h' (defined in the
     H_EXTS var) and compares with the includes already inserted in the
     sketch
 
@@ -361,10 +371,10 @@ def add_library_to_sketch(view, edit, lib_path):
     from glob import glob
 
     lib_src = path.join(lib_path, 'src')
-    
+
     if path.isdir(lib_src):
         lib_path = lib_src
-    
+
     lib_path = path.join(lib_path, '*')
 
     region = Region(0, view.size())
@@ -393,7 +403,7 @@ def add_library_to_sketch(view, edit, lib_path):
 
 def headers_from_source(src_text):
     """Includes in Source
-    
+
     Gets the library includes already inserted in the sketch
 
     Arguments:

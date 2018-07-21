@@ -64,14 +64,14 @@ class Syntax(object):
         Assign the deviot syntax in all iot files
         """
         from sublime import windows
-        
+
         for window in windows():
             for view in window.views():
                 self.set_deviot_syntax(view)
 
     def create_files_async(self):
         """New thread execution
-        
+
         Runs the creation of the files in a new thread
         to avoid block the UI of ST
         """
@@ -81,7 +81,7 @@ class Syntax(object):
 
     def create_files(self):
         """Build files
-        
+
         Create the completions and syntax files.
         It will be stored in the plugin folder
         """
@@ -91,7 +91,7 @@ class Syntax(object):
 
     def create_syntax(self):
         """sublime-syntax
-        
+
         Expand the C++ highlight syntax with the functios, classes
         constants, etc found in the libraries
         """
@@ -107,7 +107,7 @@ class Syntax(object):
         ik3 = 0
 
         keywords = self.get_keywords()
-        
+
         for keys in keywords:
             for word in keys.get_keywords():
                 if('LITERAL1' in word.get_type()):
@@ -143,22 +143,24 @@ class Syntax(object):
         syntax = File(template_path)
         syntax = syntax.read()
 
-        #replace keywords
+        # replace keywords
         syntax = syntax.replace('{LITERAL1}', literal1s)
         syntax = syntax.replace('{KEYWORD1}', keyword1s)
         syntax = syntax.replace('{KEYWORD2}', keyword2s)
         syntax = syntax.replace('{KEYWORD3}', keyword3s)
 
-        #save new file
+        # save new file
         File(syntax_path).write(syntax)
 
     def create_completions(self):
         """Sublime-completions
-        
+
         Generates the completions file with the keywords extracts from
         the libraries install in the machine
         """
-        keyword_ids = ['DEC','OCT','DEC','HEX','HIGH','LOW','INPUT','OUTPUT','INPUT_PULLUP','INPUT_PULLDOWN','LED_BUILTIN']
+        keyword_ids = ['DEC', 'OCT', 'DEC', 'HEX', 'HIGH', 'LOW', 'INPUT',
+                       'OUTPUT', 'INPUT_PULLUP', 'INPUT_PULLDOWN',
+                       'LED_BUILTIN']
         keywords = self.get_keywords()
 
         for keys in keywords:
@@ -177,10 +179,10 @@ class Syntax(object):
 
     def get_keywords(self):
         """Keywords files
-        
+
         Search the keywords.txt file in each library and return
         a list with them.
-        
+
         Returns:
             list -- full path to the keywords.txt
         """

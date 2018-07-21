@@ -24,6 +24,7 @@ def getPluginPath():
     plugin_path = os.path.dirname(os.path.dirname(current_file))
     return plugin_path
 
+
 def status_color_folder():
     """
     Packages/User/Status Color/

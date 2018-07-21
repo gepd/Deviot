@@ -16,13 +16,14 @@ from .I18n import I18n
 
 _ = I18n().translate
 
+
 class TopMenu(MenuFiles):
     def __init__(self):
         super(TopMenu, self).__init__()
 
     def create_main_menu(self):
         """Main Menu
-        
+
         Generates the main menu of the plugin.
         The main menu is built from diferents sources, here
         the diferents sources are called to get the data, the
@@ -44,12 +45,12 @@ class TopMenu(MenuFiles):
 
     def translate_childrens(self, option_dict):
         """Translate Children Menu
-        
+
         Translate a children sublime text menu
-        
+
         Arguments:
             option_dict {dict} -- children to be traslated
-        
+
         Returns:
             dict -- children translated
         """
@@ -57,7 +58,7 @@ class TopMenu(MenuFiles):
             children['caption'] = _(children['caption'])
             try:
                 for children_chil in children['children']:
-                   children_chil['caption'] = _(children_chil['caption'])
+                    children_chil['caption'] = _(children_chil['caption'])
             except:
                 pass
 
@@ -65,7 +66,7 @@ class TopMenu(MenuFiles):
 
     def make_menu_files(self):
         """Menu Files
-        
+
         Makes each file who needs to be translated like
         the main menu, quick panel, contextual menu
         """
