@@ -65,7 +65,7 @@ class MenuFiles(PioBridge):
         Makes the quick command file and translate it
         to the current language selected
         """
-        quick_path = paths.getQuickPath()
+        quick_path = deviot.quick_path()
         plugin_path = deviot.plugin_path()
         output_path = os.path.join(plugin_path, 'Default.sublime-commands')
 

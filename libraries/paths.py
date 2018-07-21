@@ -50,11 +50,6 @@ def getPresetPath():
     
     return preset_path
 
-def getQuickPath():
-    path = getPresetPath()
-    quick_path = os.path.join(path, 'quick_panel.json')
-
-    return quick_path
 
 def getContextPath():
     path = getPresetPath()
