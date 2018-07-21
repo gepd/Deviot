@@ -101,6 +101,11 @@ def context_path():
     return path.join(path, 'context_menu.json')
 
 
+def syntax_path():
+    path = presets_path()
+    return path.join(path, 'template.syntax')
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)

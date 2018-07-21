@@ -51,12 +51,6 @@ def getPresetPath():
     return preset_path
 
 
-def getSyntaxPath():
-    path = getPresetPath()
-    syntax_path = os.path.join(path, 'template.syntax')
-
-    return syntax_path
-
 def getLangPath():
     path = getPluginPath()
     lang_path = os.path.join(path, 'languages')

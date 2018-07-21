@@ -13,7 +13,6 @@ from ..api import deviot
 from .file import File
 from .libraries import get_library_list
 from .tools import accepted_extensions
-from .paths import getSyntaxPath
 from ..libraries.thread_progress import ThreadProgress
 
 
@@ -136,7 +135,7 @@ class Syntax(object):
                         ik3 = 0
                     ik3 += 1
 
-        template_path = getSyntaxPath()
+        template_path = deviot.syntax_path()
         plugin_path = deviot.plugin_path()
         syntax_path = path.join(plugin_path, 'deviot.sublime-syntax')
 
