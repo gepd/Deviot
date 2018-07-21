@@ -2,8 +2,9 @@ from sublime_plugin import WindowCommand
 from sublime import run_command, active_window
 
 from os import path
+from ..api import deviot
 from ..libraries.tools import make_folder
-from ..libraries.paths import getPioLibrary
+
 
 class DeviotOpenLibraryFolderCommand(WindowCommand):
     """
@@ -13,5 +14,5 @@ class DeviotOpenLibraryFolderCommand(WindowCommand):
     """
 
     def run(self):
-        pio_library = getPioLibrary()
+        pio_library = deviot.pio_library()
         self.window.run_command('open_dir', {'dir': pio_library})

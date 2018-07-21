@@ -171,6 +171,19 @@ def user_pio_path():
     return path.join(user_path, 'pio')
 
 
+def pio_library(all=False):
+    user_path = path.expanduser('~')
+    pio_lib = path.join(user_path, '.platformio', 'lib')
+
+    create_dirs(pio_lib)
+    os.chmod(pio_lib, 0o777)
+
+    if(all):
+        pio_lib = path.join(pio_lib, '*')
+
+    return pio_lib
+
+
 def boards_file_path():
     """
     Deviot file in Packages/User/Deviot/pio/boards.json

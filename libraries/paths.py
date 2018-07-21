@@ -85,26 +85,6 @@ def getUserPioPath():
     return data_path
 
 
-def getPioLibrary(all=False):
-    """
-    ~/.platformio/lib
-    """
-    user_path = os.path.expanduser('~')
-    pio_lib = os.path.join(user_path, '.platformio', 'lib')
-
-    try:
-        os.makedirs(pio_lib)
-        os.chmod(pio_lib, 0o777)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
-    if(all):
-        pio_lib = os.path.join(pio_lib, '*')
-
-    return pio_lib
-
 def getPioPackages(all=True):
     """
     ~/.platformio/packages
