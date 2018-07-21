@@ -106,6 +106,11 @@ def syntax_path():
     return path.join(path, 'template.syntax')
 
 
+def lang_path():
+    plugin = plugin_path()
+    return path.join(plugin, 'languages')
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)

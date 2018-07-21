@@ -11,7 +11,6 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from ..api import deviot
-from .paths import getLangPath
 from .tools import singleton, get_setting, save_setting
 from os import path
 from .file import File
@@ -119,7 +118,7 @@ class I18n(object):
         NOTE: the language file MUST be in the ISO 639*1 format (two letters) and must have
         the extension .lang
         """
-        lang_path = getLangPath()
+        lang_path = deviot.lang_path()
         lang_paths = glob(lang_path + '/*.lang')
         lang_file_names = [path.basename(file_path) for file_path in lang_paths] # es.lang
         ids_lang = [path.splitext(name)[0] for name in lang_file_names] # es

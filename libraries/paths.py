@@ -51,13 +51,6 @@ def getPresetPath():
     return preset_path
 
 
-def getLangPath():
-    path = getPluginPath()
-    lang_path = os.path.join(path, 'languages')
-
-    return lang_path
-
-
 def getDeviotUserPath():
     """
     Deviot folder in Packages/User/Deviot/
