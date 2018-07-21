@@ -91,8 +91,6 @@ def create_command(command):
     if(not env_path or bool(external_bins)):
         return command
 
-    from .paths import getEnvBinDir
-
     if(platform() == 'osx'):
         exe = 'python' if(not bool(symlink)) else 'python2'
         options = ['-m', command[0]]
@@ -100,7 +98,7 @@ def create_command(command):
         exe = command[0]
         options = []
 
-    bin_dir = getEnvBinDir()
+    bin_dir = deviot.bin_path()
     executable = path.join(bin_dir, exe)
 
     cmd = ['"%s"' % (executable)]

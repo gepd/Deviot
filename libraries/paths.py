@@ -117,24 +117,6 @@ def getVirtualenvPath():
     return virtualenv
 
 
-def getEnvBinDir():
-    """
-    get virtualenv bin path Packages/User/Deviot/denv/virtualenv
-    """
-    env_dir = getDenvPath()
-    env_bin_dir = os.path.join(
-        env_dir, 'Scripts' if 'windows' in sublime.platform() else 'bin')
-
-    try:
-        os.makedirs(env_bin_dir)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
-    return env_bin_dir
-
-
 def listWinVolume():
     """
     return the list of system drives in windows
