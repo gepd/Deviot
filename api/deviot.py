@@ -50,22 +50,21 @@ def plugin_path():
 
 
 def plugin_name():
-    plugin_path = plugin_path()
-    return path.basename(plugin_path)
+    plugin = plugin_path()
+    return path.basename(plugin)
 
 
 def packages_path():
     """
     Get sublime text package folder
     """
-    deviot_path = plugin_path()
-    packages_path = path.dirname(deviot_path)
-    return packages_path
+    plugin = plugin_path()
+    return path.dirname(plugin)
 
 
 def user_plugin_path():
-    plugin = packages_path()
-    return path.join(plugin, 'User', 'Deviot')
+    packages = packages_path()
+    return path.join(packages, 'User', 'Deviot')
 
 
 def main_menu_path():
@@ -73,37 +72,35 @@ def main_menu_path():
     Packages/Deviot/Main.sublime-menu
     """
     plugin = plugin_path()
-    menu_path = path.join(plugin, 'Main.sublime-menu')
-
-    return menu_path
+    return path.join(plugin, 'Main.sublime-menu')
 
 
 def presets_path():
     """
     Packages/Deviot/presets
     """
-    plugin = getPluginPath()
+    plugin = plugin_path()
     return path.join(plugin, 'presets')
 
 
 def lang_list_path():
-    path = presets_path()
-    return path.join(path, 'languages.list')
+    presets = presets_path()
+    return path.join(presets, 'languages.list')
 
 
 def quick_path():
-    path = presets_path()
-    return path.join(path, 'quick_panel.json')
+    presets = presets_path()
+    return path.join(presets, 'quick_panel.json')
 
 
 def context_path():
-    path = presets_path()
-    return path.join(path, 'context_menu.json')
+    presets = presets_path()
+    return path.join(presets, 'context_menu.json')
 
 
 def syntax_path():
-    path = presets_path()
-    return path.join(path, 'template.syntax')
+    presets = presets_path()
+    return path.join(presets, 'template.syntax')
 
 
 def lang_path():
@@ -112,8 +109,8 @@ def lang_path():
 
 
 def cache_path():
-    deviot = user_plugin_path()
-    return path.join(deviot, _cache)
+    plugin = user_plugin_path()
+    return path.join(plugin, _cache)
 
 
 def preset_file(file_name):
@@ -181,9 +178,8 @@ def setting_path():
     """
     Packages/User/Deviot/deviot.ini
     """
-    deviot_path = user_plugin_path()
-    system_ini_path = path.join(deviot_path, 'deviot.ini')
-    return system_ini_path
+    plugin = user_plugin_path()
+    return path.join(plugin, 'deviot.ini')
 
 
 def virtualenv_path():
