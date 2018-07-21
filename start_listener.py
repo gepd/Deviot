@@ -21,7 +21,7 @@ try:
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
-    from .libraries.paths import getDeviotUserPath, status_color_folder
+    from .libraries.paths import status_color_folder
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries.project_check import ProjectCheck
     from .libraries import messages, status_colors
@@ -79,7 +79,7 @@ def plugin_unloaded():
             remove(st_settings)
 
         # remove deviot user folder
-        user = getDeviotUserPath()
+        user = deviot.user_plugin_path()
         if(path.isdir(user)):
             rmtree(user)
 
