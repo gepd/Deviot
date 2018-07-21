@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
+from ..api import deviot
 from ..libraries.tools import save_setting
-from ..libraries.paths import folder_explorer
+
 
 class DeviotExtraLibraryFolderCommand(WindowCommand):
     """
@@ -8,7 +9,7 @@ class DeviotExtraLibraryFolderCommand(WindowCommand):
     """
 
     def run(self):
-        folder_explorer(key='lib_extra_dirs', callback=self.done)
+        deviot.folder_explorer(key='lib_extra_dirs', callback=self.done)
 
     def done(self, key, value):
         save_setting(key, value)

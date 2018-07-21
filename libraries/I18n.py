@@ -10,11 +10,12 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
-from .paths import getLangListPath, getLangPath
+from ..api import deviot
 from .tools import singleton, get_setting, save_setting
 from os import path
 from .file import File
 from glob import glob
+
 
 @singleton
 class I18n(object):
@@ -103,7 +104,7 @@ class I18n(object):
         Get a list with all languages, the main file is located in
         deviot/presets/language.list
         """
-        file_path = getLangListPath()
+        file_path = deviot.lang_list_path()
         file = File(file_path)
 
         self.lang_list = file.read_json()
@@ -117,7 +118,7 @@ class I18n(object):
         NOTE: the language file MUST be in the ISO 639*1 format (two letters) and must have
         the extension .lang
         """
-        lang_path = getLangPath()
+        lang_path = deviot.lang_path()
         lang_paths = glob(lang_path + '/*.lang')
         lang_file_names = [path.basename(file_path) for file_path in lang_paths] # es.lang
         ids_lang = [path.splitext(name)[0] for name in lang_file_names] # es

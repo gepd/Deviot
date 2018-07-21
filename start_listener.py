@@ -17,19 +17,17 @@ from sublime_plugin import EventListener
 from .commands import *
 
 try:
-    from .libraries.paths import getPluginName
+    from .api import deviot
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
-    from .libraries.paths import getMainMenuPath, getPackagesPath
-    from .libraries.paths import getDeviotUserPath, status_color_folder
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries.project_check import ProjectCheck
     from .libraries import messages, status_colors
 except ImportError:
     pass
 
-package_name = getPluginName()
+package_name = deviot.plugin_name()
 logger = logging.getLogger('Deviot')
 
 
@@ -51,7 +49,7 @@ def plugin_loaded():
     # # Load or fix the right deviot syntax file
     Syntax().paint_iot_views()
 
-    menu_path = getMainMenuPath()
+    menu_path = deviot.main_menu_path()
     compile_lang = get_setting('compile_lang', True)
 
     if(compile_lang or not path.exists(menu_path)):
@@ -74,13 +72,13 @@ def plugin_unloaded():
 
     if events.remove(package_name):
         # remove settings
-        packages = getPackagesPath()
+        packages = deviot.packages_path()
         st_settings = path.join(packages, 'User', 'deviot.sublime-settings')
         if(path.exists(st_settings)):
             remove(st_settings)
 
         # remove deviot user folder
-        user = getDeviotUserPath()
+        user = deviot.user_plugin_path()
         if(path.isdir(user)):
             rmtree(user)
 
@@ -88,7 +86,9 @@ def plugin_unloaded():
 # plugin_unload is not working so if the status bar color
 #  folder is present when ST starts, it will remove it.
 try:
-    rmtree(status_color_folder())
+    plugin = deviot.packages_path()
+    status_color = path.join(plugin, 'User', 'Status Color')
+    rmtree(status_color)
 except OSError:
     pass
 

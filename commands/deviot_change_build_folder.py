@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
+from ..api import deviot
 from ..libraries.tools import save_setting
-from ..libraries.paths import folder_explorer
+
 
 class DeviotChangeBuildFolderCommand(WindowCommand):
     """
@@ -8,4 +9,4 @@ class DeviotChangeBuildFolderCommand(WindowCommand):
     """
 
     def run(self):
-        folder_explorer(key='build_folder', callback=save_setting)
+        deviot.folder_explorer(key='build_folder', callback=save_setting)

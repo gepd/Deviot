@@ -9,10 +9,10 @@ from __future__ import unicode_literals
 from os import path
 from threading import Thread
 
+from ..api import deviot
 from .file import File
 from .libraries import get_library_list
 from .tools import accepted_extensions
-from .paths import getSyntaxPath, getPluginPath
 from ..libraries.thread_progress import ThreadProgress
 
 
@@ -22,7 +22,7 @@ class Syntax(object):
         """
         Check if the syntax file exits, if not create it
         """
-        deviot_syntax = getPluginPath()
+        deviot_syntax = deviot.plugin_path()
         syntax_path = path.join(deviot_syntax, 'deviot.sublime-syntax')
         if(not path.exists(syntax_path)):
             self.create_files_async()
@@ -35,19 +35,18 @@ class Syntax(object):
 
         accepted = accepted_extensions()
 
-        try:
-            file = view.file_name()
-            ext = file.split(".")[-1]
+        file = view.file_name()
 
-            if(ext not in accepted):
-                return
-        except:
+        try:
+            ext = file.split(".")[-1]
+        except AttributeError:
+            ext = ""
+
+        if(ext not in accepted):
             return
 
-        from .paths import getPluginPath, getPluginName
-
-        plugin_name = getPluginName()
-        plugin_path = getPluginPath()
+        plugin_name = deviot.plugin_name()
+        plugin_path = deviot.plugin_path()
         syntax_name = 'deviot.sublime-syntax'
         current_syntax = view.settings().get('syntax')
         deviot_syntax = path.join(plugin_path, syntax_name)
@@ -66,14 +65,14 @@ class Syntax(object):
         Assign the deviot syntax in all iot files
         """
         from sublime import windows
-        
+
         for window in windows():
             for view in window.views():
                 self.set_deviot_syntax(view)
 
     def create_files_async(self):
         """New thread execution
-        
+
         Runs the creation of the files in a new thread
         to avoid block the UI of ST
         """
@@ -83,7 +82,7 @@ class Syntax(object):
 
     def create_files(self):
         """Build files
-        
+
         Create the completions and syntax files.
         It will be stored in the plugin folder
         """
@@ -93,7 +92,7 @@ class Syntax(object):
 
     def create_syntax(self):
         """sublime-syntax
-        
+
         Expand the C++ highlight syntax with the functios, classes
         constants, etc found in the libraries
         """
@@ -109,7 +108,7 @@ class Syntax(object):
         ik3 = 0
 
         keywords = self.get_keywords()
-        
+
         for keys in keywords:
             for word in keys.get_keywords():
                 if('LITERAL1' in word.get_type()):
@@ -137,30 +136,32 @@ class Syntax(object):
                         ik3 = 0
                     ik3 += 1
 
-        template_path = getSyntaxPath()
-        plugin_path = getPluginPath()
+        template_path = deviot.syntax_path()
+        plugin_path = deviot.plugin_path()
         syntax_path = path.join(plugin_path, 'deviot.sublime-syntax')
 
         # syntax template
         syntax = File(template_path)
         syntax = syntax.read()
 
-        #replace keywords
+        # replace keywords
         syntax = syntax.replace('{LITERAL1}', literal1s)
         syntax = syntax.replace('{KEYWORD1}', keyword1s)
         syntax = syntax.replace('{KEYWORD2}', keyword2s)
         syntax = syntax.replace('{KEYWORD3}', keyword3s)
 
-        #save new file
+        # save new file
         File(syntax_path).write(syntax)
 
     def create_completions(self):
         """Sublime-completions
-        
+
         Generates the completions file with the keywords extracts from
         the libraries install in the machine
         """
-        keyword_ids = ['DEC','OCT','DEC','HEX','HIGH','LOW','INPUT','OUTPUT','INPUT_PULLUP','INPUT_PULLDOWN','LED_BUILTIN']
+        keyword_ids = ['DEC', 'OCT', 'DEC', 'HEX', 'HIGH', 'LOW', 'INPUT',
+                       'OUTPUT', 'INPUT_PULLUP', 'INPUT_PULLDOWN',
+                       'LED_BUILTIN']
         keywords = self.get_keywords()
 
         for keys in keywords:
@@ -171,17 +172,18 @@ class Syntax(object):
         completions = {'scope': 'source.iot'}
         completions['completions'] = keyword_ids
 
-        completions_path = getPluginPath()
-        completions_path = path.join(completions_path, 'deviot.sublime-completions')
+        completions_path = deviot.plugin_path()
+        completions_path = path.join(completions_path,
+                                     'deviot.sublime-completions')
 
         File(completions_path).save_json(completions)
 
     def get_keywords(self):
         """Keywords files
-        
+
         Search the keywords.txt file in each library and return
         a list with them.
-        
+
         Returns:
             list -- full path to the keywords.txt
         """

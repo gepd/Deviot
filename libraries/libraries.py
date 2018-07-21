@@ -15,7 +15,7 @@ from urllib.parse import urlencode
 from urllib.request import Request
 from urllib.request import urlopen
 
-from . import __version__ as version
+from ..api import deviot
 from .file import File
 from .I18n import I18n
 from .messages import Messages
@@ -23,7 +23,6 @@ from .quick_panel import quick_panel
 from ..platformio.command import Command
 from .thread_progress import ThreadProgress
 from .tools import get_headers, get_setting, save_setting
-from .paths import getLibrariesFileDataPath, getPioPackages, getPioLibrary
 
 
 class Libraries(Command):
@@ -38,7 +37,7 @@ class Libraries(Command):
         self.translate = I18n().translate
         self.window = active_window()
         self.view = self.window.active_view()
-        self.lib_file_path = getLibrariesFileDataPath()
+        self.lib_file_path = deviot.libraries_data_path()
         self.quick_list = []
         self.cwd = None
 
@@ -51,7 +50,7 @@ class Libraries(Command):
         It sends a header string as first message
         """
         messages = Messages()
-        messages.initial_text("deviot_library{0}", version)
+        messages.initial_text("deviot_library{0}", deviot.version())
         messages.create_panel()
         self.init(messages=messages)
 
@@ -335,7 +334,7 @@ def get_library_folders(platform='all'):
     """
     libraries_folders = []
 
-    pio_packages = getPioPackages(all=True)
+    pio_packages = deviot.pio_packages(all=True)
     packages_sub_dirs = glob(pio_packages)
 
     if(platform == 'atmelavr'):
@@ -353,7 +352,7 @@ def get_library_folders(platform='all'):
                         libraries = path.join(folder, '*')
                         libraries_folders.append(libraries)
 
-    pio_lib_path = getPioLibrary(all=True)
+    pio_lib_path = deviot.pio_library(all=True)
     libraries_folders.insert(0, pio_lib_path)
 
     # Add the extra folder if it was set by thes user

@@ -5,9 +5,9 @@ import os
 import sublime
 from glob import glob
 
+from ..api import deviot
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_panel import quick_panel
-from .paths import getBoardsFileDataPath
 from .tools import get_setting, save_setting, save_sysetting
 from .preferences_bridge import PreferencesBridge
 from .I18n import I18n
@@ -83,7 +83,7 @@ class QuickMenu(PreferencesBridge):
         from .file import File
 
         selected_boards = self.get_selected_boards()
-        boards_path = getBoardsFileDataPath()
+        boards_path = deviot.boards_file_path()
         boards_file = File(boards_path)
         boards = boards_file.read_json()
         boards_list = []
