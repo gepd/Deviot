@@ -67,13 +67,6 @@ def getDeviotUserPath():
 
     return deviot_user_path
 
-def getSystemIniPath():
-    """
-    Packages/User/Deviot/deviot.ini
-    """
-    deviot_path = getDeviotUserPath()
-    system_ini_path = os.path.join(deviot_path, 'deviot.ini')
-    return system_ini_path
 
 def getUserPioPath():
     """

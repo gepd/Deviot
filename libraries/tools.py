@@ -129,10 +129,9 @@ def get_sysetting(key, default=None):
     Packages/User/Deviot/deviot.ini
     """
     from ..libraries.readconfig import ReadConfig
-    from .paths import getSystemIniPath
- 
+
     section = "config"
-    sys_path = getSystemIniPath()
+    sys_path = deviot.system_ini_path()
 
     config = ReadConfig()
     
@@ -163,10 +162,9 @@ def save_sysetting(key, value):
     Packages/User/Deviot/deviot.ini
     """
     from ..libraries.readconfig import ReadConfig
-    from .paths import getSystemIniPath
 
     section = "config"
-    sys_path = getSystemIniPath()
+    sys_path = deviot.system_ini_path()
 
     config = ReadConfig()
     config.read(sys_path)

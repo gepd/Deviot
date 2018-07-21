@@ -116,6 +116,14 @@ def cache_path():
     return path.join(deviot, _cache)
 
 
+def system_ini_path():
+    """
+    Packages/User/Deviot/deviot.ini
+    """
+    user_plugin = user_plugin_path()
+    return path.join(user_plugin, 'deviot.ini')
+
+
 def dependencies_path():
     deviot = user_plugin_path()
     return path.join(deviot, _install_name)
