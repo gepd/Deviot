@@ -21,7 +21,6 @@ try:
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
-    from .libraries.paths import getMainMenuPath
     from .libraries.paths import getDeviotUserPath, status_color_folder
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries.project_check import ProjectCheck
@@ -51,7 +50,7 @@ def plugin_loaded():
     # # Load or fix the right deviot syntax file
     Syntax().paint_iot_views()
 
-    menu_path = getMainMenuPath()
+    menu_path = deviot.main_menu_path()
     compile_lang = get_setting('compile_lang', True)
 
     if(compile_lang or not path.exists(menu_path)):

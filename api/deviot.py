@@ -68,6 +68,16 @@ def user_plugin_path():
     return path.join(plugin, 'User', 'Deviot')
 
 
+def main_menu_path():
+    """
+    Packages/Deviot/Main.sublime-menu
+    """
+    plugin = plugin_path()
+    menu_path = path.join(plugin, 'Main.sublime-menu')
+
+    return menu_path
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)
