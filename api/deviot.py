@@ -13,6 +13,9 @@ VIRTUALENV_URL = 'https://pypi.python.org/packages/source/v/' \
 
 
 def version():
+    """
+    return the plugin version
+    """
     version = (2, 3, 0, '.dev6')
     v_format = ".".join([str(s) for s in version[:3]])
     if(len(version) > 3):
@@ -21,6 +24,9 @@ def version():
 
 
 def header():
+    """
+    header to be used with the request module
+    """
     deviot_v = version()
     sublime_v = sublime.version()
     user_agent = 'Deviot/%s (Sublime-Text/%s)' % (deviot_v, sublime_v)
@@ -41,35 +47,47 @@ def create_dirs(dirs):
 
 
 def current_file_path():
+    """
+    full path of the current deviot.py file
+    """
     return path.abspath(inspect.getfile(inspect.currentframe()))
 
 
 def plugin_path():
+    """
+    path to Packages/Deviot (Arduino IDE)
+    """
     current = current_file_path()
     return path.dirname(path.dirname(current))
 
 
 def plugin_name():
+    """
+    Name of the plugin ex. Deviot (Arduino IDE)
+    """
     plugin = plugin_path()
     return path.basename(plugin)
 
 
 def packages_path():
     """
-    Get sublime text package folder
+    Path to Packages/
     """
     plugin = plugin_path()
     return path.dirname(plugin)
 
 
 def user_plugin_path():
+    """
+    Path to Packages/User/Deviot
+    """
     packages = packages_path()
     return path.join(packages, 'User', 'Deviot')
 
 
 def main_menu_path():
     """
-    Packages/Deviot/Main.sublime-menu
+    Path to Packages/Deviot/Main.sublime-menu
     """
     plugin = plugin_path()
     return path.join(plugin, 'Main.sublime-menu')
@@ -77,45 +95,63 @@ def main_menu_path():
 
 def presets_path():
     """
-    Packages/Deviot/presets
+    Path to Packages/Deviot/presets
     """
     plugin = plugin_path()
     return path.join(plugin, 'presets')
 
 
 def lang_list_path():
+    """
+    Path to Packages/Deviot/presets/languages.list
+    """
     presets = presets_path()
     return path.join(presets, 'languages.list')
 
 
 def quick_path():
+    """
+    Path to Packages/Deviot/presets/quick_panel.json
+    """
     presets = presets_path()
     return path.join(presets, 'quick_panel.json')
 
 
 def context_path():
+    """
+    Path to Packages/Deviot/presets/context_menu.json
+    """
     presets = presets_path()
     return path.join(presets, 'context_menu.json')
 
 
 def syntax_path():
+    """
+    Path to Packages/Deviot/presets/template.syntax
+    """
     presets = presets_path()
     return path.join(presets, 'template.syntax')
 
 
 def lang_path():
+    """
+    Path to Packages/Deviot/languages
+    """
     plugin = plugin_path()
     return path.join(plugin, 'languages')
 
 
 def cache_path():
+    """
+    Path to Packages/User/Deviot/.cache
+    """
     plugin = user_plugin_path()
     return path.join(plugin, _cache)
 
 
 def preset_file(file_name):
     """
-    Path of the file board /Packages/Deviot/presets/filename.json
+    Path to /Packages/Deviot/presets/filename.json
     """
     presets = presets_path()
     return path.join(presets, file_name)
@@ -123,9 +159,7 @@ def preset_file(file_name):
 
 def temp_path(file_name=False):
     """
-    Return the path of the temporal folder based in the O.S
-    ended with Deviot (tmp/Deviot)
-    if file_name argument is set it weill include in the final path
+    Path to the temp folder depending on the O.S
     """
     tmp_path = '/tmp'
     os_name = sublime.platform()
@@ -143,18 +177,24 @@ def temp_path(file_name=False):
 
 def system_ini_path():
     """
-    Packages/User/Deviot/deviot.ini
+    Path to Packages/User/Deviot/deviot.ini
     """
     user_plugin = user_plugin_path()
     return path.join(user_plugin, 'deviot.ini')
 
 
 def dependencies_path():
+    """
+    Path to Packages/User/Deviot/penv
+    """
     deviot = user_plugin_path()
     return path.join(deviot, _install_name)
 
 
 def bin_name():
+    """
+    Name of the bin folder based on the O.S
+    """
     bin = 'bin'
     if('windows' in sublime.platform()):
         bin = 'Scripts'
@@ -162,13 +202,16 @@ def bin_name():
 
 
 def bin_path():
+    """
+    Path to Packages/User/Deviot/penv/bin|Scripts
+    """
     dependencies = dependencies_path()
     return path.join(dependencies, bin_name())
 
 
 def pio_penv():
     """
-    ~/.platformio/penv/bin
+    Path to ~/.platformio/penv/bin
     """
     user_path = path.expanduser('~')
     return path.join(user_path, '.platformio', 'penv', bin_name())
@@ -176,26 +219,32 @@ def pio_penv():
 
 def setting_path():
     """
-    Packages/User/Deviot/deviot.ini
+    Path to Packages/User/Deviot/deviot.ini
     """
     plugin = user_plugin_path()
     return path.join(plugin, 'deviot.ini')
 
 
 def virtualenv_path():
+    """
+    Path to Packages/User/Deviot/penv/virtualenv
+    """
     dependencies = dependencies_path()
     return path.join(dependencies, _virtualenv_name)
 
 
 def user_pio_path():
     """
-    Deviot file in Packages/User/Deviot/pio
+    Path to Packages/User/Deviot/pio
     """
     user_path = user_plugin_path()
     return path.join(user_path, 'pio')
 
 
 def pio_library(all=False):
+    """
+    Path to ~/.platformio/lib
+    """
     user_path = path.expanduser('~')
     pio_lib = path.join(user_path, '.platformio', 'lib')
 
@@ -210,7 +259,7 @@ def pio_library(all=False):
 
 def pio_packages(all=True):
     """
-    ~/.platformio/packages
+    Path to ~/.platformio/packages
     """
     user_path = path.expanduser('~')
     pio_pack = path.join(user_path, '.platformio', 'packages')
@@ -223,7 +272,7 @@ def pio_packages(all=True):
 
 def boards_file_path():
     """
-    Deviot file in Packages/User/Deviot/pio/boards.json
+    Path to Packages/User/Deviot/pio/boards.json
     """
     user_data = user_pio_path()
     return path.join(user_data, 'boards.json')
@@ -231,23 +280,32 @@ def boards_file_path():
 
 def libraries_data_path():
     """
-    Deviot file in Packages/User/Deviot/pio/libraries.json
+    Path to Packages/User/Deviot/pio/libraries.json
     """
     user_data = user_pio_path()
     return path.join(user_data, 'libraries.json')
 
 
 def virtualenv_list():
+    """
+    List of elements in VIRTUALENV_URL
+    """
     return VIRTUALENV_URL.split('/')
 
 
 def virtualenv_name():
+    """
+    Name of the virtualenv folder
+    """
     url_list = virtualenv_list()
     list_number = len(url_list)
     return url_list[list_number - 1]
 
 
 def virtualenv_file():
+    """
+    Path to Packages/User/Deviot/.cache/virtualenv
+    """
     cache = cache_path()
     return path.join(cache, virtualenv_name())
 
