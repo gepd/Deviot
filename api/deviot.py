@@ -124,6 +124,26 @@ def preset_file(file_name):
     return path.join(presets, file_name)
 
 
+def temp_path(file_name=False):
+    """
+    Return the path of the temporal folder based in the O.S
+    ended with Deviot (tmp/Deviot)
+    if file_name argument is set it weill include in the final path
+    """
+    tmp_path = '/tmp'
+    os_name = sublime.platform()
+
+    if(os_name == 'windows'):
+        tmp_path = environ['tmp']
+
+    tmp_path = path.join(tmp_path, 'Deviot')
+
+    if(file_name):
+        tmp_path = path.join(tmp_path, file_name)
+
+    return tmp_path
+
+
 def system_ini_path():
     """
     Packages/User/Deviot/deviot.ini
