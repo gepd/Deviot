@@ -24,7 +24,6 @@ from .quick_panel import quick_panel
 from ..platformio.command import Command
 from .thread_progress import ThreadProgress
 from .tools import get_headers, get_setting, save_setting
-from .paths import getPioLibrary
 
 
 class Libraries(Command):
@@ -354,7 +353,7 @@ def get_library_folders(platform='all'):
                         libraries = path.join(folder, '*')
                         libraries_folders.append(libraries)
 
-    pio_lib_path = getPioLibrary(all=True)
+    pio_lib_path = deviot.pio_library(all=True)
     libraries_folders.insert(0, pio_lib_path)
 
     # Add the extra folder if it was set by thes user
