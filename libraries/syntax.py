@@ -35,13 +35,14 @@ class Syntax(object):
 
         accepted = accepted_extensions()
 
-        try:
-            file = view.file_name()
-            ext = file.split(".")[-1]
+        file = view.file_name()
 
-            if(ext not in accepted):
-                return
-        except:
+        try:
+            ext = file.split(".")[-1]
+        except AttributeError:
+            ext = ""
+
+        if(ext not in accepted):
             return
 
         plugin_name = deviot.plugin_name()
