@@ -343,24 +343,6 @@ def list_win_volume():
     return vol_list
 
 
-def list_root_path():
-    """List of paths
-    
-    Lists the volumes (disc) availables according
-    to the operative sistem
-    
-    Returns:
-        list -- list of directories
-    """
-    root_list = []
-    os_name = platform()
-    if os_name == 'windows':
-        root_list = list_win_volume()
-    else:
-        home_path = os.getenv('HOME')
-        root_list = [home_path, ROOT_PATH]
-    return root_list
-
 def add_library_to_sketch(view, edit, lib_path):
     """Include Library
 
