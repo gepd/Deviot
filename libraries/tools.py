@@ -203,11 +203,9 @@ def remove_settings():
     Removes the deviot.sublime-settings and
     Packages/User/Deviot folder
     """
-    from .paths import getDenvPath
-
     plugin_path = deviot.plugin_path()
     packages_path = deviot.packages_path()
-    deviot_penv = getDenvPath()
+    deviot_penv = deviot.dependencies_path()
 
     deviot_menu = path.join(plugin_path, 'Main.sublime-menu')
     deviot_context = path.join(plugin_path, 'Context.sublime-menu')

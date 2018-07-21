@@ -106,23 +106,6 @@ def getBuildPath(filename):
     return getTempPath(filename)
 
 
-def getDenvPath():
-    """
-    get denv path Packages/User/Deviot/penv/
-    """
-    plugin_user_path = getDeviotUserPath()
-    env_dir = os.path.join(plugin_user_path, 'penv')
-
-    try:
-        os.makedirs(env_dir)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
-    return env_dir
-
-
 def getVirtualenvPath():
     """
     get virtualenv path Packages/User/Deviot/denv/virtualenv
