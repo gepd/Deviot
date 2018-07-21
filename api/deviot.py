@@ -86,6 +86,11 @@ def presets_path():
     return path.join(plugin, 'presets')
 
 
+def lang_list_path():
+    path = presets_path()
+    return path.join(path, 'languages.list')
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)

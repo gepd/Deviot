@@ -50,12 +50,6 @@ def getPresetPath():
     
     return preset_path
 
-def getLangListPath():
-    path = getPresetPath()
-    lang_list_path = os.path.join(path, 'languages.list')
-
-    return lang_list_path
-
 def getQuickPath():
     path = getPresetPath()
     quick_path = os.path.join(path, 'quick_panel.json')
