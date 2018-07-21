@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 import os
 from glob import glob
 
-from ..libraries import paths
 from ..libraries.file import File
 from ..libraries.tools import get_setting
 from .command import Command

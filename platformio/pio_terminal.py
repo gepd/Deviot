@@ -7,7 +7,7 @@ import sublime_plugin
 from threading import Thread
 from time import sleep
 
-from ..libraries import tools, paths
+from ..libraries import tools
 from ..libraries.messages import Messages
 from ..platformio.command import Command
 from ..libraries.thread_progress import ThreadProgress
