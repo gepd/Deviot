@@ -95,23 +95,6 @@ def getConfigFile():
     return config_file
 
 
-def getCacheDir():
-    """
-    cache folder in Packages/User/Deviot/
-    """
-    plugin_user_path = getDeviotUserPath()
-    cache_dir = os.path.join(plugin_user_path, '.cache')
-
-    try:
-        os.makedirs(cache_dir)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise exc
-        pass
-
-    return cache_dir
-
-
 def getTempPath(file_name=False):
     """
     Return the path of the temporal folder based in the O.S
@@ -140,15 +123,6 @@ def getBuildPath(filename):
         build_dir = os.path.join(build_dir, filename)
         return build_dir
     return getTempPath(filename)
-
-
-def getEnvFile():
-    """
-    get virtualenv tar file in Packages/User/Deviot/.cache/
-    """
-    cache_dir = getCacheDir()
-    env_file = os.path.join(cache_dir, 'virtualenv.tar.gz')
-    return env_file
 
 
 def getDenvPath():
