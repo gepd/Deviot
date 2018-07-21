@@ -289,7 +289,7 @@ def create_sketch(sketch_name, select_path):
 
     # get template
     template_file_name = 'template' + ext
-    preset_path = paths.getPresetPath()
+    preset_path = deviot.presets_path()
     template_file_path = path.join(preset_path, template_file_name)
     with open(template_file_path) as file:
         src_code = file.read()

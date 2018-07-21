@@ -78,6 +78,14 @@ def main_menu_path():
     return menu_path
 
 
+def presets_path():
+    """
+    Packages/Deviot/presets
+    """
+    plugin = getPluginPath()
+    return path.join(plugin, 'presets')
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)
