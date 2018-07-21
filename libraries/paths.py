@@ -39,13 +39,6 @@ def getPluginName():
     plugin_path = getPluginPath()
     return os.path.basename(plugin_path)
 
-def getPackagesPath():
-    """
-    Get sublime text package folder
-    """
-    plugin_path = getPluginPath()
-    packages_path = os.path.dirname(plugin_path)
-    return packages_path
 
 def getMainMenuPath():
     """

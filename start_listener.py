@@ -21,7 +21,7 @@ try:
     from .beginning.update import Update
     from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
-    from .libraries.paths import getMainMenuPath, getPackagesPath
+    from .libraries.paths import getMainMenuPath
     from .libraries.paths import getDeviotUserPath, status_color_folder
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries.project_check import ProjectCheck
@@ -74,7 +74,7 @@ def plugin_unloaded():
 
     if events.remove(package_name):
         # remove settings
-        packages = getPackagesPath()
+        packages = deviot.packages_path()
         st_settings = path.join(packages, 'User', 'deviot.sublime-settings')
         if(path.exists(st_settings)):
             remove(st_settings)
