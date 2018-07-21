@@ -51,12 +51,6 @@ def getPresetPath():
     return preset_path
 
 
-def getContextPath():
-    path = getPresetPath()
-    context_path = os.path.join(path, 'context_menu.json')
-
-    return context_path
-
 def getSyntaxPath():
     path = getPresetPath()
     syntax_path = os.path.join(path, 'template.syntax')

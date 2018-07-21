@@ -96,6 +96,11 @@ def quick_path():
     return path.join(path, 'quick_panel.json')
 
 
+def context_path():
+    path = presets_path()
+    return path.join(path, 'context_menu.json')
+
+
 def cache_path():
     deviot = user_plugin_path()
     return path.join(deviot, _cache)
