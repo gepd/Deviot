@@ -37,18 +37,15 @@ class PioBridge(Command):
         thread.start()
         ThreadProgress(thread, txt, '')
 
-
     def get_boards_list(self):
         """Board List
         
         Get the json file with the list of boards and return it.
-        The location of the json file is defined in paths.py in the
-        function getBoardsFileDataPath
         
         Returns:
             json -- list of boards
         """
-        board_file_path = paths.getBoardsFileDataPath()
+        board_file_path = deviot.boards_file_path()
 
         file = File(board_file_path)
         boards_list = file.read_json(boards)

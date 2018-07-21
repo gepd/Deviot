@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import unicode_literals
 
+from ..api import deviot
 from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
 from ..libraries.readconfig import ReadConfig
@@ -106,11 +107,10 @@ class PreferencesBridge(PioBridge):
             str -- platform name
         """
         from .file import File
-        from .paths import getBoardsFileDataPath
 
         environment = self.get_environment()
 
-        boards_path = getBoardsFileDataPath()
+        boards_path = deviot.boards_file_path()
         boards_file = File(boards_path)
         boards = boards_file.read_json()
 

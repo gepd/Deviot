@@ -85,15 +85,6 @@ def getUserPioPath():
     return data_path
 
 
-def getBoardsFileDataPath():
-    """
-    Deviot file in Packages/User/Deviot/pio/boards.json
-    """
-    user_data = getUserPioPath()
-    boards_file = os.path.join(user_data, 'boards.json')
-
-    return boards_file
-
 def getLibrariesFileDataPath():
     """
     Deviot file in Packages/User/Deviot/pio/libraries.json
