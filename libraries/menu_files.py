@@ -33,7 +33,7 @@ class MenuFiles(PioBridge):
         Returns:
             json -- data of the file
         """
-        file_path = paths.getPresetFile(file_name)
+        file_path = deviot.preset_file(file_name)
         preset_file = File(file_path)
         preset_data = preset_file.read_json()
 

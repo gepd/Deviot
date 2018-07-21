@@ -116,6 +116,14 @@ def cache_path():
     return path.join(deviot, _cache)
 
 
+def preset_file(file_name):
+    """
+    Path of the file board /Packages/Deviot/presets/filename.json
+    """
+    presets = presets_path()
+    return path.join(presets, file_name)
+
+
 def system_ini_path():
     """
     Packages/User/Deviot/deviot.ini

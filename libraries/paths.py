@@ -85,16 +85,6 @@ def getUserPioPath():
     return data_path
 
 
-def getPresetFile(file_name):
-    """
-    Path of the file board /Packages/Deviot/presets/filename.json
-    """
-    presets = getPresetPath()
-    file = os.path.join(presets, file_name)
-
-    return file
-
-
 def getConfigFile():
     """
     config file in Packages/User/Deviot/
