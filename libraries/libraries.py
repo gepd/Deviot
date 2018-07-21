@@ -24,7 +24,7 @@ from .quick_panel import quick_panel
 from ..platformio.command import Command
 from .thread_progress import ThreadProgress
 from .tools import get_headers, get_setting, save_setting
-from .paths import getLibrariesFileDataPath, getPioLibrary
+from .paths import getPioLibrary
 
 
 class Libraries(Command):
@@ -39,7 +39,7 @@ class Libraries(Command):
         self.translate = I18n().translate
         self.window = active_window()
         self.view = self.window.active_view()
-        self.lib_file_path = getLibrariesFileDataPath()
+        self.lib_file_path = deviot.libraries_data_path()
         self.quick_list = []
         self.cwd = None
 

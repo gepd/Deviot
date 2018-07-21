@@ -205,6 +205,14 @@ def boards_file_path():
     return path.join(user_data, 'boards.json')
 
 
+def libraries_data_path():
+    """
+    Deviot file in Packages/User/Deviot/pio/libraries.json
+    """
+    user_data = user_pio_path()
+    return path.join(user_data, 'libraries.json')
+
+
 def virtualenv_list():
     return VIRTUALENV_URL.split('/')
 
