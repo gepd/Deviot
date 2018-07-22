@@ -86,6 +86,16 @@ class QuickMenu(PreferencesBridge):
         boards_path = deviot.boards_file_path()
         boards_file = File(boards_path)
         boards = boards_file.read_json()
+
+        # rebuild boards file automatically
+        if(boards == []):
+            from ..beginning.install_pio import save_board_list
+
+            save_board_list()
+
+            boards_file = File(boards_path)
+            boards = boards_file.read_json()
+
         boards_list = []
         start = ''
 
