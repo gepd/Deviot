@@ -59,6 +59,9 @@ from ..beginning.check_requirements import DeviotCheckRequirementsCommand
 from ..beginning.update import DeviotCheckPioUpdatesCommand
 from ..beginning.update import DeviotUpdatePioCommand
 from ..beginning.update import DeviotDevPioCommand
+from ..libraries.syntax import CheckSyntaxFileCommand
+from ..libraries.syntax import PaintIotViewsCommand
+from ..libraries.syntax import CreateSyntaxFilesCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -121,5 +124,8 @@ __all__ = [
     'DeviotCheckRequirementsCommand',
     'DeviotCheckPioUpdatesCommand',
     'DeviotUpdatePioCommand',
-    'DeviotDevPioCommand'
+    'DeviotDevPioCommand',
+    'CheckSyntaxFileCommand',
+    'PaintIotViewsCommand',
+    'CreateSyntaxFilesCommand'
 ]

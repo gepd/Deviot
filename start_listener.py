@@ -44,10 +44,10 @@ def plugin_loaded():
     window.run_command("deviot_check_pio_updates")
 
     # # check syntax files
-    Syntax().check_syntax_file()
+    window.run_command("check_syntax_file")
 
     # # Load or fix the right deviot syntax file
-    Syntax().paint_iot_views()
+    window.run_command("paint_iot_views")
 
     menu_path = deviot.main_menu_path()
     compile_lang = get_setting('compile_lang', True)

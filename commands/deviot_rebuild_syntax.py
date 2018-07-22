@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 
+
 class DeviotRebuildSyntaxCommand(WindowCommand):
     """
     Rebuilds sublime-syntax and sublime-completions files
@@ -8,5 +9,4 @@ class DeviotRebuildSyntaxCommand(WindowCommand):
     """
 
     def run(self):
-        from ..libraries.syntax import Syntax
-        Syntax().create_files_async()
+        self.window.run_command("create_syntax_files")

@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
+
+import sublime_plugin
 
 from os import path
 from threading import Thread
@@ -14,6 +13,21 @@ from .file import File
 from .libraries import get_library_list
 from .tools import accepted_extensions
 from ..libraries.thread_progress import ThreadProgress
+
+
+class CheckSyntaxFileCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Syntax().check_syntax_file()
+
+
+class PaintIotViewsCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Syntax().paint_iot_views()
+
+
+class CreateSyntaxFilesCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        Syntax().create_files_async()
 
 
 class Syntax(object):
