@@ -268,8 +268,6 @@ def create_sketch(sketch_name, select_path):
     the template include a basic code stored in the preset
     folder inside of the plugin
     """
-    from . import paths
-
     ext = None
     sketch = sketch_name.split('.')
     if(len(sketch) > 1):

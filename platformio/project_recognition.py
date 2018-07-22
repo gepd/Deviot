@@ -15,9 +15,6 @@ Licence: Same as the project (Read the LICENCE file in the root)
 """
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
 
 import os
 import sublime
@@ -204,7 +201,6 @@ class ProjectRecognition(object):
         Returns:
             [str/none] -- path/platformio.ini / none
         """
-        from ..libraries.tools import get_setting
 
         parent = self.get_parent_path()
         pio_structure = get_setting('pio_structure', False)

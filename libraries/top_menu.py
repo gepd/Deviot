@@ -2,18 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
 
-import os
 import sublime_plugin
 
 from os import path
 
 from ..api import deviot
-from . import paths
-from .file import File
 from .I18n import I18n
 from .menu_files import MenuFiles
 from .tools import get_setting, save_setting

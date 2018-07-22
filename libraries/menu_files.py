@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 import os
 
 from ..api import deviot
-from . import paths
 from .file import File
 from ..platformio.pio_bridge import PioBridge
 from .I18n import I18n
