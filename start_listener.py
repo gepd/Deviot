@@ -2,28 +2,21 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-from __future__ import unicode_literals
 
 import sys
 import logging
 import sublime
 from os import path, remove
 from shutil import rmtree
-from sublime import message_dialog
 from sublime_plugin import EventListener
 
 from .commands import *
 
 try:
     from .api import deviot
-    from .beginning.update import Update
-    from .libraries.syntax import Syntax
     from .libraries.tools import get_setting, save_setting
     from .libraries.preferences_bridge import PreferencesBridge
-    from .libraries.project_check import ProjectCheck
-    from .libraries import messages, status_colors
+    from .libraries import messages
 except ImportError:
     pass
 
@@ -64,7 +57,7 @@ def plugin_loaded():
         from .libraries.I18n import I18n
         save_setting('compile_lang', True)
         message = I18n().translate("reset_after_upgrade")
-        message_dialog(message)
+        sublime.message_dialog(message)
 
 
 def plugin_unloaded():
