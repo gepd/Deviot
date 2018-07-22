@@ -62,6 +62,8 @@ from ..beginning.update import DeviotDevPioCommand
 from ..libraries.syntax import CheckSyntaxFileCommand
 from ..libraries.syntax import PaintIotViewsCommand
 from ..libraries.syntax import CreateSyntaxFilesCommand
+from ..libraries.top_menu import CheckMenuFilesCommand
+from ..libraries.top_menu import CompileMenuCommand
 
 __all__ = [
     'DeviotNewSketchCommand',
@@ -127,5 +129,7 @@ __all__ = [
     'DeviotDevPioCommand',
     'CheckSyntaxFileCommand',
     'PaintIotViewsCommand',
-    'CreateSyntaxFilesCommand'
+    'CreateSyntaxFilesCommand',
+    'CheckMenuFilesCommand',
+    'CompileMenuCommand'
 ]

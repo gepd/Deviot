@@ -7,14 +7,31 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import sublime_plugin
+
+from os import path
 
 from ..api import deviot
 from . import paths
 from .file import File
-from .menu_files import MenuFiles
 from .I18n import I18n
+from .menu_files import MenuFiles
+from .tools import get_setting, save_setting
 
-_ = I18n().translate
+
+class CheckMenuFilesCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        menu_path = deviot.main_menu_path()
+        compile_lang = get_setting('compile_lang', True)
+
+        if(compile_lang or not path.exists(menu_path)):
+            TopMenu().make_menu_files()
+            save_setting('compile_lang', False)
+
+
+class CompileMenuCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        TopMenu().make_menu_files()
 
 
 class TopMenu(MenuFiles):
@@ -54,11 +71,13 @@ class TopMenu(MenuFiles):
         Returns:
             dict -- children translated
         """
+        tr = I18n().translate
+
         for children in option_dict['children']:
-            children['caption'] = _(children['caption'])
+            children['caption'] = tr(children['caption'])
             try:
                 for children_chil in children['children']:
-                    children_chil['caption'] = _(children_chil['caption'])
+                    children_chil['caption'] = tr(children_chil['caption'])
             except:
                 pass
 

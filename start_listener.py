@@ -14,7 +14,7 @@ from .commands import *
 
 try:
     from .api import deviot
-    from .libraries.tools import get_setting, save_setting
+    from .libraries.tools import save_setting
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries import messages
 except ImportError:
@@ -30,32 +30,29 @@ def plugin_loaded():
 
     window = sublime.active_window()
 
-    # check if deviot is installed
+    # Checks if deviot is installed
     window.run_command("deviot_check_requirements")
 
-    # # Search updates
+    # Searchs updates
     window.run_command("deviot_check_pio_updates")
 
-    # # check syntax files
+    # Checks syntax files
     window.run_command("check_syntax_file")
 
-    # # Load or fix the right deviot syntax file
+    # Load or fix the right deviot syntax file
     window.run_command("paint_iot_views")
 
-    menu_path = deviot.main_menu_path()
-    compile_lang = get_setting('compile_lang', True)
-
-    if(compile_lang or not path.exists(menu_path)):
-        from .libraries.top_menu import TopMenu
-        TopMenu().make_menu_files()
-        save_setting('compile_lang', False)
+    # Checks if menu files exits
+    window.run_command("check_menu_files")
 
     from package_control import events
 
     # alert when deviot was updated
     if(events.post_upgrade(package_name)):
         from .libraries.I18n import I18n
+
         save_setting('compile_lang', True)
+
         message = I18n().translate("reset_after_upgrade")
         sublime.message_dialog(message)
 
