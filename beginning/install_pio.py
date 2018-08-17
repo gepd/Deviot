@@ -168,11 +168,11 @@ def save_env_paths():
         new_path {[list]} -- list with extra paths to store
     """
     env_paths = deviot.environment_paths()
-    deviot.save_sysetting('env_paths', env_paths)
+    deviot.save_sysetting('env_path', env_paths)
 
 
 def save_board_list():
-    paths = deviot.get_sysetting('env_paths', False)
+    paths = deviot.get_sysetting('env_path', False)
     cmd = deviot.pio_command(['boards', '--json-output'])
     boards = deviot.run_command(cmd, env_paths=paths)[1]
 

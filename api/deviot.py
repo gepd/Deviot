@@ -373,7 +373,7 @@ def prepare_command(command):
     bin_dir = bin_path()
     platform = sublime.platform()
     deviot_bin = get_sysetting('deviot_bin', False)
-    env_paths = get_sysetting('env_paths', False)
+    env_paths = get_sysetting('env_path', False)
     symlink = get_sysetting('symlink', 'python')
 
     if(not path.exists(bin_dir) or bool(deviot_bin) or

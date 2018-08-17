@@ -148,7 +148,7 @@ class Command(ProjectRecognition):
         self.window = sublime.active_window()
 
         # sets environment
-        env_path = get_sysetting('env_paths', False)
+        env_path = get_sysetting('env_path', False)
         if(env_path):
             os.environ['PATH'] = env_path
 
