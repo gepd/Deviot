@@ -401,7 +401,7 @@ class QuickMenu(PreferencesBridge):
             library_path = self.history[self.index - 1]
             del self.history[len(self.history) - 1]
 
-        if(selected != 1):
+        if(selected > 0):
             library_path = self.quick_list[selected][1]
         
             if('examples' not in library_path):
