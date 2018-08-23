@@ -11,5 +11,6 @@ class DeviotToggleSerialMonitorCommand(WindowCommand):
         Quick.show_quick_panel(self.callback)
 
     def callback(self, selected):
-        port_id = self.items[selected][2]
-        serial.toggle_serial_monitor(port_id)
+        if(selected > 1):
+            port_id = self.items[selected][2]
+            serial.toggle_serial_monitor(port_id)
