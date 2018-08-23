@@ -10,6 +10,7 @@ from sublime import platform
 from threading import Thread
 from time import sleep
 
+from ..api import deviot
 from ..libraries.pyserial.tools import list_ports
 from ..libraries import pyserial
 from .tools import get_setting
