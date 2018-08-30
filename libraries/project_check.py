@@ -89,6 +89,10 @@ class ProjectCheck(QuickMenu):
             self.print("not_empty_sketch")
             return False
 
+        if("Deviot" in self.view.name()):
+            self.print("not_iot_{0}", "")
+            return False
+
         if(not self.get_file_name()):
             self.save_code_infile()
             self.cwd = self.get_working_project_path()
