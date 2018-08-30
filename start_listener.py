@@ -77,8 +77,8 @@ def plugin_unloaded():
 #  folder is present when ST starts, it will remove it.
 try:
     plugin = deviot.packages_path()
-    status_color = path.join(plugin, 'User', 'Status Color')
-    rmtree(status_color)
+    status_color_folder = path.join(plugin, 'User', 'Status Color')
+    rmtree(status_color_folder)
 except OSError:
     pass
 
@@ -110,6 +110,8 @@ class DeviotListener(EventListener):
         search_id = window_name.split(" | ")
 
         if(len(search_id) > 1 and search_id[1] in serial.serials_in_use):
+            from .libraries import status_color
+
             status_color.set('error', 3000)
             port_id = search_id[1]
             serial_monitor = serial.serial_monitor_dict.get(port_id, None)
