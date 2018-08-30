@@ -2,7 +2,7 @@
 # Russian translations for Deviot Plugin.
 # Copyright (C) 2015-2016 GEPD
 # This file is distributed under the same license as the Deviot Plugin.
-# Translators: Alexsey Rodoinov
+# Translators: Alexsey Rodoinov (R4ddd)
 #
 
 # Setup Process
@@ -12,6 +12,9 @@ msgstr "Deviot требует Python 2.7 "
 
 msgid "button_download_python"
 msgstr "Загрузить Python"
+
+msgid "downloading_files"
+msgstr "Загрузка необходимых файлов...\n"
 
 msgid "symlink_detected"
 msgstr "Symlink обнаружен\n"
@@ -24,9 +27,6 @@ msgstr "PlatformIO Установлен, можно пользаватся Devio
 
 msgid "pio_isn_installed"
 msgstr "PlatformIO Не установлен\nЗапуск установки. Это может занять некоторое время..\n"
-
-msgid "downloading_files"
-msgstr "Загрузка необходимых файлов...\n"
 
 msgid "error_downloading_files"
 msgstr "Произошла ошибка при загрузке необходимых файлов...\n"
@@ -108,14 +108,14 @@ msgstr "Параметры Библиотеки"
 msgid "menu_rebuild_lib_list"
 msgstr "Перестроить Список Библиотек"
 
-msgid "menu_open_lib_folder"
-msgstr "Открыть Папку с Библиотеками"
-
 msgid "menu_extra_lib_folder"
 msgstr "Папка Доп. Библиотек"
 
 msgid "menu_remove_extra_lib_folder"
 msgstr "Удалить Папку Доп. Библиотек"
+
+msgid "menu_open_lib_folder"
+msgstr "Открыть Папку с Библиотеками"
 
 msgid "menu_build"
 msgstr "Собрать"
@@ -133,7 +133,10 @@ msgid "menu_overwrite_upload_baud"
 msgstr "Установить Скорость Загрузки"
 
 msgid "menu_freeze_sketch"
-msgstr "?Заморозить Скетч?"
+msgstr "Заморозить Скетч"
+
+msgid "menu_pio_untouch"
+msgstr "?Не изменять platformio.ini?"
 
 msgid "menu_open_ini_file"
 msgstr "Открыть platformio.ini" 
@@ -164,6 +167,9 @@ msgstr "Нет Доступа к COM порту или Услуге mDNS"
 
 msgid "menu_add_ip"
 msgstr "Добавить IP Вручную"
+
+msgid "menu_not_used_port"
+msgstr "Не Используется"
 
 msgid "menu_monitor_serial"
 msgstr "Монитор COM Порта"
@@ -250,10 +256,10 @@ msgid "menu_change_build_folder"
 msgstr "Выбор Папки Сборки"
 
 msgid "menu_use_cpp_new"
-msgstr "?Использовать Файл CPP В Нововом Файле?"
+msgstr "?Сосдать новый Файл CPP?"
 
 msgid "menu_rebuild_syntax"
-msgstr "?Пересобрать Файлы Синтаксиса и Завершения?"
+msgstr "?Перестроить Файлы Синтаксиса и Автозаполнения?"
 
 msgid "menu_remove_settings"
 msgstr "Удаление Файлов Настроек Пользователя"
@@ -274,13 +280,13 @@ msgid "menu_about_pio"
 msgstr "O PlatformIO"
 
 
-# Wiadomości i błędy
+# Messages and errors
 
 msgid "_deviot_{0}"
 msgstr "[ Deviot {0} ]\n"
 
 msgid "_deviot_starting{0}"
-msgstr "[ Deviot {0} ] Starting...\n"
+msgstr "[ Deviot {0} ] Запуск...\n"
 
 msgid "caption_new_sketch"
 msgstr "Имя Нового Скетча:"
@@ -297,11 +303,20 @@ msgstr "Выбери Плату Из Списка"
 msgid "select_env_list"
 msgstr "Выбери Среду Из Списка"
 
+msgid "port_list"
+msgstr "Список Сортов"
+
 msgid "select_port_list"
 msgstr "Выбери Порт Из Списка"
 
+msgid "not_used_subtitle"
+msgstr "Избегать проверку COM Порта"
+
+msgid "add_ip_subtitle"
+msgstr "IP Или Домен"
+
 msgid "ota_error_platform"
-msgstr "Загрузка OTA Доступна Только Для Платформ Espressif (ESP8266)"
+msgstr "Загрузка OTA Доступна Только Для Платформ Espressif (ESP8266). Выберите Другой COM Порт Или ИИзмените Текущую Среду"
 
 msgid "select_library"
 msgstr "Выбор Библиотеки"
@@ -339,10 +354,10 @@ msgid "search_query"
 msgstr "Поисковый Запрос:"
 
 msgid "add_ip_caption"
-msgstr "Записать Адрес  IP:"
+msgstr "Добавить IP Адрес:"
 
 msgid "already_installed{0}"
-msgstr "{0} Уже Установлен\n"
+msgstr "{0} Уже Установлен.\n"
 
 msgid "downloading_package{0}"
 msgstr "Загрузка Пакета {0}\n\nМожет Знять Некоторое Время.\n"
