@@ -132,7 +132,7 @@ class AsyncProcess(object):
 class Command(ProjectRecognition):
     _txt = None
 
-    errors_inline = None
+    show_errors_inline = None
     errs_by_file = {}
     phantom_sets_by_buffer = {}
 
@@ -175,6 +175,7 @@ class Command(ProjectRecognition):
 
         self.encoding = 'utf-8'
         self.proc = None
+        self.show_errors_inline = get_setting('show_errors_inline', True)
 
         verbose = get_setting('verbose_output', False)
         cmd = prepare_command(cmd, verbose)
@@ -213,7 +214,7 @@ class Command(ProjectRecognition):
         characters = characters.replace('\r\n', '\n').replace('\r', '\n')
         self._txt.print(characters)
 
-        if(self.errors_inline):
+        if(self.show_errors_inline):
             # errors inline
             errors = self.find_all_pio_errors(characters)
             for file, line, column, text in errors:
