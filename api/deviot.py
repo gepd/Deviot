@@ -538,20 +538,20 @@ def list_root_path():
     return root_list
 
 
-def globalize(path):
+def globalize(route):
     """Apply Glob
 
     List all files/folders in the given path and return
     a list with the results
 
     Arguments:
-        path {str} -- folder path
+        route {str} -- folder path
 
     Returns:
         [list] -- list with all file/folder inside the path
     """
-    path = path.join(path, '*')
-    return glob(path)
+    route = path.join(route, '*')
+    return glob(route)
 
 
 def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
@@ -593,10 +593,10 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
 
     # last path used
     if(not path):
-        from .tools import get_setting
+        from ..libraries.tools import get_setting
         path = get_setting('last_path', None)
 
-    from .I18n import I18n
+    from ..libraries.I18n import I18n
     _ = I18n().translate
 
     paths_list = []
@@ -623,7 +623,7 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
     # select current
     if(index == 0):
         # store last path used
-        from .tools import save_setting
+        from ..libraries.tools import save_setting
         save_setting('last_path', path)
 
         if(not key):
@@ -646,7 +646,7 @@ def folder_explorer(path=None, callback=None, key=None, plist=None, index=-2):
         new_path = globalize(plist[index])
         paths_list.extend(new_path)
 
-    from .quick_panel import quick_panel
+    from ..libraries.quick_panel import quick_panel
 
     sublime.set_timeout(
         lambda: quick_panel(
