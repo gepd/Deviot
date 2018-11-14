@@ -45,7 +45,6 @@ class Clean(Initialize):
         cmd = ['run', '-t', 'clean', '-e ', self.board_id]
         self.run_command(cmd)
 
-        self.dstop()
 
     def nonblock_clean(self):
         """New Thread Execution
