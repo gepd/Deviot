@@ -145,6 +145,7 @@ class Command(ProjectRecognition):
         self._txt = messages
 
     def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
+        self.errs_by_file = {}
         self.window = sublime.active_window()
 
         # sets environment
