@@ -14,10 +14,10 @@ msgid "button_download_python"
 msgstr "Telecharger Python"
 
 msgid "downloading_files"
-msgstr "Downloading Files...\n"
+msgstr "Telechargement ...\n"
 
 msgid "symlink_detected"
-msgstr "Symlink has been detected\n"
+msgstr "Symlink detecte \n"
 
 msgid "deviot_setup{0}"
 msgstr "[ Deviot {0} ] Setup\n"
@@ -38,7 +38,7 @@ msgid "error_saving_files"
 msgstr "Erreur lors de la sauvegarde des fichiers...\n"
 
 msgid "setup_error"
-msgstr "There was an error\n"
+msgstr "Erreur lors de l'installation \n"
 
 msgid "extracting_files"
 msgstr "Extraction des fichiers...\n"
@@ -47,7 +47,7 @@ msgid "installing_pio"
 msgstr "Installation de PlatformIO...\n"
 
 msgid "uninstall_old_pio"
-msgstr "Uninstalling current version...\n"
+msgstr "Desinstallation de la version precedente ...\n"
 
 msgid "installing_dev_pio"
 msgstr "Installing 'develop' PlatformIO version...\n"
@@ -62,13 +62,13 @@ msgid "searching_pio_updates"
 msgstr "Recherche des mise à jour de  PlatformIO...\n\n"
 
 msgid "new_pio_update{0}{1}"
-msgstr "The version {0} of PlatformIO is available, your current version is {1} Do you want to update it?"
+msgstr "Version {0} de PlatformIO disponible, version actuelle {1} Mettre à jour ?"
 
 msgid "update_button"
-msgstr "Update Now"
+msgstr "Mettre a jour"
 
 msgid "reset_after_upgrade"
-msgstr "Deviot has been upgraded to the last version. Please, restart Sublime Text"
+msgstr "Mise a jour effectue. Merci de relancer Sublime Text"
 
 # Menu
 
@@ -88,7 +88,7 @@ msgid "menu_search_lib"
 msgstr "Recherche librairie"
 
 msgid "menu_update_lib"
-msgstr "Update Library"
+msgstr "MAJ Librarie"
 
 msgid "menu_remove_lib"
 msgstr "Effacer librairie"
@@ -97,16 +97,16 @@ msgid "menu_import_library"
 msgstr "Importer Librairie"
 
 msgid "menu_no_libraries"
-msgstr "No Libraries Availables"
+msgstr "Pas de librairies disponibles"
 
 msgid "menu_library_examples"
 msgstr "Exemples"
 
 msgid "menu_no_examples"
-msgstr "No Examples Availables"
+msgstr "Pas d'exemples"
 
 msgid "menu_option_lib"
-msgstr "Option de Librairie "
+msgstr "Options de Librairie "
 
 msgid "menu_rebuild_lib_list"
 msgstr "Rebuild Library List"
@@ -163,7 +163,7 @@ msgid "menu_serial_port"
 msgstr "Device(s)"
 
 msgid "menu_auth_change"
-msgstr "Change OTA Password"
+msgstr "Changer Mot de passe OTA "
 
 msgid "menu_no_serial_mdns"
 msgstr "No serial port or mDNS services available"
