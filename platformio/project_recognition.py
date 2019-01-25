@@ -214,6 +214,10 @@ class ProjectRecognition(object):
             return None
 
         if(not ini_path):
+            grandparent = self.get_parent_path(parent)
+            ini_path = self.search_pio_ini(grandparent)
+
+        if(not ini_path):
             temp = self.get_temp_project_path()
             ini_path = self.search_pio_ini(temp)
 
