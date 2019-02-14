@@ -91,11 +91,11 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
 
         _version = self.get_python_version()
 
-        if(_version == "0" or _version[0] == "3"):
+        if(_version == "0"):
             self.check_symlink()
 
         # show error and link to download
-        if(_version == "0" or _version[0] == "3"):
+        if(_version == "0"):
             logger.debug("no python detected")
 
             translate = I18n().translate
