@@ -45,17 +45,19 @@ def plugin_loaded():
     # Checks if menu files exits
     window.run_command("check_menu_files")
 
-    from package_control import events
+    try:
+        from package_control import events
 
-    # alert when deviot was updated
-    if(events.post_upgrade(package_name)):
-        from .libraries.I18n import I18n
+        # alert when deviot was updated
+        if(events.post_upgrade(package_name)):
+            from .libraries.I18n import I18n
 
-        save_setting('compile_lang', True)
+            save_setting('compile_lang', True)
 
-        message = I18n().translate("reset_after_upgrade")
-        sublime.message_dialog(message)
-
+            message = I18n().translate("reset_after_upgrade")
+            sublime.message_dialog(message)
+    except ImportError:
+        pass
 
 def plugin_unloaded():
     from package_control import events
