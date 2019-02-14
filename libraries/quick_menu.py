@@ -234,7 +234,10 @@ class QuickMenu(PreferencesBridge):
         if(selected == 2):
             port_selected = "not"
         else:
-            port_selected = self.quick_list[selected][2]
+            if(self.quick_list[selected][2] == 'yes' or self.quick_list[selected][2] == 'no'):
+                port_selected = self.quick_list[selected][1]
+            else:
+                port_selected = self.quick_list[selected][2]
 
         save_setting('port_id', port_selected)
 
