@@ -129,7 +129,7 @@ class ReadConfig(object):
 
     def _comments(self, line):
         """
-        Store comments of the source file
+        Store comments from source file
         """
         if(line.startswith(ReadConfig.comment_prefixes) and not self._cur_sect):
             key = '#{0}'.format(self._comment_count)
@@ -222,9 +222,16 @@ class ReadConfig(object):
         if(section in self._sections):
             if(option in self._data[section].keys()):
                 values = []
+                value = None
                 for op in self._data[section][option]:
-                    if(not op.startswith('#')):
-                        values.append(op)
+                    if(not op.startswith(';') and not op.startswith('#')):
+
+                        try:
+                            value = eval(op)
+                        except(NameError, SyntaxError) as e:
+                            value = op.strip()
+
+                        values.append(value)
 
                 if(len(values) > 1):
                     return values
@@ -308,7 +315,7 @@ class ReadConfig(object):
 
                 # option(s) - value(s)
                 for key, values in line.items():
-                    comcount = [x for x in values if x.startswith('#')]
+                    comcount = [x for x in values if x.startswith(ReadConfig.comment_prefixes)]
                     if(len(values) > 1):
                         values = "\n".join(values)
                         if(len(comcount) == 0):
