@@ -25,7 +25,7 @@ SOFTWARE.
 
 author: gepd
 website: https://github.com/gepd/ReadConfig
-library version: 0.0.5
+library version: 0.0.6
 """
 
 from __future__ import absolute_import
@@ -62,10 +62,10 @@ class ReadConfig(object):
     \]"""
 
     # option regex
-    _OPTION_PATT = r'(([\w]+)\s*\=? (.+)|)'
+    _OPTION_PATT = r'(([\w]+)\s*=+\s*?(.+)|)'
 
     # value regex
-    _VALUE_PATT = r'(([\w]+\s=*\s*)? (.+)|)'
+    _VALUE_PATT = r'(([\w]+)\s*=+?\s*(.+)|)'
 
     # Compiled regular expression for matching sections
     SECTCRE = re.compile(_SECTION_PATT, re.VERBOSE)
