@@ -11,6 +11,10 @@ from .tools import accepted_extensions
 from ..libraries.readconfig import ReadConfig
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
+from ..api import deviot
+
+
+logger = deviot.create_logger('Deviot')
 
 class ProjectCheck(QuickMenu):
     """
@@ -22,6 +26,7 @@ class ProjectCheck(QuickMenu):
     """
     def __init__(self):
         super(ProjectCheck, self).__init__()
+        deviot.set_logger_level()
         
         self.board_id = None
         self.port_id = None
@@ -85,19 +90,26 @@ class ProjectCheck(QuickMenu):
         Returns:
             bool -- False if any of the requirements fails.
         """
+        logger.debug("==============")
+        logger.debug("check_main_requirements")
+
         if(self.is_empty()):
+            logger.debug("empty sketch")
             self.print("not_empty_sketch")
             return False
 
         if("Deviot" in self.view.name()):
+            logger.debug("file not iot (terminal, other)")
             self.print("not_iot_{0}", "")
             return False
 
         if(not self.get_file_name()):
+            logger.debug("unsaved file")
             self.save_code_infile()
             self.cwd = self.get_working_project_path()
 
         if(not self.is_iot()):
+            logger.debug("file not iot")
             self.print("not_iot_{0}", self.get_file_name())
             return False
 
@@ -107,6 +119,8 @@ class ProjectCheck(QuickMenu):
             from .tools import make_folder
 
             make_folder(self.cwd)
+
+        logger.debug("requirements passed")
 
         return True
 
@@ -152,6 +166,10 @@ class ProjectCheck(QuickMenu):
         """
         if(self.is_native()):
             return
+        
+        logger.debug("==============")
+        logger.debug("override_src")
+        logger.debug("wipe %s", wipe)
 
         write_file = False
         current_src = None
@@ -166,9 +184,11 @@ class ProjectCheck(QuickMenu):
         # get string if exists
         if(config.has_option(platformio_head, 'src_dir')):
             current_src = config.get(platformio_head, 'src_dir')[0]
+            logger.debug("current_src %s", current_src)
 
         # remove option
         if(wipe and current_src):
+            logger.debug("remove src_dir from ini")
             config.remove_option(platformio_head, 'src_dir')
 
             if(not config.options(platformio_head)):
@@ -177,15 +197,18 @@ class ProjectCheck(QuickMenu):
 
         # check section
         if(not config.has_section(platformio_head)):
+            logger.debug("added platformio header")
             config.add_section(platformio_head)
             write_file = True
 
         # change only in case it's different
         if(project_path != current_src):
+            logger.debug("update src_dir path to", project_path)
             config.set(platformio_head, 'src_dir', project_path)
             write_file = True
 
         if(write_file):
+            logger.debug("writing ini file")
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 
@@ -203,6 +226,9 @@ class ProjectCheck(QuickMenu):
         be loaded in the board_id object, if not, it will show the
         quick panel to select the board
         """
+        logger.debug("==============")
+        logger.debug("check_board_selected")
+
         self.board_id = self.get_environment()
 
         if(not self.board_id):
@@ -222,6 +248,9 @@ class ProjectCheck(QuickMenu):
         be loaded in the port_id object, if not, it will show the 
         quick panel to select the port
         """
+        logger.debug("==============")
+        logger.debug("check_port_selected")
+
         from re import search
 
         self.port_id = self.get_serial_port()
@@ -280,7 +309,9 @@ class ProjectCheck(QuickMenu):
         Returns:
             bool -- None when not auth, false when none pass is stored
         """
-    
+        logger.debug("==============")
+        logger.debug("check_auth_ota")
+
         from .tools import get_setting
         from re import search
 
@@ -316,11 +347,13 @@ class ProjectCheck(QuickMenu):
 
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
+
         if(auth == 'None'):
             if(not auth_pass):
                 if(config.has_option(environment, 'upload_flags')):
                     config.remove_option(environment, 'upload_flags')
 
+                    logger.debug("writing upload_flags")
                     with open(ini_path, 'w') as configfile:
                         config.write(configfile)
             return ended

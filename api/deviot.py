@@ -1,9 +1,15 @@
 import sublime
 
+import sys
+import logging
+import inspect
+
 from glob import glob
 from os import path, getenv, environ, makedirs, chmod
 from collections import OrderedDict
-import inspect
+
+handler = logging.StreamHandler(sys.stdout)
+logger = None
 
 _cache = '.cache'
 _install_name = 'penv'
@@ -11,6 +17,29 @@ _virtualenv_name = 'virtualenv'
 VIRTUALENV_URL = 'https://pypi.python.org/packages/source/v/' \
                   'virtualenv/virtualenv-16.0.0.tar.gz'
 
+
+def create_logger(name):
+    global logger
+
+    logger = logging.getLogger(name)
+    logger.addHandler(handler)
+    return logger
+
+def set_logger_level(level='ERROR'):
+    global logger
+
+    if(level == 'DEBUG'):
+        level = logging.DEBUG
+    elif(level == 'INFO'):
+        level = logging.INFO
+    elif(level == 'WARNING'):
+        level = logging.WARNING
+    elif(level == 'ERROR'):
+        level = logging.ERROR
+    else:
+        level = logging.CRITICAL
+
+    logger.setLevel(level)
 
 def version():
     """

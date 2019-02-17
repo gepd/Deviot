@@ -11,6 +11,7 @@ from .tools import get_setting, save_setting
 from ..platformio.pio_bridge import PioBridge
 from ..libraries.readconfig import ReadConfig
 
+logger = deviot.create_logger('Deviot')
 
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
@@ -19,6 +20,7 @@ class PreferencesBridge(PioBridge):
 
     def __init__(self):
         super(PreferencesBridge, self).__init__()
+        deviot.set_logger_level()
         self.init_option = None
 
     def save_selected_board(self, board_id):
@@ -219,6 +221,9 @@ class PreferencesBridge(PioBridge):
         Arguments:
             programmer {str} -- id of chosen option
         """
+        logger.debug("==============")
+        logger.debug("programmer")
+
         write_file = False
         ini_path = self.get_ini_path()
         programmer = get_setting('programmer_id', None)
@@ -269,6 +274,7 @@ class PreferencesBridge(PioBridge):
 
         # save in file
         if(write_file):
+            logger.debug("write ini file")
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 
@@ -287,6 +293,11 @@ class PreferencesBridge(PioBridge):
             append {bool} -- when is true, when is true it appends
                             the given data
         """
+        logger.debug("==============")
+        logger.debug("add_option")
+        logger.debug("option_name %s", option_name)
+        logger.debug("wipe %s", wipe)
+
         option = get_setting(option_name, None)
         ini_path = self.get_ini_path()
         write_file = False
@@ -304,6 +315,7 @@ class PreferencesBridge(PioBridge):
         # get current value
         if(not wipe and config.has_option(environment, option_name)):
             self.init_option = config.get(environment, option_name)[0]
+            logger.debug("init_option %s", self.init_option)
 
         # add option
         if(not wipe and option and option not in current):
@@ -312,18 +324,22 @@ class PreferencesBridge(PioBridge):
             
             config.set(environment, option_name, option)
             write_file = True
+            logger.debug("write_file1 %s", write_file)
 
         # remove in case to be neccesary
         if(wipe):
             if(self.init_option and current != self.init_option):
                 config.set(environment, option_name, self.init_option)
                 write_file = True
+                logger.debug("write_file2 %s", write_file)
             else:
                 config.remove_option(environment, option_name)
                 write_file = True
+                logger.debug("write_file3 %s", write_file)
 
         # save in file
         if(write_file):
+            logger.debug("write ini file")
             with open(ini_path, 'w') as configfile:
                 config.write(configfile)
 

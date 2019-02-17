@@ -3,7 +3,6 @@
 
 from __future__ import absolute_import
 
-import logging
 import sublime
 import sublime_plugin
 
@@ -18,7 +17,7 @@ from ..libraries.thread_progress import ThreadProgress
 from ..libraries.file import File
 
 dprint = None
-logger = logging.getLogger('Deviot')
+logger = deviot.create_logger('Deviot')
 
 
 class InstallPIO(object):

@@ -4,7 +4,6 @@
 from __future__ import absolute_import
 
 import sys
-import logging
 import sublime
 from os import path, remove
 from shutil import rmtree
@@ -21,13 +20,8 @@ except ImportError:
     pass
 
 package_name = deviot.plugin_name()
-logger = logging.getLogger('Deviot')
-
 
 def plugin_loaded():
-    handler = logging.StreamHandler(sys.stdout)
-    logger.addHandler(handler)
-
     window = sublime.active_window()
 
     # Checks if deviot is installed

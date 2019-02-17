@@ -18,7 +18,7 @@ from ..libraries.thread_progress import ThreadProgress
 _version = ''
 _symlink = 'python2'
 
-logger = logging.getLogger('Deviot')
+logger = deviot.create_logger('Deviot')
 
 
 class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
@@ -27,11 +27,9 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
 
         # set level depending on the plugin installation status
         if(not self.installed):
-            level = logging.DEBUG
+            deviot.set_logger_level('DEBUG')
         else:
-            level = logging.ERROR
-
-        logger.setLevel(level)
+            deviot.set_logger_level('ERROR')
 
         logger.debug("Command executed")
 
@@ -42,7 +40,7 @@ class DeviotCheckRequirementsCommand(sublime_plugin.WindowCommand):
     def check(self):
         logger.debug("New thread started")
         # check if the plugin was installed
-        logger.debug("Installed: %s1", self.installed)
+        logger.debug("Installed: %s", self.installed)
         if(bool(self.installed)):
             return
 

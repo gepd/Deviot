@@ -11,6 +11,8 @@ from ..libraries.project_check import ProjectCheck
 from ..libraries.tools import save_sysetting, get_setting
 from ..libraries.messages import Messages
 
+logger = deviot.create_logger('Deviot')
+
 class Initialize(ProjectCheck):
     """
     Runs the init command to start working with a new board
@@ -24,6 +26,7 @@ class Initialize(ProjectCheck):
     """
     def __init__(self):
         super(Initialize, self).__init__()
+        deviot.set_logger_level()
         self.init_option = None
 
         messages = Messages()
@@ -47,6 +50,8 @@ class Initialize(ProjectCheck):
             bool -- true if the board was succefully intilized or if it
                     was already initialized, if there was an error, false
         """
+        logger.debug("==============")
+        logger.debug("add_board")
 
         self.check_board_selected()
         if(not self.board_id):
