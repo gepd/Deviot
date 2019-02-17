@@ -365,10 +365,12 @@ class ProjectCheck(QuickMenu):
             return ended
         
         flag = '--auth={0}'.format(auth_pass)
-        config.set(environment, 'upload_flags', flag)
 
-        with open(ini_path, 'w') as configfile:
-            config.write(configfile)
+        if(config.get(environment, 'upload_flags')[0] != flag):
+            config.set(environment, 'upload_flags', flag)
+            logger.debug("write auth ini")
+            with open(ini_path, 'w') as configfile:
+                config.write(configfile)
 
         return ended
 
