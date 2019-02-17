@@ -402,10 +402,11 @@ def get_library_list(example_list=False, platform="all"):
                 for sub_core in cores:
                     libs_core = path.join(sub_core, '*')
                     libs_core = glob(libs_core)
+                    board = path.basename(sub_core).capitalize()
 
                     for lib_core in libs_core:
                         caption = path.basename(lib_core)
-                        quick_list.append([caption, lib_core])
+                        quick_list.append([caption, board, lib_core])
                         check_list.append([caption])
 
             if(caption not in quick_list and '__cores__' not in

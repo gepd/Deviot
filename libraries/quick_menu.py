@@ -330,7 +330,7 @@ class QuickMenu(PreferencesBridge):
             return
 
         libraries_list = self.import_list()
-        library_import = libraries_list[selected][1]
+        library_import = libraries_list[selected][2]
 
         window = sublime.active_window()
         window.run_command('deviot_insert_library', {'path': library_import})
@@ -371,7 +371,7 @@ class QuickMenu(PreferencesBridge):
         platform = platform if(platform) else "all"
 
         self.quick_list = get_library_list(example_list=True, platform=platform)
-        self.quick_list.insert(0, [self.translate("select_library").upper()])
+        self.quick_list.insert(0, [self.translate("select_library").upper(), ""])
 
         if(len(self.quick_list) <= 1):
             self.quick_list = [[self.translate("menu_no_examples")]]
@@ -388,15 +388,17 @@ class QuickMenu(PreferencesBridge):
         Arguments:
             selected {int} -- user index selection
         """
+        # cancel
         if(selected <= 0):
             return
 
-        if(selected == 1):
+        option_len = len(self.quick_list[selected])
+
+        if(selected == 1 and option_len == 1):
             self.index -= 1
 
-        if(selected == 1 and self.index == 0):
+        if(selected == 1 and self.index == 0 and option_len == 1):
             self.quick_libraries()
-            self.index = 0
             self.history = {}
             return
 
@@ -404,8 +406,12 @@ class QuickMenu(PreferencesBridge):
             library_path = self.history[self.index - 1]
             del self.history[len(self.history) - 1]
 
+        # valid option
         if(selected > 0):
-            library_path = self.quick_list[selected][1]
+            try:
+                library_path = self.quick_list[selected][2]
+            except IndexError:
+                library_path = self.quick_list[selected][1]
         
             if('examples' not in library_path):
                 library_path = os.path.join(library_path, 'examples')
