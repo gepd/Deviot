@@ -151,9 +151,6 @@ def get_sysetting(key, default=None):
 
     output = config.get(section, key)[0]
 
-    if(output == 'True' or output == 'False'):
-        output = True if output == 'True' else False
-
     return output
 
 
@@ -184,7 +181,12 @@ def get_setting(key, default=None):
     get setting handled by ST
     """
     settings = load_settings("deviot.sublime-settings")
-    return settings.get(key, default)
+    value = settings.get(key, default)
+
+    try:
+        return eval(value)
+    except(NameError, SyntaxError, TypeError) as e:
+        return value
 
 
 def save_setting(key, value=None, sys_options=False):
