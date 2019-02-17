@@ -7,7 +7,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from os import path
-from .tools import accepted_extensions
+from .tools import accepted_extensions, get_setting
 from ..libraries.readconfig import ReadConfig
 from ..platformio.project_recognition import ProjectRecognition
 from .quick_menu import QuickMenu
@@ -98,7 +98,9 @@ class ProjectCheck(QuickMenu):
             self.print("not_empty_sketch")
             return False
 
-        if("Deviot" in self.view.name()):
+        freeze = get_setting('freeze_sketch', None)
+
+        if("Deviot" in self.view.name() and not freeze):
             logger.debug("file not iot (terminal, other)")
             self.print("not_iot_{0}", "")
             return False
