@@ -311,6 +311,9 @@ class PreferencesBridge(PioBridge):
 
         current = config.get(environment, option_name)
 
+        if(not current):
+            current = []
+
         # get current value
         if(not wipe and config.has_option(environment, option_name)):
             self.init_option = config.get(environment, option_name)[0]

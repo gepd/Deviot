@@ -365,8 +365,12 @@ class ProjectCheck(QuickMenu):
             return ended
         
         flag = '--auth={0}'.format(auth_pass)
+        current = config.get(environment, 'upload_flags')
 
-        if(config.get(environment, 'upload_flags')[0] != flag):
+        if(current):
+            current = current[0]
+
+        if(current != flag):
             config.set(environment, 'upload_flags', flag)
             logger.debug("write auth ini")
             with open(ini_path, 'w') as configfile:

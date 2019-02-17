@@ -211,7 +211,7 @@ class QuickMenu(PreferencesBridge):
         """
         current = get_setting('upload_speed', "None")
         items = QuickMenu.baudrate_list()
-        self.index = items.index(current)
+        self.index = items.index(str(current))
 
         return items
 
