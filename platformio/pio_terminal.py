@@ -52,9 +52,10 @@ class PioTerminal(Command):
         Close the PlatformIO console including the bottom panel
         """
         if self.view is not None:
+            name = self.view.name()
             self.window.focus_view(self.view)
             self.window.run_command("close")
-            self.window.run_command('destroy_pane', {'direction': 'self'})
+            self.messages.session[name].on_close(self.view)
 
     def print_screen(self, text):
         """Print on screen

@@ -249,7 +249,7 @@ class Messages:
         word_wrap = {'setting': 'word_wrap'}
         options = {'direction': direction, 'give_focus': True}
 
-        window.run_command('deviot_create_pane', options)
+        window.run_command('deviot_create_pane', args=options)
 
         view = window.new_file()
         view.set_name(self._name)
@@ -266,7 +266,7 @@ class Messages:
             return
 
         if(check_empty_panel(self.window)):
-            self.window.run_command("destroy_pane", args={"direction": "self"})
+            self.window.run_command("deviot_destroy_pane", args={"direction": "self"})
             self.window = None
 
 

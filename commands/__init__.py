@@ -54,7 +54,8 @@ from .deviot_clean_console import DeviotCleanConsoleCommand
 from .deviot_reload import DeviotReloadCommand
 from .deviot_set_ip import DeviotSetIpCommand
 from .deviot_history import InputTextHistoryCommand
-from .min_origami import DeviotCreatePaneCommand
+from ..libraries.pane_management import DeviotCreatePaneCommand
+from ..libraries.pane_management import DeviotDestroyPaneCommand
 from ..beginning.check_requirements import DeviotCheckRequirementsCommand
 from ..beginning.update import DeviotCheckPioUpdatesCommand
 from ..beginning.update import DeviotUpdatePioCommand
@@ -123,6 +124,7 @@ __all__ = [
     'DeviotSetIpCommand',
     'InputTextHistoryCommand',
     'DeviotCreatePaneCommand',
+    'DeviotDestroyPaneCommand',
     'DeviotCheckRequirementsCommand',
     'DeviotCheckPioUpdatesCommand',
     'DeviotUpdatePioCommand',
