@@ -136,7 +136,12 @@ class SerialMonitor(object):
                 self.stop()
 
             if(buf_number > 0):
-                inp_text = self.serial.read(buf_number)
+                try:
+                    inp_text = self.serial.read(buf_number)
+                except pyserial.serialutil.SerialException:
+                    self.serial.close()
+                    break
+
                 length_in_text = len(inp_text)
                 inp_text = display_mode(inp_text, length_before)
 
