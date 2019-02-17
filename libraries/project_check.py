@@ -350,7 +350,7 @@ class ProjectCheck(QuickMenu):
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
 
-        if(auth == 'None'):
+        if(auth == None):
             if(not auth_pass):
                 if(config.has_option(environment, 'upload_flags')):
                     config.remove_option(environment, 'upload_flags')
