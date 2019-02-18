@@ -35,8 +35,6 @@ from ..api import deviot
 from .tools import findInOpendView, get_setting
 from .I18n import I18n
 
-global session
-
 session = {}
 close_panel = False
 viewer_name = 'Deviot Viewer'
@@ -266,7 +264,7 @@ class Messages:
             return
 
         if(check_empty_panel(self.window)):
-            self.window.run_command("deviot_destroy_pane", args={"direction": "self"})
+            close_panel(self.window)
             self.window = None
 
 
@@ -284,3 +282,6 @@ def check_empty_panel(window):
             window.focus_group(n)
             return True
     return False
+
+def close_panel(window):
+    window.run_command("deviot_destroy_pane", args={"direction": "self"})

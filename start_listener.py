@@ -13,7 +13,7 @@ from .commands import *
 
 try:
     from .api import deviot
-    from .libraries.tools import save_setting
+    from .libraries.tools import save_setting, findInOpendView
     from .libraries.preferences_bridge import PreferencesBridge
     from .libraries import messages
 except ImportError:
@@ -93,17 +93,16 @@ class DeviotListener(EventListener):
 
     def on_close(self, view):
         # close empty panel
-        try:
-            name = view.name()
-            messages.session[name].on_close(view)
-        except:
-            pass
+        name = view.name()
+        window, view = findInOpendView(name)
+
+        if(messages.check_empty_panel(window)):
+            messages.close_panel(window)
 
         # remove open used serials ports
         from .libraries import serial
 
-        window_name = view.name()
-        search_id = window_name.split(" | ")
+        search_id = name.split(" | ")
 
         if(len(search_id) > 1 and search_id[1] in serial.serials_in_use):
             from .libraries import status_color
