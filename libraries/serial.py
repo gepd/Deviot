@@ -65,6 +65,7 @@ class SerialMonitor(object):
         messages.create_panel(direction=direction, in_file=not output_console)
 
         self.dprint = messages.print
+    
         self.clean = messages.clean_view
 
     def is_running(self):
@@ -281,7 +282,7 @@ def get_serial_monitor(port_id):
     if(port_id in serials_in_use):
         serial_monitor = serial_monitor_dict.get(port_id, None)
 
-    if(not serial_monitor):
+    elif(not serial_monitor):
         serial_monitor = SerialMonitor(port_id)
 
     return serial_monitor
@@ -305,7 +306,7 @@ def toggle_serial_monitor(port_id):
         return
 
     if(not serial_monitor.is_running()):
-        status_color.set('success')
+        status_color.set('success', stop=True)
 
         serial_monitor.start_async()
 

@@ -35,9 +35,7 @@
 
 
 import sublime
-from glob import glob
-from errno import EEXIST
-from os import path, makedirs, remove as remove_file
+from os import path, makedirs
 
 # color definition
 # edit this var to remove or add your own colors
@@ -49,9 +47,10 @@ colors = {
 }
 
 theme_path = None
+stop_remove = False
 
 
-def set(status=False, timeout=0):
+def set(status=False, timeout=0, stop=False):
     """Set color in the status status
 
     Sets the given action as color in the status bar
@@ -62,8 +61,12 @@ def set(status=False, timeout=0):
         timeout {number} -- removes the status bar color after the given delay
                         in milliseconds. If not defined the color will keep
                         forever (default: {0})
+        stop {bool} -- this option will avoid to remove the status color if there
+                        is a timeout remove programmed
     """
+
     global theme_path
+    global stop_remove
 
     check_folder_paths()
 
@@ -78,6 +81,8 @@ def set(status=False, timeout=0):
     with open(theme_path, 'w') as file:
         file.write(resource)
 
+    stop_remove = stop
+
     if(timeout > 0):
         sublime.set_timeout_async(remove, timeout)
 
@@ -87,6 +92,12 @@ def remove(remove_path=None):
 
     Removes the file that overrides the theme status bar color
     """
+    global stop_remove
+
+    if(stop_remove):
+        stop_remove = False
+        return
+
     if(remove_path):
         from shutil import rmtree
         if(path.exists(remove_path)):
