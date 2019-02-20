@@ -284,4 +284,8 @@ def check_empty_panel(window):
     return False
 
 def close_panel(window):
+    close_panel = get_setting('auto_close_panel', True)
+    if(not close_panel):
+        return
+
     window.run_command("deviot_destroy_pane", args={"direction": "self"})

@@ -7,6 +7,9 @@
 	// possible values: 'self', 'left', 'right', 'up', 'down'
 	// change to self, to avoid create a new panel
 	"terminal_direction": "right",
+	// Automatically closes the group panel, if it's empty, after close the
+	// Serial Monitor or Terminal window
+	"auto_close_panel": true,
     // show compile errors just under the line on which they occur.
     "show_errors_inline": true
 }
