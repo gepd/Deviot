@@ -7,6 +7,12 @@
 	// possible values: 'self', 'left', 'right', 'up', 'down'
 	// change to self, to avoid create a new panel
 	"terminal_direction": "right",
+	// It forces to create the new window (monitor and terminal) in a specific
+	// group position. If the value is >= 2, it will always open the window
+	// in the second (or x group). If the value is greater than the current quantity
+	// of group panels, the window will be open in the last panel, avoiding to create
+	// a new one
+	"window_position": 1,
 	// Automatically closes the group panel, if it's empty, after close the
 	// Serial Monitor or Terminal window
 	"auto_close_panel": true,

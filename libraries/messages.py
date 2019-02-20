@@ -243,9 +243,21 @@ class Messages:
             obj -- Sublime Text view buffer
         """
         window = sublime.active_window()
+        window_position = get_setting('window_position', 1)
 
         word_wrap = {'setting': 'word_wrap'}
         options = {'direction': direction, 'give_focus': True}
+        
+        if(window_position >= 2):
+            count_groups = window.num_groups()
+            if(count_groups >= window_position):
+                group_position = window_position
+            else:
+                group_position = count_groups
+
+            options['direction'] = 'self'
+            window.focus_group(group_position - 1) # Remove one because it's an index
+
 
         window.run_command('deviot_create_pane', args=options)
 
