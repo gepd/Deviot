@@ -53,7 +53,7 @@ def version():
     """
     return the plugin version
     """
-    version = (2, 3, 0, '.dev11')
+    version = (2, 3, 0, '.dev12')
     v_format = ".".join([str(s) for s in version[:3]])
     if(len(version) > 3):
         v_format += version[3]
