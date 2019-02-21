@@ -23,10 +23,18 @@ def create_logger(name):
 
     logger = logging.getLogger(name)
     logger.addHandler(handler)
+
     return logger
 
 def set_logger_level(level='ERROR'):
     global logger
+
+    from ..libraries.tools import get_setting
+
+    setting_logger = get_setting('logger_level', None)
+
+    if(setting_logger):
+        level = setting_logger
 
     if(level == 'DEBUG'):
         level = logging.DEBUG
