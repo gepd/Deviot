@@ -8,9 +8,9 @@ class DeviotRemoveExtraLibraryFolderCommand(WindowCommand):
     """
 
     def run(self):
-        save_setting('extra_library', None)
+        save_setting('lib_extra_dirs', None)
         self.window.run_command('deviot_rebuild_syntax')
 
     def is_enabled(self):
-        extra = get_setting('extra_library', None)
+        extra = get_setting('lib_extra_dirs', None)
         return bool(extra)
