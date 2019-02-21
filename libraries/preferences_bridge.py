@@ -302,6 +302,8 @@ class PreferencesBridge(PioBridge):
         ini_path = self.get_ini_path()
         write_file = False
 
+        logger.debug("option %s", option)
+
         config = ReadConfig()
         config.read(ini_path)
 
