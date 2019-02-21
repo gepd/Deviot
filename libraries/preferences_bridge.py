@@ -331,15 +331,10 @@ class PreferencesBridge(PioBridge):
             logger.debug("write_file1 %s", write_file)
 
         # remove in case to be neccesary
-        if(wipe):
-            if(self.init_option and current != self.init_option):
-                config.set(environment, option_name, self.init_option)
-                write_file = True
-                logger.debug("write_file2 %s", write_file)
-            else:
-                config.remove_option(environment, option_name)
-                write_file = True
-                logger.debug("write_file3 %s", write_file)
+        if(wipe or (not option and self.init_option != option)):
+            config.remove_option(environment, option_name)
+            write_file = True
+            logger.debug("write_file2 %s", write_file)
 
         # save in file
         if(write_file):
