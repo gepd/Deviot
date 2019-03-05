@@ -36,6 +36,9 @@ class Compile(Initialize):
 
         self.add_option('lib_extra_dirs')
 
+        # check if there is a new speed to overwrite
+        self.add_option('upload_speed')
+
         # add src_dir option if it's neccesary
         self.override_src()
 
