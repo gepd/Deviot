@@ -2,6 +2,7 @@ from sublime_plugin import WindowCommand
 from ..platformio.project_recognition import ProjectRecognition
 from ..libraries.project_check import ProjectCheck
 
+
 class DeviotOpenIniFile(WindowCommand):
     def run(self):
         views = []
@@ -15,7 +16,7 @@ class DeviotOpenIniFile(WindowCommand):
 
     def is_enabled(self):
         from ..libraries.project_check import ProjectCheck
-        
+
         prj = ProjectCheck()
         iot = prj.is_iot()
         ini = prj.is_initialized()

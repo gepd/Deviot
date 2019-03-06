@@ -13,6 +13,7 @@ from ..platformio.command import Command
 from ..libraries.thread_progress import ThreadProgress
 from ..libraries.I18n import I18n
 
+
 class PioTerminal(Command):
 
     def __init__(self):
@@ -22,10 +23,10 @@ class PioTerminal(Command):
 
         self.translate = I18n().translate
         self.window, self.view = tools.findInOpendView(name)
-        
+
         header = self.check_header()
         direction = tools.get_setting('terminal_direction', 'right')
-        
+
         self.messages = Messages()
         self.messages.initial_text(header)
         self.messages.panel_name(name)
@@ -34,9 +35,9 @@ class PioTerminal(Command):
 
     def check_header(self):
         """Terminal eader
-        
+
         When the console is empty, it adds a string at the beginning
-        
+
         Returns:
             str -- header string
         """
@@ -48,7 +49,7 @@ class PioTerminal(Command):
 
     def close_terminal(self):
         """Close Terminal
-        
+
         Close the PlatformIO console including the bottom panel
         """
         if self.view is not None:
@@ -59,7 +60,7 @@ class PioTerminal(Command):
 
     def print_screen(self, text):
         """Print on screen
-        
+
         Print all the user interaction in the console (panel)
 
         Arguments:
@@ -69,7 +70,7 @@ class PioTerminal(Command):
 
     def show_input(self):
         """Show input
-        
+
         Shows an input to run the commands
         """
         self.window.focus_view(self.view)
@@ -78,10 +79,10 @@ class PioTerminal(Command):
 
     def nonblock_cmd(self, cmd):
         """New thread command
-        
+
         Runs the 'send_cmd' method in a new thread to avoid crashes
         and performance problems
-        
+
         Arguments:
             cmd {str} -- command to run
         """
@@ -91,17 +92,18 @@ class PioTerminal(Command):
 
     def cancel_input(self):
         """Cancel queue
-        
+
         Cancel the message queue when the input panel is cancel (esc key)
         """
 
     def send_cmd(self, cmd):
         """Process command
-        
-        Process the differents commands sended by the user. It first check if the command
-        is a deviot command (remove, create folder, list directory etc). If the command start
-        with 'pio' or 'platformio' executes the command otherwise display a "not found command"
-        
+
+        Process the differents commands sended by the user. It first check if
+        the command is a deviot command (remove, create folder, list directory
+        etc). If the command start with 'pio' or 'platformio' executes the
+        command otherwise display a "not found command"
+
         Arguments:
             cmd {str} -- command to execute
         """
@@ -109,7 +111,7 @@ class PioTerminal(Command):
             return
 
         self.dprint("\n$ {0} \n".format(cmd))
-        
+
         sleep(0.03)
 
         if(self.deviot_commands(cmd)):
@@ -127,16 +129,17 @@ class PioTerminal(Command):
 
     def deviot_commands(self, cmd):
         """Custom commands
-        
+
         Custom commands to interact for the system, it includes
         create and remove a folder, list directories, clear console
         view, and other. Use the command help to see the complete list
-        
+
         Arguments:
             cmd {str} -- command string
-        
+
         Returns:
-            bool -- True if was executed, false if the command wasn't recognised
+            bool -- True if was executed, false if the command wasn't
+            recognised
         """
         cmd_return = True
 
@@ -166,10 +169,9 @@ class PioTerminal(Command):
 
         return cmd_return
 
-
     def help_cmd(self):
         """List of cmomands
-        
+
         Shows a list of all commands availables and the description of each one
         """
         from ..libraries.I18n import I18n
@@ -177,7 +179,8 @@ class PioTerminal(Command):
         width = 15
 
         cmd_string = ["cwd", "cd", "ls", "mk", "rm", "clear", "pio --help"]
-        cmd_descript = ["cmd_cwd", "cmd_cd", "cmd_ls", "cmd_mk", "cmd_rm", "cmd_clear", "cmd_pio_help"]
+        cmd_descript = ["cmd_cwd", "cmd_cd", "cmd_ls",
+                        "cmd_mk", "cmd_rm", "cmd_clear", "cmd_pio_help"]
 
         for cmd, description in zip(cmd_string, cmd_descript):
             description = I18n().translate(description)
@@ -185,7 +188,7 @@ class PioTerminal(Command):
 
     def clear_cmd(self):
         """Clean view
-        
+
         Cleans the console view
         """
         self.window.focus_view(self.view)
@@ -198,7 +201,7 @@ class PioTerminal(Command):
 
     def show_cwd(self):
         """Currente directory
-        
+
         Prints the current working directory
         """
         cwd = os.getcwd()
@@ -206,9 +209,9 @@ class PioTerminal(Command):
 
     def set_cwd(self, path):
         """Set directory
-        
-        Sets the current working directory. 
-        
+
+        Sets the current working directory.
+
         Arguments:
             path {str} -- folder name (not full path)
         """
@@ -223,7 +226,7 @@ class PioTerminal(Command):
 
     def list_cwd(self):
         """List of files and directories
-        
+
         Shows the list of files and directories in the current working path
         """
         from glob import glob
@@ -234,9 +237,9 @@ class PioTerminal(Command):
 
     def mk_cwd(self, path):
         """Make folder
-        
+
         Creates a new folder in the current working path
-        
+
         Arguments:
             path {str} -- name of the folder to create (not full path)
         """
@@ -250,9 +253,9 @@ class PioTerminal(Command):
 
     def rm_cwd(self, path):
         """Remove folder
-        
+
         Removes the folder in the current working path
-        
+
         Arguments:
             path {str} -- folder name to remove (not full path)
         """

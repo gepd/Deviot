@@ -416,7 +416,7 @@ def get_library_list(example_list=False, platform="all"):
                 if(example_list):
                     examples_path = path.join(content, 'examples')
                     store_data = True if path.exists(examples_path) else False
-                    quick_list = sorted(quick_list, key = lambda x: (x[0], x[1]))
+                    quick_list = sorted(quick_list, key=lambda x: (x[0], x[1]))
 
                 if(store_data):
                     quick_list.append([caption, content])

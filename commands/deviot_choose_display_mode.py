@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.quick_menu import QuickMenu
 
+
 class DeviotChooseDisplayModeCommand(WindowCommand):
     """
     Stores the display mode option selected for the user and save it in

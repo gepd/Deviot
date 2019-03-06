@@ -36,7 +36,8 @@ class KeywordsFile(object):
         with open(self.path) as text:
             for line in text:
                 line = line.strip()
-                if line and not line.startswith('#') and not line.startswith('//'):
+                if(line and not line.startswith('#') and
+                   not line.startswith('//')):
                     word_list = line.split()
                     if len(word_list) > 3:
                         continue

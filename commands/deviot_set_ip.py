@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.tools import get_sysetting, save_setting
 
+
 class DeviotSetIpCommand(WindowCommand):
     """
     Stores the ip to use in OTA Upload

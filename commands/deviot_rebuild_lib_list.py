@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 
+
 class DeviotRebuildLibListCommand(WindowCommand):
     """
     Rebuilds the list of libraries file

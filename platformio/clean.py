@@ -15,6 +15,7 @@ from ..libraries.I18n import I18n
 
 _ = I18n
 
+
 class Clean(Initialize):
     def __init__(self):
         super(Clean, self).__init__()
@@ -26,7 +27,7 @@ class Clean(Initialize):
 
     def start_cleaning(self):
         """Cleaning
-        
+
         Starts the cleaning command. This command cleand the binary files
         in the .pioenvs folder (hidden in unix system)
         """
@@ -45,10 +46,9 @@ class Clean(Initialize):
         cmd = ['run', '-t', 'clean', '-e ', self.board_id]
         self.run_command(cmd)
 
-
     def nonblock_clean(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the start_cleaning method
         """
         from threading import Thread

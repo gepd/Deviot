@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.messages import Messages
 
+
 class DeviotShowConsoleCommand(WindowCommand):
     """
     Hide the deviot console

@@ -13,6 +13,7 @@ from ..libraries.readconfig import ReadConfig
 
 logger = deviot.create_logger('Deviot')
 
+
 class PreferencesBridge(PioBridge):
     # Flags to be used with last action feature
     COMPILE = 1
@@ -25,16 +26,16 @@ class PreferencesBridge(PioBridge):
 
     def save_selected_board(self, board_id):
         """Store Board
-        
+
         Stores the given board in the preferences file, if the board
         is already in the file, it will be removed
-        
+
         Arguments:
             board_id {str} -- id of the board ex. 'uno'
         """
         settings = get_setting('boards', [])
         save_flag = True
-        
+
         if(not settings):
             settings.append(board_id)
         else:
@@ -46,23 +47,23 @@ class PreferencesBridge(PioBridge):
                     self.remove_ini_environment(board_id)
                 except:
                     pass
-                
+
                 if(len(settings) > 0):
                     board_id = settings[-1]
                 else:
                     board_id = ''
 
         save_setting('boards', settings)
-        
+
         self.save_environment(board_id)
 
     def get_selected_boards(self):
         """Get Board/s
-        
+
         List of all boards in the project, the list includes
         the one selected in deviot, and the one initialized in the
         platformio.ini file, they're mixed and excluding the duplicates
-        
+
         Returns:
             list -- list of boards
         """
@@ -79,10 +80,10 @@ class PreferencesBridge(PioBridge):
 
     def save_environment(self, board_id):
         """Save Environment
-        
+
         Stores the environment/board selected to work with.
         This board will be used to compile the sketch
-        
+
         Arguments:
             board_id {str} -- id of the board ex. 'uno'
         """
@@ -90,9 +91,9 @@ class PreferencesBridge(PioBridge):
 
     def get_environment(self):
         """Get Environment
-        
+
         Get the environment selected for the project/file in the current view
-        
+
         Returns:
             str -- environment/board id ex. 'uno'
         """
@@ -102,9 +103,9 @@ class PreferencesBridge(PioBridge):
 
     def get_platform(self):
         """Get Platform
-        
+
         Gets the platform from the current selected environment (board)
-        
+
         Returns:
             str -- platform name
         """
@@ -122,9 +123,9 @@ class PreferencesBridge(PioBridge):
 
     def get_ports_list(self):
         """Ports List
-        
+
         Get the list of serial port and mdns services and return it
-        
+
         Returns:
             list -- serial ports / mdns services
         """
@@ -139,20 +140,21 @@ class PreferencesBridge(PioBridge):
 
     def get_serial_port(self):
         """Serial Port Selected
-        
+
         Get the serial port stored in the preferences file
-        
+
         Returns:
             str -- port id ex 'COM1'
         """
         port_id = get_setting('port_id', None)
-        
+
         return port_id
 
     def read_pio_preferences(self):
         """Reads data/preferences
-        
-        Reads the information stored in the platformio.ini file and load it in deviot
+
+        Reads the information stored in the platformio.ini file and
+        load it in deviot
         """
         ini_path = self.get_ini_path()
 
@@ -167,12 +169,12 @@ class PreferencesBridge(PioBridge):
             return
 
         programmer_list = {
-        'stk500v1': 'check',
-        'stk500v2': 'avrmkii',
-        'usbtiny': 'usbtiny',
-        'arduinoisp': 'arduinoisp',
-        'usbasp': 'usbasp',
-        'dapa': 'parallel'
+            'stk500v1': 'check',
+            'stk500v2': 'avrmkii',
+            'usbtiny': 'usbtiny',
+            'arduinoisp': 'arduinoisp',
+            'usbasp': 'usbasp',
+            'dapa': 'parallel'
         }
 
         if(config.has_option(environment, 'upload_protocol')):
@@ -189,14 +191,15 @@ class PreferencesBridge(PioBridge):
             option = False
         save_setting('programmer_id', option)
 
-
     def run_last_action(self):
         """Last Action
-        
-        If the user start to compile or upload the sketch and none board or port
-        is selected, the quick panel is displayed to select the corresponding option.
-        As the quick panel is a async method, the compilation or upload will not
-        continue. Before upload or compile a flag is stored to what run after the selection
+
+        If the user start to compile or upload the sketch and none board or
+        port is selected, the quick panel is displayed to select the
+        corresponding option.
+        As the quick panel is a async method, the compilation or upload will
+        not continue. Before upload or compile a flag is stored to what run
+        after the selection
         """
         from .tools import get_sysetting
         last_action = get_sysetting('last_action', None)
@@ -227,7 +230,6 @@ class PreferencesBridge(PioBridge):
         write_file = False
         ini_path = self.get_ini_path()
         programmer = get_setting('programmer_id', None)
-        
 
         # open platformio.ini and get the environment
         config = ReadConfig()
@@ -261,7 +263,7 @@ class PreferencesBridge(PioBridge):
                 config.set(environment, 'upload_protocol', 'arduinoisp')
             elif(programmer == 'usbasp'):
                 config.set(environment, 'upload_protocol', 'usbasp')
-                config.set(environment, 'upload_flags', '-Pusb') 
+                config.set(environment, 'upload_flags', '-Pusb')
             elif(programmer == 'parallel'):
                 config.set(environment, 'upload_protocol', 'dapa')
                 config.set(environment, 'upload_flags', '-F')
@@ -280,15 +282,15 @@ class PreferencesBridge(PioBridge):
 
     def add_option(self, option_name, wipe=False, append=False):
         """Add option
-        
+
         Adds the option `option_name` into platformio.ini. The value
         of this option will be get from the setting file
-        
+
         Arguments:
             option_name {str} -- name of the value
-        
+
         Keyword Arguments:
-            wipe {bool} -- when is true remove the option 
+            wipe {bool} -- when is true remove the option
                             from platformio.ini (default: {False})
             append {bool} -- when is true, when is true it appends
                             the given data
@@ -325,7 +327,7 @@ class PreferencesBridge(PioBridge):
         if(not wipe and option and option not in current):
             if(self.init_option and append):
                 option = self.init_option + ', ' + option
-            
+
             config.set(environment, option_name, option)
             write_file = True
             logger.debug("write_file1 %s", write_file)
@@ -344,10 +346,10 @@ class PreferencesBridge(PioBridge):
 
     def get_mdns_services(self):
         """mDNS services
-        
+
         Returns the list of instances found in the multicast dns
         (local network)
-        
+
         Returns:
             list -- device info
         """
@@ -360,7 +362,7 @@ class PreferencesBridge(PioBridge):
 
     def set_status_information(self):
         """Status bar Information
-        
+
         Show the board and serial port selected by the user
         """
         from .project_check import ProjectCheck

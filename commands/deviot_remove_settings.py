@@ -1,5 +1,6 @@
 from sublime_plugin import WindowCommand
 
+
 class DeviotRemoveSettingsCommand(WindowCommand):
     """
     Stores the autmatic scroll selected for the user and save it in

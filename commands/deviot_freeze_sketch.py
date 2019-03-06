@@ -2,6 +2,7 @@ from sublime import active_window
 from sublime_plugin import WindowCommand
 from ..libraries.tools import save_setting, get_setting
 
+
 class DeviotFreezeSketchCommand(WindowCommand):
     """
     Store the freeze directory
@@ -28,9 +29,9 @@ class DeviotFreezeSketchCommand(WindowCommand):
 
         self.setting_path = get_setting('freeze_sketch', None)
 
-        if(self.sketch_path.endswith('.ino') or 
-            self.sketch_path.endswith('.cpp') or
-            self.setting_path):
+        if(self.sketch_path.endswith('.ino') or
+                self.sketch_path.endswith('.cpp') or
+                self.setting_path):
             enabled = True
 
         return enabled

@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.tools import get_sysetting, save_setting
 
+
 class DeviotSetPasswordCommand(WindowCommand):
     """
     Stores the password to use in OTA Upload
@@ -18,5 +19,5 @@ class DeviotSetPasswordCommand(WindowCommand):
     def on_done(self, password):
         save_setting('auth_pass', password)
         # check this
-        #if(get_sysetting('last_action', None)):
-            #self.window.run_command("deviot_upload_sketch")
+        # if(get_sysetting('last_action', None)):
+        # self.window.run_command("deviot_upload_sketch")

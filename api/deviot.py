@@ -15,7 +15,7 @@ _cache = '.cache'
 _install_name = 'penv'
 _virtualenv_name = 'virtualenv'
 VIRTUALENV_URL = 'https://pypi.python.org/packages/source/v/' \
-                  'virtualenv/virtualenv-16.0.0.tar.gz'
+    'virtualenv/virtualenv-16.0.0.tar.gz'
 
 
 def create_logger(name):
@@ -25,6 +25,7 @@ def create_logger(name):
     logger.addHandler(handler)
 
     return logger
+
 
 def set_logger_level(level='ERROR'):
     global logger
@@ -48,6 +49,7 @@ def set_logger_level(level='ERROR'):
         level = logging.CRITICAL
 
     logger.setLevel(level)
+
 
 def version():
     """
@@ -597,8 +599,8 @@ def folder_explorer(pathstr=None, callback=None, key=None, plist=None, index=-2)
     Using the quick panel, this fuction allows the user to select a path, it
     will be always a folder.
 
-    When you give a path in the 'pathstr' argument, the explorer will be open it
-    in the given path. If you don't pass any path, the 'last_path' setting
+    When you give a path in the 'pathstr' argument, the explorer will be open
+    it in the given path. If you don't pass any path, the 'last_path' setting
     will be check to open the explorer in the last path used. If not path is
     found it will show the root path.
 

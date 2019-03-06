@@ -245,12 +245,12 @@ class Command(ProjectRecognition):
 
     def find_all_pio_errors(self, text):
         """Find PlatformIO errors
-        
+
         Extract all errors gived by PlatformIO
-        
+
         Arguments:
             text {str} -- line string with error
-        
+
         Returns:
             [tuple] -- (file_path, line_number, colum_number, error_text)
         """
@@ -258,14 +258,21 @@ class Command(ProjectRecognition):
 
         # substract error with regex
         if('error:' in text):
-            result = search("(.+):([0-9]+):([0-9]+):\s(.+)", text)
+            result = search('(.+):([0-9]+):([0-9]+):\s(.+)', text)
             if(result is not None):
                 file_path = result.group(1)
                 line_number = result.group(2)
                 column_number = result.group(3)
                 error_txt = result.group(4)
 
-                error.append([file_path, int(line_number), int(column_number), error_txt])
+                error.append(
+                    [
+                        file_path,
+                        int(line_number),
+                        int(column_number),
+                        error_txt
+                    ]
+                )
 
         return error
 
@@ -332,7 +339,7 @@ class Command(ProjectRecognition):
                         sublime.Region(pt, view.line(pt).b),
                         ('<body id=inline-error>' + stylesheet +
                             '<div class="content">'
-                            '<span class="error_box">error</span>' + 
+                            '<span class="error_box">error</span>' +
                             '<span class="message">' + html.escape(text, quote=False) + '</span>' +
                             '<a href=hide>' + chr(0x00D7) + '</a></div>' +
                             '</div></body>'),

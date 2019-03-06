@@ -38,6 +38,7 @@ from collections import OrderedDict
 
 ENCODING = 'latin-1'
 
+
 class ReadConfig(object):
     """Configuration file parser.
 
@@ -147,7 +148,7 @@ class ReadConfig(object):
             self._cur_sect = section
             self._sections.append(section)
             self._in_option = False
-    
+
     def _raw_options(self, line):
         """
         Extract the option(s)
@@ -178,7 +179,7 @@ class ReadConfig(object):
                 value = value.rstrip()
                 if(value and not value.startswith('=')):
                     self._data[section][option].append(value)
-    
+
     def bad_format(self):
         """
         Checks if the readed file is well formatted or not.
@@ -297,25 +298,26 @@ class ReadConfig(object):
         Write a representation of the configuration to the specified
         file object.
         """
-        new_data = '' # where file will be stored
+        new_data = ''  # where file will be stored
 
         for linedata in self._data:
             line = self._data[linedata]
- 
+
             if(type(line) is type(str())):
                 # comment(s)
                 if(line.startswith(ReadConfig.comment_prefixes)):
-                    new_data  += line + '\n'
+                    new_data += line + '\n'
                 # break line(s)
                 else:
                     new_data += '\n'
             else:
                 # header(s)
-                new_data  += '[{0}]\n'.format(linedata)
+                new_data += '[{0}]\n'.format(linedata)
 
                 # option(s) - value(s)
                 for key, values in line.items():
-                    comcount = [x for x in values if x.startswith(ReadConfig.comment_prefixes)]
+                    comcount = [x for x in values if x.startswith(
+                        ReadConfig.comment_prefixes)]
                     if(len(values) > 1):
                         values = "\n".join(values)
                         if(len(comcount) == 0):

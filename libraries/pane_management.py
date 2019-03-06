@@ -24,62 +24,73 @@
 # modified to work with this plugin
 
 from __future__ import division
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 
 XMIN, YMIN, XMAX, YMAX = list(range(4))
+
 
 def increment_if_greater_or_equal(x, threshold):
     if x >= threshold:
         return x+1
     return x
 
+
 def decrement_if_greater(x, threshold):
     if x > threshold:
         return x-1
     return x
 
+
 def pull_up_cells_after(cells, threshold):
-    return [    [x0,decrement_if_greater(y0, threshold),
-                x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
+    return [[x0, decrement_if_greater(y0, threshold),
+             x1, decrement_if_greater(y1, threshold)] for (x0, y0, x1, y1) in cells]
+
 
 def push_right_cells_after(cells, threshold):
-    return [    [increment_if_greater_or_equal(x0, threshold),y0,
-                increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+    return [[increment_if_greater_or_equal(x0, threshold), y0,
+             increment_if_greater_or_equal(x1, threshold), y1] for (x0, y0, x1, y1) in cells]
+
 
 def push_down_cells_after(cells, threshold):
-    return [    [x0,increment_if_greater_or_equal(y0, threshold),
-                x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
+    return [[x0, increment_if_greater_or_equal(y0, threshold),
+             x1, increment_if_greater_or_equal(y1, threshold)] for (x0, y0, x1, y1) in cells]
+
 
 def pull_left_cells_after(cells, threshold):
-    return [    [decrement_if_greater(x0, threshold),y0,
-                decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+    return [[decrement_if_greater(x0, threshold), y0,
+             decrement_if_greater(x1, threshold), y1] for (x0, y0, x1, y1) in cells]
+
 
 def fixed_set_layout(window, layout):
-    #A bug was introduced in Sublime Text 3, sometime before 3053, in that it
-    #changes the active group to 0 when the layout is changed. Annoying.
+    # A bug was introduced in Sublime Text 3, sometime before 3053, in that it
+    # changes the active group to 0 when the layout is changed. Annoying.
     active_group = window.active_group()
     window.set_layout(layout)
     num_groups = len(layout['cells'])
     window.focus_group(min(active_group, num_groups-1))
 
+
 def cells_adjacent_to_cell_in_direction(cells, cell, direction):
     fn = None
     if direction == "up":
-        fn = lambda orig, check: orig[YMIN] == check[YMAX]
+        def fn(orig, check): return orig[YMIN] == check[YMAX]
     elif direction == "right":
-        fn = lambda orig, check: orig[XMAX] == check[XMIN]
+        def fn(orig, check): return orig[XMAX] == check[XMIN]
     elif direction == "down":
-        fn = lambda orig, check: orig[YMAX] == check[YMIN]
+        def fn(orig, check): return orig[YMAX] == check[YMIN]
     elif direction == "left":
-        fn = lambda orig, check: orig[XMIN] == check[XMAX]
+        def fn(orig, check): return orig[XMIN] == check[XMAX]
 
     if fn:
         return [c for c in cells if fn(cell, c)]
     return None
 
+
 def opposite_direction(direction):
-    opposites = {"up":"down", "right":"left", "down":"up", "left":"right"}
+    opposites = {"up": "down", "right": "left", "down": "up", "left": "right"}
     return opposites[direction]
+
 
 class DeviotPaneCommand(sublime_plugin.WindowCommand):
     "Abstract base class for commands."
@@ -97,19 +108,20 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
     def adjacent_cell(self, direction):
         cells = self.get_cells()
         current_cell = cells[self.window.active_group()]
-        adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
+        adjacent_cells = cells_adjacent_to_cell_in_direction(
+            cells, current_cell, direction)
         rows, cols, _ = self.get_layout()
 
         if direction in ["left", "right"]:
             MIN, MAX, fields = YMIN, YMAX, rows
-        else: #up or down
+        else:  # up or down
             MIN, MAX, fields = XMIN, XMAX, cols
 
         cell_overlap = []
         for cell in adjacent_cells:
             start = max(fields[cell[MIN]], fields[current_cell[MIN]])
             end = min(fields[cell[MAX]], fields[current_cell[MAX]])
-            overlap = (end - start)# / (fields[cell[MAX]] - fields[cell[MIN]])
+            overlap = (end - start)  # / (fields[cell[MAX]] - fields[cell[MIN]])
             cell_overlap.append(overlap)
 
         if len(cell_overlap) != 0:
@@ -125,7 +137,6 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
             self.window.focus_group(new_group_index)
         elif create_new_if_necessary:
             self.create_pane(direction, True)
-
 
     def create_pane(self, direction, give_focus=False):
         window = self.window
@@ -163,8 +174,8 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
                 self.travel_to_pane(direction)
 
     def destroy_current_pane(self):
-        #Out of the four adjacent panes, one was split to create this pane.
-        #Find out which one, move to it, then destroy this pane.
+        # Out of the four adjacent panes, one was split to create this pane.
+        # Find out which one, move to it, then destroy this pane.
         cells = self.get_cells()
 
         current = cells[self.window.active_group()]
@@ -175,7 +186,7 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
         choices["left"] = self.adjacent_cell("left")
 
         target_dir = None
-        for dir,c in choices.items():
+        for dir, c in choices.items():
             if not c:
                 continue
             if dir in ["up", "down"]:
@@ -200,7 +211,8 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
         cell_to_remove = None
         current_cell = cells[current_group]
 
-        adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
+        adjacent_cells = cells_adjacent_to_cell_in_direction(
+            cells, current_cell, direction)
         if len(adjacent_cells) == 1:
             cell_to_remove = adjacent_cells[0]
 
@@ -217,25 +229,29 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
             cells.remove(cell_to_remove)
             if direction == "up":
                 rows.pop(cell_to_remove[YMAX])
-                adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "down")
+                adjacent_cells = cells_adjacent_to_cell_in_direction(
+                    cells, cell_to_remove, "down")
                 for cell in adjacent_cells:
                     cells[cells.index(cell)][YMIN] = cell_to_remove[YMIN]
                 cells = pull_up_cells_after(cells, cell_to_remove[YMAX])
             elif direction == "right":
                 cols.pop(cell_to_remove[XMIN])
-                adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "left")
+                adjacent_cells = cells_adjacent_to_cell_in_direction(
+                    cells, cell_to_remove, "left")
                 for cell in adjacent_cells:
                     cells[cells.index(cell)][XMAX] = cell_to_remove[XMAX]
                 cells = pull_left_cells_after(cells, cell_to_remove[XMIN])
             elif direction == "down":
                 rows.pop(cell_to_remove[YMIN])
-                adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "up")
+                adjacent_cells = cells_adjacent_to_cell_in_direction(
+                    cells, cell_to_remove, "up")
                 for cell in adjacent_cells:
                     cells[cells.index(cell)][YMAX] = cell_to_remove[YMAX]
                 cells = pull_up_cells_after(cells, cell_to_remove[YMIN])
             elif direction == "left":
                 cols.pop(cell_to_remove[XMAX])
-                adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "right")
+                adjacent_cells = cells_adjacent_to_cell_in_direction(
+                    cells, cell_to_remove, "right")
                 for cell in adjacent_cells:
                     cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
                 cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
@@ -262,9 +278,11 @@ class DeviotPaneCommand(sublime_plugin.WindowCommand):
         elif create_new_if_necessary:
             self.create_pane(direction, True)
 
+
 class DeviotCreatePaneCommand(DeviotPaneCommand):
     def run(self, direction, give_focus=False):
         self.create_pane(direction, give_focus)
+
 
 class DeviotDestroyPaneCommand(DeviotPaneCommand):
     def run(self, direction):

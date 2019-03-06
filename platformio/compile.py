@@ -12,6 +12,7 @@ from .initialize import Initialize
 from ..libraries.tools import save_sysetting
 from ..libraries.thread_progress import ThreadProgress
 
+
 class Compile(Initialize):
     def __init__(self):
         super(Compile, self).__init__()
@@ -20,15 +21,16 @@ class Compile(Initialize):
 
     def start_compilation(self):
         """Compilation
-        
+
         Starts the compilation command, it first checks if the file in the
-        current view is a .iot file and if a board (environment) has been selected
+        current view is a .iot file and if a board (environment) has been
+        selected
         """
         if(not self.check_main_requirements()):
             exit(0)
 
         save_sysetting('last_action', self.COMPILE)
-        
+
         self.add_board()
         if(not self.board_id):
             self.print("select_board_list")
@@ -49,7 +51,7 @@ class Compile(Initialize):
 
     def nonblock_compile(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the start_compilation method
         """
         from threading import Thread

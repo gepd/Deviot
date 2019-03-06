@@ -4,6 +4,7 @@ from sublime import run_command
 from ..api import deviot
 from ..libraries.tools import get_setting
 
+
 class DeviotOpenBuildFolderCommand(WindowCommand):
     """
     Show the PlatformIO web site.
@@ -15,5 +16,5 @@ class DeviotOpenBuildFolderCommand(WindowCommand):
         build_folder = get_setting('build_folder', None)
         if(not build_folder):
             build_folder = deviot.temp_path()
-        
+
         self.window.run_command('open_dir', {'dir': build_folder})

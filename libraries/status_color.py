@@ -61,8 +61,8 @@ def set(status=False, timeout=0, stop=False):
         timeout {number} -- removes the status bar color after the given delay
                         in milliseconds. If not defined the color will keep
                         forever (default: {0})
-        stop {bool} -- this option will avoid to remove the status color if there
-                        is a timeout remove programmed
+        stop {bool} -- this option will avoid to remove the status color if
+                        there is a timeout remove programmed
     """
 
     global theme_path

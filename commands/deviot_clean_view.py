@@ -1,6 +1,7 @@
 from sublime import Region
 from sublime_plugin import TextCommand
 
+
 class DeviotCleanViewCommand(TextCommand):
 
     def run(self, edit):

@@ -16,6 +16,7 @@ from ..api import deviot
 
 logger = deviot.create_logger('Deviot')
 
+
 class ProjectCheck(QuickMenu):
     """
     ProjectCheck handles the actions between sublime text and platformio.
@@ -24,20 +25,21 @@ class ProjectCheck(QuickMenu):
     command, for example if the current file has been saved, or if it's saved
     is in the src folder when the platformio sutrcture options is marked
     """
+
     def __init__(self):
         super(ProjectCheck, self).__init__()
         deviot.set_logger_level()
-        
+
         self.board_id = None
         self.port_id = None
         self.init_option = None
 
     def is_iot(self):
         """IOT
-        
+
         Checks if the file in the current view is in the list
         of the IOT types (accepted) or not
-        
+
         Returns:
             bool -- true if is in the list false if not
         """
@@ -50,9 +52,9 @@ class ProjectCheck(QuickMenu):
 
     def is_empty(self):
         """Empty File
-        
+
         Checks if the file is empty or not
-        
+
         Returns:
             bool -- true is if empty
         """
@@ -64,9 +66,9 @@ class ProjectCheck(QuickMenu):
 
     def is_unsaved(self):
         """Unsaved View
-        
+
         Check if the view has unsaved changes
-        
+
         Returns:
             bool -- True if it's unsaved
         """
@@ -74,9 +76,9 @@ class ProjectCheck(QuickMenu):
 
     def check_main_requirements(self):
         """Main Requirements
-        
+
         If a sketch has been never unsaved and it's not empty,
-        this method will save it with a randon name based in 
+        this method will save it with a randon name based in
         the time in the temp path. If the sketch is empty it
         will not allow the command (compile/uplaod/clean) to
         continue.
@@ -86,7 +88,7 @@ class ProjectCheck(QuickMenu):
 
         If the file has unsaved changes, it will save it before
         to process the file
-        
+
         Returns:
             bool -- False if any of the requirements fails.
         """
@@ -128,7 +130,7 @@ class ProjectCheck(QuickMenu):
 
     def check_unsaved_changes(self):
         """Check unsaved changes
-        
+
         Saves the changes if the view is dirty (with chages)
         """
 
@@ -137,7 +139,7 @@ class ProjectCheck(QuickMenu):
 
     def structurize_project(self):
         """Structure Files
-        
+
         If a project isn't initialized, it need to be checked
         if the open file is inside of the src folder, if it isn't
         the file need to be moved to the src folder
@@ -148,7 +150,7 @@ class ProjectCheck(QuickMenu):
             file_path = self.get_file_path()
 
             dst = add_folder_to_filepath(file_path, 'src')
-            
+
             if('src' not in file_path and not path.exists(dst)):
                 from shutil import move
                 from .tools import get_setting, save_setting
@@ -161,14 +163,15 @@ class ProjectCheck(QuickMenu):
 
     def override_src(self, wipe=False):
         """Adds src_dir
-        
-        When you don't want to keep the platformio file structure, you need to add
-        the 'src_dir' flag in the platformio.ini with the path of your sketch/project.
-        Here we add that option when platformio structure is not enabled
+
+        When you don't want to keep the platformio file structure, you need
+        to add the 'src_dir' flag in the platformio.ini with the path of your
+        sketch/project. Here we add that option when platformio structure is
+        not enabled
         """
         if(self.is_native()):
             return
-        
+
         logger.debug("==============")
         logger.debug("override_src")
         logger.debug("wipe %s", wipe)
@@ -216,14 +219,14 @@ class ProjectCheck(QuickMenu):
 
     def close_file(self):
         """Close File Window
-        
+
         Close the current focused windows in sublime text
         """
         self.window.run_command('close_file')
 
     def check_board_selected(self):
         """Checks Board Selection
-        
+
         If an environment is stored in the preferences file, it will
         be loaded in the board_id object, if not, it will show the
         quick panel to select the board
@@ -245,9 +248,9 @@ class ProjectCheck(QuickMenu):
 
     def check_port_selected(self):
         """Checks Serial Port Selection
-        
+
         If the serial port is stored in the preferences file, it will
-        be loaded in the port_id object, if not, it will show the 
+        be loaded in the port_id object, if not, it will show the
         quick panel to select the port
         """
         logger.debug("==============")
@@ -262,7 +265,7 @@ class ProjectCheck(QuickMenu):
             return
 
         ports_list = self.get_ports_list()
-        
+
         ini_path = self.get_ini_path()
         if(ini_path):
             config = ReadConfig()
@@ -273,8 +276,10 @@ class ProjectCheck(QuickMenu):
                 self.port_id = True
                 return
 
-        port_ready = [port[2] for port in ports_list if self.port_id == port[2]]
-        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id) if self.port_id else None
+        port_ready = [port[2]
+                      for port in ports_list if self.port_id == port[2]]
+        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$",
+                           self.port_id) if self.port_id else None
 
         if(not port_ready and ip_device is None):
             self.window.run_command('deviot_select_port')
@@ -282,7 +287,7 @@ class ProjectCheck(QuickMenu):
 
     def check_serial_monitor(self):
         """Check monitor serial
-        
+
         Checks if the monitor serial is currently running
         and close it.
 
@@ -304,10 +309,10 @@ class ProjectCheck(QuickMenu):
 
     def check_auth_ota(self):
         """Check auth
-        
+
         Checks if the selected port is a mdns service, and if it needs
         authentification to upload the sketch
-        
+
         Returns:
             bool -- None when not auth, false when none pass is stored
         """
@@ -324,7 +329,8 @@ class ProjectCheck(QuickMenu):
         if(not platform):
             return ended
 
-        ip_device = search(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
+        ip_device = search(
+            r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", self.port_id)
 
         if(platform and 'espressif' not in platform and ip_device is not None):
             return False
@@ -336,7 +342,7 @@ class ProjectCheck(QuickMenu):
         ini_path = self.get_ini_path()
         config = ReadConfig()
         config.read(ini_path)
-        
+
         ports_list = self.get_ports_list()
 
         for port in ports_list:
@@ -350,7 +356,7 @@ class ProjectCheck(QuickMenu):
         environment = 'env:{0}'.format(self.board_id)
         auth_pass = get_setting('auth_pass', None)
 
-        if(auth == None):
+        if(auth is None):
             if(not auth_pass):
                 if(config.has_option(environment, 'upload_flags')):
                     config.remove_option(environment, 'upload_flags')
@@ -365,7 +371,7 @@ class ProjectCheck(QuickMenu):
             self.window.run_command("deviot_set_password")
             save_sysetting('last_action', 3)
             return ended
-        
+
         flag = '--auth={0}'.format(auth_pass)
         current = config.get(environment, 'upload_flags')
 
@@ -414,15 +420,16 @@ class ProjectCheck(QuickMenu):
         self.window.run_command('close')
         self.view = self.window.open_file(fullpath)
 
+
 def add_folder_to_filepath(src_path, new_folder):
     """Add folder
-    
+
     Add a new folder at the end of the given specific path
-    
+
     Arguments:
         src_path {str} -- initial path including the filename
         new_folder {str} -- string to add after the last folder in the path
-    
+
     Returns:
         str -- file path with the new folder added
     """
@@ -430,5 +437,5 @@ def add_folder_to_filepath(src_path, new_folder):
     folder = path.dirname(src_path)
     file_name = path.basename(src_path)
     new_path = path.join(folder, new_folder, file_name)
-    
+
     return new_path

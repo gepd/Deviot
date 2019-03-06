@@ -247,7 +247,7 @@ class Messages:
 
         word_wrap = {'setting': 'word_wrap'}
         options = {'direction': direction, 'give_focus': True}
-        
+
         if(window_position >= 2):
             count_groups = window.num_groups()
             if(count_groups >= window_position):
@@ -256,8 +256,8 @@ class Messages:
                 group_position = count_groups
 
             options['direction'] = 'self'
-            window.focus_group(group_position - 1) # Remove one because it's an index
-
+            # Remove one because it's an index
+            window.focus_group(group_position - 1)
 
         window.run_command('deviot_create_pane', args=options)
 
@@ -294,6 +294,7 @@ def check_empty_panel(window):
             window.focus_group(n)
             return True
     return False
+
 
 def close_panel(window):
     close_panel = get_setting('auto_close_panel', True)

@@ -13,6 +13,7 @@ from ..libraries.messages import Messages
 
 logger = deviot.create_logger('Deviot')
 
+
 class Initialize(ProjectCheck):
     """
     Runs the init command to start working with a new board
@@ -24,6 +25,7 @@ class Initialize(ProjectCheck):
     The code will run in a new thread to avoid block the
     execution of the sublime text while platformio is working
     """
+
     def __init__(self):
         super(Initialize, self).__init__()
         deviot.set_logger_level()
@@ -38,14 +40,14 @@ class Initialize(ProjectCheck):
 
     def add_board(self):
         """New Board
-        
+
         Adds a new board to the environments of platformio
         this new board will be stored in the platformio.ini
         file and will be use with the plugin
-        
+
         Arguments:
             board_id {str} -- name of the board to initialize
-        
+
         Returns:
             bool -- true if the board was succefully intilized or if it
                     was already initialized, if there was an error, false
@@ -68,9 +70,9 @@ class Initialize(ProjectCheck):
 
     def nonblock_add_board(self):
         """New Thread Execution
-        
+
         Starts a new thread to run the add_board method
-        
+
         Arguments:
             board_id {str} -- id_of the board to initialize
         """
@@ -81,7 +83,7 @@ class Initialize(ProjectCheck):
 
     def after_complete(self):
         """At complete
-        
+
         This method will run functions after complete a compilation
         or upload an sketch. You should only put here a fuction or
         a method

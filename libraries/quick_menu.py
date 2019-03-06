@@ -47,14 +47,14 @@ class QuickMenu(PreferencesBridge):
 
     def callback_board(self, selected):
         """Board Callback
-        
+
         The quick panel returns the index of the option selected,
         this index is used to get the id of the board and the id
         is stored in the setting file.
 
         last_action is used to run the compilation or upload if was
         the action before call the list of boards
-        
+
         Arguments:
             selected {int} -- index of the selected board
         """
@@ -72,11 +72,11 @@ class QuickMenu(PreferencesBridge):
 
     def boards_list(self):
         """Boards List
-        
+
         PlatformIO returns a JSON list with all information of the boards,
         the quick panel requires a list with a different format. We will only
         show the name (caption), id and vendor.
-        
+
         Returns:
             list -- boards list
         """
@@ -104,9 +104,9 @@ class QuickMenu(PreferencesBridge):
             vendor = board['vendor']
 
             if(id in selected_boards):
-                start = '* ' 
+                start = '* '
             else:
-                start = ''               
+                start = ''
 
             caption = start + board['name']
             extra = "%s | %s" % (vendor, id)
@@ -116,12 +116,12 @@ class QuickMenu(PreferencesBridge):
 
     def callback_environment(self, selected):
         """Environment Callback
-        
+
         Callback to store the select environment
 
         last_action is used to run the compilation or upload if was
         the action before call the list of environments
-        
+
         Arguments:
             selected {int} -- option selected (index)
         """
@@ -179,16 +179,16 @@ class QuickMenu(PreferencesBridge):
         if(new_environments):
             for board in new_environments:
                 caption = board
-                vendor = self.translate('unknown') + " | {0}".format(board)
+                vendor = self.translate('unknown') + ' | {0}'.format(board)
                 environments_list.append([caption, vendor])
 
         return environments_list
 
     def callback_overwrite_baud(self, selected):
         """Baud rate callback
-        
+
         Stores the option selected in the preferences file
-        
+
         Arguments:
             selected {int} -- index of the selected baud rate
         """
@@ -200,16 +200,15 @@ class QuickMenu(PreferencesBridge):
 
         save_setting('upload_speed', selected)
 
-    
     def overwrite_baud_list(self):
         """Baud rate list
-        
+
         List of baud rates used to overwrite the upload speed
-        
+
         Returns:
             list -- list of baud rates
         """
-        current = get_setting('upload_speed', "None")
+        current = get_setting('upload_speed', 'None')
         items = QuickMenu.baudrate_list()
         self.index = items.index(str(current))
 
@@ -217,9 +216,9 @@ class QuickMenu(PreferencesBridge):
 
     def callback_serial_ports(self, selected):
         """Selected Port Callback
-        
+
         Stores the selected serial port in the preferences file
-        
+
         Arguments:
             selected {str} -- Port selected ex. 'COM1'
         """
@@ -234,7 +233,8 @@ class QuickMenu(PreferencesBridge):
         if(selected == 2):
             port_selected = "not"
         else:
-            if(self.quick_list[selected][2] == 'yes' or self.quick_list[selected][2] == 'no'):
+            if(self.quick_list[selected][2] == 'yes' or
+               self.quick_list[selected][2] == 'no'):
                 port_selected = self.quick_list[selected][1]
             else:
                 port_selected = self.quick_list[selected][2]
@@ -246,23 +246,25 @@ class QuickMenu(PreferencesBridge):
 
     def serial_list(self):
         """Serial Port List
-        
+
         Gets the list of serial ports and mdns services and
         return it
-        
+
         Returns:
             list -- available serial ports/mdns services
         """
         index = 2
-        header = self.translate("port_list").upper()
+        header = self.translate('port_list').upper()
         ports_list = self.get_ports_list()
-        ports_list.insert(0, [header, self.translate("select_port_list")])
-        ports_list.insert(1, [self.translate("menu_add_ip"), self.translate("add_ip_subtitle")])
-        ports_list.insert(2, [self.translate("menu_not_used_port"), self.translate("not_used_subtitle")])
-        current = get_setting('port_id', None)   
+        ports_list.insert(0, [header, self.translate('select_port_list')])
+        ports_list.insert(1, [self.translate('menu_add_ip'),
+                              self.translate('add_ip_subtitle')])
+        ports_list.insert(2, [self.translate('menu_not_used_port'),
+                              self.translate('not_used_subtitle')])
+        current = get_setting('port_id', None)
 
         if(len(ports_list) < 2):
-            ports_list = [self.translate("menu_no_serial_mdns").upper()]
+            ports_list = [self.translate('menu_no_serial_mdns').upper()]
 
         for port in ports_list[2:]:
             if(current in port):
@@ -273,9 +275,9 @@ class QuickMenu(PreferencesBridge):
 
     def language_list(self):
         """Language List
-        
+
         Builts the list with the available languages in Deviot
-        
+
         Returns:
             list -- English language / Language String list
         """
@@ -299,9 +301,9 @@ class QuickMenu(PreferencesBridge):
 
     def callback_language(self, selected):
         """Language Callback
-        
+
         Stores the user language selection
-        
+
         Arguments:
             selected {int} -- user selection
         """
@@ -309,20 +311,20 @@ class QuickMenu(PreferencesBridge):
             return
 
         from .top_menu import TopMenu
-        
+
         lang_ids = I18n().get_lang_ids()
         port_selected = lang_ids[selected]
-        
+
         save_setting('lang_id', port_selected)
         save_setting('compile_lang', True)
-        self.window.run_command("deviot_reload")
+        self.window.run_command('deviot_reload')
 
     def callback_import(self, selected):
         """Import Callback
-        
+
         After select the library it will be inserted by the insert_libary
         command, it will include the path of the library to includes
-        
+
         Arguments:
             selected {int} -- user index selection
         """
@@ -337,54 +339,58 @@ class QuickMenu(PreferencesBridge):
 
     def import_list(self):
         """Import List
-        
-        To generate the list of libraries, it search first in the two main folder of the plugin
-        the first one in '~/.platformio/packages', that folder contain the libraries includes by default
-        by each platform (avr, expressif, etc). The second folder is located in '~/platformio/lib' there
-        are stored all the libraries installed by the user from the management libraries
-        
+
+        To generate the list of libraries, it search first in the two main
+        folder of the plugin the first one in '~/.platformio/packages', that
+        folder contain the libraries includes by default by each platform
+        (avr, expressif, etc). The second folder is located in
+        '~/platformio/lib' there are stored all the libraries installed by the
+        user from the management libraries
+
         Returns:
             [list] -- quick panel list with libraries
         """
         from .libraries import get_library_list
 
         platform = self.get_platform()
-        platform = platform if(platform) else "all"
+        platform = platform if(platform) else 'all'
 
         quick_list = get_library_list(platform=platform)
-        quick_list.insert(0, [self.translate("select_library").upper()])
+        quick_list.insert(0, [self.translate('select_library').upper()])
 
         if(len(quick_list) <= 1):
-            quick_list = [[self.translate("menu_no_libraries")]]
+            quick_list = [[self.translate('menu_no_libraries')]]
 
         return quick_list
 
     def quick_libraries(self):
         """List of libraries
-        
+
         Show the list of libraries availables. The callback will show
         the list of examples.
         """
         from .libraries import get_library_list
-        
-        platform = self.get_platform()
-        platform = platform if(platform) else "all"
 
-        self.quick_list = get_library_list(example_list=True, platform=platform)
-        self.quick_list.insert(0, [self.translate("select_library").upper(), ""])
+        platform = self.get_platform()
+        platform = platform if(platform) else 'all'
+
+        self.quick_list = get_library_list(
+            example_list=True, platform=platform)
+        self.quick_list.insert(
+            0, [self.translate('select_library').upper(), ''])
 
         if(len(self.quick_list) <= 1):
-            self.quick_list = [[self.translate("menu_no_examples")]]
+            self.quick_list = [[self.translate('menu_no_examples')]]
 
         self.show_quick_panel(self.callback_library)
 
     def callback_library(self, selected):
         """Show Examples
-        
+
         After the previous selection of the library, here will be search
         all folders inside of the "example" folder and will be considerated
         an example to open
-        
+
         Arguments:
             selected {int} -- user index selection
         """
@@ -412,7 +418,7 @@ class QuickMenu(PreferencesBridge):
                 library_path = self.quick_list[selected][2]
             except IndexError:
                 library_path = self.quick_list[selected][1]
-        
+
             if('examples' not in library_path):
                 library_path = os.path.join(library_path, 'examples')
 
@@ -423,9 +429,9 @@ class QuickMenu(PreferencesBridge):
             self.index += 1
 
         library_path = os.path.join(library_path, '*')
-        
-        self.quick_list = [[self.translate("select_example").upper()]]
-        self.quick_list.append([self.translate("_previous").upper()])
+
+        self.quick_list = [[self.translate('select_example').upper()]]
+        self.quick_list.append([self.translate('_previous').upper()])
 
         for files in glob(library_path):
             caption = os.path.basename(files)
@@ -435,11 +441,11 @@ class QuickMenu(PreferencesBridge):
 
     def serial_baudrate_list(self):
         """Serial Baudrate
-        
+
         List of baud rates to use with the serial monitor.
         It check if there is already an option selected and
         set it in the index object.
-        
+
         Returns:
             [list] -- list of
         """
@@ -455,10 +461,10 @@ class QuickMenu(PreferencesBridge):
 
     def callback_serial_baudrate(self, selected):
         """Serial baud rate callback
-        
+
         callback to select the baud rate used in the serial
         monitor. The option is stored in the preferences file
-        
+
         Arguments:
             selected {int} -- index of the selected baud rate
         """
@@ -476,13 +482,13 @@ class QuickMenu(PreferencesBridge):
         List of ending string used in the monitor serial
         """
         items = [
-                ["None"],
-                ["New Line", "\n"],
-                ["Carriage Return", "\r"],
-                ["Both NL & CR", "\r\n"]
-                ]
+                ['None'],
+                ['New Line', '\n'],
+                ['Carriage Return', '\r'],
+                ['Both NL & CR', '\r\n']
+        ]
         current = get_setting('line_ending', None)
-        
+
         simplified = [i[1] for i in items if len(i) > 1]
         simplified.insert(0, None)
 
@@ -492,9 +498,9 @@ class QuickMenu(PreferencesBridge):
 
     def callback_line_endings(self, selected):
         """Callback line endings
-        
+
         Stores the line ending selected by the user
-        
+
         Arguments:
             selected {int} -- index user selection
         """
@@ -510,10 +516,10 @@ class QuickMenu(PreferencesBridge):
 
     def display_mode_list(self):
         """Display modes
-        
+
         List of display modes
         """
-        items = [["Text"],["ASCII"],["HEX"],["Mix"]]
+        items = [['Text'], ['ASCII'], ['HEX'], ['Mix']]
 
         current = get_setting('display_mode', 'Text')
         self.index = items.index([current])
@@ -522,9 +528,9 @@ class QuickMenu(PreferencesBridge):
 
     def callback_display_mode(self, selected):
         """Display mode callback
-        
+
         Stores the display mode selected by the user
-        
+
         Arguments:
             selected {int} -- index user selection
         """
@@ -541,24 +547,24 @@ class QuickMenu(PreferencesBridge):
         List of baud rates shown in the monitor serial and upload speed
         quick panels.
         """
-        baudrate_list = ["None",
-                         "1200",
-                         "1800",
-                         "2400",
-                         "4800",
-                         "9600",
-                         "19200",
-                         "38400",
-                         "57600",
-                         "74880",
-                         "115200",
-                         "230400",
-                         "460800",
-                         "500000",
-                         "576000",
-                         "921600",
-                         "1000000",
-                         "1152000"]
+        baudrate_list = ['None',
+                         '1200',
+                         '1800',
+                         '2400',
+                         '4800',
+                         '9600',
+                         '19200',
+                         '38400',
+                         '57600',
+                         '74880',
+                         '115200',
+                         '230400',
+                         '460800',
+                         '500000',
+                         '576000',
+                         '921600',
+                         '1000000',
+                         '1152000']
 
         return baudrate_list
 

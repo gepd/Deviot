@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.quick_menu import QuickMenu
 
+
 class DeviotChooseBaudrateCommand(WindowCommand):
     """
     Stores the baudrate selected for the user and save it in

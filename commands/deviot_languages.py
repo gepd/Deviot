@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.quick_menu import QuickMenu
 
+
 class DeviotLanguagesCommand(WindowCommand):
     def run(self):
         Quick = QuickMenu()
@@ -9,4 +10,3 @@ class DeviotLanguagesCommand(WindowCommand):
         Quick.set_list(items)
 
         Quick.show_quick_panel(callback)
-

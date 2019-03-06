@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from ..libraries.quick_menu import QuickMenu
 
+
 class DeviotChooseLineEndingCommand(WindowCommand):
     """
     Stores the line ending selected for the user and save it in

@@ -1,6 +1,7 @@
 from sublime_plugin import WindowCommand
 from sublime import run_command
 
+
 class DeviotPioAboutCommand(WindowCommand):
     """
     Show the PlatformIO web site.

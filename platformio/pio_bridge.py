@@ -13,6 +13,7 @@ from ..libraries.file import File
 from ..libraries.tools import get_setting
 from .command import Command
 
+
 class PioBridge(Command):
     def __init__(self):
         super(PioBridge, self).__init__()
@@ -21,7 +22,7 @@ class PioBridge(Command):
 
     def save_boards_list_async(self):
         """Save boards list async
-        
+
         Stores the board list file in a new thread to avoid
         block the Sublime Text UI
         """
@@ -38,9 +39,9 @@ class PioBridge(Command):
 
     def get_boards_list(self):
         """Board List
-        
+
         Get the json file with the list of boards and return it.
-        
+
         Returns:
             json -- list of boards
         """
@@ -53,13 +54,13 @@ class PioBridge(Command):
 
     def remove_ini_environment(self, board_id):
         """Remove Environment
-        
+
         Removes the environments from the platformio.ini file.
         It happens each time a environment/board is removed selecting it
         from the list of boards (Select Board). The behavior of this
         option is; if the board isn't in the configs, it will be added
         if not, removed.
-        
+
         Arguments:
             board_id {[type]} -- [description]
         """
@@ -80,7 +81,7 @@ class PioBridge(Command):
 
     def get_working_project_path(self):
         """Working Path
-        
+
         The working path is where platformio.ini is located
         it's used each time when deviot is compiling the code
 
@@ -104,15 +105,15 @@ class PioBridge(Command):
             ini_path = self.get_ini_path()
             working_path = os.path.dirname(ini_path)
             return working_path
-        
+
         return self.get_temp_project_path()
 
     def get_structure_option(self):
         """Pio Structure Option
-        
+
         Check if the platformio structure option is mark as
         true or not
-        
+
         Returns:
             bool -- true to keep working with platformio structure
         """

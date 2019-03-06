@@ -5,6 +5,7 @@ from .zeroconf import ServiceBrowser, ServiceStateChange, Zeroconf
 current_services = {}
 count_services = {}
 
+
 class MDNSBrowser:
     """
     Class for zeroconf multicast DNS service discovery of arduino (esp)
@@ -21,7 +22,7 @@ class MDNSBrowser:
 
     def start(self):
         """Start zeroconf
-        
+
         Starts to browsing in the arduino instance
         """
         try:
@@ -39,14 +40,14 @@ class MDNSBrowser:
     def on_service_state_change(self, zeroconf, service_type, name, state_change):
         """Service state change
 
-        Runs every time service in MDNS changes state(removed, added, modified).
+        Runs every time service in MDNS changes state(removed, added, modified)
         On service added, the device will be add to self. services
 
         The list will have the following format:
         [{
-            'address': 'ip string', 
-            'port': 'port string', 
-            'weight': 'weight string', 
+            'address': 'ip string',
+            'port': 'port string',
+            'weight': 'weight string',
             'priority': 'priority string'
             'board': 'board string',
             'ssh_upload' 'yes/no',
@@ -74,10 +75,10 @@ class MDNSBrowser:
 
     def service_check(self):
         """Check Services
-        
+
         Some times zeroconf can not see a device that was previously connected.
-        With the use of two global variables, it will stop to show a device only
-        if it is not found the number of time in the "threshold" variable.
+        With the use of two global variables, it will stop to show a device
+        only if it is not found the number of time in the "threshold" variable.
         """
         threshold = 8
 
@@ -97,9 +98,9 @@ class MDNSBrowser:
 
     def formated_list(self):
         """List of services
-        
+
         Returns only the neccessary data to work with the plugin
-        
+
         Returns:
             list -- board id and addres (ip)
         """

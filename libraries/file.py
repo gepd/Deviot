@@ -3,6 +3,7 @@
 import json
 import codecs
 
+
 class File(object):
 
     def __init__(self, file_name):
@@ -10,12 +11,12 @@ class File(object):
 
     def write(self, text):
         """Write File
-        
+
         Writes the content of text in the file set in self.file_name
-        
+
         Arguments:
             text {str} -- text to write
-        
+
         Returns:
             bool -- true if was writed succesuflly
         """
@@ -26,9 +27,9 @@ class File(object):
 
     def read(self):
         """Read File
-        
+
         returns the content of the file set in self.file_name
-        
+
         Returns:
             str -- string from file
         """
@@ -46,13 +47,13 @@ class File(object):
         """read JSON
         serialize the content of the file and transform it in
         a json format type
-        
+
         Returns:
             JSON -- serialized json data
         """
 
         file = self.read()
-        
+
         if(file):
             return json.loads(file)
 
@@ -60,9 +61,9 @@ class File(object):
 
     def save_json(self, text):
         """Save JSON
-        
+
         Stores JSON data in a file, before do it deserialize
-        
+
         Arguments:
             text {str} -- json data to stored
         """
