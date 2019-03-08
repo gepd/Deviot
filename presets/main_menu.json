@@ -65,6 +65,12 @@
             },
             {"caption": "-"},
             {
+                "caption": "menu_stop_processing",
+                "id": "stop_processing",
+                "command": "deviot_stop_processing"
+            },
+            {"caption": "-"},
+            {
                 "caption": "menu_search_lib",
                 "id": "search_library",
                 "command": "deviot_search_library"

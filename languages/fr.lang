@@ -129,6 +129,9 @@ msgstr "Chargement"
 msgid "menu_clean"
 msgstr "Nettoyage"
 
+msgid "menu_stop_processing"
+msgstr "Stop Processing"
+
 msgid "menu_compile_options"
 msgstr "Options de Compilation/Chargement"
 
