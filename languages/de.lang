@@ -129,6 +129,9 @@ msgstr "Hochladen"
 msgid "menu_clean"
 msgstr "Sketch bereinigen"
 
+msgid "menu_stop_processing"
+msgstr "Stop Processing"
+
 msgid "menu_compile_options"
 msgstr "Compile/Upload Options"
 
