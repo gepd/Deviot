@@ -1,4 +1,4 @@
-# This file is part of the uPiot project, https://github.com/gepd/upiot/
+# This file is part of the deviot project, https://github.com/gepd/deviot/
 #
 # MIT License
 #
