@@ -141,6 +141,7 @@ class SerialMonitor(object):
                     inp_text = self.serial.read(buf_number)
                 except pyserial.serialutil.SerialException:
                     self.serial.close()
+                    toggle_serial_monitor(self.port)
                     break
 
                 length_in_text = len(inp_text)
