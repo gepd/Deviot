@@ -58,9 +58,6 @@
         "keys": ["alt+d", "alt+e"], 
         "command": "deviot_upload_sketch"
     },{
-        "keys": ["alt+d", "alt+d"], 
-        "command": "deviot_stop_processing"
-    },{
         "keys": ["alt+o", "alt+s"], 
         "command": "deviot_overwrite_upload_baud"
     },{

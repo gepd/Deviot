@@ -26,11 +26,11 @@ import os
 import time
 import html
 import threading
-import subprocess
 import sublime
 
 from re import findall, search
 from sys import platform
+from subprocess import Popen, PIPE
 from functools import partial
 from collections import deque
 
@@ -50,22 +50,23 @@ class AsyncProcess(object):
         self.killed = False
         self.start_time = time.time()
 
-        self.proc = subprocess.Popen(
+        self.proc = Popen(
             cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            shell=True
-        )
+            stdout=PIPE,
+            stderr=PIPE,
+            stdin=PIPE,
+            shell=True)
 
         if(self.proc.stdout):
             th1 = threading.Thread(target=self.read_stdout)
             th1.start()
+            th1.join()
             ThreadProgress(th1, '', '')
 
         if(self.proc.stderr):
             th2 = threading.Thread(target=self.read_stderr)
             th2.start()
+            th2.join()
 
     def kill(self):
         """Kill process
@@ -82,8 +83,6 @@ class AsyncProcess(object):
             else:
                 self.proc.terminate()
             self.listener = None
-            # clear deque
-            _COMMAND_QUEUE.clear()
 
     def poll(self):
         return self.proc.poll() is None
@@ -145,19 +144,7 @@ class Command(ProjectRecognition):
         self._extra_name = extra_name
         self._txt = messages
 
-    def run(
-        self,
-        cmd=None,
-        kill=False,
-        word_wrap=True,
-        in_file=False,
-        cwd="",
-        output_callback=None
-    ):
-
-        if(output_callback):
-            self._callback = output_callback
-
+    def run_command(self, cmd, kill=False, word_wrap=True, in_file=False):
         self.errs_by_file = {}
         self.window = sublime.active_window()
 
@@ -171,13 +158,9 @@ class Command(ProjectRecognition):
 
         # kill the process
         if(kill):
-            try:
+            if(self.proc):
                 self.proc.kill()
                 self.proc = None
-                self._txt.print("\n[Processing canceled]")
-                _BUSY = False
-            except AttributeError:
-                pass
             return
 
         if(_BUSY):
@@ -188,7 +171,7 @@ class Command(ProjectRecognition):
             try:
                 self._txt = messages.Messages(self._extra_name)
                 self._txt.create_panel(in_file=in_file)
-            except AttributeError:
+            except:
                 pass
 
         self.encoding = 'utf-8'
@@ -198,28 +181,25 @@ class Command(ProjectRecognition):
         verbose = get_setting('verbose_output', False)
         cmd = prepare_command(cmd, verbose)
 
-        # Default the to the current files directory
-        # if no working directory was given
-        if(cwd == "" and self.window.active_view() and
-           self.window.active_view().file_name()):
-            cwd = os.path.dirname(self.window.active_view().file_name())
-
-        if(cwd):
-            os.chdir(cwd)
+        if(self.cwd):
+            os.chdir(self.cwd)
 
         try:
             _BUSY = True
             self.proc = AsyncProcess(cmd, self)
-        except Exception:
+        except Exception as e:
             pass
 
-    def is_running(self):
-        return _BUSY
+    def exit_code(self):
+        return self.proc.exit_code()
+
+    def get_output(self):
+        return self._output
 
     def _on_data(self, data):
         try:
             characters = data.decode(self.encoding)
-        except LookupError:
+        except:
             characters = "[Decode error - output not " + self.encoding + "]\n"
 
         # if there is not printer, store the data
@@ -233,10 +213,7 @@ class Command(ProjectRecognition):
         # Normalize newlines, Sublime Text always uses a single \n separator
         # in memory.
         characters = characters.replace('\r\n', '\n').replace('\r', '\n')
-        try:
-            self._txt.print(characters)
-        except AttributeError:
-            print(characters)
+        self._txt.print(characters)
 
         if(self.show_errors_inline):
             # errors inline
@@ -258,22 +235,13 @@ class Command(ProjectRecognition):
 
         if(self._txt):
             end_time = time.strftime('%c')
-            try:
-                self._txt.print("\n[{0}]", end_time)
-            except AttributeError:
-                pass
+            self._txt.print("\n[{0}]", end_time)
 
         # run next command in the deque
         run_next()
 
     def _on_finished(self, proc):
         sublime.set_timeout(partial(self._finish, proc), 0)
-
-        try:
-            exit_code = self.proc.exit_code()
-            self._callback(self._output, exit_code)
-        except AttributeError:
-            pass
 
     def find_all_pio_errors(self, text):
         """Find PlatformIO errors

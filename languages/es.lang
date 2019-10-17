@@ -129,9 +129,6 @@ msgstr "Cargar"
 msgid "menu_clean"
 msgstr "Limpiar"
 
-msgid "menu_stop_processing"
-msgstr "Interrumpir Procesamiento"
-
 msgid "menu_compile_options"
 msgstr "Opciones de Carga/Compilación"
 

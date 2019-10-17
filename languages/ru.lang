@@ -129,9 +129,6 @@ msgstr "Очистить папку ".pioenvs" "
 msgid "menu_compile_options"
 msgstr "Параметры Сборки/Загрузки"
 
-msgid "menu_stop_processing"
-msgstr "Stop Processing"
-
 msgid "menu_overwrite_upload_baud"
 msgstr "Установить Скорость Загрузки"
 

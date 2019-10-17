@@ -129,9 +129,6 @@ msgstr "Carica"
 msgid "menu_clean"
 msgstr "Pulisci"
 
-msgid "menu_stop_processing"
-msgstr "Stop Processing"
-
 msgid "menu_compile_options"
 msgstr "Compile/Upload Options"
 

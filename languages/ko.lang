@@ -129,9 +129,6 @@ msgstr "업로드"
 msgid "menu_clean"
 msgstr "클린"
 
-msgid "menu_stop_processing"
-msgstr "Stop Processing"
-
 msgid "menu_compile_options"
 msgstr "옵션 빌드/업로드"
 

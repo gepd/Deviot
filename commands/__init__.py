@@ -11,11 +11,10 @@ from .deviot_open_library_folder import DeviotOpenLibraryFolderCommand
 from .deviot_rebuild_lib_list import DeviotRebuildLibListCommand
 from .deviot_extra_library_folder import DeviotExtraLibraryFolderCommand
 from .deviot_remove_extra_library_folder import DeviotRemoveExtraLibraryFolderCommand
-from .deviot_platformio import DeviotCompileSketchCommand
-from .deviot_platformio import DeviotUploadSketchCommand
-from .deviot_platformio import DeviotCleanSketchCommand
-from .deviot_platformio import DeviotStopProcessingCommand
+from .deviot_compile_sketch import DeviotCompileSketchCommand
+from .deviot_upload_sketch import DeviotUploadSketchCommand
 from .deviot_overwrite_upload_baud import DeviotOverwriteUploadBaudCommand
+from .deviot_clean_sketch import DeviotCleanSketchCommand
 from .deviot_freeze_sketch import DeviotFreezeSketchCommand
 from .deviot_pio_untouch import DeviotPioUntouchCommand
 from .deviot_open_ini_file import DeviotOpenIniFile
@@ -83,7 +82,6 @@ __all__ = [
     'DeviotRemoveExtraLibraryFolderCommand',
     'DeviotCompileSketchCommand',
     'DeviotUploadSketchCommand',
-    'DeviotStopProcessingCommand',
     'DeviotOverwriteUploadBaudCommand',
     'DeviotCleanSketchCommand',
     'DeviotFreezeSketchCommand',

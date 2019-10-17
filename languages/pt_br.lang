@@ -130,9 +130,6 @@ msgstr "Enviar"
 msgid "menu_clean"
 msgstr "Limpar"
 
-msgid "menu_stop_processing"
-msgstr "Parar o processamento"
-
 msgid "menu_compile_options"
 msgstr "Opções de Compilação/Envio"
 

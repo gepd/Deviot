@@ -24,11 +24,8 @@ from ..platformio.command import Command
 from .thread_progress import ThreadProgress
 from .tools import get_headers, get_setting, save_setting
 
-# run commands
-cmd = Command()
 
-
-class Libraries:
+class Libraries(Command):
     """
     Handle the library API from platformIO
     More info: http://docs.platformio.org/en/latest/librarymanager/index.html
@@ -55,8 +52,8 @@ class Libraries:
         messages = Messages()
         messages.initial_text("deviot_library{0}", deviot.version())
         messages.create_panel()
+        self.init(messages=messages)
 
-        cmd.init(messages=messages)
         self.dprint = messages.print
 
     def search_library(self):
@@ -181,22 +178,16 @@ class Libraries:
         lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
-        def callback(output, exit_code):
-            if(exit_code != 0):
-                return
+        self.set_queue()
+        self.run_command(['lib', '--global', 'install', str(lib_id)])
 
+        if(self.exit_code() == 0):
             from .syntax import Syntax
             quick_list = File(self.lib_file_path).read_json()
             quick_list.append(self.quick_list[selected])
 
             File(self.lib_file_path).save_json(quick_list)
             Syntax()
-
-        self.set_queue()
-        cmd.run(
-            ['lib', '--global', 'install', str(lib_id)],
-            output_callback=callback
-        )
 
     def update_library_async(self, selected):
         """Update
@@ -224,7 +215,7 @@ class Libraries:
         lib_name = self.quick_list[selected][0]
 
         self.set_queue()
-        cmd.run(['lib', '--global', 'update', str(lib_id)])
+        self.run_command(['lib', '--global', 'update', str(lib_id)])
 
     def get_installed_list(self, type):
         """Install libraries list
@@ -276,22 +267,16 @@ class Libraries:
         lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
-        def callback(output, exit_code):
-            if(exit_code != 0):
-                return
+        self.set_queue()
+        self.run_command(['lib', '--global', 'uninstall', str(lib_id)])
 
+        if(self.exit_code() == 0):
             from .syntax import Syntax
             self.quick_list.remove(self.quick_list[selected])
             self.quick_list.pop(0)
 
             File(self.lib_file_path).save_json(self.quick_list)
             Syntax()
-
-        self.set_queue()
-        cmd.run(
-            ['lib', '--global', 'uninstall', str(lib_id)],
-            output_callback=callback
-        )
 
     def save_installed_list_async(self):
         """Save in thread
@@ -316,19 +301,16 @@ class Libraries:
         self.set_return = True
         self.realtime = False
 
-        def callback(output):
-            out = loads(output)
+        self.run_command(['lib', '--global', 'list', '--json-output'])
 
-            self.quicked(out)
+        out = self.get_output()
+        out = loads(out)
 
-            File(self.lib_file_path).save_json(self.quick_list)
-            from .syntax import Syntax
-            Syntax()
+        self.quicked(out)
 
-        cmd.run(
-            ['lib', '--global', 'list', '--json-output'],
-            output_callback=callback
-        )
+        File(self.lib_file_path).save_json(self.quick_list)
+        from .syntax import Syntax
+        Syntax()
 
 
 def get_library_folders(platform='all'):
