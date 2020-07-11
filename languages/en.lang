@@ -306,6 +306,12 @@ msgstr "Select a Port From The List"
 msgid "ota_error_platform"
 msgstr "OTA Upload is only available for Espressif (ESP8266) platform. Select other serial port or change the current environment"
 
+msgid "library_page_previous_{0}"
+msgstr "<< {0} Previous Page"
+
+msgid "library_page_next_{0}"
+msgstr "Next Page {0} >>"
+
 msgid "select_library"
 msgstr "Select a Library"
 

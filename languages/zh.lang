@@ -309,6 +309,12 @@ msgstr "在线上传只支持 Espressif (ESP8266) 平台, 选择其他串口或�
 msgid "select_library"
 msgstr "选择库"
 
+msgid "library_page_previous_{0}"
+msgstr "<< {0} Previous Page"
+
+msgid "library_page_next_{0}"
+msgstr "Next Page {0} >>"
+
 msgid "select_example"
 msgstr "选择示例"
 

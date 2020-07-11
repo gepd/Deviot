@@ -309,6 +309,12 @@ msgstr "Gli aggiornamenti OTA sono al momento disponibili solo per piattaforme E
 msgid "select_library"
 msgstr "Scegli una Libreria"
 
+msgid "library_page_previous_{0}"
+msgstr "<< {0} Previous Page"
+
+msgid "library_page_next_{0}"
+msgstr "Next Page {0} >>"
+
 msgid "select_example"
 msgstr "Scegli un Esempio"
 
