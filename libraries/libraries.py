@@ -93,7 +93,7 @@ class Libraries(Command):
         request['query'] = keyword
         query = urlencode(request)
 
-        url = 'http://api.platformio.org/lib/search?{0}*'.format(query)
+        url = 'http://api.platformio.org/lib/search?{0}'.format(query)
         req = Request(url, headers=get_headers())
 
         response = urlopen(req)
