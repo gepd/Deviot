@@ -260,19 +260,6 @@ class PioInstall(object):
         if(self.version and int(self.version[0]) is 3):
             self.check_sym_link()
 
-        # show error and link to download
-        if(out[0] > 0 or int(self.version[0]) is 3):
-            from ..libraries.I18n import I18n
-            _ = I18n().translate
-            go_to = sublime.ok_cancel_dialog(
-                _("deviot_need_python"), _("button_download_python"))
-
-            if(go_to):
-                sublime.run_command(
-                    'open_url', {'url': 'https://www.python.org/downloads/'})
-            
-            exit(0)
-
 
 def beginning_check():
     """Beginning check
@@ -395,7 +382,7 @@ def get_default_paths():
         list -- paths corresponding to the os
     """
     if(sublime.platform() == 'windows'):
-        default_path = ["C:\\Python27\\", "C:\\Python27\\Scripts"]
+        default_path = ["C:\\Python27\\", "C:\\Python27\\Scripts", "C:\\Python38","C:\\Python38\\Scripts"]
     else:
         user_bin_path = path.join(path.expanduser('~'), '.local', 'bin')
         default_path = ["/usr/bin", "/usr/local/bin", user_bin_path]
