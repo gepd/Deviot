@@ -107,7 +107,7 @@ class Libraries(Command):
 
                 request['page'] = page
                 query = urlencode(request)
-                req = Request(url + query, headers=get_headers())
+                req = Request(url, headers=get_headers())
 
                 response = urlopen(req)
                 page_next = loads(response.read().decode())
