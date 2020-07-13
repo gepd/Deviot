@@ -321,6 +321,12 @@ msgstr "OTA Upload jest dostępny tylko dla platform Espressif (ESP8266)"
 msgid "select_library"
 msgstr "Wybierz Bibliotekę"
 
+msgid "library_page_previous_{0}"
+msgstr "<< {0} Previous Page"
+
+msgid "library_page_next_{0}"
+msgstr "Next Page {0} >>"
+
 msgid "select_example"
 msgstr "Wybierz Przykład"
 

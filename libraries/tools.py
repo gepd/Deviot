@@ -77,7 +77,7 @@ def get_headers():
     headers for urllib request
     """
 
-    user_agent = 'Deviot/%s (Sublime-Text/%s)' % (deviot.version(), version())
+    user_agent = 'Deviot-IDE/%s (Sublime-Text/%s)' % (deviot.version(), version())
     headers = {'User-Agent': user_agent}
     return headers
 

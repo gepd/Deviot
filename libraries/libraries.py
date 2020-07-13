@@ -39,6 +39,8 @@ class Libraries(Command):
         self.view = self.window.active_view()
         self.lib_file_path = deviot.libraries_data_path()
         self.quick_list = []
+        self.page = 1
+        self.keyword = ""
         self.cwd = None
 
         self.dprint = None
@@ -74,11 +76,13 @@ class Libraries(Command):
         Arguments:
             keyword {str} -- keyword to be search
         """
-        thread = Thread(target=self.download_list, args=(keyword,))
+        self.keyword = keyword
+        
+        thread = Thread(target=self.download_list)
         thread.start()
         ThreadProgress(thread, self.translate('searching'), '')
 
-    def download_list(self, keyword):
+    def download_list(self):
         """PlatformIO API
 
         Search a library in the platformio API api.platformio.org.
@@ -90,7 +94,8 @@ class Libraries(Command):
                 Keyword to search the library in the platformio API
         """
         request = {}
-        request['query'] = keyword
+        request['query'] = self.keyword
+        request['page'] = self.page
         query = urlencode(request)
 
         url = 'http://api.platformio.org/lib/search?{0}'.format(query)
@@ -99,28 +104,24 @@ class Libraries(Command):
         response = urlopen(req)
         response_list = loads(response.read().decode())
 
-        nloop = response_list['total'] / response_list['perpage']
-        if(nloop > 1):
-
-            nloop = int(nloop) + 1 if nloop > int(nloop) else int(nloop)
-            for page in range(2, nloop + 1):
-
-                request['page'] = page
-                query = urlencode(request)
-                req = Request(url, headers=get_headers())
-
-                response = urlopen(req)
-                page_next = loads(response.read().decode())
-                for item_next in page_next['items']:
-                    response_list['items'].append(item_next)
+        pages = response_list['total'] / response_list['perpage']
+        page_previous = self.page - 1
+        page_next = self.page + 1
 
         if(len(response_list['items']) == 0):
             self.quick_list.append([self.translate('none_lib_found')])
         else:
             self.quicked(response_list['items'])
-            self.quick_list.insert(
-                0, [self.translate('select_library').upper(), ''])
+            self.quick_list.insert(0, [self.translate('select_library').upper()])
+            
+            if(self.page > 1):
+                caption = self.translate("library_page_previous_{0}", page_previous)
+                self.quick_list.insert(1, [caption, page_previous])
 
+            if(self.page < pages):
+                caption = self.translate("library_page_next_{0}", page_next)
+                self.quick_list.insert(len(self.quick_list), [caption, page_next])
+        
         quick_panel(self.quick_list, self.library_install_async)
 
     def quicked(self, source_list):
@@ -175,6 +176,19 @@ class Libraries(Command):
         Arguments:
             selected {int} -- user selection index
         """
+
+        if(selected <= 0):
+            return
+
+        try:
+            list_selection = self.quick_list[selected]
+            page = int(list_selection[1])
+            self.page = page
+            self.download_list_async(self.keyword)
+            return
+        except:
+            pass
+
         lib_id = self.quick_list[selected][2]
         lib_name = self.quick_list[selected][0]
 
@@ -262,13 +276,10 @@ class Libraries(Command):
         Arguments:
             selected {int} -- user selection index.
         """
-        response_list = self.quick_list
-
-        lib_id = self.quick_list[selected][2]
-        lib_name = self.quick_list[selected][0]
+        lib_name = self.quick_list[selected][0].split(" | ")[0]
 
         self.set_queue()
-        self.run_command(['lib', '--global', 'uninstall', str(lib_id)])
+        self.run_command(['lib', '--global', 'uninstall', str(lib_name)])
 
         if(self.exit_code() == 0):
             from .syntax import Syntax

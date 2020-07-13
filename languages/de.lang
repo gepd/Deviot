@@ -324,6 +324,12 @@ msgstr "Hochladen per OTA ist nur Espressif (ESP8266) Plattform. Wählen Sie ein
 msgid "select_library"
 msgstr "Bibliothek auswählen"
 
+msgid "library_page_previous_{0}"
+msgstr "<< {0} Previous Page"
+
+msgid "library_page_next_{0}"
+msgstr "Next Page {0} >>"
+
 msgid "select_example"
 msgstr "Beispiel auswählen"
 
