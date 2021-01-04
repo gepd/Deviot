@@ -13,7 +13,7 @@
 
 <p align="center">
     <img src="https://github.com/gepd/Deviot/blob/master/docs/deviot_2.png?raw=true">
-    <p align="center" style="font-size: 9pt">Sublime theme used: <a href="https://github.com/ihodev/sublime-boxy">Boxy</p>
+    <p align="center" style="font-size: 9pt">Sublime theme used: <a href="https://github.com/bofm/sublime-boxy-theme">Boxy</a></p>
 </p>
 
 **Deviot** is a plugin inspired in [stino](https://github.com/Robot-Will/Stino), it's compatible with Sublime Text 3 and uses the [PlatformIO](http://platformio.org/) ecosystem, which supports more than **450** boards.
