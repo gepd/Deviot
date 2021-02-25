@@ -24,7 +24,7 @@ def accepted_extensions():
     """
     Files accepted to be processed by deviot
     """
-    accepted = ['ino', 'pde', 'cpp', 'c', 'S', 'h']
+    accepted = ['ino']
     return accepted
 
 
