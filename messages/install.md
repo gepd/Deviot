@@ -19,6 +19,18 @@ If you keep having problems, please submit an issue explaining your problem [her
 
 --------------------------------
 
+Um plugin para trabalhar com desenvolvimento IoT no Sublime Text
+
+**IMPORTANTE!**
+
+- Este pluguin requer o **[Python](https://www.python.org/downloads/) na versão 2**
+
+Depois de instalar o python2 talvez você experiencie algum problema, se isso acontecer vá até `Deviot Menu > Opções > Remover Arquivo de Preferências (ou Remove Preferences File)` e logo depois reinicie o Sublime Text
+
+Se você continuar tendo problemas, por-favor abra uma **issue** detalhando o seu problema [aqui](https://github.com/gepd/Deviot/issues/new)
+
+--------------------------------
+
 **¡IMPORTANTE!**
     
 - Este plugin requiere **Python 2**
