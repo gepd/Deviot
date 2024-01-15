@@ -47,7 +47,7 @@ Deviot is available in:
 * **Polish** (Incomplete)
 * **Korean** (Incomplete)
 
-If you want to contribute and translate it to your language, use [this template](https://github.com/gepd/Deviot/blob/master/Languages/en.lang) or any other language file as reference. ([Languages availables](https://github.com/gepd/Deviot/tree/master/Languages))
+If you want to contribute and translate it to your language, use [this template](https://github.com/gepd/Deviot/blob/master/languages/en.lang) or any other language file as reference. ([Languages availables](https://github.com/gepd/Deviot/tree/master/languages))
 
 You should let the `msgid` as is, and paste your translated string in `msgstr`. When you finish it **pull a request** with the new file. The file should be called in the [ISO 639*1](https://en.wikipedia.org/wiki/List_of_ISO_639*1_codes) format (two letters) and with the extension `.lang`
 
