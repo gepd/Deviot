@@ -5,7 +5,7 @@ import logging
 import inspect
 
 from glob import glob
-from os import path, getenv, environ, makedirs, chmod
+from os import path, getenv, environ, makedirs, chmod, remove
 from collections import OrderedDict
 
 handler = logging.StreamHandler(sys.stdout)
